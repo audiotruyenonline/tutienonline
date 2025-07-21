@@ -519,6 +519,120 @@
   overflow: hidden;
   max-height: 44px;
 }
+
+.blinking-text {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  animation: blinkColor 1.5s infinite;
+}
+
+@keyframes blinkColor {
+  0%   { color: #00bcd4; }
+  25%  { color: #ff4081; }
+  50%  { color: #ffc107; }
+  75%  { color: #4caf50; }
+  100% { color: #00bcd4; }
+}
+
+.chapter-container {
+  background: #1a1a1a;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,188,212,0.15);
+}
+
+.chapter-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.chapter-table thead {
+  background: #00bcd4;
+  color: #fff;
+}
+
+.chapter-table th, .chapter-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #333;
+}
+
+.chapter-table tr {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.chapter-table tr:hover {
+  background: #2a2a2a;
+}
+
+.chapter-table button {
+  background: #00e676;
+  color: black;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.chapter-table button:hover {
+  background: #00c853;
+}
+
+.story-list-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 450px;
+  overflow-y: auto;
+}
+.mini-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.mini-row:hover {
+  transform: scale(1.01);
+  background: #2a2a2a;
+}
+.mini-thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.mini-info h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #00e676;
+}
+.mini-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #aaa;
+}
+.pagination-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #444;
+  color: white;
+  cursor: pointer;
+}
+.pagination-button.active {
+  background: #00bcd4;
+  font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -535,19 +649,20 @@
 <h1 style="font-size: 20px; margin: 0;">☯︎  Audio Truyện Online</h1>
 </header>
 <marquee scrollamount="6" style="background: #00bcd4; color: white; padding: 10px; font-weight: bold;">
-  🎉 Truyện được cập nhật vào 6h sáng mỗi ngày, nếu bạn muốn nghe truyện gì hãy qua Youtube và comment dưới bình luận truyện để cho mình biết!
+  🔥Top Truyện Hot | Top 1: Đấu La Smoke House - Top 2: Hải Tặc Lục Ngạn - Top 3: Hokkaido Tea Cup - Top 4: New World Saigon Centre - Top 5: Pepperonis Restaurant 🔥
 </marquee>
 <div class="story-container fancy-border">
 <h2 class="story-title">≛ Toàn Bộ Truyện</h2>
+<p class="blinking-text">⬇️ Cuộn xuống để xem đầy đủ truyện, nhấp vào truyện để nghe</p>
 <div style="padding: 10px; display: flex; gap: 10px;">
 <input id="searchInput" placeholder="✎  Tìm truyện..." style="flex: 1; padding: 8px 12px; font-size: 16px; border-radius: 6px; border: none; outline: none; background: #222; color: white;" type="text"/>
 <select id="genreSelect" style="padding: 8px 12px; font-size: 16px; border-radius: 6px; border: none; background: #222; color: white;">
 <option value="all"> Tất cả</option>
 <option value="Tiên Hiệp"> Tiên Hiệp</option>
 <option value="Huyền Huyễn"> Huyền Huyễn</option>
-<option value="Đô Thị"> Đô Thị</option>
 <option value="Hệ Thống"> Hệ Thống</option>
 <option value="Đồng Nhân"> Đồng Nhân</option>
+<option value="Đô Thị"> Đô Thị</option>
 <option value="Mạt Thế"> Mạt Thế</option>
 <option value="Khoa Huyễn"> Khoa Huyễn</option>
 <option value="Võng Du"> Võng Du</option>
@@ -561,6 +676,17 @@
 </main>
 </div>
 <!-- Quảng bá kênh YouTube -->
+
+<!-- ✅ KHUNG: Mới cập nhật & Truyện Hot-->
+<div class="story-container fancy-border" style="margin-bottom: 30px;">
+<div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 16px;">
+<button id="btnLatestAdded" onclick="showSection('latestAdded')" style="padding: 8px 16px; border-radius: 6px; border: none; background: #00bcd4; color: white; font-weight: bold;">📘 Mới cập nhật</button>
+<button id="btnLatestChapters" onclick="showSection('latestChapters')" style="padding: 8px 16px; border-radius: 6px; border: none; background: #333; color: white; font-weight: bold;">🔥 Truyện Hot</button>
+</div>
+<div class="story-list-grid" id="latestAdded"></div>
+<div class="story-list-grid" id="latestChapters" style="display:none;"></div>
+<div id="paginationControls" style="display:flex; justify-content:center; margin-top: 20px; gap: 6px;"></div>
+</div>
 <div class="support-admin">
 <h3>📺 Ủng hộ Kênh YouTube</h3>
 <p style="font-size: 15px; color: #ccc; line-height: 1.6;">
@@ -574,26 +700,32 @@
 <a href="https://youtube.com/@rinaudio-05?si=QYET-mEOlRktFRzc " target="_blank">
 <button style="background: #e53935;">🔥 Truy cập Kênh YouTube</button>
 </a>
-<a href="https://youtube.com/@rinaudio-05?si=QYET-mEOlRktFRzc?sub_confirmation=1" target="_blank">
-<button style="background: #43a047;"> Đăng ký Ngay</button>
+</div>
+</div>
+<p style="text-align:center; font-size:14px; color:#ccc; margin-top:6px;">
+💖 Nếu thấy web hay, hãy ủng hộ admin một ly cà phê nhé!
+</p>
+<div style="text-align:center; margin-top:10px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+<a href="https://me.momo.vn/QDI7Tos6UBCVF8fQTDsdux/openRPkrN8YRe7A " target="_blank">
+<button style="padding: 8px 16px; background: #d81b60; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; box-shadow: 0 4px 10px rgba(216,27,96,0.3);">
+      📱 Ủng hộ qua MoMo
+    </button>
 </a>
+<button onclick="document.getElementById('tpbankQR').style.display='block'" style="padding: 8px 16px; background: #7b1fa2; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; box-shadow: 0 4px 10px rgba(123,31,162,0.3);">
+    🏦 TPBank QR
+  </button>
 </div>
-</div>
-<!-- Ủng hộ admin -->
-<div class="support-admin">
-<h3>💖 Ủng hộ Admin</h3>
-<p>Nếu bạn thấy website hữu ích, hãy ủng hộ admin để có thêm động lực duy trì và phát triển nhé!</p>
-<div class="donate-buttons">
-<a href="https://me.momo.vn/QDI7Tos6UBCVF8fQTDsdux/oQeZ8RNn4WYvbpZ" target="_blank">
-<button>📱 Ủng hộ qua MoMo</button>
-</a>
-</div>
+<!-- Mã QR TPBank ẩn, sẽ hiện khi bấm nút -->
+<div id="tpbankQR" style="display:none; margin-top: 12px; text-align: center;">
+<p style="color:#ccc; font-size: 14px;">📸 Quét mã bên dưới để chuyển khoản qua TPBank</p>
+<img alt="QR TPBank" src="https://dl.dropbox.com/scl/fi/ha06b3fwu9npcs8cysc4u/IMG_1752585824710_1752585829396.jpg?rlkey=9b3oxa8lfy2cd7yd6w5zli84t&amp;st=2g7cbja2&amp;dl=0 " style="width: 180px; border-radius: 12px; border: 2px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,188,212,0.3);"/>
+<p style="color:#aaa; font-size:13px; margin-top:6px;">💳 Chủ TK: <strong>DANG VAN QUYET</strong> – TPBank: 00006481854</p>
 </div>
 <!-- Footer chuyên nghiệp -->
 <div class="footer">
 <div class="footer-column">
-<img alt="Logo" src="https://dl.dropbox.com/scl/fi/j65z29jaysnkhnm3ufoz9/file_0000000080e061f9a39a9201ef51df08.png?rlkey=r40kvvuex2r8wx3n7yezzvfue&st=c0y2u6ce&dl=0 " style="width: 80px; margin-bottom: 10px;"/>
-<p>AudioTruyenOnline có nhiều thể loại khác nhau, từ tiên hiệp, huyền huyễn, đô thị, tận thế đến xuyên không, đồng nhân, hệ thống...</p>
+<img alt="Logo" src="https://dl.dropbox.com/scl/fi/j65z29jaysnkhnm3ufoz9/file_0000000080e061f9a39a9201ef51df08.png?rlkey=r40kvvuex2r8wx3n7yezzvfue&st=c0y2u6ce&dl=0  " style="width: 80px; margin-bottom: 10px;"/>
+<p>AudioTruyenOnline có nhiều thể loại khác nhau, từ truyện cổ tích, kiếm hiệp, ma, ngôn tình đến xuyên không, đồng nhân, hệ thống...</p>
 </div>
 <div class="footer-column">
 <h4>📊 Thể Loại Đồng Nhân</h4>
@@ -628,20 +760,22 @@
 </div>
 <script>
     const stories = [
-     {
+        {
   id: "1",
-  title: "Fairy tail: Khắc kim liền có thể trở nên mạnh mẽ",
+  title: "Fairy tail: Khắc kim liền có thể trở nên mạnh mẽ ",
   genre: "Đồng Nhân",
-  status: "Đã full",
+  status: "Đã full", 
+  lastUpdated: "2025-07-18",
   description: "Trình Phong xuyên đến thế giới Fairy Tail. Hắn mang theo hệ thống rút thẻ – có tiền là có thể học ma pháp, triệu hồi sức mạnh. Chỉ cần đúng lúc rút thẻ mạnh, hắc long cũng phải khuất phục.",
   cover: "https://dl.dropbox.com/scl/fi/rtsr1336n77sqsiu7f9bq/p2o67a5aae10a58c76ae0f7209587d664eb.png?rlkey=t8retech9xvo3041l8bf8aoy6&dl=1",
   chapters: [
-    { title: "Tập 1", audio: "https://dl.dropbox.com/scl/fi/ucl8iefoptpp85blj29g2/1_1.mp3?rlkey=wpjpo73v9cuzjthz1acc6wia2&dl=1" },
-    { title: "Tập 2", audio: "https://dl.dropbox.com/scl/fi/fohkbbk2m4l2fjbn94gkp/8_1.mp3?rlkey=xhu7c0k625o0gzy21mxvplnh1&dl=1" },
-    { title: "Tập 3", audio: "https://dl.dropbox.com/scl/fi/hs2voios376zty0cvm9w3/15_1.mp3?rlkey=95rxewn8gofcwipr79ygciy93&dl=1" },
-    { title: "Tập 4", audio: "https://dl.dropbox.com/scl/fi/okh8efslm3mvngsfzx67x/22_1.mp3?rlkey=a299m8qznvskid15zf64mrlqy&dl=1" }
+    { title: "Tập 1 Xuyên Qua", audio: "https://dl.dropbox.com/scl/fi/ucl8iefoptpp85blj29g2/1_1.mp3?rlkey=wpjpo73v9cuzjthz1acc6wia2&dl=1" },
+    { title: "Tập 2 Năm Mới", audio: "https://dl.dropbox.com/scl/fi/fohkbbk2m4l2fjbn94gkp/8_1.mp3?rlkey=xhu7c0k625o0gzy21mxvplnh1&dl=1" },
+    { title: "Tập 3 Dung Hợp Ma Lực", audio: "https://dl.dropbox.com/scl/fi/hs2voios376zty0cvm9w3/15_1.mp3?rlkey=95rxewn8gofcwipr79ygciy93&dl=1" },
+    { title: "Tập 4 Muội Khống", audio: "https://dl.dropbox.com/scl/fi/okh8efslm3mvngsfzx67x/22_1.mp3?rlkey=a299m8qznvskid15zf64mrlqy&dl=1" }
   ]
-},
+}
+
     ];
 
 
@@ -697,7 +831,7 @@ function openPlayer(story) {
       <div style="flex: 1; min-width: 220px;">
         <h2 style="color: #00bcd4;">${story.title}</h2>
         <p><strong>📁 Thể loại:</strong> ${story.genre || 'Không rõ'}</p>
-        <p><strong>📊 Trạng thái:</strong> <span style="color: " + getStatusColor(story.status) + "; "> ${story.status || "Đang cập nhật"}</span></p>
+        <p><strong>📊 Trạng thái:</strong> <span style="color:${getStatusColor(story.status)};">${story.status || "Đang cập nhật"}</span></p>
         <p><strong>🎧 Số tập:</strong> ${story.chapters.length}</p>
         <p style="font-size: 14px; color: #ccc;">${story.description}</p>
       </div>
@@ -727,15 +861,27 @@ function openPlayer(story) {
 
     ${resumeBox}
 
-    <div id="chapterList" style="margin-top: 20px;">
-      <h3 style="color: #00bcd4;">📚 Danh sách tập:</h3>
-      <ul id="chapterUl">
-        ${story.chapters.map((ch, i) => `
-          <li onclick="playChapter('${ch.audio}', this)" style="cursor:pointer; color:#00bcd4; margin-bottom: 6px;">
-            ${ch.title}
-          </li>`).join('')}
-      </ul>
-    </div>
+    <div id="chapterList" class="chapter-container">
+  <h3 style="color: #00bcd4; font-size: 20px; margin-bottom: 12px;">📚 Danh sách tập:</h3>
+  <table class="chapter-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tên Tập</th>
+        <th>Nghe</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${story.chapters.map((ch, i) => `
+        <tr onclick="playChapter('${ch.audio}', this)">
+          <td>${i + 1}</td>
+          <td>${ch.title}</td>
+          <td><button>▶️ Phát</button></td>
+        </tr>
+      `).join('')}
+    </tbody>
+  </table>
+</div>
 
     <button class="back-btn" onclick="backToList()">⌫ Quay lại</button>
   `;
@@ -937,6 +1083,67 @@ function resumeAudio() {
     });
   }
 }
+
+
+const latestPerPage = 5;
+let currentPage = 1;
+let currentTab = 'latestAdded';
+
+function showSection(tab) {
+  currentTab = tab;
+  currentPage = 1;
+  document.getElementById('latestAdded').style.display = tab === 'latestAdded' ? 'block' : 'none';
+  document.getElementById('latestChapters').style.display = tab === 'latestChapters' ? 'block' : 'none';
+  document.getElementById('btnLatestAdded').style.background = tab === 'latestAdded' ? '#00bcd4' : '#333';
+  document.getElementById('btnLatestChapters').style.background = tab === 'latestChapters' ? '#00bcd4' : '#333';
+  renderLatestList();
+}
+
+function renderLatestList() {
+  const container = currentTab === 'latestAdded' ? document.getElementById('latestAdded') : document.getElementById('latestChapters');
+  container.innerHTML = '';
+  let list = [...stories];
+  if (currentTab === 'latestAdded') {
+    list = list.slice(-20).reverse();
+  } else {
+    list = list.filter(story => story.lastUpdated)
+               .sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated))
+               .slice(0, 20);
+  }
+  const start = (currentPage - 1) * latestPerPage;
+  const currentList = list.slice(start, start + latestPerPage);
+  currentList.forEach(story => {
+    const row = document.createElement('div');
+    row.className = 'mini-row';
+    row.onclick = () => openPlayer(story);
+    row.innerHTML = `
+      <img src="${story.cover}" class="mini-thumb" />
+      <div class="mini-info">
+        <h4>${story.title}</h4>
+        <p>${story.chapters.length} tập – ${story.genre}</p>
+      </div>`;
+    container.appendChild(row);
+  });
+  renderPagination(list.length);
+}
+
+function renderPagination(totalItems) {
+  const totalPages = Math.ceil(totalItems / latestPerPage);
+  const paginationEl = document.getElementById('paginationControls');
+  paginationEl.innerHTML = '';
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'pagination-button' + (i === currentPage ? ' active' : '');
+    btn.textContent = i;
+    btn.onclick = () => {
+      currentPage = i;
+      renderLatestList();
+    };
+    paginationEl.appendChild(btn);
+  }
+}
+
+showSection('latestAdded');
 </script>
 </body>
 </html>
