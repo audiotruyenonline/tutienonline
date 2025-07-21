@@ -697,7 +697,7 @@
 <li> Góp phần tăng view và phát triển cộng đồng</li>
 </ul>
 <div class="donate-buttons" style="margin-top: 14px;">
-<a href="https://youtube.com/@rinaudio-05?si=QYET-mEOlRktFRzc " target="_blank">
+<a href="https://youtube.com/@kimtruyen-u5?si=fKcXyY5yq068KlLv " target="_blank">
 <button style="background: #e53935;">🔥 Truy cập Kênh YouTube</button>
 </a>
 </div>
@@ -773,6 +773,30 @@
     { title: "Tập 2 Năm Mới", audio: "https://dl.dropbox.com/scl/fi/fohkbbk2m4l2fjbn94gkp/8_1.mp3?rlkey=xhu7c0k625o0gzy21mxvplnh1&dl=1" },
     { title: "Tập 3 Dung Hợp Ma Lực", audio: "https://dl.dropbox.com/scl/fi/hs2voios376zty0cvm9w3/15_1.mp3?rlkey=95rxewn8gofcwipr79ygciy93&dl=1" },
     { title: "Tập 4 Muội Khống", audio: "https://dl.dropbox.com/scl/fi/okh8efslm3mvngsfzx67x/22_1.mp3?rlkey=a299m8qznvskid15zf64mrlqy&dl=1" }
+  ]
+},
+{
+  id: "2",
+  title: "Kiểm kê long châu biến thân, người Saiyan rung động vạn giới",
+  genre: ["Đồng Nhân", "Hệ Thống"],
+  status: "Đang cập nhật", 
+  lastUpdated: "2025-07-21",
+
+  description: "Lâm Lạc xuyên qua thế giới Dragon Ball, đúng lúc gặp người Saiyan xâm lấn. Đủ loại cường đại nhân vật phản diện sắp xuất hiện, thân là người bình thường vô cùng nguy hiểm. May mắn vạn giới video lưới mời Lâm Lạc vào ở, tổ chức biến thân hoạt động: upload video biến thân và chiến thắng sẽ nhận được năng lực làm ban thưởng. Nhìn nội dung hoạt động, Lâm Lạc bật cười. Luận thực lực, long châu không phải mạnh nhất. Nhưng luận biến thân, người Saiyan nói thứ hai, ai dám nói đệ nhất? Từ Siêu Saiya 1, 2, 3... đến thần, siêu lam, cực ý, dã thú ngộ cơm... Khi Lâm Lạc đăng từng video biến thân, chư thiên vạn giới đều rung động!",
+  cover: "https://dl.dropbox.com/scl/fi/cjvgzch0ukc3jja5mull5/p2o777454baf7beae0739f3ac129b4d2123-tplv-shrink_640_0.image.png?rlkey=tjrd337ox7r1r8waqxe5vnqnj&st=5zs1qvhg&dl=0",
+  chapters: [
+    {
+      title: "Tập 1",
+      audio: "https://dl.dropbox.com/scl/fi/1t6ji3vj5k792ii3bfhtu/1-10_1.mp3?rlkey=rpfb6re4bkfi3cs3lcn6o4of5&st=akqbzr5j&dl=0"
+    },
+    {
+      title: "Tập 2",
+      audio: "https://dl.dropbox.com/scl/fi/6oz2gvxz5dzy4pdp6g52m/41-50_1.mp3?rlkey=2iul9ccu8nnhn3tgqs4uw956l&st=bzru9ctt&dl=0"
+    },
+    {
+      title: "Tập 3",
+      audio: "https://dl.dropbox.com/scl/fi/n6aqtyiv5yl78fet6ya3c/81-90_1.mp3?rlkey=0tyqwtp1jr7y2nzgidbx956uu&st=9p62ze1s&dl=0"
+    }
   ]
 }
 
@@ -1048,7 +1072,11 @@ function applyFilters() {
 
   filteredStories = stories.filter(story => {
     const matchTitle = story.title.toLowerCase().includes(keyword);
-    const matchGenre = selectedGenre === 'all' || story.genre === selectedGenre;
+    const matchGenre =
+      selectedGenre === 'all' ||
+      (Array.isArray(story.genre)
+        ? story.genre.includes(selectedGenre)
+        : story.genre === selectedGenre);
     return matchTitle && matchGenre;
   });
 
