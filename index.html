@@ -1,1176 +1,209 @@
-
 <!DOCTYPE html>
-
 <html lang="vi">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>📖 Nghe Truyện Audio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu Tiên Truyện</title>
+
 <style>
-    :root {
-      --bg: #121212;
-      --text: #ffffff;
-      --primary: #3a3a3a;
-      --card: #1e1e1e;
-      --border: #2c2c2c;
-    }
-
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    header {
-      background: var(--primary);
-      color: white;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    #menuToggle {
-      font-size: 24px;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    #searchInput {
-      flex: 1;
-      padding: 6px;
-      border-radius: 4px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-    }
-
-    main {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .story-card {
-  background: #222;
-  border-radius: 10px;
-  padding: 8px;
-  margin: 0 auto;          /* 👈 căn giữa khung */
-  max-width: 100px;        /* 👈 thu hẹp chiều rộng */
-  cursor: pointer;
-  transition: transform 0.2s ease;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  height: 100%;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#0f0f1a,#1a0033);
+    color: white;
 }
 
-    .story-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-    }
-
-    .story-card img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      object-fit: cover;
-
-      width: 100px;
-      height: 100px;
-      border-radius: 8px;
-      object-fit: cover;
-      margin-bottom: 8px;
-    }
-
-    .story-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .story-info h3 {
-  font-size: 14px;
-  font-weight: bold;
-  margin: 0;
-  height: 36px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  color: #00bfff; /* 👈 màu chữ mới */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #111;
+    box-shadow: 0 0 10px #6a00ff;
 }
 
-    .story-info p {
-      margin: 0;
-      font-size: 13px;
-      color: #bbb;
-    }
-
-    .audio-player {
-      margin-top: 16px;
-      background: #292929;
-      padding: 12px;
-      border-radius: 8px;
-    }
-
-    .audio-player .controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: center; /* 👈 căn giữa hàng ngang */
-  flex-wrap: wrap;
-  margin-top: 8px;
+button {
+    background: linear-gradient(90deg,#6a00ff,#00d4ff);
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
 }
 
-    .audio-player button {
-      background: #444;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 22px;
-    }
-
-    .audio-player button:hover {
-      background: #666;
-    }
-
-    .audio-player input[type="range"] {
-      vertical-align: middle;
-    }
-
-    .audio-player .progress-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto 8px;
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
 }
 
-.audio-player #progressBar {
-  width: 100%;
-  height: 6px;
-  border-radius: 4px;
-  background: #555;
-  accent-color: #00e676; /* màu thanh khi kéo */
+.profile {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
-    button.back-btn {
-      margin-top: 20px;
-      padding: 10px 16px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    #sidebar {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 250px;
-      height: 100vh;
-      background: #2a2a2a;
-      color: white;
-      z-index: 999;
-      padding: 20px;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.5);
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-    }
-
-    #sidebar.active {
-      display: block;
-      transform: translateX(0);
-    }
-
-    #overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 998;
-    }
-
-    #overlay.active {
-      display: block;
-    }
-
-    .story-container {
-      background: #1b1b1b;
-      padding: 10px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-
-    h2, h3 {
-      margin: 0 0 8px;
-    }
-
-    .story-info button {
-      margin-top: 6px;
-      padding: 6px 12px;
-      background: #00bcd4;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .story-info .description-box {
-      max-height: 60px;
-      overflow: hidden;
-      padding: 4px 6px;
-      border-radius: 6px;
-      background: #222;
-      font-size: 14px;
-      color: #ccc;
-    }
-
-  
-.pagination button {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  background: #444;
-  color: white;
-  cursor: pointer;
-}
-.pagination button.active {
-  background: #00bcd4;
+.tuvi-bar {
+    width: 100%;
+    height: 20px;
+    background: #222;
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
 }
 
-.support-admin {
-  background: #1e1e1e;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  margin: 20px 10px;
-  padding: 16px;
-  text-align: center;
-  color: #fff;
+#tuviFill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg,#6a00ff,#00d4ff);
+    transition: 0.5s;
 }
 
-.support-admin h3 {
-  margin-bottom: 10px;
-  color: #00bcd4;
-}
-
-.support-admin .donate-buttons {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.support-admin .donate-buttons button {
-  background: #444;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.support-admin .donate-buttons button:hover {
-  background: #666;
-}
-
-.footer {
-  background: #111;
-  color: white;
-  padding: 20px 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  font-size: 14px;
-  margin-top: 30px;
-  border-top: 1px solid var(--border);
-}
-
-.footer-column {
-  flex: 1 1 200px;
-  padding: 10px;
-}
-
-.footer-column h4 {
-  color: #00bcd4;
-  margin-bottom: 10px;
-}
-
-.footer-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-column ul li {
-  margin-bottom: 6px;
-  border-bottom: 1px solid #333;
-  padding-bottom: 4px;
-}
-
-.fancy-border {
-  border: 2px solid #00bcd4;
-  border-radius: 16px;
-  padding: 16px;
-  background: linear-gradient(to bottom, #1b1b1b, #141414);
-  box-shadow: 0 4px 20px rgba(255, 118, 164, 0.2);
-  margin: 20px;
-}
-
-.story-title {
-  color: #00bcd4;
-  font-size: 22px;
-  text-align: center;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #444;
-  padding-bottom: 10px;
-}
-
-.story-card {
-  background: #222;
-  border-radius: 14px;
-  padding: 12px;
-  max-width: 180px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  height: 100%;
-}
-.story-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 188, 212, 0.25);
-}
-.story-card img {
-  width: 100%;
-  height: 180px;
-  border-radius: 12px;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-.story-info h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: #00e676;
-  height: 38px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.story-info .description-box {
-  font-size: 13px;
-  color: #bbb;
-  text-align: center;
-  line-height: 1.4;
-  max-height: 48px;
-  overflow: hidden;
-}
-#storyList {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  padding: 16px;
-}
-.story-container.fancy-border {
-  padding: 24px;
-  border-radius: 20px;
-  border: 2px solid #00bcd4;
-  background: linear-gradient(to bottom, #1b1b1b, #121212);
-}
-.story-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #00bcd4;
-  text-align: center;
-  padding-bottom: 12px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid #444;
-}
-
-
-# #storyList {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 👈 luôn 3 cột */
-  gap: 36px 20px; /* khoảng cách dọc - ngang */
-  padding: 16px;
-}
-.story-card {
-  background: #1e1e1e;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-}
-.story-card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 12px rgba(0,188,212,0.2);
-}
-.story-card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-}
-.story-info {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.story-info h3 {
-  font-size: 15px;
-  font-weight: 600;
-  color: #00e676;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.story-info p {
-  font-size: 13px;
-  color: #aaa;
-  margin: 0;
-}
-.tag {
-  font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 6px;
-  background: #333;
-  color: #00bcd4;
-  display: inline-block;
-  margin-top: 4px;
-}
-
-#storyList {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 16px;
-}
-
-.story-row {
-  display: flex;
-  background: #1e1e1e;
-  border-radius: 12px;
-  padding: 12px;
-  gap: 16px;
-  align-items: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: 0.2s ease;
-  cursor: pointer;
-}
-.story-row:hover {
-  transform: scale(1.02);
-}
-.story-thumb {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-.story-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.story-meta h3 {
-  font-size: 16px;
-  color: #00e676;
-  margin: 0;
-}
-.story-meta p {
-  margin: 0;
-  color: #bbb;
-  font-size: 14px;
-}
-
-.story-meta .description-box {
-  font-size: 13px;
-  color: #bbb;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;        /* 👈 Chỉ hiển thị 2 dòng */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  max-height: 44px;
-}
-
-.blinking-text {
-  text-align: center;
-  font-size: 14px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  animation: blinkColor 1.5s infinite;
-}
-
-@keyframes blinkColor {
-  0%   { color: #00bcd4; }
-  25%  { color: #ff4081; }
-  50%  { color: #ffc107; }
-  75%  { color: #4caf50; }
-  100% { color: #00bcd4; }
-}
-
-.chapter-container {
-  background: #1a1a1a;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,188,212,0.15);
-}
-
-.chapter-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.chapter-table thead {
-  background: #00bcd4;
-  color: #fff;
-}
-
-.chapter-table th, .chapter-table td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #333;
-}
-
-.chapter-table tr {
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.chapter-table tr:hover {
-  background: #2a2a2a;
-}
-
-.chapter-table button {
-  background: #00e676;
-  color: black;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.chapter-table button:hover {
-  background: #00c853;
-}
-
-.story-list-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 450px;
-  overflow-y: auto;
-}
-.mini-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #1e1e1e;
-  padding: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-.mini-row:hover {
-  transform: scale(1.01);
-  background: #2a2a2a;
-}
-.mini-thumb {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-.mini-info h4 {
-  margin: 0;
-  font-size: 14px;
-  color: #00e676;
-}
-.mini-info p {
-  margin: 0;
-  font-size: 13px;
-  color: #aaa;
-}
-.pagination-button {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  background: #444;
-  color: white;
-  cursor: pointer;
-}
-.pagination-button.active {
-  background: #00bcd4;
-  font-weight: bold;
+.story {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 10px;
+    line-height: 1.6;
 }
 </style>
 </head>
+
 <body>
-<div id="sidebar">
-<h2>📚 Menu</h2>
-<ul>
-<li onclick="showTab('home')">⌂ Trang chủ</li>
-<li onclick="closeMenu()">✕ Đóng</li>
-</ul>
-</div>
-<div id="overlay" onclick="closeMenu()"></div>
+
 <header>
-<button id="menuToggle">☰</button>
-<h1 style="font-size: 20px; margin: 0;">☯︎  Audio Truyện Online</h1>
+    <h2>🔥 Tu Tiên Truyện</h2>
+    <button id="loginBtn">Đăng nhập Google</button>
 </header>
-<marquee scrollamount="6" style="background: #00bcd4; color: white; padding: 10px; font-weight: bold;">
-  🎉 Truyện sẽ cập nhật mỗi 6h sáng thứ 3-5-7, nếu bạn muốn nghe truyện gì có thể qua kênh Youtube comment ở dưới truyện!❤
-</marquee>
-<div class="story-container fancy-border">
-<h2 class="story-title">≛ Toàn Bộ Truyện</h2>
-<p class="blinking-text">⬇️ Cuộn xuống để xem đầy đủ truyện, nhấp vào truyện để nghe</p>
-<div style="padding: 10px; display: flex; gap: 10px;">
-<input id="searchInput" placeholder="✎  Tìm truyện..." style="flex: 1; padding: 8px 12px; font-size: 16px; border-radius: 6px; border: none; outline: none; background: #222; color: white;" type="text"/>
-<select id="genreSelect" style="padding: 8px 12px; font-size: 16px; border-radius: 6px; border: none; background: #222; color: white;">
-<option value="all"> Tất cả</option>
-<option value="Tiên Hiệp"> Tiên Hiệp</option>
-<option value="Huyền Huyễn"> Huyền Huyễn</option>
-<option value="Hệ Thống"> Hệ Thống</option>
-<option value="Đồng Nhân"> Đồng Nhân</option>
-<option value="Đô Thị"> Đô Thị</option>
-<option value="Mạt Thế"> Mạt Thế</option>
-<option value="Khoa Huyễn"> Khoa Huyễn</option>
-<option value="Võng Du"> Võng Du</option>
-</select>
-</div>
-<main>
-<div id="storyListView" style="max-height: 60vh; overflow-y: auto; padding-right: 6px;">
-<div id="storyList"></div>
-</div>
-<div id="storyDetailView" style="display: none;"></div>
-</main>
-</div>
-<!-- Quảng bá kênh YouTube -->
 
-<!-- ✅ KHUNG: Mới cập nhật & Truyện Hot-->
-<div class="story-container fancy-border" style="margin-bottom: 30px;">
-<div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 16px;">
-<button id="btnLatestAdded" onclick="showSection('latestAdded')" style="padding: 8px 16px; border-radius: 6px; border: none; background: #00bcd4; color: white; font-weight: bold;">📘 Mới cập nhật</button>
-<button id="btnLatestChapters" onclick="showSection('latestChapters')" style="padding: 8px 16px; border-radius: 6px; border: none; background: #333; color: white; font-weight: bold;">🔥 Truyện Hot</button>
-</div>
-<div class="story-list-grid" id="latestAdded"></div>
-<div class="story-list-grid" id="latestChapters" style="display:none;"></div>
-<div id="paginationControls" style="display:flex; justify-content:center; margin-top: 20px; gap: 6px;"></div>
-</div>
-<div class="support-admin">
-<h3>📺 Ủng hộ Kênh YouTube</h3>
-<p style="font-size: 15px; color: #ccc; line-height: 1.6;">
-    Bạn yêu thích những câu chuyện tại đây? Hãy ghé thăm và <strong style="color: #00bcd4;">đăng ký kênh YouTube</strong> của chúng tôi để:
-  </p>
-<ul style="text-align: left; max-width: 500px; margin: 10px auto; font-size: 14px; color: #bbb; padding-left: 20px; line-height: 1.5;">
-<li> Nhận thông báo truyện mới mỗi ngày</li>
-<li> Góp phần tăng view và phát triển cộng đồng</li>
-</ul>
-<div class="donate-buttons" style="margin-top: 14px;">
-<a href="https://youtube.com/@audiorin?si=dBRyt6uhib9Nnhxq " target="_blank">
-<button style="background: #e53935;">🔥 Truy cập Kênh YouTube</button>
-</a>
-</div>
-</div>
-<p style="text-align:center; font-size:14px; color:#ccc; margin-top:6px;">
-💖 Nếu thấy web hay, hãy ủng hộ admin một ly cà phê nhé!
-</p>
-<div style="text-align:center; margin-top:10px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-<a href="https://me.momo.vn/QDI7Tos6UBCVF8fQTDsdux/openRPkrN8YRe7A " target="_blank">
-<button style="padding: 8px 16px; background: #d81b60; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; box-shadow: 0 4px 10px rgba(216,27,96,0.3);">
-      📱 Ủng hộ qua MoMo
-    </button>
-</a>
-<button onclick="document.getElementById('tpbankQR').style.display='block'" style="padding: 8px 16px; background: #7b1fa2; color: white; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; box-shadow: 0 4px 10px rgba(123,31,162,0.3);">
-    🏦 TPBank QR
-  </button>
-</div>
-<!-- Mã QR TPBank ẩn, sẽ hiện khi bấm nút -->
-<div id="tpbankQR" style="display:none; margin-top: 12px; text-align: center;">
-<p style="color:#ccc; font-size: 14px;">📸 Quét mã bên dưới để chuyển khoản qua TPBank</p>
-<img alt="QR TPBank" src="https://dl.dropbox.com/scl/fi/ha06b3fwu9npcs8cysc4u/IMG_1752585824710_1752585829396.jpg?rlkey=9b3oxa8lfy2cd7yd6w5zli84t&amp;st=2g7cbja2&amp;dl=0 " style="width: 180px; border-radius: 12px; border: 2px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,188,212,0.3);"/>
-<p style="color:#aaa; font-size:13px; margin-top:6px;">💳 Chủ TK: <strong>DANG VAN QUYET</strong> – TPBank: 00006481854</p>
-</div>
-<!-- Footer chuyên nghiệp -->
-<div class="footer">
-<div class="footer-column">
-<img alt="Logo" src="https://dl.dropbox.com/scl/fi/azfuu39bydmlxyp0bh3h4/2025072421034191.jpg?rlkey=cc99t6wbwc6qrir40pp1xn3h0&st=xdhw6to5&dl=0  " style="width: 80px; margin-bottom: 10px;"/>
-<p>AudioTruyenOnline có nhiều thể loại khác nhau, từ truyện tiên hiệp, huyền huyễn, hệ thống, đồng nhân, mạt thế, võng du...</p>
-</div>
-<div class="footer-column">
-<h4>📊 Thể Loại Đồng Nhân</h4>
-<ul>
-<li>Đồng nhân Onepiece</li>
-<li>Đồng nhân Hokage</li>
-<li>Đồng nhân Đấu La</li>
-<li>Đồng nhân Marvel</li>
-</ul>
-</div>
-<div class="footer-column">
-<h4>🎤 Giọng đọc nổi bật</h4>
-<ul>
-<li>Mỹ Nhân</li>
-<li>Ngọc Bích</li>
-<li>Đình Soạn</li>
-<li>MC Tiến Phong</li>
-</ul>
-</div>
-<div class="footer-column">
-<h4>📈 Thống kê truy cập</h4>
-<ul>
-<li>Online: 109</li>
-<li>Hôm nay: 619</li>
-<li>Hôm qua: 536</li>
-<li>Tổng: 6.564</li>
-</ul>
-</div>
-</div>
-<div class="footer-bottom" style="text-align:center; color:#bbb; font-size:13px; margin-top: 16px;">
-  © Copyright 2025 - AudioTruyenOnline. All rights reserved.
-</div>
-<script>
-    const stories = [
-        {
-  id: "1",
-  title: "Fairy tail: Khắc kim liền có thể trở nên mạnh mẽ ",
-  genre: "Đồng Nhân",
-  status: "Đã full", 
-  lastUpdated: "2025-07-18",
-  description: "Trình Phong xuyên đến thế giới Fairy Tail. Hắn mang theo hệ thống rút thẻ – có tiền là có thể học ma pháp, triệu hồi sức mạnh. Chỉ cần đúng lúc rút thẻ mạnh, hắc long cũng phải khuất phục.",
-  cover: "https://dl.dropbox.com/scl/fi/rtsr1336n77sqsiu7f9bq/p2o67a5aae10a58c76ae0f7209587d664eb.png?rlkey=t8retech9xvo3041l8bf8aoy6&dl=1",
-  chapters: [
-    { title: "Tập 1 Xuyên Qua", audio: "https://dl.dropbox.com/scl/fi/ucl8iefoptpp85blj29g2/1_1.mp3?rlkey=wpjpo73v9cuzjthz1acc6wia2&dl=1" },
-    { title: "Tập 2 Năm Mới", audio: "https://dl.dropbox.com/scl/fi/fohkbbk2m4l2fjbn94gkp/8_1.mp3?rlkey=xhu7c0k625o0gzy21mxvplnh1&dl=1" },
-    { title: "Tập 3 Dung Hợp Ma Lực", audio: "https://dl.dropbox.com/scl/fi/hs2voios376zty0cvm9w3/15_1.mp3?rlkey=95rxewn8gofcwipr79ygciy93&dl=1" },
-    { title: "Tập 4 Muội Khống", audio: "https://dl.dropbox.com/scl/fi/okh8efslm3mvngsfzx67x/22_1.mp3?rlkey=a299m8qznvskid15zf64mrlqy&dl=1" }
-  ]
-},
-{
-  id: "2",
-  title: "Kiểm kê long châu biến thân, người Saiyan rung động vạn giới",
-  genre: ["Đồng Nhân", "Hệ Thống"],
-  status: "Đang cập nhật", 
-  lastUpdated: "2025-07-21",
-  description: "Lâm Lạc xuyên qua thế giới Dragon Ball, đúng lúc gặp người Saiyan xâm lấn. Đủ loại cường đại nhân vật phản diện sắp xuất hiện, thân là người bình thường vô cùng nguy hiểm. May mắn vạn giới video lưới mời Lâm Lạc vào ở, tổ chức biến thân hoạt động: upload video biến thân và chiến thắng sẽ nhận được năng lực làm ban thưởng. Nhìn nội dung hoạt động, Lâm Lạc bật cười. Luận thực lực, long châu không phải mạnh nhất. Nhưng luận biến thân, người Saiyan nói thứ hai, ai dám nói đệ nhất? Từ Siêu Saiya 1, 2, 3... đến thần, siêu lam, cực ý, dã thú ngộ cơm... Khi Lâm Lạc đăng từng video biến thân, chư thiên vạn giới đều rung động!",
-  cover: "https://dl.dropbox.com/scl/fi/cjvgzch0ukc3jja5mull5/p2o777454baf7beae0739f3ac129b4d2123-tplv-shrink_640_0.image.png?rlkey=tjrd337ox7r1r8waqxe5vnqnj&st=5zs1qvhg&dl=0",
-  chapters: [
-    {
-      title: "Tập 1: Cho chư thiên vạn giới mang đến người Saiyan biến thân rung động!",
-      audio: "https://dl.dropbox.com/scl/fi/1t6ji3vj5k792ii3bfhtu/1-10_1.mp3?rlkey=rpfb6re4bkfi3cs3lcn6o4of5&st=akqbzr5j&dl=0"
-    },
-    {
-      title: "Tập 2: Hiền lành người nhân tạo, vạn giới cảm khái",
-      audio: "https://dl.dropbox.com/scl/fi/6oz2gvxz5dzy4pdp6g52m/41-50_1.mp3?rlkey=2iul9ccu8nnhn3tgqs4uw956l&st=bzru9ctt&dl=0"
-    },
-    {
-      title: "Tập 3: Ma Nhân Buu ma pháp, Dabura chết lão thảm rồi",
-      audio: "https://dl.dropbox.com/scl/fi/n6aqtyiv5yl78fet6ya3c/81-90_1.mp3?rlkey=0tyqwtp1jr7y2nzgidbx956uu&st=9p62ze1s&dl=0"
-    }
-  ]
-}
+<div class="container">
 
-    ];
-
-
-const storyListEl = document.getElementById('storyList');
-const searchInput = document.getElementById('searchInput');
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-const genreSelect = document.getElementById('genreSelect');
-
-let filteredStories = stories;
-
-menuToggle.addEventListener('click', () => {
-  sidebar.classList.add('active');
-  overlay.classList.add('active');
-});
-
-overlay.addEventListener('click', closeMenu);
-
-function closeMenu() {
-  sidebar.classList.remove('active');
-  overlay.classList.remove('active');
-}
-
-function openPlayer(story) {
-  closeMenu();
-  document.getElementById('storyListView').style.display = 'none';
-  const detailView = document.getElementById('storyDetailView');
-  detailView.style.display = 'block';
-
-  const saved = JSON.parse(localStorage.getItem('audioStatus') || '{}');
-  let chapterToPlay = story.chapters[0];
-
-  if (saved.audioSrc && story.chapters.some(ch => ch.audio === saved.audioSrc)) {
-    chapterToPlay = story.chapters.find(ch => ch.audio === saved.audioSrc);
-  }
-
-  const audioTitle = chapterToPlay.title;
-
-  // Nếu có dữ liệu nghe cũ và cùng tập, tạo hộp resume
-  const resumeBox = (saved.audioSrc === chapterToPlay.audio && saved.currentTime > 5)
-    ? `
-      <div id="resumeBox" style="margin-top: 20px; background: #003300; color: white; padding: 10px 16px; border-radius: 12px; text-align: center;">
-        🔁 Bạn đã nghe đến <strong>${formatTime(saved.currentTime)}</strong> ở tập <strong>${saved.chapterTitle}</strong><br/>
-        <button onclick="resumeAudio()" style="margin-top: 8px; background: #00c853; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer;">
-          ▶️ Nghe tiếp từ ${formatTime(saved.currentTime)}
-        </button>
-      </div>` : '';
-
-  detailView.innerHTML = `
-    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-      <img src="${story.cover}" style="width: 140px; height: 140px; object-fit: cover; border-radius: 12px;" />
-      <div style="flex: 1; min-width: 220px;">
-        <h2 style="color: #00bcd4;">${story.title}</h2>
-        <p><strong>📁 Thể loại:</strong> ${story.genre || 'Không rõ'}</p>
-        <p><strong>📊 Trạng thái:</strong> <span style="color:${getStatusColor(story.status)};">${story.status || "Đang cập nhật"}</span></p>
-        <p><strong>🎧 Số tập:</strong> ${story.chapters.length}</p>
-        <p style="font-size: 14px; color: #ccc;">${story.description}</p>
-      </div>
+<div class="profile">
+    <h3 id="username">Chưa đăng nhập</h3>
+    <p>Tu Vi: <span id="tuvi">0</span></p>
+    <div class="tuvi-bar">
+        <div id="tuviFill"></div>
     </div>
-
-    <div class="audio-player" style="margin-top: 20px;">
-      <p style="color: #00bcd4;">🎧 Đang phát: <span id="currentChapterTitle">${audioTitle}</span></p>
-      <audio id="audioPlayer" src="${chapterToPlay.audio}"></audio>
-      <div class="progress-container">
-        <input type="range" id="progressBar" value="0" step="1" min="0" max="100">
-      </div>
-      <div style="display: flex; justify-content: space-between; font-size: 13px; color: #aaa; max-width: 600px; margin: 0 auto;">
-        <span id="currentTime">00:00</span>
-        <span id="duration">00:00</span>
-      </div>
-      <div class="controls">
-        <button id="rewindBtn">⏮︎ 10s</button>
-        <button id="playPauseBtn">▶︎</button>
-        <button id="forwardBtn">10s ⏭︎</button>
-        <label>
-          🔊 Tốc độ:
-          <input type="range" id="speedSlider" min="0.5" max="3" step="0.1" value="1" />
-          <span id="speedValue">1.0x</span>
-        </label>
-      </div>
-    </div>
-
-    ${resumeBox}
-
-    <div id="chapterList" class="chapter-container">
-  <h3 style="color: #00bcd4; font-size: 20px; margin-bottom: 12px;">📚 Danh sách tập:</h3>
-  <table class="chapter-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Tên Tập</th>
-        <th>Nghe</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${story.chapters.map((ch, i) => `
-        <tr onclick="playChapter('${ch.audio}', this)">
-          <td>${i + 1}</td>
-          <td>${ch.title}</td>
-          <td><button>▶️ Phát</button></td>
-        </tr>
-      `).join('')}
-    </tbody>
-  </table>
 </div>
 
-    <button class="back-btn" onclick="backToList()">⌫ Quay lại</button>
-  `;
+<div class="story">
+    <h2>Chương 1: Khởi đầu tu luyện</h2>
+    <p>
+        Trên đỉnh núi cao, thiếu niên nhìn xuống phàm trần...
+        Hắn thề phải nghịch thiên cải mệnh, bước lên con đường tu tiên.
+        Linh khí vận chuyển, đan điền rung động.
+    </p>
+    <br>
+    <button id="readBtn">Đọc xong (+50 Tu Vi)</button>
+</div>
 
-  setupAudioPlayer(story, chapterToPlay);
-}
+</div>
 
-function setupAudioPlayer(story, currentChapter) {
-  const audio = document.getElementById('audioPlayer');
-  const playBtn = document.getElementById('playPauseBtn');
-  const rewindBtn = document.getElementById('rewindBtn');
-  const forwardBtn = document.getElementById('forwardBtn');
-  const speedSlider = document.getElementById('speedSlider');
-  const progressBar = document.getElementById('progressBar');
-  const currentTimeDisplay = document.getElementById('currentTime');
-  const durationDisplay = document.getElementById('duration');
-  const currentChapterTitleEl = document.getElementById('currentChapterTitle');
+<script type="module">
 
-  const saved = JSON.parse(localStorage.getItem('audioStatus') || '{}');
-  if (saved.audioSrc === audio.src) {
-    audio.currentTime = saved.currentTime || 0;
-    audio.playbackRate = saved.speed || 1;
-    speedSlider.value = saved.speed || 1;
-    document.getElementById('speedValue').textContent = `${audio.playbackRate.toFixed(1)}x`;
-  }
+import { initializeApp } from 
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
-  audio.addEventListener('timeupdate', () => {
-    if (!audio.duration) return;
-    progressBar.value = (audio.currentTime / audio.duration) * 100;
-    currentTimeDisplay.textContent = formatTime(audio.currentTime);
-    durationDisplay.textContent = isNaN(audio.duration) ? '00:00' : formatTime(audio.duration);
-  });
+import { 
+getAuth, 
+GoogleAuthProvider, 
+signInWithPopup, 
+onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  progressBar.addEventListener('input', () => {
-    audio.currentTime = (progressBar.value / 100) * audio.duration;
-  });
+import { 
+getFirestore, 
+doc, 
+getDoc, 
+setDoc, 
+updateDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  playBtn.onclick = () => {
-    if (audio.paused) {
-      audio.play();
-      playBtn.textContent = '◼︎';
-    } else {
-      audio.pause();
-      playBtn.textContent = '▶︎';
-    }
-  };
-
-  rewindBtn.onclick = () => { audio.currentTime -= 10; };
-  forwardBtn.onclick = () => { audio.currentTime += 10; };
-
-  speedSlider.oninput = () => {
-  const rate = parseFloat(speedSlider.value);
-  audio.playbackRate = rate;
-  document.getElementById('speedValue').textContent = rate.toFixed(1) + 'x';
-
-  // ✅ Lưu lại tốc độ vào localStorage
-  const saved = JSON.parse(localStorage.getItem('audioStatus') || '{}');
-  saved.speed = rate;
-  localStorage.setItem('audioStatus', JSON.stringify(saved));
+/* ==============================
+   THAY THÔNG TIN FIREBASE Ở ĐÂY
+================================= */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
 };
 
-  audio.onended = () => {
-    const idx = story.chapters.findIndex(ch => ch.audio === audio.src);
-    const next = story.chapters[idx + 1];
-    if (next) {
-      playChapter(next.audio, document.querySelectorAll('#chapterUl li')[idx + 1]);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const loginBtn = document.getElementById("loginBtn");
+const usernameEl = document.getElementById("username");
+const tuviEl = document.getElementById("tuvi");
+const tuviFill = document.getElementById("tuviFill");
+const readBtn = document.getElementById("readBtn");
+
+const provider = new GoogleAuthProvider();
+
+loginBtn.onclick = async () => {
+    await signInWithPopup(auth, provider);
+};
+
+/* ==============================
+   LOAD USER DATA
+================================= */
+
+async function loadTuVi(uid) {
+    const ref = doc(db, "users", uid);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+        await setDoc(ref, { tuvi: 0 });
+        return 0;
     }
-  };
 
-  window.onbeforeunload = () => {
-    localStorage.setItem('audioStatus', JSON.stringify({
-      chapterTitle: currentChapterTitleEl?.textContent || '',
-      audioSrc: audio.src,
-      speed: audio.playbackRate,
-      currentTime: audio.currentTime
-    }));
-  };
+    return snap.data().tuvi;
 }
 
-function playChapter(audioURL, element) {
-  const audio = document.getElementById('audioPlayer');
-  const playBtn = document.getElementById('playPauseBtn');
-  const speedSlider = document.getElementById('speedSlider');
-  const speedValue = document.getElementById('speedValue');
-
-  const saved = JSON.parse(localStorage.getItem('audioStatus') || '{}');
-  const rate = saved.speed || 1;
-
-  audio.src = audioURL;
-  audio.playbackRate = rate;
-  speedSlider.value = rate;
-  speedValue.textContent = rate.toFixed(1) + 'x';
-
-  audio.currentTime = 0;
-  audio.play().then(() => {
-    playBtn.textContent = '◼︎ ';
-  });
-
-  document.getElementById('currentChapterTitle').textContent = element.textContent;
-
-  const allItems = document.querySelectorAll('#chapterUl li');
-  allItems.forEach(li => li.style.fontWeight = 'normal');
-  element.style.fontWeight = 'bold';
-
-  localStorage.setItem('audioStatus', JSON.stringify({
-    chapterTitle: element.textContent,
-    audioSrc: audioURL,
-    speed: rate,
-    currentTime: 0
-  }));
-}
-
-function backToList() {
-  document.getElementById('storyDetailView').style.display = 'none';
-  document.getElementById('storyListView').style.display = 'block';
-  renderStories(filteredStories);
-}
-
-function getProgressText(story) {
-  const saved = JSON.parse(localStorage.getItem('audioStatus') || '{}');
-  if (!saved.audioSrc || !saved.chapterTitle || saved.currentTime == null) return '';
-
-  const hasChapter = story.chapters.some(ch => ch.audio === saved.audioSrc);
-  if (!hasChapter) return '';
-
-  return `📌 Đã nghe đến: ${saved.chapterTitle} (${formatTime(saved.currentTime)})`;
-}
-
-
-function getStatusColor(status) {
-  switch ((status || "").toLowerCase()) {
-    case "đã full": return "#00e676";
-    case "tạm dừng": return "#ff9800";
-    case "drop": return "#f44336";
-    default: return "#00bcd4"; // Đang cập nhật
-  }
-}
-
-function renderStories(storyList) {
-  storyListEl.innerHTML = '';
-  storyList.forEach(story => {
-    const card = document.createElement('div');
-    card.className = 'story-row';
-    card.onclick = () => openPlayer(story);
-    const progressText = getProgressText(story);
-
-card.innerHTML = `
-  <img src="${story.cover}" class="story-thumb" alt="${story.title}" />
-  <div class="story-meta">
-    <h3>${story.title}</h3>
-    <p>📊 ${story.status || "Đang cập nhật"} – ${story.genre}</p>
-    <p>🎧 ${story.chapters.length} tập</p>
-    <div class="description-box">${story.description}</div>
-    ${progressText ? `<p style="color:#00e676; font-size:13px;">${progressText}</p>` : ''}
-  </div>`;
-    storyListEl.appendChild(card);
-  });
-}
-
-
-function applyFilters() {
-  const keyword = searchInput.value.toLowerCase();
-  const selectedGenre = genreSelect.value;
-
-  filteredStories = stories.filter(story => {
-    const matchTitle = story.title.toLowerCase().includes(keyword);
-    const matchGenre =
-      selectedGenre === 'all' ||
-      (Array.isArray(story.genre)
-        ? story.genre.includes(selectedGenre)
-        : story.genre === selectedGenre);
-    return matchTitle && matchGenre;
-  });
-
-  renderStories(filteredStories);
-}
-
-searchInput.addEventListener('input', applyFilters);
-genreSelect.addEventListener('change', applyFilters);
-
-function formatTime(time) {
-  const minutes = Math.floor(time / 60);
-  const seconds = Math.floor(time % 60);
-  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
-
-function init() {
-  filteredStories = stories;
-  renderStories(filteredStories);
-}
-
-init();
-
-function resumeAudio() {
-  const saved = JSON.parse(localStorage.getItem('audioStatus') || '{}');
-  const audio = document.getElementById('audioPlayer');
-  const playBtn = document.getElementById('playPauseBtn');
-
-  if (audio && saved.audioSrc === audio.src) {
-    audio.currentTime = saved.currentTime || 0;
-    audio.play().then(() => {
-      playBtn.textContent = '◼︎ ';
+async function addTuVi(uid, amount) {
+    const ref = doc(db, "users", uid);
+    const current = await loadTuVi(uid);
+    await updateDoc(ref, {
+        tuvi: current + amount
     });
-  }
 }
 
+/* ==============================
+   UPDATE UI
+================================= */
 
-const latestPerPage = 5;
-let currentPage = 1;
-let currentTab = 'latestAdded';
+async function updateUI(user) {
+    usernameEl.innerText = user.displayName;
 
-function showSection(tab) {
-  currentTab = tab;
-  currentPage = 1;
-  document.getElementById('latestAdded').style.display = tab === 'latestAdded' ? 'block' : 'none';
-  document.getElementById('latestChapters').style.display = tab === 'latestChapters' ? 'block' : 'none';
-  document.getElementById('btnLatestAdded').style.background = tab === 'latestAdded' ? '#00bcd4' : '#333';
-  document.getElementById('btnLatestChapters').style.background = tab === 'latestChapters' ? '#00bcd4' : '#333';
-  renderLatestList();
+    const tuvi = await loadTuVi(user.uid);
+    tuviEl.innerText = tuvi;
+
+    const percent = Math.min((tuvi % 1000) / 1000 * 100, 100);
+    tuviFill.style.width = percent + "%";
 }
 
-function renderLatestList() {
-  const container = currentTab === 'latestAdded' ? document.getElementById('latestAdded') : document.getElementById('latestChapters');
-  container.innerHTML = '';
-  let list = [...stories];
-  if (currentTab === 'latestAdded') {
-    list = list.slice(-20).reverse();
-  } else {
-    list = list.filter(story => story.lastUpdated)
-               .sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated))
-               .slice(0, 20);
-  }
-  const start = (currentPage - 1) * latestPerPage;
-  const currentList = list.slice(start, start + latestPerPage);
-  currentList.forEach(story => {
-    const row = document.createElement('div');
-    row.className = 'mini-row';
-    row.onclick = () => openPlayer(story);
-    row.innerHTML = `
-      <img src="${story.cover}" class="mini-thumb" />
-      <div class="mini-info">
-        <h4>${story.title}</h4>
-        <p>${story.chapters.length} tập – ${story.genre}</p>
-      </div>`;
-    container.appendChild(row);
-  });
-  renderPagination(list.length);
-}
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        updateUI(user);
+    }
+});
 
-function renderPagination(totalItems) {
-  const totalPages = Math.ceil(totalItems / latestPerPage);
-  const paginationEl = document.getElementById('paginationControls');
-  paginationEl.innerHTML = '';
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement('button');
-    btn.className = 'pagination-button' + (i === currentPage ? ' active' : '');
-    btn.textContent = i;
-    btn.onclick = () => {
-      currentPage = i;
-      renderLatestList();
-    };
-    paginationEl.appendChild(btn);
-  }
-}
+/* ==============================
+   READ STORY
+================================= */
 
-showSection('latestAdded');
+readBtn.onclick = async () => {
+    if (!auth.currentUser) {
+        alert("Đăng nhập trước!");
+        return;
+    }
+
+    await addTuVi(auth.currentUser.uid, 50);
+    await updateUI(auth.currentUser);
+};
+
 </script>
+
 </body>
 </html>
