@@ -1,191 +1,902 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Tu Luyện RPG Demo</title>
-<style>
-body {
-  background: #0f1115;
-  color: #eee;
-  font-family: Arial;
-  padding: 20px;
-}
-.card {
-  background: #1a1d24;
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
-button {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-.progress {
-  height: 10px;
-  background: #333;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.bar {
-  height: 100%;
-  background: #6c8cff;
-}
-.inventory-item {
-  padding: 5px;
-  margin: 4px 0;
-  background: #252a35;
-  border-radius: 6px;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tu Tiên Online — GitHub Edition</title>
+  <style>
+    :root{
+      --bg1:#0b0f1a; --bg2:#16002a; --card:rgba(255,255,255,.06);
+      --line:rgba(255,255,255,.10); --txt:#fff; --mut:#b9c0ff;
+      --a:#7c3aed; --b:#06b6d4; --good:#22c55e; --bad:#ef4444; --warn:#f59e0b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--txt);
+      background:radial-gradient(1200px 800px at 20% 10%, #1d1140 0%, transparent 60%),
+                 radial-gradient(1000px 700px at 80% 20%, #072a3b 0%, transparent 60%),
+                 linear-gradient(135deg,var(--bg1),var(--bg2));
+      min-height:100vh;
+    }
+    header{
+      position:sticky; top:0; z-index:5;
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      padding:12px 14px; border-bottom:1px solid var(--line);
+      background:rgba(0,0,0,.35); backdrop-filter: blur(10px);
+    }
+    .brand{display:flex; flex-direction:column; gap:2px}
+    .brand b{font-size:14px}
+    .brand small{color:var(--mut); font-size:12px}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .btn{
+      border:0; cursor:pointer; color:white; font-weight:700;
+      padding:10px 12px; border-radius:12px;
+      background:linear-gradient(90deg,var(--a),var(--b));
+      box-shadow:0 10px 22px rgba(0,0,0,.25);
+    }
+    .btn.secondary{background:rgba(255,255,255,.10); box-shadow:none}
+    .btn.danger{background:rgba(239,68,68,.25)}
+    .btn:disabled{opacity:.55; cursor:not-allowed}
+    .wrap{max-width:1100px; margin:0 auto; padding:14px}
+    .grid{display:grid; grid-template-columns: 360px 1fr; gap:12px}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      box-shadow:0 12px 26px rgba(0,0,0,.25);
+    }
+    .card h3{margin:0 0 10px 0; font-size:14px; color:#e7e7ff}
+    .kv{display:grid; grid-template-columns: 1fr auto; gap:6px; font-size:13px}
+    .kv span{color:var(--mut)}
+    .kv b{font-weight:800}
+    .pill{display:inline-flex; gap:6px; align-items:center; padding:6px 10px; border-radius:999px;
+      border:1px solid var(--line); background:rgba(0,0,0,.25); font-size:12px; color:var(--mut)}
+    .tabs{display:flex; gap:8px; flex-wrap:wrap}
+    .tab{padding:9px 10px; border-radius:12px; border:1px solid var(--line); background:rgba(0,0,0,.2);
+      cursor:pointer; font-weight:700; color:#dfe2ff; font-size:13px}
+    .tab.active{background:linear-gradient(90deg,rgba(124,58,237,.45),rgba(6,182,212,.35))}
+    .list{display:flex; flex-direction:column; gap:8px}
+    .item{display:flex; justify-content:space-between; gap:10px; padding:10px; border-radius:14px;
+      border:1px solid var(--line); background:rgba(0,0,0,.22)}
+    .mut{color:var(--mut); font-size:12px}
+    input,select{
+      width:100%; padding:10px 10px; border-radius:12px;
+      border:1px solid var(--line); background:rgba(0,0,0,.25); color:#fff; outline:none;
+    }
+    .two{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .log{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; color:#dbeafe;
+      max-height:160px; overflow:auto; background:rgba(0,0,0,.35); border:1px solid var(--line);
+      border-radius:12px; padding:10px; white-space:pre-wrap}
+    .good{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--warn)}
+    .hr{height:1px; background:var(--line); margin:10px 0}
+  </style>
 </head>
 <body>
+<header>
+  <div class="brand">
+    <b>Tu Tiên Online</b>
+    <small>GitHub Pages + Firebase — MVP</small>
+  </div>
+  <div class="row">
+    <span id="who" class="pill">Chưa đăng nhập</span>
+    <button id="btnLogin" class="btn">Đăng nhập Google</button>
+    <button id="btnLogout" class="btn secondary" disabled>Đăng xuất</button>
+  </div>
+</header>
 
-<h1>⚔ Tu Luyện RPG Demo</h1>
+<div class="wrap">
+  <div class="grid">
+    <!-- LEFT -->
+    <div class="card">
+      <h3>Hồ sơ</h3>
+      <div class="kv">
+        <span>Tên</span><b id="pName">-</b>
+        <span>Tu vi</span><b id="pCult">-</b>
+        <span>Cấp</span><b id="pRealm">-</b>
+        <span>Lực chiến</span><b id="pPower">-</b>
+        <span>Linh thạch</span><b id="pStone">-</b>
+        <span>VIP</span><b id="pVip">-</b>
+        <span>Map hiện tại</span><b id="pMap">-</b>
+      </div>
 
-<div class="card">
-  <h2>Nhân vật</h2>
-  <div>Cấp: <span id="level"></span></div>
-  <div>EXP: <span id="exp"></span></div>
-  <div class="progress"><div class="bar" id="expBar"></div></div>
-  <div>Cảnh giới: <span id="realm"></span></div>
-  <div>Lực chiến: <span id="power"></span></div>
-  <div>Linh khí: <span id="energy"></span> / 100</div>
-  <button onclick="breakthrough()">🔥 Đột phá</button>
+      <div class="hr"></div>
+
+      <div class="two">
+        <button id="btnTrain" class="btn secondary" disabled>Tu luyện +Tu vi</button>
+        <button id="btnClaimDaily" class="btn secondary" disabled>Nhận online</button>
+      </div>
+
+      <div class="hr"></div>
+
+      <h3>Nạp VIP (QR + Code)</h3>
+      <div class="mut">Người chơi chuyển khoản theo QR của bạn và nhập <b>CODE</b> vào đây. Hệ thống tạo “phiếu nạp” <b>pending</b> để bạn duyệt thủ công.</div>
+      <div style="height:8px"></div>
+      <div class="two">
+        <input id="topupCode" placeholder="CODE chuyển khoản (vd: MSU123)" />
+        <select id="vipPack">
+          <option value="VIP1">VIP1</option>
+          <option value="VIP2">VIP2</option>
+          <option value="VIP3">VIP3</option>
+          <option value="VIP4">VIP4</option>
+          <option value="VIP5">VIP5</option>
+        </select>
+      </div>
+      <div style="height:8px"></div>
+      <button id="btnTopup" class="btn secondary" disabled>Tạo phiếu nạp</button>
+      <div class="mut">* Bạn có thể thay QR + hướng dẫn ở mục “Cấu hình” trong code.</div>
+
+      <div class="hr"></div>
+
+      <h3>Nhật ký</h3>
+      <div id="log" class="log">Chưa có.</div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="card">
+      <div class="tabs">
+        <button class="tab active" data-tab="adventure">Cày quái</button>
+        <button class="tab" data-tab="inventory">Trang bị</button>
+        <button class="tab" data-tab="pvp">PvP</button>
+        <button class="tab" data-tab="guild">Bang hội</button>
+        <button class="tab" data-tab="leaderboard">Top server</button>
+      </div>
+
+      <div class="hr"></div>
+
+      <!-- Adventure -->
+      <section id="tab-adventure">
+        <h3>Map & Boss</h3>
+        <div class="two">
+          <select id="mapSelect"></select>
+          <select id="mobSelect"></select>
+        </div>
+        <div style="height:10px"></div>
+        <div class="two">
+          <button id="btnFight" class="btn" disabled>Đánh quái</button>
+          <button id="btnBoss" class="btn secondary" disabled>Đánh boss</button>
+        </div>
+        <div class="mut" style="margin-top:10px">
+          VIP tăng tốc: +% tu vi, +% tỷ lệ rơi đồ (đang set trong config).
+        </div>
+      </section>
+
+      <!-- Inventory -->
+      <section id="tab-inventory" style="display:none">
+        <h3>Kho đồ</h3>
+        <div id="invList" class="list"></div>
+        <div class="hr"></div>
+        <h3>Đang trang bị</h3>
+        <div id="equipBox" class="list"></div>
+      </section>
+
+      <!-- PvP -->
+      <section id="tab-pvp" style="display:none">
+        <h3>PvP</h3>
+        <div class="mut">MVP: ghép ngẫu nhiên 1 đối thủ trong server, tính thắng/thua theo lực chiến + chút random, cập nhật ELO.</div>
+        <div style="height:10px"></div>
+        <button id="btnMatch" class="btn" disabled>Tìm đối thủ</button>
+        <div style="height:10px"></div>
+        <div id="pvpBox" class="list"></div>
+      </section>
+
+      <!-- Guild -->
+      <section id="tab-guild" style="display:none">
+        <h3>Bang hội</h3>
+        <div class="two">
+          <input id="guildName" placeholder="Tên bang (tạo mới)" />
+          <button id="btnCreateGuild" class="btn secondary" disabled>Tạo bang</button>
+        </div>
+        <div style="height:10px"></div>
+        <div class="two">
+          <input id="guildJoinId" placeholder="ID bang để xin vào" />
+          <button id="btnJoinGuild" class="btn secondary" disabled>Xin vào</button>
+        </div>
+        <div class="hr"></div>
+        <div id="guildBox" class="list"></div>
+      </section>
+
+      <!-- Leaderboard -->
+      <section id="tab-leaderboard" style="display:none">
+        <h3>Top server</h3>
+        <div class="two">
+          <button id="btnTopPower" class="btn secondary" disabled>Top lực chiến</button>
+          <button id="btnTopCult" class="btn secondary" disabled>Top tu vi</button>
+        </div>
+        <div style="height:10px"></div>
+        <div id="topBox" class="list"></div>
+      </section>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-  <h2>📖 Đọc truyện</h2>
-  <p>Kéo xuống đọc, mỗi 60 giây sẽ +10 EXP</p>
-  <div id="readTimer">0 giây</div>
-</div>
+<script type="module">
+  // ========= 0) CONFIG =========
+  // TODO: Dán firebaseConfig của bạn vào đây
+  const firebaseConfig = {
+    apiKey: "PASTE_HERE",
+    authDomain: "PASTE_HERE",
+    projectId: "PASTE_HERE",
+    storageBucket: "PASTE_HERE",
+    messagingSenderId: "PASTE_HERE",
+    appId: "PASTE_HERE"
+  };
 
-<div class="card">
-  <h2>⚔ Đánh Boss</h2>
-  <div>Boss Power: 150</div>
-  <button onclick="fightBoss()">Khiêu chiến</button>
-  <div id="fightResult"></div>
-</div>
+  // Game balance (bạn chỉnh ở đây)
+  const GAME = {
+    realms: [
+      { name:"Phàm Nhân", need:0 },
+      { name:"Luyện Khí", need:200 },
+      { name:"Trúc Cơ", need:900 },
+      { name:"Kim Đan", need:2600 },
+      { name:"Nguyên Anh", need:6000 },
+      { name:"Hóa Thần", need:12000 },
+      { name:"Luyện Hư", need:22000 },
+      { name:"Hợp Thể", need:38000 },
+      { name:"Đại Thừa", need:60000 }
+    ],
+    vip: {
+      NONE:{ cultMult:1.0, dropBonus:0.00 },
+      VIP1:{ cultMult:1.10, dropBonus:0.03 },
+      VIP2:{ cultMult:1.20, dropBonus:0.06 },
+      VIP3:{ cultMult:1.35, dropBonus:0.10 },
+      VIP4:{ cultMult:1.55, dropBonus:0.15 },
+      VIP5:{ cultMult:1.85, dropBonus:0.22 },
+    },
+    maps: [
+      {
+        id:"map_1", name:"Thanh Vân Sơn",
+        mobs:[
+          { id:"m1", name:"Sói U Minh", hp:80, atk:10, cult:60, stone:8, dropTable:[
+            { item:"Kiếm Gỗ", type:"weapon", power:10, rate:0.10 },
+            { item:"Giáp Vải", type:"armor", power:8, rate:0.10 },
+            { item:"Linh Đan Nhỏ", type:"consumable", power:0, rate:0.20 },
+          ]},
+          { id:"m2", name:"Yêu Thử", hp:100, atk:12, cult:80, stone:10, dropTable:[
+            { item:"Kiếm Sắt", type:"weapon", power:14, rate:0.08 },
+            { item:"Nhẫn Tụ Linh", type:"ring", power:9, rate:0.06 },
+          ]},
+        ],
+        boss:{ id:"b1", name:"Hắc Hổ Vương", hp:260, atk:22, cult:260, stone:40, dropTable:[
+          { item:"Hổ Nha Đao", type:"weapon", power:26, rate:0.15 },
+          { item:"Áo Giáp Hắc Hổ", type:"armor", power:22, rate:0.12 },
+          { item:"Ngọc Phù Hộ Thân", type:"amulet", power:18, rate:0.10 },
+        ]}
+      },
+      {
+        id:"map_2", name:"Huyết Đầm Cổ Địa",
+        mobs:[
+          { id:"m3", name:"Huyết Linh", hp:150, atk:18, cult:140, stone:16, dropTable:[
+            { item:"Huyết Kiếm", type:"weapon", power:22, rate:0.08 },
+            { item:"Giày Ảnh Bộ", type:"boots", power:15, rate:0.06 },
+          ]},
+        ],
+        boss:{ id:"b2", name:"Cổ Thi Vương", hp:420, atk:32, cult:500, stone:85, dropTable:[
+          { item:"Cốt Đao", type:"weapon", power:38, rate:0.12 },
+          { item:"Giáp Cốt", type:"armor", power:32, rate:0.10 },
+          { item:"Tụ Linh Châu", type:"amulet", power:28, rate:0.08 },
+        ]}
+      }
+    ],
+    onlineReward: { stone: 10, everySec: 300 }, // 5 phút
+    train: { cult: 70, cooldownSec: 20 }, // 20s/lần (MVP)
+    bossCooldownSec: 90,
+  };
 
-<div class="card">
-  <h2>🎒 Inventory</h2>
-  <div id="inventory"></div>
-</div>
+  // QR info (bạn thay bằng text/ảnh sau)
+  const PAYMENT = {
+    bankName: "Ngân hàng của bạn",
+    note: "Chuyển khoản theo QR + nhập CODE ở ô nạp. Bạn sẽ duyệt thủ công trong Firestore."
+  };
 
-<script>
-let data = JSON.parse(localStorage.getItem("gameData")) || {
-  exp: 0,
-  realm: 1,
-  power: 10,
-  energy: 50,
-  maxEnergy: 100,
-  lastEnergyUpdate: Date.now(),
-  inventory: []
-};
+  // ========= 1) Firebase imports =========
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp,
+    collection, addDoc, query, where, getDocs, orderBy, limit
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-function save() {
-  localStorage.setItem("gameData", JSON.stringify(data));
-}
+  let app, auth, db, user=null, profile=null;
 
-function expToLevel(exp) {
-  return Math.floor(Math.sqrt(exp / 100));
-}
+  // ========= 2) UI helpers =========
+  const $ = (id)=>document.getElementById(id);
+  const logBox = $("log");
+  function log(msg, cls=""){
+    const line = `[${new Date().toLocaleTimeString()}] ${msg}\n`;
+    logBox.textContent = (logBox.textContent==="Chưa có.") ? line : (line + logBox.textContent);
+  }
+  function fmt(n){ return Math.floor(Number(n||0)).toLocaleString("vi-VN"); }
+  function realmOf(cult){
+    let r = GAME.realms[0].name;
+    for(const it of GAME.realms){ if(cult >= it.need) r = it.name; }
+    return r;
+  }
+  function calcPower(p){
+    const base = 50;
+    const eq = p.equip || {};
+    const inv = p.inventory || {};
+    const eqPower = Object.values(eq).reduce((a,x)=>a+(x?.power||0),0);
+    const realmBonus = Math.floor((p.cult||0) / 200); // MVP
+    return base + eqPower + realmBonus;
+  }
+  function vipBuff(vip){ return GAME.vip[vip] || GAME.vip.NONE; }
 
-function updateUI() {
-  const level = expToLevel(data.exp);
-  const nextReq = (level + 1) ** 2 * 100;
-  const curReq = level ** 2 * 100;
-  const pct = ((data.exp - curReq) / (nextReq - curReq)) * 100;
+  // ========= 3) Game data shape =========
+  function defaultProfile(u){
+    return {
+      uid:u.uid,
+      name: u.displayName || "Tu sĩ vô danh",
+      cult: 0,
+      stone: 0,
+      vip: "NONE",
+      mapId: GAME.maps[0].id,
+      inventory: {}, // key -> {name,type,power,qty}
+      equip: { weapon:null, armor:null, ring:null, amulet:null, boots:null },
+      lastTrainAt: 0,
+      lastOnlineClaimAt: 0,
+      lastBossAt: 0,
+      elo: 1000,
+      guildId: null,
+      updatedAt: serverTimestamp(),
+      createdAt: serverTimestamp()
+    };
+  }
 
-  document.getElementById("level").innerText = level;
-  document.getElementById("exp").innerText = data.exp;
-  document.getElementById("realm").innerText = data.realm;
-  document.getElementById("power").innerText = data.power;
-  document.getElementById("energy").innerText = data.energy;
-  document.getElementById("expBar").style.width = pct + "%";
+  // ========= 4) Init =========
+  function initFirebase(){
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+  }
 
-  const inv = document.getElementById("inventory");
-  inv.innerHTML = "";
-  data.inventory.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "inventory-item";
-    div.innerText = item.name + " (+" + item.power + ")";
-    inv.appendChild(div);
+  async function ensureProfile(){
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
+    if(!snap.exists()){
+      profile = defaultProfile(user);
+      await setDoc(ref, profile);
+      log("Tạo hồ sơ mới ✅", "good");
+    }else{
+      profile = snap.data();
+      // fill missing fields for upgrades
+      profile.inventory ??= {};
+      profile.equip ??= { weapon:null, armor:null, ring:null, amulet:null, boots:null };
+      profile.vip ??= "NONE";
+      profile.mapId ??= GAME.maps[0].id;
+    }
+    await syncProfileUI();
+  }
+
+  async function saveProfile(patch){
+    const ref = doc(db, "users", user.uid);
+    profile = { ...profile, ...patch, updatedAt: serverTimestamp() };
+    await updateDoc(ref, patch);
+    await syncProfileUI();
+  }
+
+  async function syncProfileUI(){
+    const power = calcPower(profile);
+    $("pName").textContent = profile.name;
+    $("pCult").textContent = fmt(profile.cult);
+    $("pRealm").textContent = realmOf(profile.cult);
+    $("pPower").textContent = fmt(power);
+    $("pStone").textContent = fmt(profile.stone);
+    $("pVip").textContent = profile.vip;
+    $("pMap").textContent = (GAME.maps.find(m=>m.id===profile.mapId)?.name) || "-";
+    $("who").textContent = user ? `✅ ${profile.name}` : "Chưa đăng nhập";
+
+    // refresh selects & lists
+    renderMaps();
+    renderInventory();
+  }
+
+  // ========= 5) Adventure =========
+  function currentMap(){
+    return GAME.maps.find(m=>m.id===profile.mapId) || GAME.maps[0];
+  }
+
+  function renderMaps(){
+    const mapSel = $("mapSelect");
+    mapSel.innerHTML = "";
+    for(const m of GAME.maps){
+      const opt = document.createElement("option");
+      opt.value = m.id; opt.textContent = m.name;
+      if(m.id===profile.mapId) opt.selected = true;
+      mapSel.appendChild(opt);
+    }
+    mapSel.onchange = async ()=>{
+      await saveProfile({ mapId: mapSel.value });
+      renderMobs();
+      log(`Chuyển map: ${currentMap().name}`);
+    };
+    renderMobs();
+  }
+
+  function renderMobs(){
+    const m = currentMap();
+    const mobSel = $("mobSelect");
+    mobSel.innerHTML="";
+    for(const mob of m.mobs){
+      const opt = document.createElement("option");
+      opt.value = mob.id;
+      opt.textContent = `${mob.name} (Tu vi +${mob.cult}, LS +${mob.stone})`;
+      mobSel.appendChild(opt);
+    }
+  }
+
+  function rollDrop(dropTable, vipBonus=0){
+    // chọn item theo rate (rate + vipBonus*rate)
+    const drops = [];
+    for(const it of (dropTable||[])){
+      const rate = Math.min(0.95, it.rate * (1 + vipBonus));
+      if(Math.random() < rate){
+        drops.push({ name: it.item, type: it.type, power: it.power, qty: 1 });
+      }
+    }
+    return drops;
+  }
+
+  function addToInventory(items){
+    const inv = { ...(profile.inventory||{}) };
+    for(const it of items){
+      const key = `${it.type}:${it.name}`;
+      inv[key] = inv[key] || { name: it.name, type: it.type, power: it.power||0, qty: 0 };
+      inv[key].qty += (it.qty||1);
+      inv[key].power = Math.max(inv[key].power, it.power||0);
+    }
+    return inv;
+  }
+
+  async function fightMob(){
+    const m = currentMap();
+    const mobId = $("mobSelect").value;
+    const mob = m.mobs.find(x=>x.id===mobId);
+    if(!mob) return;
+
+    const buff = vipBuff(profile.vip);
+    const cultGain = Math.floor(mob.cult * buff.cultMult);
+    const stoneGain = mob.stone;
+
+    const drops = rollDrop(mob.dropTable, buff.dropBonus);
+    const inv = addToInventory(drops);
+
+    await saveProfile({
+      cult: (profile.cult||0) + cultGain,
+      stone: (profile.stone||0) + stoneGain,
+      inventory: inv
+    });
+
+    log(`Đánh ${mob.name}: +${cultGain} tu vi, +${stoneGain} linh thạch`, "good");
+    if(drops.length) log(`Rơi đồ: ${drops.map(d=>d.name).join(", ")}`, "warn");
+  }
+
+  async function fightBoss(){
+    const now = Date.now();
+    const cd = GAME.bossCooldownSec * 1000;
+    if(now - (profile.lastBossAt||0) < cd){
+      const left = Math.ceil((cd - (now-profile.lastBossAt))/1000);
+      log(`Boss đang hồi chiêu: còn ${left}s`, "bad");
+      return;
+    }
+
+    const b = currentMap().boss;
+    const buff = vipBuff(profile.vip);
+    const cultGain = Math.floor(b.cult * buff.cultMult);
+    const stoneGain = b.stone;
+    const drops = rollDrop(b.dropTable, buff.dropBonus);
+    const inv = addToInventory(drops);
+
+    await saveProfile({
+      cult: (profile.cult||0) + cultGain,
+      stone: (profile.stone||0) + stoneGain,
+      inventory: inv,
+      lastBossAt: now
+    });
+
+    log(`🔥 Hạ boss ${b.name}: +${cultGain} tu vi, +${stoneGain} linh thạch`, "good");
+    if(drops.length) log(`🎁 Boss rơi: ${drops.map(d=>d.name).join(", ")}`, "warn");
+  }
+
+  // ========= 6) Train & Online =========
+  async function train(){
+    const now = Date.now();
+    const cd = GAME.train.cooldownSec*1000;
+    if(now - (profile.lastTrainAt||0) < cd){
+      const left = Math.ceil((cd - (now-profile.lastTrainAt))/1000);
+      log(`Tu luyện đang hồi: còn ${left}s`, "bad");
+      return;
+    }
+    const buff = vipBuff(profile.vip);
+    const cultGain = Math.floor(GAME.train.cult * buff.cultMult);
+    await saveProfile({ cult:(profile.cult||0)+cultGain, lastTrainAt: now });
+    log(`Tu luyện: +${cultGain} tu vi`, "good");
+  }
+
+  async function claimOnline(){
+    const now = Date.now();
+    const cd = GAME.onlineReward.everySec*1000;
+    if(now - (profile.lastOnlineClaimAt||0) < cd){
+      const left = Math.ceil((cd - (now-profile.lastOnlineClaimAt))/1000);
+      log(`Chưa đủ thời gian online: còn ${left}s`, "bad");
+      return;
+    }
+    await saveProfile({ stone:(profile.stone||0)+GAME.onlineReward.stone, lastOnlineClaimAt: now });
+    log(`Nhận online: +${GAME.onlineReward.stone} linh thạch`, "good");
+  }
+
+  // ========= 7) Inventory / Equip =========
+  function renderInventory(){
+    const invList = $("invList");
+    const equipBox = $("equipBox");
+    invList.innerHTML = "";
+    equipBox.innerHTML = "";
+
+    const inv = profile?.inventory || {};
+    const items = Object.entries(inv)
+      .map(([k,v])=>({ key:k, ...v }))
+      .sort((a,b)=> (b.power||0)-(a.power||0));
+
+    if(!items.length){
+      invList.innerHTML = `<div class="mut">Chưa có đồ. Hãy đi cày quái/boss.</div>`;
+    } else {
+      for(const it of items){
+        const el = document.createElement("div");
+        el.className="item";
+        el.innerHTML = `
+          <div>
+            <div><b>${it.name}</b> <span class="mut">(${it.type})</span></div>
+            <div class="mut">Lực +${it.power||0} • SL: ${it.qty||0}</div>
+          </div>
+          <div class="row">
+            <button class="btn secondary" ${["weapon","armor","ring","amulet","boots"].includes(it.type) ? "" : "disabled"}>
+              Trang bị
+            </button>
+          </div>
+        `;
+        const btn = el.querySelector("button");
+        btn.onclick = async ()=>{
+          if(!["weapon","armor","ring","amulet","boots"].includes(it.type)) return;
+          const eq = { ...(profile.equip||{}) };
+          eq[it.type] = { name: it.name, power: it.power||0, type: it.type };
+          await saveProfile({ equip: eq });
+          log(`Trang bị: ${it.name} (+${it.power||0})`, "good");
+        };
+        invList.appendChild(el);
+      }
+    }
+
+    const eq = profile?.equip || {};
+    const slots = ["weapon","armor","ring","amulet","boots"];
+    for(const s of slots){
+      const v = eq[s];
+      const el = document.createElement("div");
+      el.className="item";
+      el.innerHTML = `
+        <div>
+          <div><b>${s.toUpperCase()}</b></div>
+          <div class="mut">${v ? `${v.name} (+${v.power})` : "Chưa trang bị"}</div>
+        </div>
+        <div class="row">
+          <button class="btn secondary" ${v ? "" : "disabled"}>Tháo</button>
+        </div>
+      `;
+      const btn = el.querySelector("button");
+      btn.onclick = async ()=>{
+        const eq2 = { ...(profile.equip||{}) };
+        eq2[s] = null;
+        await saveProfile({ equip:eq2 });
+        log(`Tháo ${s}`, "warn");
+      };
+      equipBox.appendChild(el);
+    }
+  }
+
+  // ========= 8) VIP topup (pending) =========
+  async function createTopup(){
+    const code = $("topupCode").value.trim();
+    const pack = $("vipPack").value;
+    if(!code || code.length < 3){
+      log("CODE không hợp lệ.", "bad");
+      return;
+    }
+    await addDoc(collection(db, "topups"), {
+      uid: user.uid,
+      name: profile.name,
+      code,
+      pack,
+      status: "pending",
+      createdAt: serverTimestamp(),
+      note: PAYMENT.note
+    });
+    $("topupCode").value = "";
+    log(`Đã tạo phiếu nạp (${pack}) với CODE: ${code} — trạng thái pending`, "warn");
+    log("Bạn vào Firestore collection topups để duyệt thủ công (đổi status=approved + set vip cho user).", "warn");
+  }
+
+  // ========= 9) PvP (MVP) =========
+  function expectedScore(ra, rb){ return 1/(1+Math.pow(10, (rb-ra)/400)); }
+  function newElo(r, score, exp){ return Math.round(r + 24*(score-exp)); }
+
+  async function findOpponent(){
+    const myPower = calcPower(profile);
+    // Lấy 20 người gần đây, chọn người khác mình (MVP)
+    const qy = query(collection(db, "users"), orderBy("updatedAt","desc"), limit(20));
+    const snap = await getDocs(qy);
+    const pool = [];
+    snap.forEach(d=>{
+      const u = d.data();
+      if(u.uid !== user.uid) pool.push(u);
+    });
+    if(!pool.length){
+      log("Chưa có đối thủ. Cần có người khác đăng nhập server.", "bad");
+      return;
+    }
+    const opp = pool[Math.floor(Math.random()*pool.length)];
+    const oppPower = calcPower(opp);
+
+    // xác suất thắng dựa trên lực chiến
+    const diff = myPower - oppPower;
+    const winProb = Math.max(0.15, Math.min(0.85, 0.5 + diff/500));
+    const win = Math.random() < winProb;
+
+    const myE = profile.elo || 1000;
+    const opE = opp.elo || 1000;
+    const exp = expectedScore(myE, opE);
+    const myNew = newElo(myE, win?1:0, exp);
+
+    await saveProfile({ elo: myNew });
+
+    // lưu match
+    await addDoc(collection(db, "pvp_matches"),{
+      a: { uid:user.uid, name:profile.name, power:myPower, eloBefore:myE, eloAfter:myNew },
+      b: { uid:opp.uid, name:opp.name, power:oppPower, eloBefore:opE },
+      result: win ? "A_WIN" : "B_WIN",
+      createdAt: serverTimestamp()
+    });
+
+    renderPvpResult(opp, win, myPower, oppPower, myE, myNew);
+  }
+
+  function renderPvpResult(opp, win, myPower, oppPower, myE, myNew){
+    const box = $("pvpBox");
+    const el = document.createElement("div");
+    el.className="item";
+    el.innerHTML = `
+      <div>
+        <div><b>${win ? "🏆 Thắng" : "💀 Thua"}</b> vs <b>${opp.name}</b></div>
+        <div class="mut">Bạn: ${fmt(myPower)} • Địch: ${fmt(oppPower)} • ELO: ${myE} → ${myNew}</div>
+      </div>
+      <div class="pill">${new Date().toLocaleString()}</div>
+    `;
+    box.prepend(el);
+  }
+
+  // ========= 10) Guild (MVP) =========
+  async function createGuild(){
+    const name = $("guildName").value.trim();
+    if(name.length < 3){ log("Tên bang quá ngắn.", "bad"); return; }
+    const docRef = await addDoc(collection(db, "guilds"), {
+      name,
+      leaderUid: user.uid,
+      members: [{ uid:user.uid, name:profile.name, joinedAt: Date.now() }],
+      score: 0,
+      createdAt: serverTimestamp()
+    });
+    await saveProfile({ guildId: docRef.id });
+    $("guildName").value="";
+    log(`Tạo bang: ${name} (ID: ${docRef.id})`, "good");
+    await loadGuildBox();
+  }
+
+  async function joinGuild(){
+    const gid = $("guildJoinId").value.trim();
+    if(gid.length < 8){ log("ID bang không hợp lệ.", "bad"); return; }
+    const ref = doc(db, "guilds", gid);
+    const snap = await getDoc(ref);
+    if(!snap.exists()){ log("Không thấy bang này.", "bad"); return; }
+    const g = snap.data();
+    const members = g.members || [];
+    if(members.some(m=>m.uid===user.uid)){ log("Bạn đã ở trong bang này.", "warn"); return; }
+    members.push({ uid:user.uid, name:profile.name, joinedAt: Date.now() });
+    await updateDoc(ref, { members });
+    await saveProfile({ guildId: gid });
+    $("guildJoinId").value="";
+    log(`Đã xin vào bang: ${g.name}`, "good");
+    await loadGuildBox();
+  }
+
+  async function loadGuildBox(){
+    const box = $("guildBox");
+    box.innerHTML = "";
+    if(!profile.guildId){
+      box.innerHTML = `<div class="mut">Bạn chưa có bang. Tạo hoặc xin vào bang.</div>`;
+      return;
+    }
+    const ref = doc(db, "guilds", profile.guildId);
+    const snap = await getDoc(ref);
+    if(!snap.exists()){
+      box.innerHTML = `<div class="mut">Bang không tồn tại (có thể bị xóa).</div>`;
+      return;
+    }
+    const g = snap.data();
+    const el = document.createElement("div");
+    el.className="item";
+    el.innerHTML = `
+      <div>
+        <div><b>${g.name}</b></div>
+        <div class="mut">ID: ${profile.guildId}</div>
+        <div class="mut">Thành viên: ${(g.members||[]).length}</div>
+      </div>
+      <div class="pill">Score: ${fmt(g.score||0)}</div>
+    `;
+    box.appendChild(el);
+
+    // list members
+    const list = document.createElement("div");
+    list.className="card";
+    list.style.marginTop="10px";
+    list.innerHTML = `<h3>Thành viên</h3><div class="list" id="gMembers"></div>`;
+    box.appendChild(list);
+    const mbox = list.querySelector("#gMembers");
+    (g.members||[]).slice(0,30).forEach(m=>{
+      const x = document.createElement("div");
+      x.className="item";
+      x.innerHTML = `<div><b>${m.name}</b><div class="mut">${m.uid}</div></div><div class="pill">Joined</div>`;
+      mbox.appendChild(x);
+    });
+  }
+
+  // ========= 11) Leaderboard =========
+  async function loadTop(mode){
+    const box = $("topBox");
+    box.innerHTML = "";
+    let qy;
+    if(mode==="power"){
+      // Firestore không sort theo power (tính từ equip) trực tiếp trong MVP.
+      // MVP: sort theo cult (tạm) + hiển thị power tính tại client từ doc user.
+      qy = query(collection(db,"users"), orderBy("cult","desc"), limit(20));
+    } else {
+      qy = query(collection(db,"users"), orderBy("cult","desc"), limit(20));
+    }
+    const snap = await getDocs(qy);
+    const arr = [];
+    snap.forEach(d=>arr.push(d.data()));
+    // compute power locally
+    arr.forEach(u=>u._power = calcPower(u));
+    if(mode==="power") arr.sort((a,b)=>b._power-a._power);
+    else arr.sort((a,b)=>(b.cult||0)-(a.cult||0));
+
+    arr.slice(0,20).forEach((u,i)=>{
+      const el = document.createElement("div");
+      el.className="item";
+      el.innerHTML = `
+        <div>
+          <div><b>#${i+1} ${u.name || "?"}</b> <span class="mut">${u.vip||"NONE"}</span></div>
+          <div class="mut">Tu vi: ${fmt(u.cult)} • Lực chiến: ${fmt(u._power)} • ELO: ${u.elo||1000}</div>
+        </div>
+        <div class="pill">${realmOf(u.cult||0)}</div>
+      `;
+      box.appendChild(el);
+    });
+  }
+
+  // ========= 12) Tabs =========
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.onclick = async ()=>{
+      document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+      t.classList.add("active");
+      const tab = t.dataset.tab;
+      ["adventure","inventory","pvp","guild","leaderboard"].forEach(k=>{
+        document.getElementById("tab-"+k).style.display = (k===tab) ? "" : "none";
+      });
+      if(tab==="guild") await loadGuildBox();
+    };
   });
-}
 
-function regenEnergy() {
-  const now = Date.now();
-  const diff = now - data.lastEnergyUpdate;
-  const ticks = Math.floor(diff / (5 * 60 * 1000));
-  if (ticks > 0) {
-    data.energy = Math.min(data.maxEnergy, data.energy + ticks);
-    data.lastEnergyUpdate = now;
-    save();
-  }
-}
+  // ========= 13) Buttons =========
+  $("btnTrain").onclick = train;
+  $("btnClaimDaily").onclick = claimOnline;
+  $("btnFight").onclick = fightMob;
+  $("btnBoss").onclick = fightBoss;
+  $("btnTopup").onclick = createTopup;
+  $("btnMatch").onclick = findOpponent;
+  $("btnCreateGuild").onclick = createGuild;
+  $("btnJoinGuild").onclick = joinGuild;
+  $("btnTopPower").onclick = ()=>loadTop("power");
+  $("btnTopCult").onclick = ()=>loadTop("cult");
 
-function breakthrough() {
-  const required = data.realm * 1000;
-  if (data.exp >= required) {
-    data.exp -= required;
-    data.realm++;
-    data.power += 100;
-    alert("🔥 Đột phá thành công!");
-    save();
-    updateUI();
-  } else {
-    alert("Chưa đủ tu vi!");
-  }
-}
+  // ========= 14) Auth =========
+  $("btnLogin").onclick = async ()=>{
+    try{
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    }catch(e){
+      console.error(e);
+      log("Lỗi đăng nhập. Hãy kiểm tra Auth Google đã enable.", "bad");
+    }
+  };
+  $("btnLogout").onclick = async ()=>{
+    await signOut(auth);
+  };
 
-function fightBoss() {
-  if (data.energy < 10) {
-    alert("Không đủ linh khí!");
-    return;
-  }
+  function setEnabled(on){
+    $("btnLogout").disabled = !on;
+    $("btnLogin").disabled = on;
 
-  data.energy -= 10;
-
-  const winChance = data.power / (data.power + 150);
-  if (Math.random() < winChance) {
-    const item = generateItem();
-    data.inventory.push(item);
-    data.power += item.power;
-    document.getElementById("fightResult").innerText =
-      "🔥 Thắng! Nhận " + item.name;
-  } else {
-    document.getElementById("fightResult").innerText = "💀 Thua!";
+    $("btnTrain").disabled = !on;
+    $("btnClaimDaily").disabled = !on;
+    $("btnFight").disabled = !on;
+    $("btnBoss").disabled = !on;
+    $("btnTopup").disabled = !on;
+    $("btnMatch").disabled = !on;
+    $("btnCreateGuild").disabled = !on;
+    $("btnJoinGuild").disabled = !on;
+    $("btnTopPower").disabled = !on;
+    $("btnTopCult").disabled = !on;
   }
 
-  save();
-  updateUI();
-}
-
-function generateItem() {
-  const roll = Math.random();
-  if (roll > 0.8) return { name: "Epic Kiếm", power: 50 };
-  if (roll > 0.5) return { name: "Rare Kiếm", power: 25 };
-  return { name: "Common Kiếm", power: 10 };
-}
-
-let readSeconds = 0;
-setInterval(() => {
-  readSeconds++;
-  document.getElementById("readTimer").innerText = readSeconds + " giây";
-
-  if (readSeconds % 60 === 0) {
-    data.exp += 10;
-    save();
-    updateUI();
+  // ========= 15) Boot =========
+  try{
+    initFirebase();
+    onAuthStateChanged(auth, async (u)=>{
+      user = u;
+      if(!user){
+        profile = null;
+        $("who").textContent = "Chưa đăng nhập";
+        setEnabled(false);
+        $("pName").textContent = "-";
+        $("pCult").textContent = "-";
+        $("pRealm").textContent = "-";
+        $("pPower").textContent = "-";
+        $("pStone").textContent = "-";
+        $("pVip").textContent = "-";
+        $("pMap").textContent = "-";
+        $("invList").innerHTML = `<div class="mut">Hãy đăng nhập để chơi.</div>`;
+        $("equipBox").innerHTML = "";
+        $("pvpBox").innerHTML = "";
+        $("guildBox").innerHTML = "";
+        $("topBox").innerHTML = "";
+        log("Bạn đã đăng xuất.");
+        return;
+      }
+      setEnabled(true);
+      await ensureProfile();
+      log("Đăng nhập thành công ✅", "good");
+    });
+  }catch(e){
+    console.error(e);
+    log("FirebaseConfig sai hoặc chưa dán config.", "bad");
   }
-}, 1000);
-
-regenEnergy();
-updateUI();
 </script>
 
+<!--
+========================
+GỢI Ý FIRESTORE STRUCTURE
+========================
+users/{uid}:
+  cult, stone, vip, mapId, inventory{}, equip{}, elo, guildId,...
+
+guilds/{guildId}:
+  name, leaderUid, members[], score,...
+
+topups/{id}:
+  uid, code, pack, status: pending/approved/rejected
+
+pvp_matches/{id}:
+  a{}, b{}, result, createdAt
+
+========================
+GỢI Ý SECURITY RULES (sau khi test xong)
+========================
+- users: chỉ chủ tài khoản đọc/ghi
+- topups: user tạo được, chỉ admin duyệt (sau này)
+- guilds: đọc public, ghi có kiểm soát (leader/admin)
+- leaderboard: chỉ đọc
+-->
 </body>
 </html>
