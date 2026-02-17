@@ -2,901 +2,1944 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tu Tiên Online — GitHub Edition</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Cửu Thiên • Đọc Truyện Tu Luyện</title>
+  <meta name="theme-color" content="#0b0d12" />
   <style>
     :root{
-      --bg1:#0b0f1a; --bg2:#16002a; --card:rgba(255,255,255,.06);
-      --line:rgba(255,255,255,.10); --txt:#fff; --mut:#b9c0ff;
-      --a:#7c3aed; --b:#06b6d4; --good:#22c55e; --bad:#ef4444; --warn:#f59e0b;
+      --bg0:#07080c;
+      --bg1:#0b0d12;
+      --card:#0f121a;
+      --card2:#0c0f16;
+      --muted:#8c93a8;
+      --text:#e9ecf5;
+      --gold:#d7b86b;
+      --gold2:#f6d98b;
+      --line:rgba(255,255,255,.08);
+      --shadow: 0 14px 40px rgba(0,0,0,.45);
+      --radius:18px;
+      --radius2:14px;
+      --blur: blur(10px);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-    *{box-sizing:border-box}
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
-      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      color:var(--txt);
-      background:radial-gradient(1200px 800px at 20% 10%, #1d1140 0%, transparent 60%),
-                 radial-gradient(1000px 700px at 80% 20%, #072a3b 0%, transparent 60%),
-                 linear-gradient(135deg,var(--bg1),var(--bg2));
-      min-height:100vh;
+      margin:0;
+      font-family:var(--font);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(215,184,107,.16), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(126,87,255,.12), transparent 60%),
+        radial-gradient(700px 600px at 50% 110%, rgba(0,204,255,.08), transparent 55%),
+        linear-gradient(180deg,var(--bg0),var(--bg1));
+      color:var(--text);
+      overflow-x:hidden;
     }
-    header{
-      position:sticky; top:0; z-index:5;
-      display:flex; gap:12px; align-items:center; justify-content:space-between;
-      padding:12px 14px; border-bottom:1px solid var(--line);
-      background:rgba(0,0,0,.35); backdrop-filter: blur(10px);
+    a{ color:inherit; text-decoration:none; }
+    button, input, textarea, select{ font-family:inherit; }
+    .hidden{ display:none !important; }
+
+    /* Header */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      padding: calc(10px + var(--safe-top)) 12px 10px;
+      backdrop-filter: var(--blur);
+      background: linear-gradient(180deg, rgba(7,8,12,.92), rgba(7,8,12,.70));
+      border-bottom:1px solid var(--line);
     }
-    .brand{display:flex; flex-direction:column; gap:2px}
-    .brand b{font-size:14px}
-    .brand small{color:var(--mut); font-size:12px}
-    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-    .btn{
-      border:0; cursor:pointer; color:white; font-weight:700;
-      padding:10px 12px; border-radius:12px;
-      background:linear-gradient(90deg,var(--a),var(--b));
-      box-shadow:0 10px 22px rgba(0,0,0,.25);
+    .topbarRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
-    .btn.secondary{background:rgba(255,255,255,.10); box-shadow:none}
-    .btn.danger{background:rgba(239,68,68,.25)}
-    .btn:disabled{opacity:.55; cursor:not-allowed}
-    .wrap{max-width:1100px; margin:0 auto; padding:14px}
-    .grid{display:grid; grid-template-columns: 360px 1fr; gap:12px}
-    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
-    .card{
-      background:var(--card);
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 0;
+      flex: 1;
+    }
+    .logoBox{
+      width:34px;height:34px;border-radius:10px;
+      background: linear-gradient(135deg, rgba(215,184,107,.25), rgba(215,184,107,.05));
+      border:1px solid rgba(215,184,107,.25);
+      display:flex;align-items:center;justify-content:center;
+      box-shadow: 0 10px 25px rgba(0,0,0,.35);
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    .logoBox img{ width:100%;height:100%;object-fit:cover; }
+    .brandText{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+      min-width:0;
+    }
+    .brandText .name{
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size:16px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .brandText .sub{
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding: 4px 10px;
+      border-radius: 999px;
       border:1px solid var(--line);
-      border-radius:16px;
-      padding:12px;
-      box-shadow:0 12px 26px rgba(0,0,0,.25);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-size:12px;
+      white-space:nowrap;
     }
-    .card h3{margin:0 0 10px 0; font-size:14px; color:#e7e7ff}
-    .kv{display:grid; grid-template-columns: 1fr auto; gap:6px; font-size:13px}
-    .kv span{color:var(--mut)}
-    .kv b{font-weight:800}
-    .pill{display:inline-flex; gap:6px; align-items:center; padding:6px 10px; border-radius:999px;
-      border:1px solid var(--line); background:rgba(0,0,0,.25); font-size:12px; color:var(--mut)}
-    .tabs{display:flex; gap:8px; flex-wrap:wrap}
-    .tab{padding:9px 10px; border-radius:12px; border:1px solid var(--line); background:rgba(0,0,0,.2);
-      cursor:pointer; font-weight:700; color:#dfe2ff; font-size:13px}
-    .tab.active{background:linear-gradient(90deg,rgba(124,58,237,.45),rgba(6,182,212,.35))}
-    .list{display:flex; flex-direction:column; gap:8px}
-    .item{display:flex; justify-content:space-between; gap:10px; padding:10px; border-radius:14px;
-      border:1px solid var(--line); background:rgba(0,0,0,.22)}
-    .mut{color:var(--mut); font-size:12px}
-    input,select{
-      width:100%; padding:10px 10px; border-radius:12px;
-      border:1px solid var(--line); background:rgba(0,0,0,.25); color:#fff; outline:none;
+    .pill b{ color:var(--gold2); font-weight:800; }
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex:0 0 auto;
     }
-    .two{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-    .log{font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px; color:#dbeafe;
-      max-height:160px; overflow:auto; background:rgba(0,0,0,.35); border:1px solid var(--line);
-      border-radius:12px; padding:10px; white-space:pre-wrap}
-    .good{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--warn)}
-    .hr{height:1px; background:var(--line); margin:10px 0}
+    .iconBtn{
+      width:38px;height:38px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+      transition:.15s transform ease, .15s background ease;
+    }
+    .iconBtn:active{ transform: scale(.97); }
+    .cta{
+      height:38px;
+      padding:0 12px;
+      border-radius:12px;
+      border:1px solid rgba(215,184,107,.25);
+      background: linear-gradient(180deg, rgba(215,184,107,.20), rgba(215,184,107,.08));
+      color: var(--gold2);
+      font-weight:900;
+      cursor:pointer;
+      display:flex;align-items:center;gap:8px;
+      box-shadow: 0 12px 30px rgba(215,184,107,.10);
+    }
+    .avatarBtn{
+      width:38px;height:38px;border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      overflow:hidden;
+      cursor:pointer;
+      position:relative;
+      flex: 0 0 auto;
+    }
+    .avatarBtn img{ width:100%;height:100%;object-fit:cover; display:block; }
+    .badgeDot{
+      position:absolute;
+      right:-1px; top:-1px;
+      width:16px;height:16px;border-radius:999px;
+      background:#ff4d4d;
+      border:2px solid rgba(7,8,12,.95);
+      display:flex;align-items:center;justify-content:center;
+      font-size:10px;font-weight:900;
+      color:#fff;
+    }
+
+    /* Layout */
+    .wrap{
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 14px 12px calc(92px + var(--safe-bottom));
+    }
+
+    /* Sections */
+    .section{
+      margin-top: 12px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .sectionHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 12px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-bottom: 1px solid var(--line);
+    }
+    .sectionTitle{
+      display:flex;align-items:center;gap:10px;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+    .muted{ color:var(--muted); font-size:13px; }
+
+    .hScroll{
+      display:flex;
+      gap:12px;
+      overflow:auto hidden;
+      padding: 12px 12px 14px;
+      scroll-snap-type:x mandatory;
+    }
+    .hScroll::-webkit-scrollbar{ height: 8px; }
+    .hScroll::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.12); border-radius: 999px; }
+    .storyCard{
+      width: 140px;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      border-radius: 16px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: 0 14px 28px rgba(0,0,0,.35);
+      cursor:pointer;
+      position:relative;
+      transition:.15s transform ease;
+    }
+    .storyCard:active{ transform: scale(.98); }
+    .cover{
+      width:100%;
+      aspect-ratio: 3/4;
+      background: rgba(255,255,255,.06);
+      position:relative;
+    }
+    .cover img{ width:100%;height:100%;object-fit:cover; display:block; }
+    .cover::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.75));
+    }
+    .cardMeta{
+      position:absolute;
+      left:10px; top:10px;
+      display:flex;
+      gap:6px;
+    }
+    .miniTag{
+      font-size:11px;
+      font-weight:900;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.30);
+      backdrop-filter: var(--blur);
+      color: var(--text);
+    }
+    .miniTag.gold{
+      border-color: rgba(215,184,107,.30);
+      color: var(--gold2);
+    }
+    .cardBody{
+      padding: 10px 10px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .cardTitle{
+      font-weight:900;
+      font-size:13px;
+      line-height:1.2;
+      display:-webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      min-height: 32px;
+    }
+    .cardStats{
+      display:flex;
+      gap:10px;
+      color: var(--muted);
+      font-size:11.5px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .stat{ display:inline-flex; align-items:center; gap:6px; }
+
+    /* Vertical list */
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding: 12px;
+    }
+    .rowCard{
+      display:flex;
+      gap:12px;
+      padding: 12px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      cursor:pointer;
+      transition:.15s transform ease;
+      position:relative;
+    }
+    .rowCard:active{ transform: scale(.99); }
+    .rowCover{
+      width: 64px;
+      height: 84px;
+      border-radius: 14px;
+      overflow:hidden;
+      background: rgba(255,255,255,.06);
+      flex: 0 0 auto;
+    }
+    .rowCover img{ width:100%;height:100%;object-fit:cover; display:block; }
+    .rowMain{ min-width:0; flex:1; }
+    .rowTitle{ font-weight:900; font-size:14px; line-height:1.25; }
+    .rowDesc{
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-top: 4px;
+      display:-webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+    }
+    .rowLine{
+      margin-top: 8px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      color: var(--muted);
+      font-size: 12px;
+      flex-wrap:wrap;
+    }
+
+    /* Bottom nav */
+    .bottomNav{
+      position:fixed;
+      left:0; right:0; bottom:0;
+      z-index:60;
+      padding: 10px 12px calc(10px + var(--safe-bottom));
+      background: linear-gradient(180deg, rgba(7,8,12,.05), rgba(7,8,12,.92));
+      backdrop-filter: var(--blur);
+      border-top: 1px solid var(--line);
+    }
+    .navBar{
+      max-width: 1180px;
+      margin: 0 auto;
+      display:flex;
+      gap:10px;
+      justify-content:space-between;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding: 6px;
+      box-shadow: var(--shadow);
+    }
+    .navItem{
+      flex:1;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      gap:4px;
+      padding: 8px 6px;
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 11.5px;
+      cursor:pointer;
+      user-select:none;
+      transition:.15s background ease, .15s color ease;
+    }
+    .navItem.active{
+      background: rgba(215,184,107,.12);
+      border: 1px solid rgba(215,184,107,.25);
+      color: var(--gold2);
+    }
+
+    /* Drawer */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      z-index:80;
+      display:none;
+    }
+    .drawer{
+      position:fixed;
+      top:0; right:0;
+      height:100%;
+      width:min(380px, 90vw);
+      background: linear-gradient(180deg, rgba(15,18,26,.98), rgba(10,12,18,.98));
+      border-left:1px solid var(--line);
+      z-index:90;
+      transform: translateX(110%);
+      transition: .22s transform ease;
+      box-shadow: -18px 0 50px rgba(0,0,0,.55);
+      display:flex;
+      flex-direction:column;
+    }
+    .drawer.open{ transform: translateX(0); }
+    .overlay.show{ display:block; }
+    .drawerHead{
+      padding: calc(14px + var(--safe-top)) 14px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .drawerBody{ padding: 12px 14px; overflow:auto; }
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 900;
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      border:1px solid var(--line);
+      transition:.15s transform ease;
+    }
+    .btn:active{ transform: scale(.98); }
+    .btn.gold{
+      border-color: rgba(215,184,107,.25);
+      background: linear-gradient(180deg, rgba(215,184,107,.20), rgba(215,184,107,.06));
+      color: var(--gold2);
+    }
+    .btn.danger{
+      border-color: rgba(255,77,77,.35);
+      background: rgba(255,77,77,.12);
+      color: #ffd1d1;
+    }
+    .field{
+      width:100%;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      outline:none;
+    }
+    .field::placeholder{ color: rgba(233,236,245,.45); }
+    textarea.field{ min-height: 120px; resize: vertical; }
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .sep{ height:1px; background: var(--line); margin: 14px 0; }
+
+    /* Modal / Reader */
+    .modal{
+      position:fixed; inset:0;
+      z-index:100;
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      padding: 10px 10px calc(10px + var(--safe-bottom));
+    }
+    .modal.show{ display:flex; }
+    .sheet{
+      width: min(900px, 100%);
+      max-height: 92vh;
+      background: linear-gradient(180deg, rgba(15,18,26,.98), rgba(10,12,18,.98));
+      border:1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .sheetHead{
+      padding: 12px 14px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .sheetTitle{
+      font-weight: 1000;
+      font-size: 14px;
+      line-height:1.2;
+      min-width:0;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .sheetBody{
+      overflow:auto;
+      padding: 14px;
+    }
+
+    .chipRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 6px;}
+    .chip{
+      font-size:12px;
+      padding: 4px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+    }
+
+    .chapterList{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top: 12px;
+    }
+    .chapterItem{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 12px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+    }
+    .chapterItem:active{ transform: scale(.995); }
+    .chapterItem .left{
+      display:flex; flex-direction:column; gap:3px;
+      min-width:0;
+    }
+    .chapterItem .t{
+      font-weight: 900;
+      font-size: 13.5px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 62vw;
+    }
+    .chapterItem .s{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .reader{
+      padding: 10px 14px 16px;
+    }
+    .readerTitle{
+      font-size: 17px;
+      font-weight: 1000;
+      line-height:1.2;
+      margin: 6px 0 10px;
+    }
+    .readerControls{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin: 10px 0 12px;
+    }
+    .readerText{
+      font-size: var(--reader-size, 16px);
+      line-height: 1.8;
+      color: rgba(233,236,245,.92);
+      white-space: pre-wrap;
+    }
+    .progress{
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+    .progress > i{
+      display:block;
+      height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(215,184,107,.25), rgba(246,217,139,.55));
+      border-right: 1px solid rgba(255,255,255,.12);
+    }
+    .small{ font-size:12px; color: var(--muted); }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      transform: translateX(-50%);
+      top: calc(10px + var(--safe-top));
+      z-index:200;
+      min-width: min(92vw, 380px);
+      background: rgba(15,18,26,.95);
+      border:1px solid var(--line);
+      border-radius: 16px;
+      padding: 10px 12px;
+      display:none;
+      box-shadow: var(--shadow);
+      color: var(--text);
+      backdrop-filter: var(--blur);
+    }
+    .toast.show{ display:block; animation: toastIn .18s ease; }
+    @keyframes toastIn{ from{ transform: translateX(-50%) translateY(-8px); opacity:0;} to{ transform: translateX(-50%) translateY(0); opacity:1;} }
+
+    /* Light mode */
+    body.light{
+      --bg0:#f7f5ef;
+      --bg1:#fbfbfd;
+      --card:#ffffff;
+      --card2:#ffffff;
+      --muted:#6c7284;
+      --text:#14161c;
+      --line: rgba(20,22,28,.10);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(215,184,107,.22), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(126,87,255,.10), transparent 60%),
+        radial-gradient(700px 600px at 50% 110%, rgba(0,204,255,.08), transparent 55%),
+        linear-gradient(180deg,var(--bg0),var(--bg1));
+    }
+    body.light .topbar{ background: linear-gradient(180deg, rgba(251,251,253,.92), rgba(251,251,253,.72)); }
+    body.light .miniTag{ background: rgba(255,255,255,.55); }
   </style>
 </head>
+
 <body>
-<header>
-  <div class="brand">
-    <b>Tu Tiên Online</b>
-    <small>GitHub Pages + Firebase — MVP</small>
-  </div>
-  <div class="row">
-    <span id="who" class="pill">Chưa đăng nhập</span>
-    <button id="btnLogin" class="btn">Đăng nhập Google</button>
-    <button id="btnLogout" class="btn secondary" disabled>Đăng xuất</button>
-  </div>
-</header>
+  <div class="toast" id="toast"></div>
 
-<div class="wrap">
-  <div class="grid">
-    <!-- LEFT -->
-    <div class="card">
-      <h3>Hồ sơ</h3>
-      <div class="kv">
-        <span>Tên</span><b id="pName">-</b>
-        <span>Tu vi</span><b id="pCult">-</b>
-        <span>Cấp</span><b id="pRealm">-</b>
-        <span>Lực chiến</span><b id="pPower">-</b>
-        <span>Linh thạch</span><b id="pStone">-</b>
-        <span>VIP</span><b id="pVip">-</b>
-        <span>Map hiện tại</span><b id="pMap">-</b>
+  <header class="topbar">
+    <div class="topbarRow">
+      <div class="brand" role="button" tabindex="0" onclick="App.openDrawer()">
+        <div class="logoBox" title="Logo (bạn thay ảnh tùy ý)">
+          <!-- Bạn có thể thay src bằng logo của bạn -->
+          <img id="logoImg" alt="logo" src="https://i.imgur.com/4M7IWwP.png" onerror="this.style.display='none'; this.parentElement.textContent='🀄';" />
+        </div>
+        <div class="brandText">
+          <div class="name">Cửu Thiên</div>
+          <div class="sub">
+            <span class="pill" title="Số online sẽ đồng bộ sau"><span>👁</span> <b id="onlineCount">—</b> online</span>
+            <span class="pill" title="Tu vi hiện tại"><span>⚡</span> <b id="cultivationLabel">Phàm Nhân</b></span>
+          </div>
+        </div>
       </div>
 
-      <div class="hr"></div>
-
-      <div class="two">
-        <button id="btnTrain" class="btn secondary" disabled>Tu luyện +Tu vi</button>
-        <button id="btnClaimDaily" class="btn secondary" disabled>Nhận online</button>
+      <div class="actions">
+        <button class="iconBtn" title="Tìm truyện" onclick="App.openSearch()">
+          🔎
+        </button>
+        <button class="cta" title="Nạp VIP (mở drawer để xem QR)" onclick="App.openPay()">
+          🪙 Nạp
+        </button>
+        <button class="iconBtn" id="themeBtn" title="Sáng/Tối" onclick="App.toggleTheme()">🌙</button>
+        <button class="iconBtn" title="Thông báo" onclick="App.toast('Chưa có thông báo mới')">
+          🔔
+        </button>
+        <button class="avatarBtn" id="avatarBtn" title="Tài khoản" onclick="App.openDrawer()">
+          <img id="avatarImg" alt="avatar" src="https://i.imgur.com/F32pUuu.jpeg" />
+          <div class="badgeDot" id="notifDot" style="display:none;">!</div>
+        </button>
       </div>
-
-      <div class="hr"></div>
-
-      <h3>Nạp VIP (QR + Code)</h3>
-      <div class="mut">Người chơi chuyển khoản theo QR của bạn và nhập <b>CODE</b> vào đây. Hệ thống tạo “phiếu nạp” <b>pending</b> để bạn duyệt thủ công.</div>
-      <div style="height:8px"></div>
-      <div class="two">
-        <input id="topupCode" placeholder="CODE chuyển khoản (vd: MSU123)" />
-        <select id="vipPack">
-          <option value="VIP1">VIP1</option>
-          <option value="VIP2">VIP2</option>
-          <option value="VIP3">VIP3</option>
-          <option value="VIP4">VIP4</option>
-          <option value="VIP5">VIP5</option>
-        </select>
-      </div>
-      <div style="height:8px"></div>
-      <button id="btnTopup" class="btn secondary" disabled>Tạo phiếu nạp</button>
-      <div class="mut">* Bạn có thể thay QR + hướng dẫn ở mục “Cấu hình” trong code.</div>
-
-      <div class="hr"></div>
-
-      <h3>Nhật ký</h3>
-      <div id="log" class="log">Chưa có.</div>
     </div>
+  </header>
 
-    <!-- RIGHT -->
-    <div class="card">
-      <div class="tabs">
-        <button class="tab active" data-tab="adventure">Cày quái</button>
-        <button class="tab" data-tab="inventory">Trang bị</button>
-        <button class="tab" data-tab="pvp">PvP</button>
-        <button class="tab" data-tab="guild">Bang hội</button>
-        <button class="tab" data-tab="leaderboard">Top server</button>
+  <main class="wrap">
+    <!-- HOME -->
+    <section class="section" id="homeSection">
+      <div class="sectionHead">
+        <div>
+          <div class="sectionTitle">🕒 Đang đọc</div>
+          <div class="muted">Tiếp tục chương bạn đang đọc.</div>
+        </div>
+        <button class="btn" onclick="App.openLibrary()">Xem tất cả →</button>
       </div>
+      <div class="hScroll" id="continueRow">
+        <!-- cards -->
+      </div>
+    </section>
 
-      <div class="hr"></div>
+    <section class="section">
+      <div class="sectionHead">
+        <div>
+          <div class="sectionTitle">🎲 Khám phá ngẫu nhiên</div>
+          <div class="muted">Kéo ngang để xem thêm.</div>
+        </div>
+        <button class="btn" onclick="App.shuffleRandom()">Thử vận may</button>
+      </div>
+      <div class="hScroll" id="randomRow"></div>
+    </section>
 
-      <!-- Adventure -->
-      <section id="tab-adventure">
-        <h3>Map & Boss</h3>
-        <div class="two">
-          <select id="mapSelect"></select>
-          <select id="mobSelect"></select>
+    <section class="section">
+      <div class="sectionHead">
+        <div>
+          <div class="sectionTitle">✨ Mới cập nhật <span class="pill" title="Live cập nhật theo Firestore">LIVE</span></div>
+          <div class="muted">Danh sách truyện mới cập nhật gần đây.</div>
         </div>
-        <div style="height:10px"></div>
-        <div class="two">
-          <button id="btnFight" class="btn" disabled>Đánh quái</button>
-          <button id="btnBoss" class="btn secondary" disabled>Đánh boss</button>
-        </div>
-        <div class="mut" style="margin-top:10px">
-          VIP tăng tốc: +% tu vi, +% tỷ lệ rơi đồ (đang set trong config).
-        </div>
-      </section>
+        <button class="btn" onclick="App.openSearch()">Xem tất cả →</button>
+      </div>
+      <div class="list" id="latestList"></div>
+    </section>
+  </main>
 
-      <!-- Inventory -->
-      <section id="tab-inventory" style="display:none">
-        <h3>Kho đồ</h3>
-        <div id="invList" class="list"></div>
-        <div class="hr"></div>
-        <h3>Đang trang bị</h3>
-        <div id="equipBox" class="list"></div>
-      </section>
-
-      <!-- PvP -->
-      <section id="tab-pvp" style="display:none">
-        <h3>PvP</h3>
-        <div class="mut">MVP: ghép ngẫu nhiên 1 đối thủ trong server, tính thắng/thua theo lực chiến + chút random, cập nhật ELO.</div>
-        <div style="height:10px"></div>
-        <button id="btnMatch" class="btn" disabled>Tìm đối thủ</button>
-        <div style="height:10px"></div>
-        <div id="pvpBox" class="list"></div>
-      </section>
-
-      <!-- Guild -->
-      <section id="tab-guild" style="display:none">
-        <h3>Bang hội</h3>
-        <div class="two">
-          <input id="guildName" placeholder="Tên bang (tạo mới)" />
-          <button id="btnCreateGuild" class="btn secondary" disabled>Tạo bang</button>
-        </div>
-        <div style="height:10px"></div>
-        <div class="two">
-          <input id="guildJoinId" placeholder="ID bang để xin vào" />
-          <button id="btnJoinGuild" class="btn secondary" disabled>Xin vào</button>
-        </div>
-        <div class="hr"></div>
-        <div id="guildBox" class="list"></div>
-      </section>
-
-      <!-- Leaderboard -->
-      <section id="tab-leaderboard" style="display:none">
-        <h3>Top server</h3>
-        <div class="two">
-          <button id="btnTopPower" class="btn secondary" disabled>Top lực chiến</button>
-          <button id="btnTopCult" class="btn secondary" disabled>Top tu vi</button>
-        </div>
-        <div style="height:10px"></div>
-        <div id="topBox" class="list"></div>
-      </section>
+  <!-- Bottom navigation -->
+  <footer class="bottomNav">
+    <div class="navBar">
+      <div class="navItem active" id="navHome" onclick="App.nav('home')">🏠<div>Trang chủ</div></div>
+      <div class="navItem" id="navSearch" onclick="App.nav('search')">🔍<div>Tìm</div></div>
+      <div class="navItem" id="navLibrary" onclick="App.nav('library')">📚<div>Tủ</div></div>
+      <div class="navItem" id="navFollow" onclick="App.nav('follow')">❤️<div>Theo dõi</div></div>
+      <div class="navItem" id="navCult" onclick="App.nav('cult')">⚡<div>Tu luyện</div></div>
     </div>
-  </div>
-</div>
+  </footer>
 
-<script type="module">
-  // ========= 0) CONFIG =========
-  // TODO: Dán firebaseConfig của bạn vào đây
-  const firebaseConfig = {
-    apiKey: "PASTE_HERE",
-    authDomain: "PASTE_HERE",
-    projectId: "PASTE_HERE",
-    storageBucket: "PASTE_HERE",
-    messagingSenderId: "PASTE_HERE",
-    appId: "PASTE_HERE"
-  };
-
-  // Game balance (bạn chỉnh ở đây)
-  const GAME = {
-    realms: [
-      { name:"Phàm Nhân", need:0 },
-      { name:"Luyện Khí", need:200 },
-      { name:"Trúc Cơ", need:900 },
-      { name:"Kim Đan", need:2600 },
-      { name:"Nguyên Anh", need:6000 },
-      { name:"Hóa Thần", need:12000 },
-      { name:"Luyện Hư", need:22000 },
-      { name:"Hợp Thể", need:38000 },
-      { name:"Đại Thừa", need:60000 }
-    ],
-    vip: {
-      NONE:{ cultMult:1.0, dropBonus:0.00 },
-      VIP1:{ cultMult:1.10, dropBonus:0.03 },
-      VIP2:{ cultMult:1.20, dropBonus:0.06 },
-      VIP3:{ cultMult:1.35, dropBonus:0.10 },
-      VIP4:{ cultMult:1.55, dropBonus:0.15 },
-      VIP5:{ cultMult:1.85, dropBonus:0.22 },
-    },
-    maps: [
-      {
-        id:"map_1", name:"Thanh Vân Sơn",
-        mobs:[
-          { id:"m1", name:"Sói U Minh", hp:80, atk:10, cult:60, stone:8, dropTable:[
-            { item:"Kiếm Gỗ", type:"weapon", power:10, rate:0.10 },
-            { item:"Giáp Vải", type:"armor", power:8, rate:0.10 },
-            { item:"Linh Đan Nhỏ", type:"consumable", power:0, rate:0.20 },
-          ]},
-          { id:"m2", name:"Yêu Thử", hp:100, atk:12, cult:80, stone:10, dropTable:[
-            { item:"Kiếm Sắt", type:"weapon", power:14, rate:0.08 },
-            { item:"Nhẫn Tụ Linh", type:"ring", power:9, rate:0.06 },
-          ]},
-        ],
-        boss:{ id:"b1", name:"Hắc Hổ Vương", hp:260, atk:22, cult:260, stone:40, dropTable:[
-          { item:"Hổ Nha Đao", type:"weapon", power:26, rate:0.15 },
-          { item:"Áo Giáp Hắc Hổ", type:"armor", power:22, rate:0.12 },
-          { item:"Ngọc Phù Hộ Thân", type:"amulet", power:18, rate:0.10 },
-        ]}
-      },
-      {
-        id:"map_2", name:"Huyết Đầm Cổ Địa",
-        mobs:[
-          { id:"m3", name:"Huyết Linh", hp:150, atk:18, cult:140, stone:16, dropTable:[
-            { item:"Huyết Kiếm", type:"weapon", power:22, rate:0.08 },
-            { item:"Giày Ảnh Bộ", type:"boots", power:15, rate:0.06 },
-          ]},
-        ],
-        boss:{ id:"b2", name:"Cổ Thi Vương", hp:420, atk:32, cult:500, stone:85, dropTable:[
-          { item:"Cốt Đao", type:"weapon", power:38, rate:0.12 },
-          { item:"Giáp Cốt", type:"armor", power:32, rate:0.10 },
-          { item:"Tụ Linh Châu", type:"amulet", power:28, rate:0.08 },
-        ]}
-      }
-    ],
-    onlineReward: { stone: 10, everySec: 300 }, // 5 phút
-    train: { cult: 70, cooldownSec: 20 }, // 20s/lần (MVP)
-    bossCooldownSec: 90,
-  };
-
-  // QR info (bạn thay bằng text/ảnh sau)
-  const PAYMENT = {
-    bankName: "Ngân hàng của bạn",
-    note: "Chuyển khoản theo QR + nhập CODE ở ô nạp. Bạn sẽ duyệt thủ công trong Firestore."
-  };
-
-  // ========= 1) Firebase imports =========
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import {
-    getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-  import {
-    getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp,
-    collection, addDoc, query, where, getDocs, orderBy, limit
-  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-  let app, auth, db, user=null, profile=null;
-
-  // ========= 2) UI helpers =========
-  const $ = (id)=>document.getElementById(id);
-  const logBox = $("log");
-  function log(msg, cls=""){
-    const line = `[${new Date().toLocaleTimeString()}] ${msg}\n`;
-    logBox.textContent = (logBox.textContent==="Chưa có.") ? line : (line + logBox.textContent);
-  }
-  function fmt(n){ return Math.floor(Number(n||0)).toLocaleString("vi-VN"); }
-  function realmOf(cult){
-    let r = GAME.realms[0].name;
-    for(const it of GAME.realms){ if(cult >= it.need) r = it.name; }
-    return r;
-  }
-  function calcPower(p){
-    const base = 50;
-    const eq = p.equip || {};
-    const inv = p.inventory || {};
-    const eqPower = Object.values(eq).reduce((a,x)=>a+(x?.power||0),0);
-    const realmBonus = Math.floor((p.cult||0) / 200); // MVP
-    return base + eqPower + realmBonus;
-  }
-  function vipBuff(vip){ return GAME.vip[vip] || GAME.vip.NONE; }
-
-  // ========= 3) Game data shape =========
-  function defaultProfile(u){
-    return {
-      uid:u.uid,
-      name: u.displayName || "Tu sĩ vô danh",
-      cult: 0,
-      stone: 0,
-      vip: "NONE",
-      mapId: GAME.maps[0].id,
-      inventory: {}, // key -> {name,type,power,qty}
-      equip: { weapon:null, armor:null, ring:null, amulet:null, boots:null },
-      lastTrainAt: 0,
-      lastOnlineClaimAt: 0,
-      lastBossAt: 0,
-      elo: 1000,
-      guildId: null,
-      updatedAt: serverTimestamp(),
-      createdAt: serverTimestamp()
-    };
-  }
-
-  // ========= 4) Init =========
-  function initFirebase(){
-    app = initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-  }
-
-  async function ensureProfile(){
-    const ref = doc(db, "users", user.uid);
-    const snap = await getDoc(ref);
-    if(!snap.exists()){
-      profile = defaultProfile(user);
-      await setDoc(ref, profile);
-      log("Tạo hồ sơ mới ✅", "good");
-    }else{
-      profile = snap.data();
-      // fill missing fields for upgrades
-      profile.inventory ??= {};
-      profile.equip ??= { weapon:null, armor:null, ring:null, amulet:null, boots:null };
-      profile.vip ??= "NONE";
-      profile.mapId ??= GAME.maps[0].id;
-    }
-    await syncProfileUI();
-  }
-
-  async function saveProfile(patch){
-    const ref = doc(db, "users", user.uid);
-    profile = { ...profile, ...patch, updatedAt: serverTimestamp() };
-    await updateDoc(ref, patch);
-    await syncProfileUI();
-  }
-
-  async function syncProfileUI(){
-    const power = calcPower(profile);
-    $("pName").textContent = profile.name;
-    $("pCult").textContent = fmt(profile.cult);
-    $("pRealm").textContent = realmOf(profile.cult);
-    $("pPower").textContent = fmt(power);
-    $("pStone").textContent = fmt(profile.stone);
-    $("pVip").textContent = profile.vip;
-    $("pMap").textContent = (GAME.maps.find(m=>m.id===profile.mapId)?.name) || "-";
-    $("who").textContent = user ? `✅ ${profile.name}` : "Chưa đăng nhập";
-
-    // refresh selects & lists
-    renderMaps();
-    renderInventory();
-  }
-
-  // ========= 5) Adventure =========
-  function currentMap(){
-    return GAME.maps.find(m=>m.id===profile.mapId) || GAME.maps[0];
-  }
-
-  function renderMaps(){
-    const mapSel = $("mapSelect");
-    mapSel.innerHTML = "";
-    for(const m of GAME.maps){
-      const opt = document.createElement("option");
-      opt.value = m.id; opt.textContent = m.name;
-      if(m.id===profile.mapId) opt.selected = true;
-      mapSel.appendChild(opt);
-    }
-    mapSel.onchange = async ()=>{
-      await saveProfile({ mapId: mapSel.value });
-      renderMobs();
-      log(`Chuyển map: ${currentMap().name}`);
-    };
-    renderMobs();
-  }
-
-  function renderMobs(){
-    const m = currentMap();
-    const mobSel = $("mobSelect");
-    mobSel.innerHTML="";
-    for(const mob of m.mobs){
-      const opt = document.createElement("option");
-      opt.value = mob.id;
-      opt.textContent = `${mob.name} (Tu vi +${mob.cult}, LS +${mob.stone})`;
-      mobSel.appendChild(opt);
-    }
-  }
-
-  function rollDrop(dropTable, vipBonus=0){
-    // chọn item theo rate (rate + vipBonus*rate)
-    const drops = [];
-    for(const it of (dropTable||[])){
-      const rate = Math.min(0.95, it.rate * (1 + vipBonus));
-      if(Math.random() < rate){
-        drops.push({ name: it.item, type: it.type, power: it.power, qty: 1 });
-      }
-    }
-    return drops;
-  }
-
-  function addToInventory(items){
-    const inv = { ...(profile.inventory||{}) };
-    for(const it of items){
-      const key = `${it.type}:${it.name}`;
-      inv[key] = inv[key] || { name: it.name, type: it.type, power: it.power||0, qty: 0 };
-      inv[key].qty += (it.qty||1);
-      inv[key].power = Math.max(inv[key].power, it.power||0);
-    }
-    return inv;
-  }
-
-  async function fightMob(){
-    const m = currentMap();
-    const mobId = $("mobSelect").value;
-    const mob = m.mobs.find(x=>x.id===mobId);
-    if(!mob) return;
-
-    const buff = vipBuff(profile.vip);
-    const cultGain = Math.floor(mob.cult * buff.cultMult);
-    const stoneGain = mob.stone;
-
-    const drops = rollDrop(mob.dropTable, buff.dropBonus);
-    const inv = addToInventory(drops);
-
-    await saveProfile({
-      cult: (profile.cult||0) + cultGain,
-      stone: (profile.stone||0) + stoneGain,
-      inventory: inv
-    });
-
-    log(`Đánh ${mob.name}: +${cultGain} tu vi, +${stoneGain} linh thạch`, "good");
-    if(drops.length) log(`Rơi đồ: ${drops.map(d=>d.name).join(", ")}`, "warn");
-  }
-
-  async function fightBoss(){
-    const now = Date.now();
-    const cd = GAME.bossCooldownSec * 1000;
-    if(now - (profile.lastBossAt||0) < cd){
-      const left = Math.ceil((cd - (now-profile.lastBossAt))/1000);
-      log(`Boss đang hồi chiêu: còn ${left}s`, "bad");
-      return;
-    }
-
-    const b = currentMap().boss;
-    const buff = vipBuff(profile.vip);
-    const cultGain = Math.floor(b.cult * buff.cultMult);
-    const stoneGain = b.stone;
-    const drops = rollDrop(b.dropTable, buff.dropBonus);
-    const inv = addToInventory(drops);
-
-    await saveProfile({
-      cult: (profile.cult||0) + cultGain,
-      stone: (profile.stone||0) + stoneGain,
-      inventory: inv,
-      lastBossAt: now
-    });
-
-    log(`🔥 Hạ boss ${b.name}: +${cultGain} tu vi, +${stoneGain} linh thạch`, "good");
-    if(drops.length) log(`🎁 Boss rơi: ${drops.map(d=>d.name).join(", ")}`, "warn");
-  }
-
-  // ========= 6) Train & Online =========
-  async function train(){
-    const now = Date.now();
-    const cd = GAME.train.cooldownSec*1000;
-    if(now - (profile.lastTrainAt||0) < cd){
-      const left = Math.ceil((cd - (now-profile.lastTrainAt))/1000);
-      log(`Tu luyện đang hồi: còn ${left}s`, "bad");
-      return;
-    }
-    const buff = vipBuff(profile.vip);
-    const cultGain = Math.floor(GAME.train.cult * buff.cultMult);
-    await saveProfile({ cult:(profile.cult||0)+cultGain, lastTrainAt: now });
-    log(`Tu luyện: +${cultGain} tu vi`, "good");
-  }
-
-  async function claimOnline(){
-    const now = Date.now();
-    const cd = GAME.onlineReward.everySec*1000;
-    if(now - (profile.lastOnlineClaimAt||0) < cd){
-      const left = Math.ceil((cd - (now-profile.lastOnlineClaimAt))/1000);
-      log(`Chưa đủ thời gian online: còn ${left}s`, "bad");
-      return;
-    }
-    await saveProfile({ stone:(profile.stone||0)+GAME.onlineReward.stone, lastOnlineClaimAt: now });
-    log(`Nhận online: +${GAME.onlineReward.stone} linh thạch`, "good");
-  }
-
-  // ========= 7) Inventory / Equip =========
-  function renderInventory(){
-    const invList = $("invList");
-    const equipBox = $("equipBox");
-    invList.innerHTML = "";
-    equipBox.innerHTML = "";
-
-    const inv = profile?.inventory || {};
-    const items = Object.entries(inv)
-      .map(([k,v])=>({ key:k, ...v }))
-      .sort((a,b)=> (b.power||0)-(a.power||0));
-
-    if(!items.length){
-      invList.innerHTML = `<div class="mut">Chưa có đồ. Hãy đi cày quái/boss.</div>`;
-    } else {
-      for(const it of items){
-        const el = document.createElement("div");
-        el.className="item";
-        el.innerHTML = `
+  <!-- Drawer -->
+  <div class="overlay" id="overlay" onclick="App.closeDrawer()"></div>
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawerHead">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+        <div class="avatarBtn" style="width:44px;height:44px;">
+          <img id="drawerAvatar" alt="avatar" src="https://i.imgur.com/F32pUuu.jpeg">
+        </div>
+        <div style="min-width:0;">
+          <div style="font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="drawerName">Khách</div>
+          <div class="small" id="drawerEmail">Chưa đăng nhập</div>
+        </div>
+      </div>
+      <button class="iconBtn" onclick="App.closeDrawer()" title="Đóng">✕</button>
+    </div>
+    <div class="drawerBody">
+      <div class="section" style="box-shadow:none;background:rgba(255,255,255,.02);">
+        <div class="sectionHead" style="border-bottom:none;">
           <div>
-            <div><b>${it.name}</b> <span class="mut">(${it.type})</span></div>
-            <div class="mut">Lực +${it.power||0} • SL: ${it.qty||0}</div>
+            <div class="sectionTitle">⚡ Tu vi</div>
+            <div class="small" id="cultivationSub">Đọc truyện để tăng tu vi.</div>
           </div>
-          <div class="row">
-            <button class="btn secondary" ${["weapon","armor","ring","amulet","boots"].includes(it.type) ? "" : "disabled"}>
-              Trang bị
-            </button>
+          <div style="text-align:right;">
+            <div style="font-weight:1000;color:var(--gold2);" id="cultivationLevel">Phàm Nhân</div>
+            <div class="small" id="cultivationExp">0 / 100</div>
           </div>
-        `;
-        const btn = el.querySelector("button");
-        btn.onclick = async ()=>{
-          if(!["weapon","armor","ring","amulet","boots"].includes(it.type)) return;
-          const eq = { ...(profile.equip||{}) };
-          eq[it.type] = { name: it.name, power: it.power||0, type: it.type };
-          await saveProfile({ equip: eq });
-          log(`Trang bị: ${it.name} (+${it.power||0})`, "good");
-        };
-        invList.appendChild(el);
-      }
-    }
-
-    const eq = profile?.equip || {};
-    const slots = ["weapon","armor","ring","amulet","boots"];
-    for(const s of slots){
-      const v = eq[s];
-      const el = document.createElement("div");
-      el.className="item";
-      el.innerHTML = `
-        <div>
-          <div><b>${s.toUpperCase()}</b></div>
-          <div class="mut">${v ? `${v.name} (+${v.power})` : "Chưa trang bị"}</div>
         </div>
-        <div class="row">
-          <button class="btn secondary" ${v ? "" : "disabled"}>Tháo</button>
+        <div style="padding:0 14px 14px;">
+          <div class="progress"><i id="cultivationBar"></i></div>
+          <div class="small" style="margin-top:8px;">Mỗi chương đọc xong +EXP. Có thể bấm “Đã đọc xong” ở cuối chương.</div>
         </div>
-      `;
-      const btn = el.querySelector("button");
-      btn.onclick = async ()=>{
-        const eq2 = { ...(profile.equip||{}) };
-        eq2[s] = null;
-        await saveProfile({ equip:eq2 });
-        log(`Tháo ${s}`, "warn");
-      };
-      equipBox.appendChild(el);
-    }
-  }
-
-  // ========= 8) VIP topup (pending) =========
-  async function createTopup(){
-    const code = $("topupCode").value.trim();
-    const pack = $("vipPack").value;
-    if(!code || code.length < 3){
-      log("CODE không hợp lệ.", "bad");
-      return;
-    }
-    await addDoc(collection(db, "topups"), {
-      uid: user.uid,
-      name: profile.name,
-      code,
-      pack,
-      status: "pending",
-      createdAt: serverTimestamp(),
-      note: PAYMENT.note
-    });
-    $("topupCode").value = "";
-    log(`Đã tạo phiếu nạp (${pack}) với CODE: ${code} — trạng thái pending`, "warn");
-    log("Bạn vào Firestore collection topups để duyệt thủ công (đổi status=approved + set vip cho user).", "warn");
-  }
-
-  // ========= 9) PvP (MVP) =========
-  function expectedScore(ra, rb){ return 1/(1+Math.pow(10, (rb-ra)/400)); }
-  function newElo(r, score, exp){ return Math.round(r + 24*(score-exp)); }
-
-  async function findOpponent(){
-    const myPower = calcPower(profile);
-    // Lấy 20 người gần đây, chọn người khác mình (MVP)
-    const qy = query(collection(db, "users"), orderBy("updatedAt","desc"), limit(20));
-    const snap = await getDocs(qy);
-    const pool = [];
-    snap.forEach(d=>{
-      const u = d.data();
-      if(u.uid !== user.uid) pool.push(u);
-    });
-    if(!pool.length){
-      log("Chưa có đối thủ. Cần có người khác đăng nhập server.", "bad");
-      return;
-    }
-    const opp = pool[Math.floor(Math.random()*pool.length)];
-    const oppPower = calcPower(opp);
-
-    // xác suất thắng dựa trên lực chiến
-    const diff = myPower - oppPower;
-    const winProb = Math.max(0.15, Math.min(0.85, 0.5 + diff/500));
-    const win = Math.random() < winProb;
-
-    const myE = profile.elo || 1000;
-    const opE = opp.elo || 1000;
-    const exp = expectedScore(myE, opE);
-    const myNew = newElo(myE, win?1:0, exp);
-
-    await saveProfile({ elo: myNew });
-
-    // lưu match
-    await addDoc(collection(db, "pvp_matches"),{
-      a: { uid:user.uid, name:profile.name, power:myPower, eloBefore:myE, eloAfter:myNew },
-      b: { uid:opp.uid, name:opp.name, power:oppPower, eloBefore:opE },
-      result: win ? "A_WIN" : "B_WIN",
-      createdAt: serverTimestamp()
-    });
-
-    renderPvpResult(opp, win, myPower, oppPower, myE, myNew);
-  }
-
-  function renderPvpResult(opp, win, myPower, oppPower, myE, myNew){
-    const box = $("pvpBox");
-    const el = document.createElement("div");
-    el.className="item";
-    el.innerHTML = `
-      <div>
-        <div><b>${win ? "🏆 Thắng" : "💀 Thua"}</b> vs <b>${opp.name}</b></div>
-        <div class="mut">Bạn: ${fmt(myPower)} • Địch: ${fmt(oppPower)} • ELO: ${myE} → ${myNew}</div>
       </div>
-      <div class="pill">${new Date().toLocaleString()}</div>
-    `;
-    box.prepend(el);
-  }
 
-  // ========= 10) Guild (MVP) =========
-  async function createGuild(){
-    const name = $("guildName").value.trim();
-    if(name.length < 3){ log("Tên bang quá ngắn.", "bad"); return; }
-    const docRef = await addDoc(collection(db, "guilds"), {
-      name,
-      leaderUid: user.uid,
-      members: [{ uid:user.uid, name:profile.name, joinedAt: Date.now() }],
-      score: 0,
-      createdAt: serverTimestamp()
-    });
-    await saveProfile({ guildId: docRef.id });
-    $("guildName").value="";
-    log(`Tạo bang: ${name} (ID: ${docRef.id})`, "good");
-    await loadGuildBox();
-  }
+      <div class="sep"></div>
 
-  async function joinGuild(){
-    const gid = $("guildJoinId").value.trim();
-    if(gid.length < 8){ log("ID bang không hợp lệ.", "bad"); return; }
-    const ref = doc(db, "guilds", gid);
-    const snap = await getDoc(ref);
-    if(!snap.exists()){ log("Không thấy bang này.", "bad"); return; }
-    const g = snap.data();
-    const members = g.members || [];
-    if(members.some(m=>m.uid===user.uid)){ log("Bạn đã ở trong bang này.", "warn"); return; }
-    members.push({ uid:user.uid, name:profile.name, joinedAt: Date.now() });
-    await updateDoc(ref, { members });
-    await saveProfile({ guildId: gid });
-    $("guildJoinId").value="";
-    log(`Đã xin vào bang: ${g.name}`, "good");
-    await loadGuildBox();
-  }
-
-  async function loadGuildBox(){
-    const box = $("guildBox");
-    box.innerHTML = "";
-    if(!profile.guildId){
-      box.innerHTML = `<div class="mut">Bạn chưa có bang. Tạo hoặc xin vào bang.</div>`;
-      return;
-    }
-    const ref = doc(db, "guilds", profile.guildId);
-    const snap = await getDoc(ref);
-    if(!snap.exists()){
-      box.innerHTML = `<div class="mut">Bang không tồn tại (có thể bị xóa).</div>`;
-      return;
-    }
-    const g = snap.data();
-    const el = document.createElement("div");
-    el.className="item";
-    el.innerHTML = `
-      <div>
-        <div><b>${g.name}</b></div>
-        <div class="mut">ID: ${profile.guildId}</div>
-        <div class="mut">Thành viên: ${(g.members||[]).length}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn" onclick="App.nav('home');App.closeDrawer();">🏠 Trang chủ</button>
+        <button class="btn" onclick="App.nav('search');App.closeDrawer();">🔍 Tìm</button>
+        <button class="btn" onclick="App.nav('library');App.closeDrawer();">📚 Tủ truyện</button>
+        <button class="btn" onclick="App.nav('follow');App.closeDrawer();">❤️ Theo dõi</button>
+        <button class="btn" onclick="App.nav('cult');App.closeDrawer();">⚡ Tu luyện</button>
       </div>
-      <div class="pill">Score: ${fmt(g.score||0)}</div>
-    `;
-    box.appendChild(el);
 
-    // list members
-    const list = document.createElement("div");
-    list.className="card";
-    list.style.marginTop="10px";
-    list.innerHTML = `<h3>Thành viên</h3><div class="list" id="gMembers"></div>`;
-    box.appendChild(list);
-    const mbox = list.querySelector("#gMembers");
-    (g.members||[]).slice(0,30).forEach(m=>{
-      const x = document.createElement("div");
-      x.className="item";
-      x.innerHTML = `<div><b>${m.name}</b><div class="mut">${m.uid}</div></div><div class="pill">Joined</div>`;
-      mbox.appendChild(x);
-    });
-  }
+      <div class="sep"></div>
 
-  // ========= 11) Leaderboard =========
-  async function loadTop(mode){
-    const box = $("topBox");
-    box.innerHTML = "";
-    let qy;
-    if(mode==="power"){
-      // Firestore không sort theo power (tính từ equip) trực tiếp trong MVP.
-      // MVP: sort theo cult (tạm) + hiển thị power tính tại client từ doc user.
-      qy = query(collection(db,"users"), orderBy("cult","desc"), limit(20));
-    } else {
-      qy = query(collection(db,"users"), orderBy("cult","desc"), limit(20));
-    }
-    const snap = await getDocs(qy);
-    const arr = [];
-    snap.forEach(d=>arr.push(d.data()));
-    // compute power locally
-    arr.forEach(u=>u._power = calcPower(u));
-    if(mode==="power") arr.sort((a,b)=>b._power-a._power);
-    else arr.sort((a,b)=>(b.cult||0)-(a.cult||0));
-
-    arr.slice(0,20).forEach((u,i)=>{
-      const el = document.createElement("div");
-      el.className="item";
-      el.innerHTML = `
-        <div>
-          <div><b>#${i+1} ${u.name || "?"}</b> <span class="mut">${u.vip||"NONE"}</span></div>
-          <div class="mut">Tu vi: ${fmt(u.cult)} • Lực chiến: ${fmt(u._power)} • ELO: ${u.elo||1000}</div>
+      <!-- Pay / VIP -->
+      <div>
+        <div style="font-weight:1000;margin-bottom:10px;">🪙 VIP / Ủng hộ</div>
+        <div class="small">Bạn có thể để QR ngân hàng tại đây. Người nạp ghi đúng “mã nạp” để bạn đối soát.</div>
+        <div class="sep"></div>
+        <div class="grid2">
+          <input class="field" id="payCode" placeholder="Mã nạp (ví dụ: CT1234)" />
+          <button class="btn gold" onclick="App.copyPayCode()">📋 Copy mã</button>
         </div>
-        <div class="pill">${realmOf(u.cult||0)}</div>
-      `;
-      box.appendChild(el);
-    });
-  }
+        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <button class="btn" onclick="App.toast('Bạn thay QR theo ngân hàng của bạn nhé!')">🧾 Hướng dẫn</button>
+          <button class="btn gold" onclick="App.toast('Sau này mình sẽ làm trang VIP chi tiết + quyền lợi.')">✨ Quyền lợi VIP</button>
+        </div>
+        <div class="sep"></div>
+        <div style="border:1px dashed rgba(215,184,107,.35);border-radius:16px;padding:12px;background:rgba(215,184,107,.06);">
+          <div style="font-weight:1000;color:var(--gold2);">📌 Chỗ đặt QR</div>
+          <div class="small">Bạn có thể thay hình ảnh QR trong HTML (tìm “qr-placeholder”).</div>
+          <div style="margin-top:10px;display:flex;justify-content:center;">
+            <img id="qr-placeholder" alt="QR placeholder" src="https://i.imgur.com/4gX4qN8.png" style="width:220px;max-width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.10);" />
+          </div>
+        </div>
+      </div>
 
-  // ========= 12) Tabs =========
-  document.querySelectorAll(".tab").forEach(t=>{
-    t.onclick = async ()=>{
-      document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-      t.classList.add("active");
-      const tab = t.dataset.tab;
-      ["adventure","inventory","pvp","guild","leaderboard"].forEach(k=>{
-        document.getElementById("tab-"+k).style.display = (k===tab) ? "" : "none";
-      });
-      if(tab==="guild") await loadGuildBox();
+      <div class="sep"></div>
+
+      <!-- Auth -->
+      <div id="authBox">
+        <div style="font-weight:1000;margin-bottom:10px;">🔐 Tài khoản</div>
+        <button class="btn gold" id="btnLogin" onclick="App.loginGoogle()">Đăng nhập Google</button>
+        <button class="btn danger hidden" id="btnLogout" onclick="App.logout()">Đăng xuất</button>
+        <div class="small" style="margin-top:10px;">
+          * Đăng nhập để đồng bộ theo dõi/tủ/lịch sử/tu vi lên Firebase.
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- Admin panel -->
+      <div id="adminPanel" class="hidden">
+        <div style="font-weight:1000;margin-bottom:10px;">🛠 Admin</div>
+
+        <div class="small">Chỉ email trong danh sách admin mới thấy mục này.</div>
+
+        <div class="sep"></div>
+
+        <div style="font-weight:1000;margin-bottom:6px;">➕ Thêm truyện</div>
+        <input class="field" id="a_title" placeholder="Tên truyện" />
+        <input class="field" id="a_author" placeholder="Tác giả (tuỳ chọn)" />
+        <input class="field" id="a_cover" placeholder="Link ảnh bìa (URL) - khuyên dùng imgur" />
+        <input class="field" id="a_category" placeholder="Thể loại (ví dụ: Tiên Hiệp)" />
+        <textarea class="field" id="a_desc" placeholder="Mô tả"></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+          <button class="btn gold" onclick="App.adminCreateStory()">Lưu truyện</button>
+          <button class="btn" onclick="App.adminOpenImport()">Nhập dữ liệu cũ (LocalStorage)</button>
+        </div>
+
+        <div class="sep"></div>
+
+        <div style="font-weight:1000;margin-bottom:6px;">➕ Thêm chương cho truyện</div>
+        <select class="field" id="a_storySelect"></select>
+        <div class="grid2">
+          <input class="field" id="a_chapIndex" placeholder="Số chương (1,2,3...)" inputmode="numeric" />
+          <input class="field" id="a_chapTitle" placeholder="Tên chương" />
+        </div>
+        <textarea class="field" id="a_chapContent" placeholder="Nội dung chương (truyện chữ)"></textarea>
+        <button class="btn gold" style="margin-top:10px;" onclick="App.adminAddChapter()">Lưu chương</button>
+
+        <div class="sep"></div>
+
+        <div class="small">
+          ⚠️ Lưu ý: Firestore rules cần cấu hình trong Firebase Console (mình có ghi hướng dẫn ở cuối file).
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Modal: Search / Library / Follow / Cultivation / Story Detail / Reader -->
+  <div class="modal" id="modal">
+    <div class="sheet" id="sheet">
+      <div class="sheetHead">
+        <div class="sheetTitle" id="sheetTitle">...</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="iconBtn" onclick="App.closeModal()" title="Đóng">✕</button>
+        </div>
+      </div>
+      <div class="sheetBody" id="sheetBody"></div>
+    </div>
+  </div>
+
+  <!-- Firebase (v9 modular) -->
+  <script type="module">
+    // =============================
+    // 0) Firebase config
+    // =============================
+    // ✅ Bạn có thể thay config này bằng project Firebase của bạn.
+    // (apiKey không phải bí mật, nhưng bạn vẫn cần Security Rules đúng.)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXwVGry1tXPmplvIPW243TY56IKWahMKM",
+      authDomain: "cuuhuyenvangioi.firebaseapp.com",
+      projectId: "cuuhuyenvangioi",
+      storageBucket: "cuuhuyenvangioi.firebasestorage.app",
+      messagingSenderId: "158345855725",
+      appId: "1:158345855725:web:2db1424211abb9cfba42e4"
     };
-  });
 
-  // ========= 13) Buttons =========
-  $("btnTrain").onclick = train;
-  $("btnClaimDaily").onclick = claimOnline;
-  $("btnFight").onclick = fightMob;
-  $("btnBoss").onclick = fightBoss;
-  $("btnTopup").onclick = createTopup;
-  $("btnMatch").onclick = findOpponent;
-  $("btnCreateGuild").onclick = createGuild;
-  $("btnJoinGuild").onclick = joinGuild;
-  $("btnTopPower").onclick = ()=>loadTop("power");
-  $("btnTopCult").onclick = ()=>loadTop("cult");
+    // =============================
+    // 1) Imports
+    // =============================
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      getFirestore, collection, doc, getDoc, setDoc, addDoc, updateDoc,
+      serverTimestamp, query, orderBy, limit, getDocs, onSnapshot,
+      increment
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-  // ========= 14) Auth =========
-  $("btnLogin").onclick = async ()=>{
-    try{
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    }catch(e){
-      console.error(e);
-      log("Lỗi đăng nhập. Hãy kiểm tra Auth Google đã enable.", "bad");
+    // =============================
+    // 2) Init
+    // =============================
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // =============================
+    // 3) Helpers
+    // =============================
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    const ADMIN_EMAILS = new Set([
+      "sumi22122005@gmail.com" // ✅ Admin email
+    ]);
+
+    const DEFAULT_COVER = "https://i.imgur.com/F32pUuu.jpeg";
+    const LS = {
+      theme: "ct_theme",
+      follow: "ct_follow",
+      library: "ct_library",
+      history: "ct_history",
+      lastRead: "ct_lastread",
+      readerSize: "ct_reader_size",
+    };
+
+    const CULT_REALMS = [
+      { name: "Phàm Nhân", need: 100 },
+      { name: "Luyện Khí", need: 220 },
+      { name: "Trúc Cơ", need: 380 },
+      { name: "Kim Đan", need: 600 },
+      { name: "Nguyên Anh", need: 900 },
+      { name: "Hóa Thần", need: 1400 },
+      { name: "Luyện Hư", need: 2200 },
+      { name: "Đại Thừa", need: 3400 },
+      { name: "Độ Kiếp", need: 5200 },
+      { name: "Tiên Nhân", need: 8000 }
+    ];
+
+    function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+    function now(){ return Date.now(); }
+
+    function toast(msg){
+      const t = $("#toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(()=>t.classList.remove("show"), 2800);
     }
-  };
-  $("btnLogout").onclick = async ()=>{
-    await signOut(auth);
-  };
 
-  function setEnabled(on){
-    $("btnLogout").disabled = !on;
-    $("btnLogin").disabled = on;
+    function uidSafe(s){ return (s||"").replace(/[^\w\-]+/g,"_").slice(0,120); }
 
-    $("btnTrain").disabled = !on;
-    $("btnClaimDaily").disabled = !on;
-    $("btnFight").disabled = !on;
-    $("btnBoss").disabled = !on;
-    $("btnTopup").disabled = !on;
-    $("btnMatch").disabled = !on;
-    $("btnCreateGuild").disabled = !on;
-    $("btnJoinGuild").disabled = !on;
-    $("btnTopPower").disabled = !on;
-    $("btnTopCult").disabled = !on;
-  }
+    function fmtTime(ts){
+      if(!ts) return "";
+      const d = (ts instanceof Date) ? ts : new Date(ts);
+      return d.toLocaleString("vi-VN", { hour12:false });
+    }
 
-  // ========= 15) Boot =========
-  try{
-    initFirebase();
-    onAuthStateChanged(auth, async (u)=>{
-      user = u;
-      if(!user){
-        profile = null;
-        $("who").textContent = "Chưa đăng nhập";
-        setEnabled(false);
-        $("pName").textContent = "-";
-        $("pCult").textContent = "-";
-        $("pRealm").textContent = "-";
-        $("pPower").textContent = "-";
-        $("pStone").textContent = "-";
-        $("pVip").textContent = "-";
-        $("pMap").textContent = "-";
-        $("invList").innerHTML = `<div class="mut">Hãy đăng nhập để chơi.</div>`;
-        $("equipBox").innerHTML = "";
-        $("pvpBox").innerHTML = "";
-        $("guildBox").innerHTML = "";
-        $("topBox").innerHTML = "";
-        log("Bạn đã đăng xuất.");
+    // Web Speech API (TTS)
+    let ttsUtter = null;
+    function ttsStop(){
+      try { speechSynthesis.cancel(); } catch(e){}
+      ttsUtter = null;
+    }
+    function ttsSpeak(text){
+      if(!("speechSynthesis" in window)) {
+        toast("Thiết bị không hỗ trợ đọc truyện (TTS).");
         return;
       }
-      setEnabled(true);
-      await ensureProfile();
-      log("Đăng nhập thành công ✅", "good");
-    });
-  }catch(e){
-    console.error(e);
-    log("FirebaseConfig sai hoặc chưa dán config.", "bad");
+      ttsStop();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "vi-VN";
+      u.rate = 1;
+      u.pitch = 1;
+      ttsUtter = u;
+      speechSynthesis.speak(u);
+    }
+
+    // =============================
+    // 4) Data access (Firestore)
+    // =============================
+    // stories: collection("stories")
+    // chapters: doc("stories/{storyId}") -> collection("chapters")
+    // users: doc("users/{uid}") with profile + cultivation + lists
+
+    async function ensureUserDoc(user){
+      if(!user) return;
+      const ref = doc(db, "users", user.uid);
+      const snap = await getDoc(ref);
+      if(!snap.exists()){
+        await setDoc(ref, {
+          uid: user.uid,
+          email: user.email || "",
+          displayName: user.displayName || "Người chơi",
+          photoURL: user.photoURL || "",
+          createdAt: serverTimestamp(),
+          cultivationExp: 0,
+          cultivationRealmIndex: 0,
+          follow: [],
+          library: [],
+          history: [],
+          lastRead: null,
+          vipTier: 0
+        });
+      } else {
+        // keep profile fresh
+        await updateDoc(ref, {
+          email: user.email || "",
+          displayName: user.displayName || "Người chơi",
+          photoURL: user.photoURL || ""
+        });
+      }
+    }
+
+    async function loadUserState(uid){
+      const ref = doc(db, "users", uid);
+      const snap = await getDoc(ref);
+      return snap.exists() ? snap.data() : null;
+    }
+
+    async function saveUserLists(uid, patch){
+      const ref = doc(db, "users", uid);
+      await updateDoc(ref, patch);
+    }
+
+    // =============================
+    // 5) App state
+    // =============================
+    const State = {
+      user: null,
+      userDoc: null,
+      isAdmin: false,
+      stories: [],
+      storyMap: new Map(),
+      unsubStories: null,
+      activeStory: null,
+      activeChapter: null,
+      nav: "home", // home/search/library/follow/cult
+    };
+
+    // =============================
+    // 6) Rendering
+    // =============================
+    function setNav(active){
+  State.nav = active;
+  const ids = { home:"navHome", search:"navSearch", library:"navLibrary", follow:"navFollow", cult:"navCult" };
+  Object.values(ids).forEach(id=> $("#"+id)?.classList.remove("active"));
+  const on = ids[active];
+  if(on) $("#"+on)?.classList.add("active");
+
+  // open modal pages
+  if(active === "home"){
+    App.closeModal();
+  } else if(active === "search"){
+    App.openSearch();
+  } else if(active === "library"){
+    App.openLibrary();
+  } else if(active === "follow"){
+    App.openFollowed();
+  } else if(active === "cult"){
+    App.openCultivation();
   }
-</script>
+}
 
-<!--
-========================
-GỢI Ý FIRESTORE STRUCTURE
-========================
-users/{uid}:
-  cult, stone, vip, mapId, inventory{}, equip{}, elo, guildId,...
+    function updateHeaderProfile(){
+      const u = State.user;
+      $("#avatarImg").src = (u?.photoURL) || "https://i.imgur.com/F32pUuu.jpeg";
+      $("#drawerAvatar").src = (u?.photoURL) || "https://i.imgur.com/F32pUuu.jpeg";
+      $("#drawerName").textContent = u?.displayName || "Khách";
+      $("#drawerEmail").textContent = u?.email || "Chưa đăng nhập";
 
-guilds/{guildId}:
-  name, leaderUid, members[], score,...
+      $("#btnLogin").classList.toggle("hidden", !!u);
+      $("#btnLogout").classList.toggle("hidden", !u);
 
-topups/{id}:
-  uid, code, pack, status: pending/approved/rejected
+      $("#adminPanel").classList.toggle("hidden", !State.isAdmin);
+      if(State.isAdmin) refreshAdminStorySelect();
+    }
 
-pvp_matches/{id}:
-  a{}, b{}, result, createdAt
+    function calcCultivationView(){
+      const exp = State.userDoc?.cultivationExp ?? 0;
+      let idx = State.userDoc?.cultivationRealmIndex ?? 0;
+      idx = clamp(idx, 0, CULT_REALMS.length-1);
+      const realm = CULT_REALMS[idx];
+      const nextNeed = realm.need;
+      const pct = clamp((exp / nextNeed) * 100, 0, 100);
 
-========================
-GỢI Ý SECURITY RULES (sau khi test xong)
-========================
-- users: chỉ chủ tài khoản đọc/ghi
-- topups: user tạo được, chỉ admin duyệt (sau này)
-- guilds: đọc public, ghi có kiểm soát (leader/admin)
-- leaderboard: chỉ đọc
--->
+      $("#cultivationLabel").textContent = realm.name;
+      $("#cultivationLevel").textContent = realm.name;
+      $("#cultivationExp").textContent = `${exp} / ${nextNeed}`;
+      $("#cultivationBar").style.width = `${pct}%`;
+    }
+
+    function storyCardHTML(s, extraTag=""){
+      const tags = [];
+      if(s.status) tags.push(`<span class="miniTag gold">${s.status}</span>`);
+      if(extraTag) tags.push(`<span class="miniTag">${extraTag}</span>`);
+      const views = s.views ?? 0;
+      const likes = s.likes ?? 0;
+      const chapCount = s.chapterCount ?? 0;
+      const cover = s.coverUrl || DEFAULT_COVER;
+
+      return `
+        <div class="storyCard" data-id="${s.id}">
+          <div class="cover">
+            <img src="${cover}" alt="cover" onerror="this.src='${DEFAULT_COVER}'"/>
+            <div class="cardMeta">${tags.join("")}</div>
+          </div>
+          <div class="cardBody">
+            <div class="cardTitle">${escapeHtml(s.title || "Không tên")}</div>
+            <div class="cardStats">
+              <span class="stat">👁 ${views}</span>
+              <span class="stat">👍 ${likes}</span>
+              <span class="stat">📄 ${chapCount}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function rowCardHTML(s){
+      const cover = s.coverUrl || DEFAULT_COVER;
+      return `
+        <div class="rowCard" data-id="${s.id}">
+          <div class="rowCover"><img src="${cover}" alt="cover" onerror="this.src='${DEFAULT_COVER}'"></div>
+          <div class="rowMain">
+            <div class="rowTitle">${escapeHtml(s.title || "Không tên")}</div>
+            <div class="rowDesc">${escapeHtml(s.desc || "")}</div>
+            <div class="rowLine">
+              <span>👤 ${escapeHtml(s.author || "Tác giả")}</span>
+              <span>🕒 ${s.updatedAtMillis ? fmtTime(s.updatedAtMillis) : ""}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderHome(){
+      const stories = State.stories;
+
+      // Continue reading from user doc (or local)
+      const lastRead = State.userDoc?.lastRead || JSON.parse(localStorage.getItem(LS.lastRead) || "null");
+      const continueList = [];
+      if(lastRead?.storyId){
+        const st = State.storyMap.get(lastRead.storyId);
+        if(st) continueList.push({s:st, tag: "Đọc tiếp"});
+      }
+
+      // also show history last few
+      const history = (State.userDoc?.history || JSON.parse(localStorage.getItem(LS.history) || "[]")).slice(0,8);
+      history.forEach(item=>{
+        const st = State.storyMap.get(item.storyId);
+        if(st && !continueList.some(x=>x.s.id===st.id)) continueList.push({s:st, tag:"Gần đây"});
+      });
+
+      const continueRow = $("#continueRow");
+      continueRow.innerHTML = continueList.length
+        ? continueList.map(x=>storyCardHTML(x.s, x.tag)).join("")
+        : `<div class="muted" style="padding:10px 2px;">Chưa có lịch sử đọc. Hãy chọn một truyện để bắt đầu.</div>`;
+
+      // Random
+      const randomRow = $("#randomRow");
+      const shuffled = [...stories].sort(()=>Math.random()-0.5).slice(0,12);
+      randomRow.innerHTML = shuffled.map(s=>storyCardHTML(s)).join("") || `<div class="muted">Chưa có truyện.</div>`;
+
+      // Latest list
+      const latestList = $("#latestList");
+      latestList.innerHTML = stories.slice(0,12).map(s=>rowCardHTML(s)).join("") || `<div class="muted">Chưa có truyện.</div>`;
+
+      // click handlers
+      attachStoryClicks(continueRow);
+      attachStoryClicks(randomRow);
+      attachStoryClicks(latestList);
+    }
+
+    function attachStoryClicks(root){
+      $$("[data-id]", root).forEach(el=>{
+        el.onclick = ()=> App.openStory(el.dataset.id);
+      });
+    }
+
+    function escapeHtml(str){
+      return (str || "").replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[m]));
+    }
+
+    function renderSearchPage(){
+      const html = `
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <input class="field" id="qSearch" placeholder="Tìm truyện..." />
+          <select class="field" id="qCategory" style="max-width:220px;">
+            <option value="">Tất cả thể loại</option>
+          </select>
+          <button class="btn gold" onclick="App.runSearch()">Tìm</button>
+        </div>
+        <div class="sep"></div>
+        <div class="list" id="searchResults"></div>
+      `;
+      App.openModal("🔍 Tìm truyện", html, ()=> {
+        // fill categories
+        const cats = Array.from(new Set(State.stories.map(s=>s.category).filter(Boolean))).sort();
+        const sel = $("#qCategory");
+        cats.forEach(c=>{
+          const op = document.createElement("option");
+          op.value = c; op.textContent = c;
+          sel.appendChild(op);
+        });
+        $("#qSearch").addEventListener("input", App.runSearch);
+        $("#qCategory").addEventListener("change", App.runSearch);
+        App.runSearch();
+      });
+    }
+
+    function renderLibraryPage(){
+      const list = State.userDoc?.library || JSON.parse(localStorage.getItem(LS.library) || "[]");
+      const html = `
+        <div class="small">Truyện bạn đã lưu vào tủ.</div>
+        <div class="sep"></div>
+        <div class="list" id="libList"></div>
+      `;
+      App.openModal("📚 Tủ truyện", html, ()=>{
+        const box = $("#libList");
+        const stories = list.map(x=>State.storyMap.get(x.storyId)).filter(Boolean);
+        box.innerHTML = stories.length ? stories.map(s=>rowCardHTML(s)).join("") : `<div class="muted">Chưa có truyện trong tủ.</div>`;
+        attachStoryClicks(box);
+      });
+    }
+
+    function renderFollowedPage(){
+      const list = State.userDoc?.follow || JSON.parse(localStorage.getItem(LS.follow) || "[]");
+      const html = `
+        <div class="small">Truyện bạn theo dõi.</div>
+        <div class="sep"></div>
+        <div class="list" id="folList"></div>
+      `;
+      App.openModal("❤️ Theo dõi", html, ()=>{
+        const box = $("#folList");
+        const stories = list.map(x=>State.storyMap.get(x.storyId)).filter(Boolean);
+        box.innerHTML = stories.length ? stories.map(s=>rowCardHTML(s)).join("") : `<div class="muted">Chưa theo dõi truyện nào.</div>`;
+        attachStoryClicks(box);
+      });
+    }
+
+    function renderCultivationPage(){
+      const realm = $("#cultivationLevel")?.textContent || "Phàm Nhân";
+      const html = `
+        <div class="reader">
+          <div style="font-weight:1000;font-size:16px;">⚡ Tu luyện</div>
+          <div class="small" style="margin-top:6px;">Đọc truyện để tăng EXP. Càng đọc càng lên cảnh giới.</div>
+          <div class="sep"></div>
+
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+            <div>
+              <div style="font-weight:1000;color:var(--gold2);font-size:18px;">${realm}</div>
+              <div class="small" id="cultModalExp">...</div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn" onclick="App.toast('Gợi ý: chọn 1 truyện → mở chương → đọc tới cuối → bấm “Đã đọc xong”.')">📌 Cách tăng tu vi</button>
+              <button class="btn gold" onclick="App.nav('search')">🔍 Đi đọc truyện</button>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <div class="progress"><i id="cultModalBar"></i></div>
+          </div>
+
+          <div class="sep"></div>
+          <div style="font-weight:1000;margin-bottom:8px;">🕘 Lịch sử đọc gần đây</div>
+          <div class="list" id="histList"></div>
+        </div>
+      `;
+      App.openModal("⚡ Tu luyện", html, ()=>{
+        // sync bar/exp from drawer
+        const exp = State.userDoc?.cultivationExp ?? 0;
+        let idx = State.userDoc?.cultivationRealmIndex ?? 0;
+        idx = clamp(idx, 0, CULT_REALMS.length-1);
+        const need = CULT_REALMS[idx].need;
+        $("#cultModalExp").textContent = `${exp} / ${need} EXP`;
+        $("#cultModalBar").style.width = `${clamp((exp/need)*100,0,100)}%`;
+
+        const hist = (State.userDoc?.history || JSON.parse(localStorage.getItem(LS.history) || "[]")).slice(0,12);
+        const box = $("#histList");
+        const stories = hist.map(x=>State.storyMap.get(x.storyId)).filter(Boolean);
+        box.innerHTML = stories.length ? stories.map(s=>rowCardHTML(s)).join("") : `<div class="muted">Chưa có lịch sử.</div>`;
+        attachStoryClicks(box);
+      });
+    }
+
+    function renderStoryDetail(storyId){
+      const s = State.storyMap.get(storyId);
+      if(!s) return toast("Không tìm thấy truyện.");
+      State.activeStory = s;
+
+      const isFollowed = isInList("follow", storyId);
+      const isInLib = isInList("library", storyId);
+
+      const html = `
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <div style="width:110px;flex:0 0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.04);">
+            <img src="${s.coverUrl||DEFAULT_COVER}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src='${DEFAULT_COVER}'">
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:1000;font-size:16px;line-height:1.25;">${escapeHtml(s.title)}</div>
+            <div class="chipRow">
+              ${s.category ? `<span class="chip">🏷 ${escapeHtml(s.category)}</span>` : ""}
+              <span class="chip">👁 ${(s.views||0)}</span>
+              <span class="chip">👍 ${(s.likes||0)}</span>
+              <span class="chip">📄 ${(s.chapterCount||0)} chương</span>
+            </div>
+            <div class="small" style="margin-top:8px;">${escapeHtml(s.desc||"")}</div>
+            <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn gold" onclick="App.readFirst()">📖 Đọc từ đầu</button>
+              <button class="btn" onclick="App.readContinue()">🕒 Đọc tiếp</button>
+              <button class="btn" onclick="App.toggleFollow('${storyId}')">${isFollowed ? "💔 Bỏ theo dõi" : "❤️ Theo dõi"}</button>
+              <button class="btn" onclick="App.toggleLibrary('${storyId}')">${isInLib ? "❌ Xoá khỏi tủ" : "📚 Thêm vào tủ"}</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <div style="font-weight:1000;">📄 Danh sách chương</div>
+          <button class="btn" onclick="App.reloadChapters()">⟳ Tải lại</button>
+        </div>
+        <div class="chapterList" id="chapterList">
+          <div class="muted">Đang tải chương...</div>
+        </div>
+      `;
+
+      App.openModal("📚 Chi tiết truyện", html, async ()=>{
+        await bumpStoryView(s.id);
+        await App.reloadChapters();
+      });
+    }
+
+    async function bumpStoryView(storyId){
+      try{
+        const ref = doc(db, "stories", storyId);
+        await updateDoc(ref, { views: increment(1), updatedAt: serverTimestamp() });
+      }catch(e){}
+    }
+
+    async function loadChapters(storyId){
+      // Simple: fetch all (OK for MVP). Later can paginate.
+      const qCh = query(collection(db, "stories", storyId, "chapters"), orderBy("index","asc"), limit(3000));
+      const snap = await getDocs(qCh);
+      const chapters = [];
+      snap.forEach(d=>{
+        const data = d.data();
+        chapters.push({ id:d.id, ...data });
+      });
+      return chapters;
+    }
+
+    async function renderChaptersList(storyId){
+      const chapters = await loadChapters(storyId);
+      State.activeStory.chaptersCache = chapters;
+
+      // update count if needed
+      if((State.activeStory.chapterCount||0) !== chapters.length){
+        try{
+          await updateDoc(doc(db,"stories",storyId), { chapterCount: chapters.length });
+        }catch(e){}
+      }
+
+      const box = $("#chapterList");
+      if(!box) return;
+      if(!chapters.length){
+        box.innerHTML = `<div class="muted">Chưa có chương. Admin hãy thêm chương.</div>`;
+        return;
+      }
+      box.innerHTML = chapters.map(ch=>{
+        const done = isChapterDone(storyId, ch.id) ? "✅" : "📖";
+        return `
+          <div class="chapterItem" data-chid="${ch.id}">
+            <div class="left">
+              <div class="t">${done} Chương ${ch.index}: ${escapeHtml(ch.title||"")}</div>
+              <div class="s">${(ch.updatedAtMillis ? fmtTime(ch.updatedAtMillis) : "")}</div>
+            </div>
+            <div class="miniTag">→</div>
+          </div>
+        `;
+      }).join("");
+
+      $$("[data-chid]", box).forEach(el=>{
+        el.onclick = ()=> App.openReader(storyId, el.dataset.chid);
+      });
+    }
+
+    function isInList(kind, storyId){
+      const key = kind === "follow" ? "follow" : "library";
+      const arr = State.userDoc?.[key] || JSON.parse(localStorage.getItem(kind === "follow" ? LS.follow : LS.library) || "[]");
+      return arr.some(x=>x.storyId === storyId);
+    }
+
+    function setInList(kind, storyId, yes){
+      const key = kind === "follow" ? "follow" : "library";
+      const lsKey = kind === "follow" ? LS.follow : LS.library;
+      const arr = State.userDoc?.[key] || JSON.parse(localStorage.getItem(lsKey) || "[]");
+      const has = arr.some(x=>x.storyId === storyId);
+      let next = arr;
+      if(yes && !has) next = [{storyId, at: now()}, ...arr].slice(0,500);
+      if(!yes && has) next = arr.filter(x=>x.storyId !== storyId);
+
+      if(State.user){
+        const patch = {}; patch[key] = next;
+        saveUserLists(State.user.uid, patch).then(()=>{ State.userDoc[key]=next; renderHome(); });
+      } else {
+        localStorage.setItem(lsKey, JSON.stringify(next));
+        renderHome();
+      }
+    }
+
+    function getHistory(){
+      return State.userDoc?.history || JSON.parse(localStorage.getItem(LS.history) || "[]");
+    }
+
+    function pushHistory(storyId, chapterId){
+      const story = State.storyMap.get(storyId);
+      const item = { storyId, chapterId, at: now(), title: story?.title || "" };
+      let hist = getHistory().filter(x=>x.storyId !== storyId); // keep 1 per story
+      hist.unshift(item);
+      hist = hist.slice(0,200);
+
+      if(State.user){
+        saveUserLists(State.user.uid, { history: hist, lastRead: item }).then(()=>{
+          State.userDoc.history = hist;
+          State.userDoc.lastRead = item;
+          renderHome();
+          calcCultivationView();
+        });
+      } else {
+        localStorage.setItem(LS.history, JSON.stringify(hist));
+        localStorage.setItem(LS.lastRead, JSON.stringify(item));
+        renderHome();
+      }
+    }
+
+    function isChapterDone(storyId, chapterId){
+      const key = `ct_done_${storyId}`;
+      const done = JSON.parse(localStorage.getItem(key) || "[]");
+      return done.includes(chapterId);
+    }
+    function markChapterDone(storyId, chapterId){
+      const key = `ct_done_${storyId}`;
+      const done = JSON.parse(localStorage.getItem(key) || "[]");
+      if(!done.includes(chapterId)){
+        done.push(chapterId);
+        localStorage.setItem(key, JSON.stringify(done.slice(0,5000)));
+      }
+    }
+
+    function getReaderSize(){
+      const n = Number(localStorage.getItem(LS.readerSize) || 16);
+      return clamp(n, 14, 22);
+    }
+    function setReaderSize(n){
+      localStorage.setItem(LS.readerSize, String(clamp(n,14,22)));
+      document.documentElement.style.setProperty("--reader-size", `${getReaderSize()}px`);
+    }
+
+    // =============================
+    // 7) Reader + cultivation exp
+    // =============================
+    async function openReader(storyId, chapterId){
+      const s = State.storyMap.get(storyId);
+      if(!s) return toast("Không tìm thấy truyện.");
+      const chapters = s.chaptersCache || await loadChapters(storyId);
+      const ch = chapters.find(x=>x.id === chapterId);
+      if(!ch) return toast("Không tìm thấy chương.");
+
+      State.activeStory = s;
+      State.activeChapter = ch;
+
+      pushHistory(storyId, chapterId);
+
+      const html = `
+        <div class="reader">
+          <div class="small">📚 ${escapeHtml(s.title)} • Chương ${ch.index}</div>
+          <div class="readerTitle">${escapeHtml(ch.title || "")}</div>
+
+          <div class="readerControls">
+            <button class="btn" onclick="App.prevChapter()">← Trước</button>
+            <button class="btn" onclick="App.nextChapter()">Sau →</button>
+            <button class="btn gold" onclick="App.tts()">🔊 Nghe</button>
+            <button class="btn" onclick="App.ttsStop()">⏹ Dừng</button>
+            <button class="btn" onclick="App.fontMinus()">A-</button>
+            <button class="btn" onclick="App.fontPlus()">A+</button>
+          </div>
+
+          <div class="readerText" id="readerText">${escapeHtml(ch.content || "")}</div>
+
+          <div class="sep"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <button class="btn gold" onclick="App.finishChapter()">✅ Đã đọc xong (nhận EXP)</button>
+            <button class="btn" onclick="App.openStory('${storyId}')">📄 Danh sách chương</button>
+          </div>
+
+          <div class="small" style="margin-top:10px;">
+            Mẹo: đọc tới cuối và bấm “Đã đọc xong” để tăng tu vi nhanh hơn.
+          </div>
+        </div>
+      `;
+
+      App.openModal("📖 Đọc truyện", html, ()=>{
+        // apply font size
+        setReaderSize(getReaderSize());
+        // scroll top
+        $("#sheetBody").scrollTop = 0;
+      });
+    }
+
+    function getNeighborChapter(delta){
+      const s = State.activeStory;
+      const ch = State.activeChapter;
+      if(!s || !ch) return null;
+      const list = s.chaptersCache || [];
+      const idx = list.findIndex(x=>x.id === ch.id);
+      const next = list[idx + delta];
+      return next || null;
+    }
+
+    async function gainExp(amount){
+      if(amount <= 0) return;
+      // local first
+      if(!State.user){
+        // guest exp in localStorage
+        const key = "ct_guest_cult";
+        const cur = JSON.parse(localStorage.getItem(key) || '{"exp":0,"idx":0}');
+        let exp = (cur.exp||0) + amount;
+        let idx = cur.idx||0;
+        while(idx < CULT_REALMS.length-1 && exp >= CULT_REALMS[idx].need){
+          exp -= CULT_REALMS[idx].need;
+          idx++;
+        }
+        localStorage.setItem(key, JSON.stringify({exp, idx}));
+        // reflect to UI as pseudo userDoc
+        State.userDoc = { ...(State.userDoc||{}), cultivationExp: exp, cultivationRealmIndex: idx };
+        calcCultivationView();
+        return;
+      }
+
+      // logged-in: update Firestore atomically-ish
+      const ref = doc(db, "users", State.user.uid);
+      // pull latest from state
+      let exp = State.userDoc?.cultivationExp ?? 0;
+      let idx = State.userDoc?.cultivationRealmIndex ?? 0;
+      exp += amount;
+      while(idx < CULT_REALMS.length-1 && exp >= CULT_REALMS[idx].need){
+        exp -= CULT_REALMS[idx].need;
+        idx++;
+      }
+      State.userDoc.cultivationExp = exp;
+      State.userDoc.cultivationRealmIndex = idx;
+      calcCultivationView();
+      try{
+        await updateDoc(ref, { cultivationExp: exp, cultivationRealmIndex: idx });
+      }catch(e){}
+    }
+
+    // =============================
+    // 8) Load stories (realtime)
+    // =============================
+    function subscribeStories(){
+      if(State.unsubStories) State.unsubStories();
+      const qy = query(collection(db, "stories"), orderBy("updatedAt", "desc"), limit(60));
+      State.unsubStories = onSnapshot(qy, (snap)=>{
+        const arr = [];
+        snap.forEach(d=>{
+          const data = d.data();
+          arr.push({
+            id: d.id,
+            ...data,
+            updatedAtMillis: data.updatedAt?.toMillis ? data.updatedAt.toMillis() : null
+          });
+        });
+        State.stories = arr;
+        State.storyMap = new Map(arr.map(s=>[s.id, s]));
+        renderHome();
+        if(State.isAdmin) refreshAdminStorySelect();
+      }, (err)=>{
+        console.error(err);
+        toast("Không tải được truyện từ Firebase. Kiểm tra mạng / Firestore rules.");
+      });
+    }
+
+    // =============================
+    // 9) Admin
+    // =============================
+    function refreshAdminStorySelect(){
+      const sel = $("#a_storySelect");
+      if(!sel) return;
+      sel.innerHTML = "";
+      State.stories.forEach(s=>{
+        const op = document.createElement("option");
+        op.value = s.id;
+        op.textContent = s.title || s.id;
+        sel.appendChild(op);
+      });
+    }
+
+    async function adminCreateStory(){
+      const title = $("#a_title").value.trim();
+      const author = $("#a_author").value.trim();
+      const coverUrl = $("#a_cover").value.trim();
+      const category = $("#a_category").value.trim();
+      const desc = $("#a_desc").value.trim();
+      if(!title || !desc) return toast("Nhập Tên truyện + Mô tả.");
+
+      try{
+        await addDoc(collection(db,"stories"), {
+          title, author,
+          coverUrl: coverUrl || DEFAULT_COVER,
+          category,
+          desc,
+          views: 0,
+          likes: 0,
+          chapterCount: 0,
+          status: "HOT",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+        toast("✅ Đã thêm truyện!");
+        $("#a_title").value = "";
+        $("#a_author").value = "";
+        $("#a_cover").value = "";
+        $("#a_category").value = "";
+        $("#a_desc").value = "";
+      }catch(e){
+        console.error(e);
+        toast("❌ Không thêm được. Kiểm tra Firestore rules.");
+      }
+    }
+
+    async function adminAddChapter(){
+      const storyId = $("#a_storySelect").value;
+      const index = Number($("#a_chapIndex").value);
+      const title = $("#a_chapTitle").value.trim();
+      const content = $("#a_chapContent").value.trim();
+      if(!storyId || !index || !title || !content) return toast("Nhập đủ: truyện + số chương + tên + nội dung.");
+
+      try{
+        await addDoc(collection(db,"stories",storyId,"chapters"), {
+          index,
+          title,
+          content,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+        await updateDoc(doc(db,"stories",storyId), { updatedAt: serverTimestamp(), chapterCount: increment(1) });
+        toast("✅ Đã thêm chương!");
+        $("#a_chapIndex").value = "";
+        $("#a_chapTitle").value = "";
+        $("#a_chapContent").value = "";
+      }catch(e){
+        console.error(e);
+        toast("❌ Không thêm được chương. Kiểm tra Firestore rules.");
+      }
+    }
+
+    function adminOpenImport(){
+      const html = `
+        <div class="small">
+          Tính năng này sẽ đọc dữ liệu truyện cũ trong LocalStorage (file HTML trước) và đẩy sang Firestore.<br>
+          - Truyện cũ dạng: localStorage["stories"] (có episodes).<br>
+          - Mình sẽ đổi episodes → chapters (nội dung để “(chưa có nội dung)” nếu trước đó là audio).<br><br>
+          ⚠️ Nên chạy 1 lần. Tránh import trùng.
+        </div>
+        <div class="sep"></div>
+        <button class="btn gold" onclick="App.adminImportOld()">Bắt đầu import</button>
+      `;
+      App.openModal("⬆️ Import dữ liệu cũ", html);
+    }
+
+    async function adminImportOld(){
+      const raw = localStorage.getItem("stories");
+      if(!raw) return toast("Không thấy localStorage['stories'] để import.");
+      let list = [];
+      try{ list = JSON.parse(raw) || []; }catch(e){ return toast("Dữ liệu cũ không hợp lệ."); }
+      if(!Array.isArray(list) || !list.length) return toast("Dữ liệu cũ trống.");
+
+      toast("Đang import... (đừng tắt trang)");
+      for(const s of list){
+        const title = (s.title || "").trim();
+        if(!title) continue;
+        // Create story
+        const docRef = await addDoc(collection(db,"stories"), {
+          title,
+          author: s.author || "",
+          coverUrl: s.image || s.coverUrl || DEFAULT_COVER,
+          category: s.category || "",
+          desc: s.desc || "",
+          views: s.views || 0,
+          likes: s.stars || 0,
+          chapterCount: (s.episodes||[]).length || 0,
+          status: s.isHot ? "HOT" : (s.isFull ? "FULL" : ""),
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+
+        // Chapters (episodes)
+        const eps = Array.isArray(s.episodes) ? s.episodes : [];
+        let idx = 0;
+        for(const ep of eps){
+          idx++;
+          const ct = ep?.content || `(Chương này trước đây là audio: ${ep?.audio || ""})\n\n(Chưa có nội dung chữ. Bạn có thể sửa lại bằng cách thêm chương mới hoặc chỉnh trực tiếp trong Firestore.)`;
+          await addDoc(collection(db,"stories",docRef.id,"chapters"), {
+            index: idx,
+            title: ep?.name || `Chương ${idx}`,
+            content: ct,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+        }
+      }
+      toast("✅ Import xong! Quay lại Trang chủ để xem.");
+      App.closeModal();
+    }
+
+    // =============================
+    // 10) Search
+    // =============================
+    function runSearch(){
+      const q = ($("#qSearch")?.value || "").trim().toLowerCase();
+      const cat = ($("#qCategory")?.value || "").trim();
+      const box = $("#searchResults");
+      if(!box) return;
+
+      let list = State.stories;
+      if(cat) list = list.filter(s => (s.category||"") === cat);
+      if(q){
+        list = list.filter(s => (s.title||"").toLowerCase().includes(q) || (s.desc||"").toLowerCase().includes(q));
+      }
+      box.innerHTML = list.length ? list.map(s=>rowCardHTML(s)).join("") : `<div class="muted">Không có kết quả.</div>`;
+      attachStoryClicks(box);
+    }
+
+    // =============================
+    // 11) Theme
+    // =============================
+    function applyTheme(theme){
+      const isLight = theme === "light";
+      document.body.classList.toggle("light", isLight);
+      $("#themeBtn").textContent = isLight ? "☀️" : "🌙";
+      localStorage.setItem(LS.theme, theme);
+    }
+
+    // =============================
+    // 12) Public API for onclick
+    // =============================
+    window.App = {
+      toast,
+      nav: setNav,
+
+      openDrawer(){
+        $("#overlay").classList.add("show");
+        $("#drawer").classList.add("open");
+      },
+      closeDrawer(){
+        $("#overlay").classList.remove("show");
+        $("#drawer").classList.remove("open");
+      },
+
+      openModal(title, html, after){
+        $("#sheetTitle").textContent = title || "";
+        $("#sheetBody").innerHTML = html || "";
+        $("#modal").classList.add("show");
+        ttsStop();
+        requestAnimationFrame(()=>after && after());
+      },
+      closeModal(){
+        $("#modal").classList.remove("show");
+        $("#sheetBody").innerHTML = "";
+        ttsStop();
+      },
+
+      openSearch(){ renderSearchPage(); setNav("search"); },
+      openLibrary(){ renderLibraryPage(); setNav("library"); },
+      openFollowed(){ renderFollowedPage(); setNav("follow"); },
+      openCultivation(){ renderCultivationPage(); setNav("cult"); },
+
+      openPay(){
+        App.openDrawer();
+        $("#payCode").value = `CT${Math.floor(1000 + Math.random()*9000)}`;
+        toast("Mã nạp đã tạo. Copy và dán vào nội dung chuyển khoản.");
+      },
+      copyPayCode(){
+        const v = $("#payCode").value.trim();
+        if(!v) return toast("Chưa có mã.");
+        navigator.clipboard?.writeText(v);
+        toast("✅ Đã copy mã nạp.");
+      },
+
+      toggleTheme(){
+        const cur = localStorage.getItem(LS.theme) || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        applyTheme(cur === "light" ? "dark" : "light");
+      },
+
+      openStory(storyId){
+        renderStoryDetail(storyId);
+      },
+      async reloadChapters(){
+        const s = State.activeStory;
+        if(!s) return;
+        const box = $("#chapterList");
+        if(box) box.innerHTML = `<div class="muted">Đang tải chương...</div>`;
+        try{ await renderChaptersList(s.id); }catch(e){
+          console.error(e);
+          toast("Không tải được chương.");
+        }
+      },
+      readFirst(){
+        const s = State.activeStory;
+        if(!s) return;
+        const ch = (s.chaptersCache||[])[0];
+        if(ch) App.openReader(s.id, ch.id);
+        else App.reloadChapters().then(()=>{
+          const ch2 = (s.chaptersCache||[])[0];
+          if(ch2) App.openReader(s.id, ch2.id);
+        });
+      },
+      readContinue(){
+        const s = State.activeStory;
+        if(!s) return;
+        const lastRead = State.userDoc?.lastRead || JSON.parse(localStorage.getItem(LS.lastRead) || "null");
+        if(lastRead?.storyId === s.id && lastRead?.chapterId) return App.openReader(s.id, lastRead.chapterId);
+        App.readFirst();
+      },
+
+      openReader,
+
+      prevChapter(){
+        const prev = getNeighborChapter(-1);
+        if(!prev) return toast("Đã ở chương đầu.");
+        App.openReader(State.activeStory.id, prev.id);
+      },
+      nextChapter(){
+        const next = getNeighborChapter(1);
+        if(!next) return toast("Đã ở chương cuối.");
+        App.openReader(State.activeStory.id, next.id);
+      },
+
+      tts(){
+        const text = $("#readerText")?.textContent || "";
+        if(!text.trim()) return toast("Chương trống.");
+        ttsSpeak(text);
+      },
+      ttsStop(){ ttsStop(); toast("Đã dừng đọc."); },
+
+      fontMinus(){
+        setReaderSize(getReaderSize()-1);
+        toast(`Cỡ chữ: ${getReaderSize()}px`);
+      },
+      fontPlus(){
+        setReaderSize(getReaderSize()+1);
+        toast(`Cỡ chữ: ${getReaderSize()}px`);
+      },
+
+      async finishChapter(){
+        const s = State.activeStory, ch = State.activeChapter;
+        if(!s || !ch) return;
+        if(isChapterDone(s.id, ch.id)) return toast("Bạn đã nhận EXP chương này rồi.");
+        markChapterDone(s.id, ch.id);
+
+        // exp based on length (simple)
+        const len = (ch.content||"").length;
+        const amount = clamp(8 + Math.floor(len/1200)*2, 8, 24);
+
+        await gainExp(amount);
+        toast(`✅ Nhận +${amount} EXP!`);
+      },
+
+      toggleFollow(storyId){
+        const yes = !isInList("follow", storyId);
+        setInList("follow", storyId, yes);
+        toast(yes ? "Đã theo dõi" : "Đã bỏ theo dõi");
+        // rerender story detail buttons
+        renderStoryDetail(storyId);
+      },
+      toggleLibrary(storyId){
+        const yes = !isInList("library", storyId);
+        setInList("library", storyId, yes);
+        toast(yes ? "Đã thêm vào tủ" : "Đã xoá khỏi tủ");
+        renderStoryDetail(storyId);
+      },
+
+      shuffleRandom(){
+        renderHome();
+        toast("🎲 Đã làm mới danh sách ngẫu nhiên!");
+      },
+
+      runSearch,
+
+      // Auth
+      async loginGoogle(){
+        try{
+          await signInWithPopup(auth, provider);
+        }catch(e){
+          console.error(e);
+          toast("❌ Không đăng nhập được. Kiểm tra popup / trình duyệt.");
+        }
+      },
+      async logout(){
+        try{ await signOut(auth); }catch(e){}
+      },
+
+      // Admin
+      adminCreateStory,
+      adminAddChapter,
+      adminOpenImport,
+      adminImportOld,
+    };
+
+    // =============================
+    // 13) Boot
+    // =============================
+    function boot(){
+      // theme
+      const saved = localStorage.getItem(LS.theme);
+      if(saved) applyTheme(saved);
+      else applyTheme(matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+
+      // reader font
+      setReaderSize(getReaderSize());
+
+      // cultivation for guest
+      if(!State.user){
+        const g = JSON.parse(localStorage.getItem("ct_guest_cult") || '{"exp":0,"idx":0}');
+        State.userDoc = { cultivationExp: g.exp||0, cultivationRealmIndex: g.idx||0, library: JSON.parse(localStorage.getItem(LS.library)||"[]"), follow: JSON.parse(localStorage.getItem(LS.follow)||"[]"), history: JSON.parse(localStorage.getItem(LS.history)||"[]"), lastRead: JSON.parse(localStorage.getItem(LS.lastRead)||"null") };
+        calcCultivationView();
+      }
+
+      // online placeholder (sau này dùng Realtime Database presence)
+      $("#onlineCount").textContent = "0";
+
+      subscribeStories();
+
+      // global click close modal if tap outside sheet on desktop
+      $("#modal").addEventListener("click", (e)=>{
+        if(e.target.id === "modal") App.closeModal();
+      });
+
+      // close modal on ESC
+      window.addEventListener("keydown",(e)=>{
+        if(e.key === "Escape") App.closeModal();
+      });
+
+      renderHome();
+    }
+
+    onAuthStateChanged(auth, async (user)=>{
+      State.user = user || null;
+      State.isAdmin = !!(user?.email && ADMIN_EMAILS.has(user.email));
+      if(user){
+        await ensureUserDoc(user);
+        State.userDoc = await loadUserState(user.uid);
+      } else {
+        // back to guest state
+        const g = JSON.parse(localStorage.getItem("ct_guest_cult") || '{"exp":0,"idx":0}');
+        State.userDoc = { cultivationExp: g.exp||0, cultivationRealmIndex: g.idx||0, library: JSON.parse(localStorage.getItem(LS.library)||"[]"), follow: JSON.parse(localStorage.getItem(LS.follow)||"[]"), history: JSON.parse(localStorage.getItem(LS.history)||"[]"), lastRead: JSON.parse(localStorage.getItem(LS.lastRead)||"null") };
+      }
+
+      updateHeaderProfile();
+      calcCultivationView();
+      renderHome();
+    });
+
+    boot();
+
+    // =============================
+    // 14) Firestore Security Rules (dán vào Firebase Console > Firestore > Rules)
+    // =============================
+    // rules_version = '2';
+    // service cloud.firestore {
+    //   match /databases/{database}/documents {
+    //     function isSignedIn() { return request.auth != null; }
+    //     function isAdmin() {
+    //       // Cách 1 (đơn giản): check email admin
+    //       return isSignedIn() && (request.auth.token.email in ['sumi22122005@gmail.com']);
+    //     }
+    //
+    //     match /stories/{storyId} {
+    //       allow read: if true; // ai cũng đọc được
+    //       allow write: if isAdmin();
+    //       match /chapters/{chapterId} {
+    //         allow read: if true;
+    //         allow write: if isAdmin();
+    //       }
+    //     }
+    //
+    //     match /users/{uid} {
+    //       allow read, write: if isSignedIn() && request.auth.uid == uid;
+    //     }
+    //   }
+    // }
+  </script>
 </body>
 </html>
+
