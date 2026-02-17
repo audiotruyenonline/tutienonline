@@ -833,33 +833,63 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     function setOnlineCount(n){
       const dot = $("onlineDot");
       const num = $("onlineNum");
-      const has = (n && n > 0);
-      dot.style.opacity = has ? "1" : ".55";
-      num.textContent = has ? String(n) : "";
+      // Luôn hiển thị số để tránh bị trống
+      if(n == null || Number.isNaN(Number(n))){
+        dot.style.opacity = ".55";
+        num.textContent = "--";
+        return;
+      }
+      const v = Math.max(0, Math.floor(Number(n)));
+      dot.style.opacity = v > 0 ? "1" : ".75";
+      num.textContent = String(v);
     }
+    // mặc định (trước khi Firebase trả về)
+    setOnlineCount(0);
     // Listen online users (tính trong 60s gần nhất)
-    onValue(ref(db, "presence/users"), (snap)=>{
+    const _presenceListRef = ref(db, "presence/users");
+    onValue(_presenceListRef, (snap)=>{
       const now = Date.now();
       const val = snap.exists() ? (snap.val()||{}) : {};
-      const count = Object.values(val).filter(x => x && (now - (x.lastActive||0) < 60000)).length;
+      // tính những người có heartbeat trong 90 giây gần nhất (mobile đôi khi delay)
+      const count = Object.values(val).filter(x => x && (now - (x.lastActive||0) < 90000)).length;
       setOnlineCount(count);
+    }, (err)=>{
+      console.warn("presence/users read blocked:", err);
+      // Nếu Rules chặn read, vẫn hiển thị để không bị trống
+      setOnlineCount(null);
     });
 
     // Presence for current user
     let _presenceTimer = null;
-    function startPresence(u){
-      if(_presenceTimer){ clearInterval(_presenceTimer); _presenceTimer = null; }
-      if(!u) return;
-      const pRef = ref(db, "presence/users/" + u.uid);
+    let _presenceConnectedUnsub = null;
 
-      // set ngay (và tự xóa khi disconnect)
-      set(pRef, { uid: u.uid, name: u.displayName||"", lastActive: Date.now() });
-      onDisconnect(pRef).remove();
+    function startPresence(u){
+      // cleanup
+      if(_presenceTimer){ clearInterval(_presenceTimer); _presenceTimer = null; }
+      if(_presenceConnectedUnsub){ try{ _presenceConnectedUnsub(); }catch(e){} _presenceConnectedUnsub = null; }
+
+      if(!u) return;
+
+      const pRef = ref(db, "presence/users/" + u.uid);
+      const connectedRef = ref(db, ".info/connected");
+
+      const writePresence = ()=>{
+        return set(pRef, { uid: u.uid, name: u.displayName||"", lastActive: Date.now() })
+          .catch(e=>console.warn("presence write blocked:", e));
+      };
+
+      // Chỉ set onDisconnect khi đã connect thật sự
+      _presenceConnectedUnsub = onValue(connectedRef, (snap)=>{
+        if(snap.val() === true){
+          writePresence();
+          onDisconnect(pRef).remove().catch(e=>console.warn("onDisconnect failed:", e));
+        }
+      }, (err)=>{
+        console.warn(".info/connected read blocked:", err);
+      });
 
       // heartbeat
-      _presenceTimer = setInterval(()=>{
-        set(pRef, { uid: u.uid, name: u.displayName||"", lastActive: Date.now() });
-      }, 25000);
+      _presenceTimer = setInterval(writePresence, 25000);
     }
 
     // Menu button: đổi ☰ ↔ avatar khi đăng nhập
