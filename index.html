@@ -2,1944 +2,1345 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Cửu Thiên • Đọc Truyện Tu Luyện</title>
-  <meta name="theme-color" content="#0b0d12" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Truyện Online</title>
+  <meta name="theme-color" content="#0d2f66" />
   <style>
     :root{
-      --bg0:#07080c;
-      --bg1:#0b0d12;
-      --card:#0f121a;
-      --card2:#0c0f16;
-      --muted:#8c93a8;
-      --text:#e9ecf5;
-      --gold:#d7b86b;
-      --gold2:#f6d98b;
-      --line:rgba(255,255,255,.08);
-      --shadow: 0 14px 40px rgba(0,0,0,.45);
-      --radius:18px;
-      --radius2:14px;
-      --blur: blur(10px);
-      --safe-top: env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      --blue0:#0d2f66;
+      --blue1:#1e5aa7;
+      --blue2:#2a78c9;
+      --text:#1b1b1b;
+      --muted:#6b7280;
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --line:#e5e7eb;
+      --shadow:0 4px 18px rgba(0,0,0,.08);
+      --radius:10px;
+      --max:1100px;
+      --hotCols:4;
+      --heaA:#1d5bb7;
+      --heaB:#0d2f66;
+      --heaBorder:rgba(255,255,255,.22);
+      --heaShadow:0 2px 18px rgba(0,0,0,.28);
+      --heaBtnBg:rgba(0,0,0,.20);
+      --heaBtnBorder:rgba(255,255,255,.18);
     }
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+    *{box-sizing:border-box}
+    html,body{height:100%;overflow-x:hidden}
     body{
       margin:0;
-      font-family:var(--font);
-      background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(215,184,107,.16), transparent 60%),
-        radial-gradient(900px 600px at 90% 10%, rgba(126,87,255,.12), transparent 60%),
-        radial-gradient(700px 600px at 50% 110%, rgba(0,204,255,.08), transparent 55%),
-        linear-gradient(180deg,var(--bg0),var(--bg1));
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
-      overflow-x:hidden;
+      background:var(--bg);
     }
-    a{ color:inherit; text-decoration:none; }
-    button, input, textarea, select{ font-family:inherit; }
-    .hidden{ display:none !important; }
+    a{color:inherit;text-decoration:none}
+    /* ======= HEADER (icon/pill kiểu như ảnh bạn gửi) ======= */
+.top{
+  position:sticky; top:0; z-index:50;
+  background: linear-gradient(180deg, var(--heaA), var(--heaB));
+  box-shadow: var(--heaShadow);
+  border-bottom:1px solid var(--heaBorder);
+}
+.topBar{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.2px;
+  user-select:none;
+}
+.brandLogo{
+  width:40px;height:40px;
+  border-radius:12px;
+  display:grid;place-items:center;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.brandText{
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:.4px;
+}
 
-    /* Header */
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:50;
-      padding: calc(10px + var(--safe-top)) 12px 10px;
-      backdrop-filter: var(--blur);
-      background: linear-gradient(180deg, rgba(7,8,12,.92), rgba(7,8,12,.70));
+.topActions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.hdrBtn{
+  border:1px solid var(--heaBtnBorder);
+  background:var(--heaBtnBg);
+  color:#fff;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor:pointer;
+  user-select:none;
+}
+.hdrBtn:active{transform:translateY(1px)}
+.hdrBtn:focus{outline:none; box-shadow:0 0 0 3px rgba(99,102,241,.22), inset 0 0 0 1px rgba(255,255,255,.04);}
+
+.circleBtn{
+  width:44px;height:44px;
+  border-radius:999px;
+  display:grid;place-items:center;
+  position:relative;
+}
+.circleBtn .ico{font-size:18px; line-height:1;}
+
+.pillBtn{
+  height:44px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 14px;
+  position:relative;
+  font-weight:900;
+}
+
+.onlinePill{
+  color:#67e8f9;
+  border-color:rgba(103,232,249,.22);
+  min-width:78px;
+  justify-content:center;
+}
+.onlineGreenDot{
+  width:10px;height:10px;border-radius:999px;
+  background:#22c55e;
+  box-shadow:0 0 0 3px rgba(34,197,94,.14);
+  opacity:.95;
+}
+.onlineNum{
+  font-size:18px;
+  letter-spacing:.2px;
+  min-width:12px;
+  text-align:center;
+}
+
+.vipPill{
+  border:0;
+  background: linear-gradient(180deg, #f7d24d, #c9940a);
+  color:#111827;
+  box-shadow:0 10px 28px rgba(0,0,0,.35);
+  padding:0 16px;
+}
+.vipPill .vipText{font-weight:900}
+.vipPill .vipCoin{font-size:18px; line-height:1}
+.vipShort{display:none;font-weight:900}
+
+.badge{
+  position:absolute;
+  top:-2px; right:-2px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#ef4444;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  display:grid;
+  place-items:center;
+  border:2px solid rgba(0,0,0,.55);
+}
+
+.avatarPill{
+  padding:0 10px 0 8px;
+  gap:10px;
+  min-width:78px;
+}
+#menuAvatar{
+  width:32px;height:32px;
+  border-radius:999px;
+  object-fit:cover;
+  display:none;
+}
+#menuIcon{
+  width:32px;height:32px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.10);
+}
+.caret{
+  font-size:14px;
+  opacity:.75;
+  transform: translateY(-1px);
+}
+
+    /* ====== Search modal ====== */
+    .searchBg{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.35);
+      display:none;
+      z-index:95;
+      padding:12px;
+    }
+    .searchBox{
+      max-width:720px;
+      margin:0 auto;
+      background:var(--card);
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      border:1px solid rgba(0,0,0,.10);
+    }
+    .searchHead{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      background:#f5f6f8;
       border-bottom:1px solid var(--line);
     }
-    .topbarRow{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width: 0;
-      flex: 1;
-    }
-    .logoBox{
-      width:34px;height:34px;border-radius:10px;
-      background: linear-gradient(135deg, rgba(215,184,107,.25), rgba(215,184,107,.05));
-      border:1px solid rgba(215,184,107,.25);
-      display:flex;align-items:center;justify-content:center;
-      box-shadow: 0 10px 25px rgba(0,0,0,.35);
-      overflow:hidden;
-      flex: 0 0 auto;
-    }
-    .logoBox img{ width:100%;height:100%;object-fit:cover; }
-    .brandText{
-      display:flex;
-      flex-direction:column;
-      line-height:1.05;
-      min-width:0;
-    }
-    .brandText .name{
-      font-weight:900;
-      letter-spacing:.2px;
-      font-size:16px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .brandText .sub{
-      font-size:12px;
-      color:var(--muted);
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      font-size:12px;
-      white-space:nowrap;
-    }
-    .pill b{ color:var(--gold2); font-weight:800; }
-    .actions{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex:0 0 auto;
-    }
-    .iconBtn{
-      width:38px;height:38px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color:var(--text);
-      display:flex;align-items:center;justify-content:center;
-      cursor:pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
-      transition:.15s transform ease, .15s background ease;
-    }
-    .iconBtn:active{ transform: scale(.97); }
-    .cta{
-      height:38px;
+    .searchInput{
+      flex:1;
+      height:40px;
+      border-radius:10px;
+      border:1px solid #cfd6df;
       padding:0 12px;
-      border-radius:12px;
-      border:1px solid rgba(215,184,107,.25);
-      background: linear-gradient(180deg, rgba(215,184,107,.20), rgba(215,184,107,.08));
-      color: var(--gold2);
-      font-weight:900;
-      cursor:pointer;
-      display:flex;align-items:center;gap:8px;
-      box-shadow: 0 12px 30px rgba(215,184,107,.10);
+      font-weight:800;
+      outline:none;
+      background:#fff;
     }
-    .avatarBtn{
-      width:38px;height:38px;border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      overflow:hidden;
+    .searchInput:focus{box-shadow:0 0 0 3px rgba(42,120,201,.18)}
+    .searchBody{max-height:70vh; overflow:auto}
+    .searchItem{
+      padding:10px 12px;
+      border-top:1px solid var(--line);
+      display:flex; gap:10px; align-items:center;
       cursor:pointer;
-      position:relative;
-      flex: 0 0 auto;
+      background:var(--card);
     }
-    .avatarBtn img{ width:100%;height:100%;object-fit:cover; display:block; }
-    .badgeDot{
-      position:absolute;
-      right:-1px; top:-1px;
-      width:16px;height:16px;border-radius:999px;
-      background:#ff4d4d;
-      border:2px solid rgba(7,8,12,.95);
-      display:flex;align-items:center;justify-content:center;
-      font-size:10px;font-weight:900;
-      color:#fff;
+    .searchItem:hover{background:rgba(0,0,0,.03)}
+    .searchItem .t{font-weight:900; font-size:13px; min-width:0; flex:1}
+    .searchItem .c{font-size:12px; color:var(--muted); white-space:nowrap}
+    .searchEmpty{padding:14px 12px; color:var(--muted); font-size:13px}
+
+    /* ====== Dark mode theo hệ thống ====== */
+    @media (prefers-color-scheme: dark){
+      :root{
+        --text:#e5e7eb;
+        --muted:#9ca3af;
+        --bg:#0b1220;
+        --card:#0f172a;
+        --line:#1f2937;
+        --shadow:0 6px 24px rgba(0,0,0,.35);
+      
+        --heaA:#0b1d3c;
+        --heaB:#061225;
+        --heaBorder:rgba(255,255,255,.10);
+        --heaShadow:0 2px 18px rgba(0,0,0,.55);
+        --heaBtnBg:rgba(255,255,255,.06);
+        --heaBtnBorder:rgba(255,255,255,.12);
+      }
+      body{background:var(--bg); color:var(--text);}
+      .sectionHead{background:rgba(255,255,255,.04)}
+      .select{background:#0b1220;color:var(--text);border-color:#334155}
+      .drawer{background:#0f172a;color:var(--text)}
+      .drawerBtn{background:#0f172a;color:var(--text);border-color:#1f2937}
+      .drawerBtn:hover{background:rgba(255,255,255,.06)}
+      .modal{background:var(--card)}
+      .modalHead{background:rgba(255,255,255,.04)}
+      .searchHead{background:rgba(255,255,255,.04)}
+      .searchInput{background:#0b1220;color:var(--text);border-color:#334155}
+      .mutedBox{background:rgba(255,255,255,.03);border-color:#334155;color:var(--text)}
+
+}
+
+html[data-theme="dark"]{
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --bg:#0b1220;
+  --card:#0f172a;
+  --line:#1f2937;
+  --shadow:0 6px 24px rgba(0,0,0,.35);
+
+  --heaA:#0b1d3c;
+  --heaB:#061225;
+  --heaBorder:rgba(255,255,255,.10);
+  --heaShadow:0 2px 18px rgba(0,0,0,.55);
+  --heaBtnBg:rgba(255,255,255,.06);
+  --heaBtnBorder:rgba(255,255,255,.12);
+}
+html[data-theme="dark"] body{background:var(--bg); color:var(--text);}
+html[data-theme="dark"] .sectionHead{background:rgba(255,255,255,.04)}
+html[data-theme="dark"] .select{background:#0b1220;color:var(--text);border-color:#334155}
+html[data-theme="dark"] .drawer{background:#0f172a;color:var(--text)}
+html[data-theme="dark"] .drawerBtn{background:#0f172a;color:var(--text);border-color:#1f2937}
+html[data-theme="dark"] .drawerBtn:hover{background:rgba(255,255,255,.06)}
+html[data-theme="dark"] .modal{background:var(--card)}
+html[data-theme="dark"] .modalHead{background:rgba(255,255,255,.04)}
+html[data-theme="dark"] .searchHead{background:rgba(255,255,255,.04)}
+html[data-theme="dark"] .searchInput{background:#0b1220;color:var(--text);border-color:#334155}
+html[data-theme="dark"] .mutedBox{background:rgba(255,255,255,.03);border-color:#334155;color:var(--text)}
+
+html[data-theme="light"]{
+  --text:#1b1b1b;
+  --muted:#6b7280;
+  --bg:#f3f4f6;
+  --card:#ffffff;
+  --line:#e5e7eb;
+  --shadow:0 4px 18px rgba(0,0,0,.08);
+}
+html[data-theme="light"] body{background:var(--bg); color:var(--text);}
+html[data-theme="light"] .sectionHead{background:#f6f7f9}
+html[data-theme="light"] .select{background:#ffffff;color:var(--text);border-color:#d1d5db}
+html[data-theme="light"] .drawer{background:#ffffff;color:var(--text)}
+html[data-theme="light"] .drawerBtn{background:#ffffff;color:var(--text);border-color:#e5e7eb}
+html[data-theme="light"] .drawerBtn:hover{background:rgba(0,0,0,.03)}
+html[data-theme="light"] .modal{background:var(--card)}
+html[data-theme="light"] .modalHead{background:#f6f7f9}
+html[data-theme="light"] .searchHead{background:#f5f6f8}
+html[data-theme="light"] .searchInput{background:#ffffff;color:var(--text);border-color:#cfd6df}
+html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7eb;color:var(--text)}
+
+.subline{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:8px 12px 10px 12px;
+      color:rgba(255,255,255,.88);
+      font-size:12.5px;
+      border-top:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      backdrop-filter: blur(8px);
     }
 
-    /* Layout */
+    /* ======= LAYOUT ======= */
     .wrap{
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 14px 12px calc(92px + var(--safe-bottom));
+      max-width:var(--max);
+      margin:12px auto 40px auto;
+      padding:0 12px;
     }
-
-    /* Sections */
     .section{
-      margin-top: 12px;
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
       overflow:hidden;
+      margin-bottom:12px;
     }
     .sectionHead{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding: 12px 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border-bottom: 1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 10px;
+      background:#f5f6f8;
+      border-bottom:1px solid var(--line);
     }
-    .sectionTitle{
-      display:flex;align-items:center;gap:10px;
-      font-weight:900;
+    .secTitle{
+      font-weight:800;
+      color:#4b5563;
+      display:flex; align-items:center; gap:8px;
+      text-transform:uppercase;
+      font-size:15px;
       letter-spacing:.2px;
     }
-    .muted{ color:var(--muted); font-size:13px; }
-
-    .hScroll{
-      display:flex;
-      gap:12px;
-      overflow:auto hidden;
-      padding: 12px 12px 14px;
-      scroll-snap-type:x mandatory;
+    .secTitle .flame{filter:grayscale(.1)}
+    .secRight{
+      display:flex; align-items:center; gap:8px;
     }
-    .hScroll::-webkit-scrollbar{ height: 8px; }
-    .hScroll::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.12); border-radius: 999px; }
-    .storyCard{
-      width: 140px;
-      flex: 0 0 auto;
-      scroll-snap-align: start;
-      border-radius: 16px;
-      overflow:hidden;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      box-shadow: 0 14px 28px rgba(0,0,0,.35);
-      cursor:pointer;
-      position:relative;
-      transition:.15s transform ease;
-    }
-    .storyCard:active{ transform: scale(.98); }
-    .cover{
-      width:100%;
-      aspect-ratio: 3/4;
-      background: rgba(255,255,255,.06);
-      position:relative;
-    }
-    .cover img{ width:100%;height:100%;object-fit:cover; display:block; }
-    .cover::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.75));
-    }
-    .cardMeta{
-      position:absolute;
-      left:10px; top:10px;
-      display:flex;
-      gap:6px;
-    }
-    .miniTag{
-      font-size:11px;
-      font-weight:900;
-      padding: 3px 8px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.30);
-      backdrop-filter: var(--blur);
-      color: var(--text);
-    }
-    .miniTag.gold{
-      border-color: rgba(215,184,107,.30);
-      color: var(--gold2);
-    }
-    .cardBody{
-      padding: 10px 10px 12px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .cardTitle{
-      font-weight:900;
-      font-size:13px;
-      line-height:1.2;
-      display:-webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow:hidden;
-      min-height: 32px;
-    }
-    .cardStats{
-      display:flex;
-      gap:10px;
-      color: var(--muted);
-      font-size:11.5px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .stat{ display:inline-flex; align-items:center; gap:6px; }
-
-    /* Vertical list */
-    .list{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      padding: 12px;
-    }
-    .rowCard{
-      display:flex;
-      gap:12px;
-      padding: 12px;
-      border-radius: 16px;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      cursor:pointer;
-      transition:.15s transform ease;
-      position:relative;
-    }
-    .rowCard:active{ transform: scale(.99); }
-    .rowCover{
-      width: 64px;
-      height: 84px;
-      border-radius: 14px;
-      overflow:hidden;
-      background: rgba(255,255,255,.06);
-      flex: 0 0 auto;
-    }
-    .rowCover img{ width:100%;height:100%;object-fit:cover; display:block; }
-    .rowMain{ min-width:0; flex:1; }
-    .rowTitle{ font-weight:900; font-size:14px; line-height:1.25; }
-    .rowDesc{
-      color: var(--muted);
-      font-size: 12.5px;
-      margin-top: 4px;
-      display:-webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow:hidden;
-    }
-    .rowLine{
-      margin-top: 8px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      color: var(--muted);
-      font-size: 12px;
-      flex-wrap:wrap;
-    }
-
-    /* Bottom nav */
-    .bottomNav{
-      position:fixed;
-      left:0; right:0; bottom:0;
-      z-index:60;
-      padding: 10px 12px calc(10px + var(--safe-bottom));
-      background: linear-gradient(180deg, rgba(7,8,12,.05), rgba(7,8,12,.92));
-      backdrop-filter: var(--blur);
-      border-top: 1px solid var(--line);
-    }
-    .navBar{
-      max-width: 1180px;
-      margin: 0 auto;
-      display:flex;
-      gap:10px;
-      justify-content:space-between;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      border-radius: 18px;
-      padding: 6px;
-      box-shadow: var(--shadow);
-    }
-    .navItem{
-      flex:1;
-      display:flex;flex-direction:column;
-      align-items:center;justify-content:center;
-      gap:4px;
-      padding: 8px 6px;
-      border-radius: 14px;
-      color: var(--muted);
-      font-size: 11.5px;
-      cursor:pointer;
-      user-select:none;
-      transition:.15s background ease, .15s color ease;
-    }
-    .navItem.active{
-      background: rgba(215,184,107,.12);
-      border: 1px solid rgba(215,184,107,.25);
-      color: var(--gold2);
-    }
-
-    /* Drawer */
-    .overlay{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.55);
-      z-index:80;
-      display:none;
-    }
-    .drawer{
-      position:fixed;
-      top:0; right:0;
-      height:100%;
-      width:min(380px, 90vw);
-      background: linear-gradient(180deg, rgba(15,18,26,.98), rgba(10,12,18,.98));
-      border-left:1px solid var(--line);
-      z-index:90;
-      transform: translateX(110%);
-      transition: .22s transform ease;
-      box-shadow: -18px 0 50px rgba(0,0,0,.55);
-      display:flex;
-      flex-direction:column;
-    }
-    .drawer.open{ transform: translateX(0); }
-    .overlay.show{ display:block; }
-    .drawerHead{
-      padding: calc(14px + var(--safe-top)) 14px 12px;
-      border-bottom:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .drawerBody{ padding: 12px 14px; overflow:auto; }
-    .btn{
-      border:none;
-      cursor:pointer;
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-weight: 900;
-      background: rgba(255,255,255,.05);
-      color: var(--text);
-      border:1px solid var(--line);
-      transition:.15s transform ease;
-    }
-    .btn:active{ transform: scale(.98); }
-    .btn.gold{
-      border-color: rgba(215,184,107,.25);
-      background: linear-gradient(180deg, rgba(215,184,107,.20), rgba(215,184,107,.06));
-      color: var(--gold2);
-    }
-    .btn.danger{
-      border-color: rgba(255,77,77,.35);
-      background: rgba(255,77,77,.12);
-      color: #ffd1d1;
-    }
-    .field{
-      width:100%;
-      padding: 11px 12px;
-      border-radius: 14px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
+    .select{
+      height:34px;
+      border-radius:6px;
+      border:1px solid #cfd6df;
+      background:#fff;
+      padding:0 10px;
+      font-weight:700;
+      color:#3b4452;
       outline:none;
     }
-    .field::placeholder{ color: rgba(233,236,245,.45); }
-    textarea.field{ min-height: 120px; resize: vertical; }
-    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    .sep{ height:1px; background: var(--line); margin: 14px 0; }
+    .select:focus{box-shadow:0 0 0 3px rgba(42,120,201,.18)}
+    .contentPad{padding:10px}
 
-    /* Modal / Reader */
-    .modal{
-      position:fixed; inset:0;
-      z-index:100;
-      display:none;
-      align-items:flex-end;
-      justify-content:center;
-      padding: 10px 10px calc(10px + var(--safe-bottom));
+    /* ======= TRUYỆN HOT grid giống ảnh ======= */
+    .hotGrid{
+      display:grid;
+      grid-template-columns: repeat(var(--hotCols), 1fr);
+      gap:10px;
     }
-    .modal.show{ display:flex; }
-    .sheet{
-      width: min(900px, 100%);
-      max-height: 92vh;
-      background: linear-gradient(180deg, rgba(15,18,26,.98), rgba(10,12,18,.98));
-      border:1px solid var(--line);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
+    .hotItem{
+      display:block;
+      border-radius:6px;
       overflow:hidden;
-      display:flex;
-      flex-direction:column;
-    }
-    .sheetHead{
-      padding: 12px 14px;
-      border-bottom:1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .sheetTitle{
-      font-weight: 1000;
-      font-size: 14px;
-      line-height:1.2;
-      min-width:0;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .sheetBody{
-      overflow:auto;
-      padding: 14px;
-    }
-
-    .chipRow{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 6px;}
-    .chip{
-      font-size:12px;
-      padding: 4px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-    }
-
-    .chapterList{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-top: 12px;
-    }
-    .chapterItem{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding: 12px;
-      border-radius: 16px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
+      background:#fff;
+      border:1px solid rgba(0,0,0,.06);
+      box-shadow:0 2px 10px rgba(0,0,0,.06);
       cursor:pointer;
     }
-    .chapterItem:active{ transform: scale(.995); }
-    .chapterItem .left{
-      display:flex; flex-direction:column; gap:3px;
+    .hotCover{
+      position:relative;
+      width:100%;
+      aspect-ratio: 3 / 4;
+      background: linear-gradient(135deg, #d1d5db, #9ca3af);
+      overflow:hidden;
+    }
+    .hotCover img{
+      width:100%; height:100%; object-fit:cover; display:block;
+      transform:scale(1.02);
+    }
+    .hotName{
+      padding:7px 6px;
+      font-size:12px;
+      font-weight:800;
+      line-height:1.15;
+      color:#111827;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height:30px;
+      background:#fff;
+    }
+
+    /* ======= LIST giống phần "Mới cập nhật" trong ảnh ======= */
+    .listRow{
+      display:grid;
+      grid-template-columns: 1fr 70px;
+      gap:10px;
+      padding:10px 10px;
+      border-top:1px solid var(--line);
+      align-items:center;
+    }
+    .listRow:first-child{border-top:0}
+    .leftLine{min-width:0}
+    .storyLine{
+      display:flex; align-items:center; gap:10px;
       min-width:0;
     }
-    .chapterItem .t{
-      font-weight: 900;
-      font-size: 13.5px;
+    .miniCover{
+      width:34px;height:46px;
+      border-radius:6px;
+      background:linear-gradient(135deg,#d1d5db,#9ca3af);
+      overflow:hidden;
+      flex:none;
+      border:1px solid rgba(0,0,0,.08);
+    }
+    .miniCover img{width:100%;height:100%;object-fit:cover;display:block}
+    .lineTitle{
+      font-weight:800;
+      font-size:13px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 62vw;
     }
-    .chapterItem .s{
-      font-size: 12px;
-      color: var(--muted);
+    .lineMeta{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      border:1px solid #cfe3ff;
+      background:#eef6ff;
+      color:#1f5fa7;
+      font-weight:800;
+      font-size:11px;
+      padding:2px 7px;
+      border-radius:999px;
+    }
+    .chapCount{
+      text-align:right;
+      font-weight:800;
+      color:#2a5da6;
+      font-size:13px;
+      white-space:nowrap;
     }
 
-    .reader{
-      padding: 10px 14px 16px;
-    }
-    .readerTitle{
-      font-size: 17px;
-      font-weight: 1000;
-      line-height:1.2;
-      margin: 6px 0 10px;
-    }
-    .readerControls{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-      margin: 10px 0 12px;
-    }
-    .readerText{
-      font-size: var(--reader-size, 16px);
-      line-height: 1.8;
-      color: rgba(233,236,245,.92);
-      white-space: pre-wrap;
-    }
-    .progress{
-      height: 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.05);
-      overflow:hidden;
-    }
-    .progress > i{
-      display:block;
-      height:100%;
-      width: 0%;
-      background: linear-gradient(90deg, rgba(215,184,107,.25), rgba(246,217,139,.55));
-      border-right: 1px solid rgba(255,255,255,.12);
-    }
-    .small{ font-size:12px; color: var(--muted); }
-
-    /* Toast */
-    .toast{
-      position:fixed;
-      left:50%;
-      transform: translateX(-50%);
-      top: calc(10px + var(--safe-top));
-      z-index:200;
-      min-width: min(92vw, 380px);
-      background: rgba(15,18,26,.95);
-      border:1px solid var(--line);
-      border-radius: 16px;
-      padding: 10px 12px;
+    /* ======= Drawer menu giống icon 3 gạch ======= */
+    .drawerBg{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.35);
       display:none;
-      box-shadow: var(--shadow);
-      color: var(--text);
-      backdrop-filter: var(--blur);
+      z-index:80;
     }
-    .toast.show{ display:block; animation: toastIn .18s ease; }
-    @keyframes toastIn{ from{ transform: translateX(-50%) translateY(-8px); opacity:0;} to{ transform: translateX(-50%) translateY(0); opacity:1;} }
+    .drawer{
+      position:absolute; top:0; right:0;
+      width:min(320px, 88vw);
+      height:100%;
+      background:#fff;
+      box-shadow:-10px 0 30px rgba(0,0,0,.25);
+      display:flex;
+      flex-direction:column;
+    }
+    .drawerTop{
+      padding:12px;
+      background:linear-gradient(180deg, var(--blue2), var(--blue0));
+      color:#fff;
+    }
+    .drawerTop b{display:block;font-size:15px}
+    .drawerTop small{opacity:.9}
+    .drawerBody{padding:10px; display:grid; gap:8px}
+    .drawerBtn{
+      width:100%;
+      text-align:left;
+      padding:10px 10px;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:800;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .drawerBtn:hover{background:#f3f4f6}
+    .drawerBtn .r{color:#6b7280;font-weight:900}
+    .divider{height:1px;background:var(--line);margin:2px 0}
+    .hint{
+      font-size:12px;
+      color:#6b7280;
+      padding:0 2px;
+      line-height:1.4;
+    }
+    .mutedBox{
+      margin-top:8px;
+      border:1px dashed #cfd6df;
+      border-radius:8px;
+      padding:8px;
+      background:#fbfcff;
+      color:#475569;
+      font-size:12px;
+    }
 
-    /* Light mode */
-    body.light{
-      --bg0:#f7f5ef;
-      --bg1:#fbfbfd;
-      --card:#ffffff;
-      --card2:#ffffff;
-      --muted:#6c7284;
-      --text:#14161c;
-      --line: rgba(20,22,28,.10);
-      background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(215,184,107,.22), transparent 60%),
-        radial-gradient(900px 600px at 90% 10%, rgba(126,87,255,.10), transparent 60%),
-        radial-gradient(700px 600px at 50% 110%, rgba(0,204,255,.08), transparent 55%),
-        linear-gradient(180deg,var(--bg0),var(--bg1));
+    /* ======= Modal (story preview) ======= */
+    .modalBg{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.35);
+      display:none;
+      z-index:90;
+      padding:12px;
     }
-    body.light .topbar{ background: linear-gradient(180deg, rgba(251,251,253,.92), rgba(251,251,253,.72)); }
-    body.light .miniTag{ background: rgba(255,255,255,.55); }
-  </style>
+    .modal{
+      max-width:720px;
+      margin:0 auto;
+      background:#fff;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      border:1px solid rgba(0,0,0,.10);
+    }
+    .modalHead{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 12px;
+      background:#f5f6f8;
+      border-bottom:1px solid var(--line);
+    }
+    .modalHead b{font-size:14px}
+    .closeBtn{
+      width:38px;height:38px;
+      border-radius:9px;
+      border:1px solid var(--line);
+      background:#fff;
+      cursor:pointer;
+      font-weight:900;
+    }
+    .modalBody{padding:12px}
+    .modalGrid{
+      display:grid;
+      grid-template-columns: 88px 1fr;
+      gap:12px;
+    }
+    .modalCover{
+      width:88px; aspect-ratio: 3/4;
+      border-radius:10px;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,.10);
+      background:linear-gradient(135deg,#d1d5db,#9ca3af);
+    }
+    .modalCover img{width:100%;height:100%;object-fit:cover;display:block}
+    .modalDesc{color:#374151;font-size:13px;line-height:1.55}
+    .btnRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .btn{
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(0,0,0,.10);
+      background:#fff;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .btn.primary{
+      background:linear-gradient(180deg,#2a78c9,#1e5aa7);
+      color:#fff;
+      border-color:rgba(255,255,255,.22);
+      box-shadow:0 10px 20px rgba(30,90,167,.25);
+    }
+    .btn:active{transform:translateY(1px)}
+
+    /* ======= Responsive ======= */
+    @media (max-width: 760px){
+      :root{ --hotCols: 4; }
+      .wrap{margin-top:10px}
+      .sectionHead{padding:10px}
+      .contentPad{padding:10px}
+    }
+    @media (max-width: 420px){
+      :root{ --hotCols: 2; }
+      .hotGrid{gap:10px}
+
+      /* Header compact để không tràn ngang */
+      .topBar{padding:8px 10px; gap:8px}
+      .brandLogo{width:36px;height:36px}
+      .brandText{font-size:16px}
+      .topActions{gap:8px}
+      .pillBtn{height:40px; padding:0 10px; gap:8px}
+      .circleBtn{width:40px;height:40px}
+      .onlinePill{min-width:62px}
+      .onlineNum{font-size:16px}
+      .vipPill{padding:0 12px}
+      .vipText{display:none}
+      .vipShort{display:inline}
+      .avatarPill{min-width:60px; padding:0 8px; gap:8px}
+      .caret{font-size:12px}
+    }
+  
+    @media (max-width: 360px){
+      .brandText{font-size:15px}
+      .topActions{flex-wrap:wrap; justify-content:flex-end}
+    }
+</style>
 </head>
-
 <body>
-  <div class="toast" id="toast"></div>
 
-  <header class="topbar">
-    <div class="topbarRow">
-      <div class="brand" role="button" tabindex="0" onclick="App.openDrawer()">
-        <div class="logoBox" title="Logo (bạn thay ảnh tùy ý)">
-          <!-- Bạn có thể thay src bằng logo của bạn -->
-          <img id="logoImg" alt="logo" src="https://i.imgur.com/4M7IWwP.png" onerror="this.style.display='none'; this.parentElement.textContent='🀄';" />
+  <!-- HEADER -->
+  <header class="top">
+    <div class="topBar">
+      <div class="brand" id="homeBtn" title="Trang chủ">
+        <div class="brandLogo" aria-hidden="true">
+          <!-- Logo kiểu giống ảnh: icon sách + chữ TRUYỆN Online -->
+          <svg viewBox="0 0 64 64" width="34" height="34" role="img" aria-label="Logo">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff" stop-opacity="0.98"/>
+                <stop offset="1" stop-color="#dbeafe" stop-opacity="0.92"/>
+              </linearGradient>
+            </defs>
+            <path d="M10 14c10 0 16 4 22 8 6-4 12-8 22-8 4 0 6 2 6 6v28c0 3-2 5-5 5-9 0-15 3-21 7-6-4-12-7-21-7-3 0-5-2-5-5V20c0-4 2-6 6-6Z" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
+            <path d="M32 24v34" stroke="rgba(255,255,255,.65)" stroke-width="2"/>
+            <path d="M12 20c8 0 13 3 20 7v29c-6-4-12-6-20-6V20Z" fill="url(#g1)" opacity="0.98"/>
+            <path d="M52 20c-8 0-13 3-20 7v29c6-4 12-6 20-6V20Z" fill="url(#g1)" opacity="0.98"/>
+          </svg>
         </div>
-        <div class="brandText">
-          <div class="name">Cửu Thiên</div>
-          <div class="sub">
-            <span class="pill" title="Số online sẽ đồng bộ sau"><span>👁</span> <b id="onlineCount">—</b> online</span>
-            <span class="pill" title="Tu vi hiện tại"><span>⚡</span> <b id="cultivationLabel">Phàm Nhân</b></span>
-          </div>
+        <div class="brandTitle">
+          <span class="brandText">TRUYỆN Online</span>
         </div>
       </div>
 
-      <div class="actions">
-        <button class="iconBtn" title="Tìm truyện" onclick="App.openSearch()">
-          🔎
-        </button>
-        <button class="cta" title="Nạp VIP (mở drawer để xem QR)" onclick="App.openPay()">
-          🪙 Nạp
-        </button>
-        <button class="iconBtn" id="themeBtn" title="Sáng/Tối" onclick="App.toggleTheme()">🌙</button>
-        <button class="iconBtn" title="Thông báo" onclick="App.toast('Chưa có thông báo mới')">
-          🔔
-        </button>
-        <button class="avatarBtn" id="avatarBtn" title="Tài khoản" onclick="App.openDrawer()">
-          <img id="avatarImg" alt="avatar" src="https://i.imgur.com/F32pUuu.jpeg" />
-          <div class="badgeDot" id="notifDot" style="display:none;">!</div>
-        </button>
-      </div>
+      <div class="topActions">
+  <div class="pillBtn hdrBtn onlinePill" id="onlinePill" title="Người đang online">
+    <span class="onlineGreenDot" id="onlineDot" aria-hidden="true"></span>
+    <span class="onlineNum" id="onlineNum" aria-live="polite"></span>
+  </div>
+
+  <button class="circleBtn hdrBtn" id="searchBtn" aria-label="Tìm kiếm" title="Tìm kiếm">
+    <span class="ico">🔍</span>
+  </button>
+
+  <button class="pillBtn vipPill" id="vipBtn" aria-label="Nạp VIP" title="Nạp VIP">
+    <span class="vipCoin" aria-hidden="true">💰</span>
+    <span class="vipText">Nạp VIP</span><span class="vipShort">Nạp</span>
+  </button>
+
+  <button class="circleBtn hdrBtn" id="themeBtn" aria-label="Đổi giao diện" title="Đổi giao diện">
+    <span class="ico" id="themeIco">🌙</span>
+  </button>
+
+  <button class="circleBtn hdrBtn" id="notifBtn" aria-label="Thông báo" title="Thông báo">
+    <span class="ico">🔔</span>
+    <span class="badge" id="notifBadge" style="display:none">0</span>
+  </button>
+
+  <!-- Khi đăng nhập: nút này sẽ hiển thị AVT; chưa đăng nhập: ☰ -->
+  <button class="pillBtn hdrBtn avatarPill" id="menuBtn" aria-label="Tài khoản & Menu">
+    <span id="menuIcon">☰</span>
+    <img id="menuAvatar" alt="Avatar" />
+    <span class="caret" aria-hidden="true">▾</span>
+  </button>
+</div>
+    </div>
+
+    <div class="subline">
+      Đọc truyện online mới nhất, đọc truyện chữ, truyện hay. Tổng hợp và cập nhật liên tục, đầy đủ nhất.
     </div>
   </header>
 
   <main class="wrap">
-    <!-- HOME -->
-    <section class="section" id="homeSection">
+
+    <!-- TRUYỆN HOT -->
+    <section class="section" id="secHot">
       <div class="sectionHead">
-        <div>
-          <div class="sectionTitle">🕒 Đang đọc</div>
-          <div class="muted">Tiếp tục chương bạn đang đọc.</div>
+        <div class="secTitle"><span>TRUYỆN HOT</span> <span class="flame">🔥</span></div>
+        <div class="secRight">
+          <select class="select" id="hotCategory">
+            <option value="all">THỂ LOẠI: TẤT CẢ</option>
+          </select>
         </div>
-        <button class="btn" onclick="App.openLibrary()">Xem tất cả →</button>
       </div>
-      <div class="hScroll" id="continueRow">
-        <!-- cards -->
+      <div class="contentPad">
+        <div class="hotGrid" id="hotGrid"></div>
+        <div class="hint" id="hotHint" style="padding-top:8px"></div>
       </div>
     </section>
 
-    <section class="section">
+    <!-- TRUYỆN ĐANG ĐỌC -->
+    <section class="section" id="secReading">
       <div class="sectionHead">
-        <div>
-          <div class="sectionTitle">🎲 Khám phá ngẫu nhiên</div>
-          <div class="muted">Kéo ngang để xem thêm.</div>
+        <div class="secTitle">🕓 TRUYỆN ĐANG ĐỌC</div>
+        <div class="secRight">
+          <button class="btn" id="btnLoginSmall" style="padding:8px 10px;border-radius:8px;display:none">Đăng nhập</button>
         </div>
-        <button class="btn" onclick="App.shuffleRandom()">Thử vận may</button>
       </div>
-      <div class="hScroll" id="randomRow"></div>
+      <div id="readingList"></div>
+      <div class="contentPad" id="readingEmpty" style="display:none">
+        <div class="mutedBox">
+          Chưa có truyện đang đọc. Khi bạn mở truyện, mục này sẽ tự hiện.
+        </div>
+      </div>
     </section>
 
-    <section class="section">
+    <!-- MỚI CẬP NHẬT -->
+    <section class="section" id="secUpdate">
       <div class="sectionHead">
-        <div>
-          <div class="sectionTitle">✨ Mới cập nhật <span class="pill" title="Live cập nhật theo Firestore">LIVE</span></div>
-          <div class="muted">Danh sách truyện mới cập nhật gần đây.</div>
+        <div class="secTitle">↻ MỚI CẬP NHẬT</div>
+        <div class="secRight">
+          <select class="select" id="updateCategory">
+            <option value="all">CHỌN THỂ LOẠI</option>
+          </select>
         </div>
-        <button class="btn" onclick="App.openSearch()">Xem tất cả →</button>
       </div>
-      <div class="list" id="latestList"></div>
+      <div id="updateList"></div>
+      <div class="contentPad">
+        <div class="hint" id="updateHint"></div>
+      </div>
     </section>
+
   </main>
 
-  <!-- Bottom navigation -->
-  <footer class="bottomNav">
-    <div class="navBar">
-      <div class="navItem active" id="navHome" onclick="App.nav('home')">🏠<div>Trang chủ</div></div>
-      <div class="navItem" id="navSearch" onclick="App.nav('search')">🔍<div>Tìm</div></div>
-      <div class="navItem" id="navLibrary" onclick="App.nav('library')">📚<div>Tủ</div></div>
-      <div class="navItem" id="navFollow" onclick="App.nav('follow')">❤️<div>Theo dõi</div></div>
-      <div class="navItem" id="navCult" onclick="App.nav('cult')">⚡<div>Tu luyện</div></div>
-    </div>
-  </footer>
-
-  <!-- Drawer -->
-  <div class="overlay" id="overlay" onclick="App.closeDrawer()"></div>
-  <aside class="drawer" id="drawer" aria-hidden="true">
-    <div class="drawerHead">
-      <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-        <div class="avatarBtn" style="width:44px;height:44px;">
-          <img id="drawerAvatar" alt="avatar" src="https://i.imgur.com/F32pUuu.jpeg">
-        </div>
-        <div style="min-width:0;">
-          <div style="font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="drawerName">Khách</div>
-          <div class="small" id="drawerEmail">Chưa đăng nhập</div>
-        </div>
+  <!-- DRAWER -->
+  <div class="drawerBg" id="drawerBg" aria-hidden="true">
+    <aside class="drawer" role="dialog" aria-modal="true">
+      <div class="drawerTop">
+        <b>Truyện Online</b>
+        <small id="drawerUser">Chưa đăng nhập</small>
       </div>
-      <button class="iconBtn" onclick="App.closeDrawer()" title="Đóng">✕</button>
-    </div>
-    <div class="drawerBody">
-      <div class="section" style="box-shadow:none;background:rgba(255,255,255,.02);">
-        <div class="sectionHead" style="border-bottom:none;">
-          <div>
-            <div class="sectionTitle">⚡ Tu vi</div>
-            <div class="small" id="cultivationSub">Đọc truyện để tăng tu vi.</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-weight:1000;color:var(--gold2);" id="cultivationLevel">Phàm Nhân</div>
-            <div class="small" id="cultivationExp">0 / 100</div>
-          </div>
-        </div>
-        <div style="padding:0 14px 14px;">
-          <div class="progress"><i id="cultivationBar"></i></div>
-          <div class="small" style="margin-top:8px;">Mỗi chương đọc xong +EXP. Có thể bấm “Đã đọc xong” ở cuối chương.</div>
-        </div>
+      <div class="drawerBody">
+        <button class="drawerBtn" id="navHome">🏠 Trang chủ <span class="r">›</span></button>
+        <button class="drawerBtn" id="navHistory">🕘 Lịch sử đọc <span class="r">›</span></button>
+        <button class="drawerBtn" id="navProfile">👤 Hồ sơ <span class="r">›</span></button>
+        <div class="divider"></div>
+        <button class="drawerBtn" id="navLogin">🔐 Đăng nhập Google <span class="r" id="loginState">›</span></button>
+        <button class="drawerBtn" id="navLogout" style="display:none">🚪 Đăng xuất <span class="r">›</span></button>
+        <div class="divider"></div>
+        <div class="hint">* Menu này giống nút ☰ trên ảnh. Các trang chi tiết (hồ sơ/đọc truyện) sẽ mở dần ở bước sau.</div>
       </div>
+    </aside>
+  </div>
 
-      <div class="sep"></div>
 
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn" onclick="App.nav('home');App.closeDrawer();">🏠 Trang chủ</button>
-        <button class="btn" onclick="App.nav('search');App.closeDrawer();">🔍 Tìm</button>
-        <button class="btn" onclick="App.nav('library');App.closeDrawer();">📚 Tủ truyện</button>
-        <button class="btn" onclick="App.nav('follow');App.closeDrawer();">❤️ Theo dõi</button>
-        <button class="btn" onclick="App.nav('cult');App.closeDrawer();">⚡ Tu luyện</button>
+  <!-- SEARCH -->
+  <div class="searchBg" id="searchBg" aria-hidden="true">
+    <div class="searchBox" role="dialog" aria-modal="true" aria-label="Tìm kiếm">
+      <div class="searchHead">
+        <input class="searchInput" id="searchInput" placeholder="Tìm truyện..." autocomplete="off" />
+        <button class="closeBtn" id="searchClose" aria-label="Đóng tìm kiếm">✕</button>
       </div>
-
-      <div class="sep"></div>
-
-      <!-- Pay / VIP -->
-      <div>
-        <div style="font-weight:1000;margin-bottom:10px;">🪙 VIP / Ủng hộ</div>
-        <div class="small">Bạn có thể để QR ngân hàng tại đây. Người nạp ghi đúng “mã nạp” để bạn đối soát.</div>
-        <div class="sep"></div>
-        <div class="grid2">
-          <input class="field" id="payCode" placeholder="Mã nạp (ví dụ: CT1234)" />
-          <button class="btn gold" onclick="App.copyPayCode()">📋 Copy mã</button>
-        </div>
-        <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-          <button class="btn" onclick="App.toast('Bạn thay QR theo ngân hàng của bạn nhé!')">🧾 Hướng dẫn</button>
-          <button class="btn gold" onclick="App.toast('Sau này mình sẽ làm trang VIP chi tiết + quyền lợi.')">✨ Quyền lợi VIP</button>
-        </div>
-        <div class="sep"></div>
-        <div style="border:1px dashed rgba(215,184,107,.35);border-radius:16px;padding:12px;background:rgba(215,184,107,.06);">
-          <div style="font-weight:1000;color:var(--gold2);">📌 Chỗ đặt QR</div>
-          <div class="small">Bạn có thể thay hình ảnh QR trong HTML (tìm “qr-placeholder”).</div>
-          <div style="margin-top:10px;display:flex;justify-content:center;">
-            <img id="qr-placeholder" alt="QR placeholder" src="https://i.imgur.com/4gX4qN8.png" style="width:220px;max-width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.10);" />
-          </div>
-        </div>
-      </div>
-
-      <div class="sep"></div>
-
-      <!-- Auth -->
-      <div id="authBox">
-        <div style="font-weight:1000;margin-bottom:10px;">🔐 Tài khoản</div>
-        <button class="btn gold" id="btnLogin" onclick="App.loginGoogle()">Đăng nhập Google</button>
-        <button class="btn danger hidden" id="btnLogout" onclick="App.logout()">Đăng xuất</button>
-        <div class="small" style="margin-top:10px;">
-          * Đăng nhập để đồng bộ theo dõi/tủ/lịch sử/tu vi lên Firebase.
-        </div>
-      </div>
-
-      <div class="sep"></div>
-
-      <!-- Admin panel -->
-      <div id="adminPanel" class="hidden">
-        <div style="font-weight:1000;margin-bottom:10px;">🛠 Admin</div>
-
-        <div class="small">Chỉ email trong danh sách admin mới thấy mục này.</div>
-
-        <div class="sep"></div>
-
-        <div style="font-weight:1000;margin-bottom:6px;">➕ Thêm truyện</div>
-        <input class="field" id="a_title" placeholder="Tên truyện" />
-        <input class="field" id="a_author" placeholder="Tác giả (tuỳ chọn)" />
-        <input class="field" id="a_cover" placeholder="Link ảnh bìa (URL) - khuyên dùng imgur" />
-        <input class="field" id="a_category" placeholder="Thể loại (ví dụ: Tiên Hiệp)" />
-        <textarea class="field" id="a_desc" placeholder="Mô tả"></textarea>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
-          <button class="btn gold" onclick="App.adminCreateStory()">Lưu truyện</button>
-          <button class="btn" onclick="App.adminOpenImport()">Nhập dữ liệu cũ (LocalStorage)</button>
-        </div>
-
-        <div class="sep"></div>
-
-        <div style="font-weight:1000;margin-bottom:6px;">➕ Thêm chương cho truyện</div>
-        <select class="field" id="a_storySelect"></select>
-        <div class="grid2">
-          <input class="field" id="a_chapIndex" placeholder="Số chương (1,2,3...)" inputmode="numeric" />
-          <input class="field" id="a_chapTitle" placeholder="Tên chương" />
-        </div>
-        <textarea class="field" id="a_chapContent" placeholder="Nội dung chương (truyện chữ)"></textarea>
-        <button class="btn gold" style="margin-top:10px;" onclick="App.adminAddChapter()">Lưu chương</button>
-
-        <div class="sep"></div>
-
-        <div class="small">
-          ⚠️ Lưu ý: Firestore rules cần cấu hình trong Firebase Console (mình có ghi hướng dẫn ở cuối file).
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Modal: Search / Library / Follow / Cultivation / Story Detail / Reader -->
-  <div class="modal" id="modal">
-    <div class="sheet" id="sheet">
-      <div class="sheetHead">
-        <div class="sheetTitle" id="sheetTitle">...</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <button class="iconBtn" onclick="App.closeModal()" title="Đóng">✕</button>
-        </div>
-      </div>
-      <div class="sheetBody" id="sheetBody"></div>
+      <div class="searchBody" id="searchResults"></div>
     </div>
   </div>
 
-  <!-- Firebase (v9 modular) -->
+  <!-- MODAL STORY -->
+  <div class="modalBg" id="modalBg" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <b id="modalTitle">—</b>
+        <button class="closeBtn" id="modalClose" aria-label="Đóng">✕</button>
+      </div>
+      <div class="modalBody" id="modalBody"></div>
+    </div>
+  </div>
+
   <script type="module">
-    // =============================
-    // 0) Firebase config
-    // =============================
-    // ✅ Bạn có thể thay config này bằng project Firebase của bạn.
-    // (apiKey không phải bí mật, nhưng bạn vẫn cần Security Rules đúng.)
+    // ===== Firebase (modular) =====
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import { getDatabase, ref, get, set, update, push, onValue, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+
+    // Your web app's Firebase configuration
     const firebaseConfig = {
-      apiKey: "AIzaSyBXwVGry1tXPmplvIPW243TY56IKWahMKM",
-      authDomain: "cuuhuyenvangioi.firebaseapp.com",
-      projectId: "cuuhuyenvangioi",
-      storageBucket: "cuuhuyenvangioi.firebasestorage.app",
-      messagingSenderId: "158345855725",
-      appId: "1:158345855725:web:2db1424211abb9cfba42e4"
+      apiKey: "AIzaSyDhq66ZZzNp9_-FnY7T-2gxNlrUDxeDPrU",
+      authDomain: "truyen-b3470.firebaseapp.com",
+      databaseURL: "https://truyen-b3470-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "truyen-b3470",
+      storageBucket: "truyen-b3470.firebasestorage.app",
+      messagingSenderId: "93210370757",
+      appId: "1:93210370757:web:87828b963906ac862f46ac"
     };
 
-    // =============================
-    // 1) Imports
-    // =============================
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import {
-      getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import {
-      getFirestore, collection, doc, getDoc, setDoc, addDoc, updateDoc,
-      serverTimestamp, query, orderBy, limit, getDocs, onSnapshot,
-      increment
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-    // =============================
-    // 2) Init
-    // =============================
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
+    const db = getDatabase(app);
     const provider = new GoogleAuthProvider();
 
-    // =============================
-    // 3) Helpers
-    // =============================
-    const $ = (sel, root=document) => root.querySelector(sel);
-    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+    // ===== Helpers =====
+    const $ = (id)=>document.getElementById(id);
+    const esc = (s)=>String(s??"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+    const fmtNum = (n)=> (n==null? "—" : ("C. " + n));
+    const toLower = (s)=>String(s||"").toLowerCase();
 
-    const ADMIN_EMAILS = new Set([
-      "sumi22122005@gmail.com" // ✅ Admin email
-    ]);
+    // ===== UI: Drawer =====
+    function openDrawer(){ $("drawerBg").style.display="block"; $("drawerBg").setAttribute("aria-hidden","false"); }
+    function closeDrawer(){ $("drawerBg").style.display="none"; $("drawerBg").setAttribute("aria-hidden","true"); }
+    $("menuBtn").addEventListener("click", openDrawer);
+    $("drawerBg").addEventListener("click", (e)=>{ if(e.target.id==="drawerBg") closeDrawer(); });
 
-    const DEFAULT_COVER = "https://i.imgur.com/F32pUuu.jpeg";
-    const LS = {
-      theme: "ct_theme",
-      follow: "ct_follow",
-      library: "ct_library",
-      history: "ct_history",
-      lastRead: "ct_lastread",
-      readerSize: "ct_reader_size",
-    };
+    // ===== UI: Search =====
+    function openSearch(){
+      $("searchBg").style.display = "block";
+      $("searchBg").setAttribute("aria-hidden","false");
+      $("searchInput").value = "";
+      renderSearch("");
+      setTimeout(()=> $("searchInput").focus(), 50);
+    }
+    function closeSearch(){
+      $("searchBg").style.display = "none";
+      $("searchBg").setAttribute("aria-hidden","true");
+      $("searchResults").innerHTML = "";
+    }
+    $("searchBtn").addEventListener("click", openSearch);
+    $("searchClose").addEventListener("click", closeSearch);
+    $("searchBg").addEventListener("click", (e)=>{ if(e.target.id==="searchBg") closeSearch(); });
+    $("searchInput").addEventListener("input", (e)=> renderSearch(e.target.value));
 
-    const CULT_REALMS = [
-      { name: "Phàm Nhân", need: 100 },
-      { name: "Luyện Khí", need: 220 },
-      { name: "Trúc Cơ", need: 380 },
-      { name: "Kim Đan", need: 600 },
-      { name: "Nguyên Anh", need: 900 },
-      { name: "Hóa Thần", need: 1400 },
-      { name: "Luyện Hư", need: 2200 },
-      { name: "Đại Thừa", need: 3400 },
-      { name: "Độ Kiếp", need: 5200 },
-      { name: "Tiên Nhân", need: 8000 }
-    ];
+    // VIP + Thông báo (placeholder UI)
+    $("vipBtn").addEventListener("click", ()=>{
+      alert("Nạp VIP: mình sẽ nối thanh toán (MoMo/Stripe...) ở bước tiếp theo.");
+    });
+    $("notifBtn").addEventListener("click", ()=>{
+      if(!currentUser) return alert("Bạn cần đăng nhập để xem thông báo.");
+      alert("Thông báo: mình sẽ làm danh sách thông báo + chuông có badge ở bước tiếp theo.");
+    });
 
-    function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
-    function now(){ return Date.now(); }
+    // ===== Online counter (Realtime Database presence) =====
+    function setOnlineCount(n){
+      const dot = $("onlineDot");
+      const num = $("onlineNum");
+      const has = (n && n > 0);
+      dot.style.opacity = has ? "1" : ".55";
+      num.textContent = has ? String(n) : "";
+    }
+    // Listen online users (tính trong 60s gần nhất)
+    onValue(ref(db, "presence/users"), (snap)=>{
+      const now = Date.now();
+      const val = snap.exists() ? (snap.val()||{}) : {};
+      const count = Object.values(val).filter(x => x && (now - (x.lastActive||0) < 60000)).length;
+      setOnlineCount(count);
+    });
 
-    function toast(msg){
-      const t = $("#toast");
-      t.textContent = msg;
-      t.classList.add("show");
-      clearTimeout(toast._t);
-      toast._t = setTimeout(()=>t.classList.remove("show"), 2800);
+    // Presence for current user
+    let _presenceTimer = null;
+    function startPresence(u){
+      if(_presenceTimer){ clearInterval(_presenceTimer); _presenceTimer = null; }
+      if(!u) return;
+      const pRef = ref(db, "presence/users/" + u.uid);
+
+      // set ngay (và tự xóa khi disconnect)
+      set(pRef, { uid: u.uid, name: u.displayName||"", lastActive: Date.now() });
+      onDisconnect(pRef).remove();
+
+      // heartbeat
+      _presenceTimer = setInterval(()=>{
+        set(pRef, { uid: u.uid, name: u.displayName||"", lastActive: Date.now() });
+      }, 25000);
     }
 
-    function uidSafe(s){ return (s||"").replace(/[^\w\-]+/g,"_").slice(0,120); }
-
-    function fmtTime(ts){
-      if(!ts) return "";
-      const d = (ts instanceof Date) ? ts : new Date(ts);
-      return d.toLocaleString("vi-VN", { hour12:false });
-    }
-
-    // Web Speech API (TTS)
-    let ttsUtter = null;
-    function ttsStop(){
-      try { speechSynthesis.cancel(); } catch(e){}
-      ttsUtter = null;
-    }
-    function ttsSpeak(text){
-      if(!("speechSynthesis" in window)) {
-        toast("Thiết bị không hỗ trợ đọc truyện (TTS).");
-        return;
-      }
-      ttsStop();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = "vi-VN";
-      u.rate = 1;
-      u.pitch = 1;
-      ttsUtter = u;
-      speechSynthesis.speak(u);
-    }
-
-    // =============================
-    // 4) Data access (Firestore)
-    // =============================
-    // stories: collection("stories")
-    // chapters: doc("stories/{storyId}") -> collection("chapters")
-    // users: doc("users/{uid}") with profile + cultivation + lists
-
-    async function ensureUserDoc(user){
-      if(!user) return;
-      const ref = doc(db, "users", user.uid);
-      const snap = await getDoc(ref);
-      if(!snap.exists()){
-        await setDoc(ref, {
-          uid: user.uid,
-          email: user.email || "",
-          displayName: user.displayName || "Người chơi",
-          photoURL: user.photoURL || "",
-          createdAt: serverTimestamp(),
-          cultivationExp: 0,
-          cultivationRealmIndex: 0,
-          follow: [],
-          library: [],
-          history: [],
-          lastRead: null,
-          vipTier: 0
-        });
-      } else {
-        // keep profile fresh
-        await updateDoc(ref, {
-          email: user.email || "",
-          displayName: user.displayName || "Người chơi",
-          photoURL: user.photoURL || ""
-        });
+    // Menu button: đổi ☰ ↔ avatar khi đăng nhập
+    function syncMenuAvatar(u){
+      const icon = $("menuIcon");
+      const img = $("menuAvatar");
+      if(u && u.photoURL){
+        img.src = u.photoURL;
+        img.style.display = "block";
+        icon.style.display = "none";
+      }else if(u){
+        img.style.display = "none";
+        icon.style.display = "block";
+        // fallback: chữ cái đầu nếu không có ảnh
+        const t = (u.displayName || u.email || "U").trim();
+        icon.textContent = (t[0] || "U").toUpperCase();
+      }else{
+        img.style.display = "none";
+        icon.style.display = "block";
+        icon.textContent = "☰";
       }
     }
 
-    async function loadUserState(uid){
-      const ref = doc(db, "users", uid);
-      const snap = await getDoc(ref);
-      return snap.exists() ? snap.data() : null;
-    }
+    // ===== Theme (theo hệ thống + nút 🌙/☀️) =====
+const THEME_KEY = "truyen_theme";
+const mqDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
 
-    async function saveUserLists(uid, patch){
-      const ref = doc(db, "users", uid);
-      await updateDoc(ref, patch);
-    }
-
-    // =============================
-    // 5) App state
-    // =============================
-    const State = {
-      user: null,
-      userDoc: null,
-      isAdmin: false,
-      stories: [],
-      storyMap: new Map(),
-      unsubStories: null,
-      activeStory: null,
-      activeChapter: null,
-      nav: "home", // home/search/library/follow/cult
-    };
-
-    // =============================
-    // 6) Rendering
-    // =============================
-    function setNav(active){
-  State.nav = active;
-  const ids = { home:"navHome", search:"navSearch", library:"navLibrary", follow:"navFollow", cult:"navCult" };
-  Object.values(ids).forEach(id=> $("#"+id)?.classList.remove("active"));
-  const on = ids[active];
-  if(on) $("#"+on)?.classList.add("active");
-
-  // open modal pages
-  if(active === "home"){
-    App.closeModal();
-  } else if(active === "search"){
-    App.openSearch();
-  } else if(active === "library"){
-    App.openLibrary();
-  } else if(active === "follow"){
-    App.openFollowed();
-  } else if(active === "cult"){
-    App.openCultivation();
-  }
+function getThemePref(){
+  return localStorage.getItem(THEME_KEY) || "system"; // system | light | dark
+}
+function isDarkNow(themePref){
+  if(themePref === "dark") return true;
+  if(themePref === "light") return false;
+  return mqDark ? mqDark.matches : false;
+}
+function syncThemeIcon(themePref){
+  const el = $("themeIco");
+  if(!el) return;
+  el.textContent = isDarkNow(themePref) ? "🌙" : "☀️";
+}
+function syncThemeColor(themePref){
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(!meta) return;
+  meta.setAttribute("content", isDarkNow(themePref) ? "#061225" : "#0d2f66");}
+function applyTheme(themePref, persist=true){
+  const root = document.documentElement;
+  if(themePref === "dark") root.dataset.theme = "dark";
+  else if(themePref === "light") root.dataset.theme = "light";
+  else root.removeAttribute("data-theme"); // system
+  if(persist) localStorage.setItem(THEME_KEY, themePref);
+  syncThemeIcon(themePref);
+  syncThemeColor(themePref);
+}
+function nextThemePref(curr){
+  if(curr === "system") return isDarkNow("system") ? "light" : "dark";
+  if(curr === "dark") return "light";
+  return "dark";
 }
 
-    function updateHeaderProfile(){
-      const u = State.user;
-      $("#avatarImg").src = (u?.photoURL) || "https://i.imgur.com/F32pUuu.jpeg";
-      $("#drawerAvatar").src = (u?.photoURL) || "https://i.imgur.com/F32pUuu.jpeg";
-      $("#drawerName").textContent = u?.displayName || "Khách";
-      $("#drawerEmail").textContent = u?.email || "Chưa đăng nhập";
+// áp dụng lúc load
+applyTheme(getThemePref(), false);
 
-      $("#btnLogin").classList.toggle("hidden", !!u);
-      $("#btnLogout").classList.toggle("hidden", !u);
+// đổi theo hệ thống nếu đang ở chế độ system
+mqDark?.addEventListener?.("change", ()=>{
+  if(getThemePref() === "system"){
+    syncThemeIcon("system");
+    syncThemeColor("system");
+  }
+});
 
-      $("#adminPanel").classList.toggle("hidden", !State.isAdmin);
-      if(State.isAdmin) refreshAdminStorySelect();
+// nút đổi theme
+$("themeBtn")?.addEventListener("click", ()=>{
+  const cur = getThemePref();
+  applyTheme(nextThemePref(cur));
+});
+
+
+    // ===== UI: Modal =====
+    function openModal(title, bodyHtml){
+      $("modalTitle").textContent = title;
+      $("modalBody").innerHTML = bodyHtml;
+      $("modalBg").style.display = "block";
+      $("modalBg").setAttribute("aria-hidden","false");
     }
-
-    function calcCultivationView(){
-      const exp = State.userDoc?.cultivationExp ?? 0;
-      let idx = State.userDoc?.cultivationRealmIndex ?? 0;
-      idx = clamp(idx, 0, CULT_REALMS.length-1);
-      const realm = CULT_REALMS[idx];
-      const nextNeed = realm.need;
-      const pct = clamp((exp / nextNeed) * 100, 0, 100);
-
-      $("#cultivationLabel").textContent = realm.name;
-      $("#cultivationLevel").textContent = realm.name;
-      $("#cultivationExp").textContent = `${exp} / ${nextNeed}`;
-      $("#cultivationBar").style.width = `${pct}%`;
+    function closeModal(){
+      $("modalBg").style.display = "none";
+      $("modalBg").setAttribute("aria-hidden","true");
+      $("modalBody").innerHTML = "";
     }
+    $("modalClose").addEventListener("click", closeModal);
+    $("modalBg").addEventListener("click", (e)=>{ if(e.target.id==="modalBg") closeModal(); });
 
-    function storyCardHTML(s, extraTag=""){
-      const tags = [];
-      if(s.status) tags.push(`<span class="miniTag gold">${s.status}</span>`);
-      if(extraTag) tags.push(`<span class="miniTag">${extraTag}</span>`);
-      const views = s.views ?? 0;
-      const likes = s.likes ?? 0;
-      const chapCount = s.chapterCount ?? 0;
-      const cover = s.coverUrl || DEFAULT_COVER;
+    // ===== Auth =====
+    let currentUser = null;
 
-      return `
-        <div class="storyCard" data-id="${s.id}">
-          <div class="cover">
-            <img src="${cover}" alt="cover" onerror="this.src='${DEFAULT_COVER}'"/>
-            <div class="cardMeta">${tags.join("")}</div>
-          </div>
-          <div class="cardBody">
-            <div class="cardTitle">${escapeHtml(s.title || "Không tên")}</div>
-            <div class="cardStats">
-              <span class="stat">👁 ${views}</span>
-              <span class="stat">👍 ${likes}</span>
-              <span class="stat">📄 ${chapCount}</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function rowCardHTML(s){
-      const cover = s.coverUrl || DEFAULT_COVER;
-      return `
-        <div class="rowCard" data-id="${s.id}">
-          <div class="rowCover"><img src="${cover}" alt="cover" onerror="this.src='${DEFAULT_COVER}'"></div>
-          <div class="rowMain">
-            <div class="rowTitle">${escapeHtml(s.title || "Không tên")}</div>
-            <div class="rowDesc">${escapeHtml(s.desc || "")}</div>
-            <div class="rowLine">
-              <span>👤 ${escapeHtml(s.author || "Tác giả")}</span>
-              <span>🕒 ${s.updatedAtMillis ? fmtTime(s.updatedAtMillis) : ""}</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderHome(){
-      const stories = State.stories;
-
-      // Continue reading from user doc (or local)
-      const lastRead = State.userDoc?.lastRead || JSON.parse(localStorage.getItem(LS.lastRead) || "null");
-      const continueList = [];
-      if(lastRead?.storyId){
-        const st = State.storyMap.get(lastRead.storyId);
-        if(st) continueList.push({s:st, tag: "Đọc tiếp"});
-      }
-
-      // also show history last few
-      const history = (State.userDoc?.history || JSON.parse(localStorage.getItem(LS.history) || "[]")).slice(0,8);
-      history.forEach(item=>{
-        const st = State.storyMap.get(item.storyId);
-        if(st && !continueList.some(x=>x.s.id===st.id)) continueList.push({s:st, tag:"Gần đây"});
-      });
-
-      const continueRow = $("#continueRow");
-      continueRow.innerHTML = continueList.length
-        ? continueList.map(x=>storyCardHTML(x.s, x.tag)).join("")
-        : `<div class="muted" style="padding:10px 2px;">Chưa có lịch sử đọc. Hãy chọn một truyện để bắt đầu.</div>`;
-
-      // Random
-      const randomRow = $("#randomRow");
-      const shuffled = [...stories].sort(()=>Math.random()-0.5).slice(0,12);
-      randomRow.innerHTML = shuffled.map(s=>storyCardHTML(s)).join("") || `<div class="muted">Chưa có truyện.</div>`;
-
-      // Latest list
-      const latestList = $("#latestList");
-      latestList.innerHTML = stories.slice(0,12).map(s=>rowCardHTML(s)).join("") || `<div class="muted">Chưa có truyện.</div>`;
-
-      // click handlers
-      attachStoryClicks(continueRow);
-      attachStoryClicks(randomRow);
-      attachStoryClicks(latestList);
-    }
-
-    function attachStoryClicks(root){
-      $$("[data-id]", root).forEach(el=>{
-        el.onclick = ()=> App.openStory(el.dataset.id);
-      });
-    }
-
-    function escapeHtml(str){
-      return (str || "").replace(/[&<>"']/g, m => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-      }[m]));
-    }
-
-    function renderSearchPage(){
-      const html = `
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <input class="field" id="qSearch" placeholder="Tìm truyện..." />
-          <select class="field" id="qCategory" style="max-width:220px;">
-            <option value="">Tất cả thể loại</option>
-          </select>
-          <button class="btn gold" onclick="App.runSearch()">Tìm</button>
-        </div>
-        <div class="sep"></div>
-        <div class="list" id="searchResults"></div>
-      `;
-      App.openModal("🔍 Tìm truyện", html, ()=> {
-        // fill categories
-        const cats = Array.from(new Set(State.stories.map(s=>s.category).filter(Boolean))).sort();
-        const sel = $("#qCategory");
-        cats.forEach(c=>{
-          const op = document.createElement("option");
-          op.value = c; op.textContent = c;
-          sel.appendChild(op);
+    async function ensureUserDoc(u){
+      if(!u) return;
+      const userRef = ref(db, "users/" + u.uid);
+      const snap = await get(userRef);
+      if(!snap.exists()){
+        await set(userRef, {
+          uid: u.uid,
+          displayName: u.displayName || "",
+          email: u.email || "",
+          photoURL: u.photoURL || "",
+          createdAt: Date.now(),
+          lastLoginAt: Date.now()
         });
-        $("#qSearch").addEventListener("input", App.runSearch);
-        $("#qCategory").addEventListener("change", App.runSearch);
-        App.runSearch();
-      });
-    }
-
-    function renderLibraryPage(){
-      const list = State.userDoc?.library || JSON.parse(localStorage.getItem(LS.library) || "[]");
-      const html = `
-        <div class="small">Truyện bạn đã lưu vào tủ.</div>
-        <div class="sep"></div>
-        <div class="list" id="libList"></div>
-      `;
-      App.openModal("📚 Tủ truyện", html, ()=>{
-        const box = $("#libList");
-        const stories = list.map(x=>State.storyMap.get(x.storyId)).filter(Boolean);
-        box.innerHTML = stories.length ? stories.map(s=>rowCardHTML(s)).join("") : `<div class="muted">Chưa có truyện trong tủ.</div>`;
-        attachStoryClicks(box);
-      });
-    }
-
-    function renderFollowedPage(){
-      const list = State.userDoc?.follow || JSON.parse(localStorage.getItem(LS.follow) || "[]");
-      const html = `
-        <div class="small">Truyện bạn theo dõi.</div>
-        <div class="sep"></div>
-        <div class="list" id="folList"></div>
-      `;
-      App.openModal("❤️ Theo dõi", html, ()=>{
-        const box = $("#folList");
-        const stories = list.map(x=>State.storyMap.get(x.storyId)).filter(Boolean);
-        box.innerHTML = stories.length ? stories.map(s=>rowCardHTML(s)).join("") : `<div class="muted">Chưa theo dõi truyện nào.</div>`;
-        attachStoryClicks(box);
-      });
-    }
-
-    function renderCultivationPage(){
-      const realm = $("#cultivationLevel")?.textContent || "Phàm Nhân";
-      const html = `
-        <div class="reader">
-          <div style="font-weight:1000;font-size:16px;">⚡ Tu luyện</div>
-          <div class="small" style="margin-top:6px;">Đọc truyện để tăng EXP. Càng đọc càng lên cảnh giới.</div>
-          <div class="sep"></div>
-
-          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-            <div>
-              <div style="font-weight:1000;color:var(--gold2);font-size:18px;">${realm}</div>
-              <div class="small" id="cultModalExp">...</div>
-            </div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <button class="btn" onclick="App.toast('Gợi ý: chọn 1 truyện → mở chương → đọc tới cuối → bấm “Đã đọc xong”.')">📌 Cách tăng tu vi</button>
-              <button class="btn gold" onclick="App.nav('search')">🔍 Đi đọc truyện</button>
-            </div>
-          </div>
-
-          <div style="margin-top:12px;">
-            <div class="progress"><i id="cultModalBar"></i></div>
-          </div>
-
-          <div class="sep"></div>
-          <div style="font-weight:1000;margin-bottom:8px;">🕘 Lịch sử đọc gần đây</div>
-          <div class="list" id="histList"></div>
-        </div>
-      `;
-      App.openModal("⚡ Tu luyện", html, ()=>{
-        // sync bar/exp from drawer
-        const exp = State.userDoc?.cultivationExp ?? 0;
-        let idx = State.userDoc?.cultivationRealmIndex ?? 0;
-        idx = clamp(idx, 0, CULT_REALMS.length-1);
-        const need = CULT_REALMS[idx].need;
-        $("#cultModalExp").textContent = `${exp} / ${need} EXP`;
-        $("#cultModalBar").style.width = `${clamp((exp/need)*100,0,100)}%`;
-
-        const hist = (State.userDoc?.history || JSON.parse(localStorage.getItem(LS.history) || "[]")).slice(0,12);
-        const box = $("#histList");
-        const stories = hist.map(x=>State.storyMap.get(x.storyId)).filter(Boolean);
-        box.innerHTML = stories.length ? stories.map(s=>rowCardHTML(s)).join("") : `<div class="muted">Chưa có lịch sử.</div>`;
-        attachStoryClicks(box);
-      });
-    }
-
-    function renderStoryDetail(storyId){
-      const s = State.storyMap.get(storyId);
-      if(!s) return toast("Không tìm thấy truyện.");
-      State.activeStory = s;
-
-      const isFollowed = isInList("follow", storyId);
-      const isInLib = isInList("library", storyId);
-
-      const html = `
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <div style="width:110px;flex:0 0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:rgba(255,255,255,.04);">
-            <img src="${s.coverUrl||DEFAULT_COVER}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src='${DEFAULT_COVER}'">
-          </div>
-          <div style="flex:1;min-width:0;">
-            <div style="font-weight:1000;font-size:16px;line-height:1.25;">${escapeHtml(s.title)}</div>
-            <div class="chipRow">
-              ${s.category ? `<span class="chip">🏷 ${escapeHtml(s.category)}</span>` : ""}
-              <span class="chip">👁 ${(s.views||0)}</span>
-              <span class="chip">👍 ${(s.likes||0)}</span>
-              <span class="chip">📄 ${(s.chapterCount||0)} chương</span>
-            </div>
-            <div class="small" style="margin-top:8px;">${escapeHtml(s.desc||"")}</div>
-            <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-              <button class="btn gold" onclick="App.readFirst()">📖 Đọc từ đầu</button>
-              <button class="btn" onclick="App.readContinue()">🕒 Đọc tiếp</button>
-              <button class="btn" onclick="App.toggleFollow('${storyId}')">${isFollowed ? "💔 Bỏ theo dõi" : "❤️ Theo dõi"}</button>
-              <button class="btn" onclick="App.toggleLibrary('${storyId}')">${isInLib ? "❌ Xoá khỏi tủ" : "📚 Thêm vào tủ"}</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="sep"></div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
-          <div style="font-weight:1000;">📄 Danh sách chương</div>
-          <button class="btn" onclick="App.reloadChapters()">⟳ Tải lại</button>
-        </div>
-        <div class="chapterList" id="chapterList">
-          <div class="muted">Đang tải chương...</div>
-        </div>
-      `;
-
-      App.openModal("📚 Chi tiết truyện", html, async ()=>{
-        await bumpStoryView(s.id);
-        await App.reloadChapters();
-      });
-    }
-
-    async function bumpStoryView(storyId){
-      try{
-        const ref = doc(db, "stories", storyId);
-        await updateDoc(ref, { views: increment(1), updatedAt: serverTimestamp() });
-      }catch(e){}
-    }
-
-    async function loadChapters(storyId){
-      // Simple: fetch all (OK for MVP). Later can paginate.
-      const qCh = query(collection(db, "stories", storyId, "chapters"), orderBy("index","asc"), limit(3000));
-      const snap = await getDocs(qCh);
-      const chapters = [];
-      snap.forEach(d=>{
-        const data = d.data();
-        chapters.push({ id:d.id, ...data });
-      });
-      return chapters;
-    }
-
-    async function renderChaptersList(storyId){
-      const chapters = await loadChapters(storyId);
-      State.activeStory.chaptersCache = chapters;
-
-      // update count if needed
-      if((State.activeStory.chapterCount||0) !== chapters.length){
-        try{
-          await updateDoc(doc(db,"stories",storyId), { chapterCount: chapters.length });
-        }catch(e){}
+      }else{
+        await update(userRef, { lastLoginAt: Date.now(), displayName: u.displayName||"", photoURL: u.photoURL||"" });
       }
+    }
 
-      const box = $("#chapterList");
-      if(!box) return;
-      if(!chapters.length){
-        box.innerHTML = `<div class="muted">Chưa có chương. Admin hãy thêm chương.</div>`;
+    async function login(){
+      try{
+        await signInWithPopup(auth, provider);
+        closeDrawer();
+      }catch(err){
+        alert("Đăng nhập thất bại: " + (err?.message || err));
+      }
+    }
+    async function logout(){
+      await signOut(auth);
+      closeDrawer();
+    }
+
+    $("navLogin").addEventListener("click", login);
+    $("btnLoginSmall").addEventListener("click", login);
+    $("navLogout").addEventListener("click", logout);
+
+    // Placeholder routes (bước sau nâng cấp)
+    $("navHome").addEventListener("click", ()=>{ closeDrawer(); window.scrollTo({top:0, behavior:"smooth"}); });
+    $("navProfile").addEventListener("click", ()=>{ closeDrawer(); alert("Trang Hồ sơ: sẽ làm ở bước tiếp theo (đúng yêu cầu bạn)."); });
+    $("navHistory").addEventListener("click", ()=>{ closeDrawer(); alert("Trang Lịch sử: sẽ làm ở bước tiếp theo."); });
+    $("homeBtn").addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
+
+    onAuthStateChanged(auth, async (u)=>{
+      currentUser = u || null;
+      syncMenuAvatar(currentUser);
+      startPresence(currentUser);
+      if(u) await ensureUserDoc(u);
+
+      $("drawerUser").textContent = u ? (u.displayName || u.email || "Đã đăng nhập") : "Chưa đăng nhập";
+      $("navLogout").style.display = u ? "block" : "none";
+      $("btnLoginSmall").style.display = u ? "none" : "inline-flex";
+      $("loginState").textContent = u ? "✓" : "›";
+
+      // badge thông báo (nếu bạn có lưu userData/{uid}/notificationsUnread = number)
+      try{
+        if(u){
+          onValue(ref(db, `userData/${u.uid}/notificationsUnread`), (sn)=>{
+            const n = sn.exists() ? (sn.val()||0) : 0;
+            const b = $("notifBadge");
+            if(n>0){
+              b.textContent = n>99 ? "99+" : String(n);
+              b.style.display = "grid";
+            }else{
+              b.style.display = "none";
+            }
+          });
+        }else{
+          $("notifBadge").style.display = "none";
+        }
+      }catch(e){}
+
+      await loadReading(); // phụ thuộc user
+    });
+
+    // ===== Data model (Realtime Database)
+    // stories/{storyId}: { title, coverUrl, categories: "Tiên hiệp,..." OR ["..."], latestChapNo, chapterCount, updatedAt, views, hotScore, desc }
+    // userData/{uid}/reading/{storyId}: { storyId, chapNo, updatedAt }
+    // =====
+
+    // ===== Story cache =====
+    let stories = []; // normalized
+    let categories = [];
+
+    function normalizeStory(id, raw){
+      const cats = Array.isArray(raw?.categories) ? raw.categories : String(raw?.categories||"").split(",").map(s=>s.trim()).filter(Boolean);
+      return {
+        id,
+        title: raw?.title || raw?.name || "Không tên",
+        coverUrl: raw?.coverUrl || raw?.cover || raw?.image || "",
+        categories: cats,
+        chapterCount: raw?.chapterCount ?? raw?.chapters ?? raw?.chap ?? raw?.totalChapters ?? null,
+        latestChapNo: raw?.latestChapNo ?? raw?.latestChap ?? raw?.latest ?? null,
+        updatedAt: raw?.updatedAt ?? raw?.updated ?? raw?.time ?? null,
+        views: raw?.views ?? raw?.view ?? 0,
+        hotScore: raw?.hotScore ?? raw?.hot ?? 0,
+        desc: raw?.desc || raw?.description || ""
+      };
+    }
+
+    function computeCategories(list){
+      const set = new Set();
+      list.forEach(s => (s.categories||[]).forEach(c => set.add(c)));
+      return Array.from(set).sort((a,b)=>a.localeCompare(b,"vi"));
+    }
+
+    function fillCategorySelect(sel, items){
+      const cur = sel.value || "all";
+      sel.innerHTML = '<option value="all">' + (sel.id==="hotCategory" ? "THỂ LOẠI: TẤT CẢ" : "CHỌN THỂ LOẠI") + '</option>';
+      items.forEach(c=>{
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c.toUpperCase();
+        sel.appendChild(opt);
+      });
+      sel.value = items.includes(cur) ? cur : "all";
+    }
+
+
+    function renderSearch(q){
+      const query = toLower((q||"").trim());
+      const results = !query ? [] : stories
+        .filter(s => toLower(s.title).includes(query) || (s.categories||[]).some(c => toLower(c).includes(query)))
+        .slice(0, 30);
+
+      const box = $("searchResults");
+      if(!query){
+        box.innerHTML = '<div class="searchEmpty">Nhập tên truyện hoặc thể loại để tìm…</div>';
         return;
       }
-      box.innerHTML = chapters.map(ch=>{
-        const done = isChapterDone(storyId, ch.id) ? "✅" : "📖";
-        return `
-          <div class="chapterItem" data-chid="${ch.id}">
-            <div class="left">
-              <div class="t">${done} Chương ${ch.index}: ${escapeHtml(ch.title||"")}</div>
-              <div class="s">${(ch.updatedAtMillis ? fmtTime(ch.updatedAtMillis) : "")}</div>
+      if(!results.length){
+        box.innerHTML = '<div class="searchEmpty">Không tìm thấy kết quả.</div>';
+        return;
+      }
+      box.innerHTML = results.map(s=>`
+        <div class="searchItem" data-story="${esc(s.id)}">
+          <div class="miniCover" style="width:34px;height:46px">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
+          <div class="t" title="${esc(s.title)}">${esc(s.title)}</div>
+          <div class="c">${(s.latestChapNo!=null) ? ("C. " + s.latestChapNo) : ""}</div>
+        </div>
+      `).join("");
+      box.querySelectorAll("[data-story]").forEach(row=>{
+        row.addEventListener("click", ()=>{
+          const id = row.getAttribute("data-story");
+          const st = stories.find(x=>x.id===id);
+          closeSearch();
+          openStoryModal(st);
+        });
+      });
+    }
+
+
+    // ===== Render Hot =====
+    function renderHot(){
+      const cat = $("hotCategory").value;
+      const list = stories
+        .filter(s => cat==="all" ? true : (s.categories||[]).includes(cat))
+        .slice()
+        .sort((a,b)=> (b.hotScore||0) - (a.hotScore||0) || (b.views||0)-(a.views||0) || (b.updatedAt||0)-(a.updatedAt||0))
+        .slice(0, 12);
+
+      const grid = $("hotGrid");
+      grid.innerHTML = list.map(s => `
+        <a class="hotItem" data-story="${esc(s.id)}" href="javascript:void(0)">
+          <div class="hotCover">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
+          <div class="hotName">${esc(s.title)}</div>
+        </a>
+      `).join("");
+
+      $("hotHint").textContent = list.length ? "" : "Chưa có truyện HOT phù hợp trong dữ liệu Firebase.";
+      grid.querySelectorAll("[data-story]").forEach(a=>{
+        a.addEventListener("click", ()=>{
+          const id = a.getAttribute("data-story");
+          const st = stories.find(x=>x.id===id);
+          openStoryModal(st);
+        });
+      });
+    }
+
+    // ===== Render Updated =====
+    function renderUpdated(){
+      const cat = $("updateCategory").value;
+      const list = stories
+        .filter(s => cat==="all" ? true : (s.categories||[]).includes(cat))
+        .slice()
+        .sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0) || (b.latestChapNo||0) - (a.latestChapNo||0))
+        .slice(0, 20);
+
+      const box = $("updateList");
+      box.innerHTML = list.map(s=>`
+        <div class="listRow" data-story="${esc(s.id)}">
+          <div class="leftLine">
+            <div class="storyLine">
+              <div class="miniCover">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
+              <div style="min-width:0">
+                <div class="lineTitle" title="${esc(s.title)}">${esc(s.title)}</div>
+                <div class="lineMeta">
+                  ${(s.latestChapNo!=null) ? `<span class="pill">Full</span>` : ``}
+                  ${(s.updatedAt!=null) ? `<span>🕒 ${new Date(s.updatedAt).toLocaleDateString("vi-VN")}</span>` : ``}
+                </div>
+              </div>
             </div>
-            <div class="miniTag">→</div>
+          </div>
+          <div class="chapCount">${fmtNum(s.latestChapNo ?? s.chapterCount)}</div>
+        </div>
+      `).join("");
+
+      $("updateHint").textContent = list.length ? "" : "Chưa có truyện trong mục Mới cập nhật.";
+      box.querySelectorAll("[data-story]").forEach(row=>{
+        row.addEventListener("click", ()=>{
+          const id = row.getAttribute("data-story");
+          const st = stories.find(x=>x.id===id);
+          openStoryModal(st);
+        });
+      });
+    }
+
+    // ===== Render Reading (user) =====
+    async function loadReading(){
+      if(!currentUser){
+        $("readingList").innerHTML = "";
+        $("readingEmpty").style.display = "block";
+        return;
+      }
+      const rRef = ref(db, `userData/${currentUser.uid}/reading`);
+      const snap = await get(rRef);
+      const data = snap.exists() ? snap.val() : {};
+      const arr = Object.values(data||{})
+        .filter(Boolean)
+        .sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0))
+        .slice(0, 8);
+
+      if(!arr.length){
+        $("readingList").innerHTML = "";
+        $("readingEmpty").style.display = "block";
+        return;
+      }
+      $("readingEmpty").style.display = "none";
+
+      $("readingList").innerHTML = arr.map(it=>{
+        const st = stories.find(s=>s.id===it.storyId) || { title: it.title||"Truyện", coverUrl:"" };
+        const chapNo = it.chapNo ?? it.latestChapNo ?? null;
+        return `
+          <div class="listRow" data-story="${esc(it.storyId)}">
+            <div class="leftLine">
+              <div class="storyLine">
+                <div class="miniCover">${st.coverUrl ? `<img src="${esc(st.coverUrl)}" alt="">` : ""}</div>
+                <div style="min-width:0">
+                  <div class="lineTitle" title="${esc(st.title)}">${esc(st.title)}</div>
+                  <div class="lineMeta">
+                    <span>Tiếp tục: ${chapNo!=null ? ("Chương " + chapNo) : "—"}</span>
+                    ${it.updatedAt ? `<span>🕒 ${new Date(it.updatedAt).toLocaleString("vi-VN")}</span>` : ``}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chapCount">▶</div>
           </div>
         `;
       }).join("");
 
-      $$("[data-chid]", box).forEach(el=>{
-        el.onclick = ()=> App.openReader(storyId, el.dataset.chid);
+      $("readingList").querySelectorAll("[data-story]").forEach(row=>{
+        row.addEventListener("click", ()=>{
+          const id = row.getAttribute("data-story");
+          const st = stories.find(x=>x.id===id);
+          openStoryModal(st, { continue: true });
+        });
       });
     }
 
-    function isInList(kind, storyId){
-      const key = kind === "follow" ? "follow" : "library";
-      const arr = State.userDoc?.[key] || JSON.parse(localStorage.getItem(kind === "follow" ? LS.follow : LS.library) || "[]");
-      return arr.some(x=>x.storyId === storyId);
+    // ===== Story Modal + "đánh dấu đang đọc" =====
+    async function markReading(storyId, chapNo=1){
+      if(!currentUser) return;
+      const st = stories.find(x=>x.id===storyId);
+      const payload = {
+        storyId,
+        chapNo,
+        updatedAt: Date.now(),
+        title: st?.title || ""
+      };
+      await set(ref(db, `userData/${currentUser.uid}/reading/${storyId}`), payload);
     }
 
-    function setInList(kind, storyId, yes){
-      const key = kind === "follow" ? "follow" : "library";
-      const lsKey = kind === "follow" ? LS.follow : LS.library;
-      const arr = State.userDoc?.[key] || JSON.parse(localStorage.getItem(lsKey) || "[]");
-      const has = arr.some(x=>x.storyId === storyId);
-      let next = arr;
-      if(yes && !has) next = [{storyId, at: now()}, ...arr].slice(0,500);
-      if(!yes && has) next = arr.filter(x=>x.storyId !== storyId);
+    function openStoryModal(st, opts={}){
+      if(!st) return;
+      const cats = (st.categories||[]).slice(0,4).map(c=>`<span class="pill">${esc(c)}</span>`).join(" ");
+      openModal(st.title, `
+        <div class="modalGrid">
+          <div class="modalCover">${st.coverUrl ? `<img src="${esc(st.coverUrl)}" alt="">` : ""}</div>
+          <div>
+            <div class="lineMeta" style="margin:0 0 6px 0">
+              ${cats || `<span class="pill">Chưa có thể loại</span>`}
+              ${(st.latestChapNo!=null) ? `<span class="pill">C. ${st.latestChapNo}</span>` : ``}
+              ${(st.views!=null) ? `<span class="pill">👁 ${st.views}</span>` : ``}
+            </div>
+            <div class="modalDesc">
+              ${st.desc ? esc(st.desc) : "Chưa có mô tả. (Bước sau mình sẽ làm trang chi tiết truyện + chương giống web mẫu.)"}
+            </div>
 
-      if(State.user){
-        const patch = {}; patch[key] = next;
-        saveUserLists(State.user.uid, patch).then(()=>{ State.userDoc[key]=next; renderHome(); });
-      } else {
-        localStorage.setItem(lsKey, JSON.stringify(next));
-        renderHome();
-      }
-    }
+            <div class="btnRow">
+              <button class="btn primary" id="btnReadNow">Đọc ngay</button>
+              <button class="btn" id="btnMarkReading">${opts.continue ? "Tiếp tục đọc" : "Đánh dấu đang đọc"}</button>
+              <button class="btn" id="btnCloseModal">Đóng</button>
+            </div>
 
-    function getHistory(){
-      return State.userDoc?.history || JSON.parse(localStorage.getItem(LS.history) || "[]");
-    }
-
-    function pushHistory(storyId, chapterId){
-      const story = State.storyMap.get(storyId);
-      const item = { storyId, chapterId, at: now(), title: story?.title || "" };
-      let hist = getHistory().filter(x=>x.storyId !== storyId); // keep 1 per story
-      hist.unshift(item);
-      hist = hist.slice(0,200);
-
-      if(State.user){
-        saveUserLists(State.user.uid, { history: hist, lastRead: item }).then(()=>{
-          State.userDoc.history = hist;
-          State.userDoc.lastRead = item;
-          renderHome();
-          calcCultivationView();
-        });
-      } else {
-        localStorage.setItem(LS.history, JSON.stringify(hist));
-        localStorage.setItem(LS.lastRead, JSON.stringify(item));
-        renderHome();
-      }
-    }
-
-    function isChapterDone(storyId, chapterId){
-      const key = `ct_done_${storyId}`;
-      const done = JSON.parse(localStorage.getItem(key) || "[]");
-      return done.includes(chapterId);
-    }
-    function markChapterDone(storyId, chapterId){
-      const key = `ct_done_${storyId}`;
-      const done = JSON.parse(localStorage.getItem(key) || "[]");
-      if(!done.includes(chapterId)){
-        done.push(chapterId);
-        localStorage.setItem(key, JSON.stringify(done.slice(0,5000)));
-      }
-    }
-
-    function getReaderSize(){
-      const n = Number(localStorage.getItem(LS.readerSize) || 16);
-      return clamp(n, 14, 22);
-    }
-    function setReaderSize(n){
-      localStorage.setItem(LS.readerSize, String(clamp(n,14,22)));
-      document.documentElement.style.setProperty("--reader-size", `${getReaderSize()}px`);
-    }
-
-    // =============================
-    // 7) Reader + cultivation exp
-    // =============================
-    async function openReader(storyId, chapterId){
-      const s = State.storyMap.get(storyId);
-      if(!s) return toast("Không tìm thấy truyện.");
-      const chapters = s.chaptersCache || await loadChapters(storyId);
-      const ch = chapters.find(x=>x.id === chapterId);
-      if(!ch) return toast("Không tìm thấy chương.");
-
-      State.activeStory = s;
-      State.activeChapter = ch;
-
-      pushHistory(storyId, chapterId);
-
-      const html = `
-        <div class="reader">
-          <div class="small">📚 ${escapeHtml(s.title)} • Chương ${ch.index}</div>
-          <div class="readerTitle">${escapeHtml(ch.title || "")}</div>
-
-          <div class="readerControls">
-            <button class="btn" onclick="App.prevChapter()">← Trước</button>
-            <button class="btn" onclick="App.nextChapter()">Sau →</button>
-            <button class="btn gold" onclick="App.tts()">🔊 Nghe</button>
-            <button class="btn" onclick="App.ttsStop()">⏹ Dừng</button>
-            <button class="btn" onclick="App.fontMinus()">A-</button>
-            <button class="btn" onclick="App.fontPlus()">A+</button>
-          </div>
-
-          <div class="readerText" id="readerText">${escapeHtml(ch.content || "")}</div>
-
-          <div class="sep"></div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            <button class="btn gold" onclick="App.finishChapter()">✅ Đã đọc xong (nhận EXP)</button>
-            <button class="btn" onclick="App.openStory('${storyId}')">📄 Danh sách chương</button>
-          </div>
-
-          <div class="small" style="margin-top:10px;">
-            Mẹo: đọc tới cuối và bấm “Đã đọc xong” để tăng tu vi nhanh hơn.
+            <div class="mutedBox">
+              • Hiện tại là bản <b>trang chủ giống ảnh</b> + lấy dữ liệu từ Firebase.<br/>
+              • Khi bấm <b>Đọc ngay</b>, mình đang demo (sẽ làm trang đọc truyện & chương ở bước tiếp theo).
+            </div>
           </div>
         </div>
-      `;
+      `);
 
-      App.openModal("📖 Đọc truyện", html, ()=>{
-        // apply font size
-        setReaderSize(getReaderSize());
-        // scroll top
-        $("#sheetBody").scrollTop = 0;
+      $("btnCloseModal").addEventListener("click", closeModal);
+      $("btnMarkReading").addEventListener("click", async ()=>{
+        if(!currentUser){
+          alert("Bạn cần đăng nhập để lưu 'đang đọc' lên Firebase.");
+          return;
+        }
+        await markReading(st.id, 1);
+        closeModal();
+        await loadReading();
+      });
+      $("btnReadNow").addEventListener("click", async ()=>{
+        // Demo: chỉ đánh dấu đang đọc, còn trang đọc sẽ làm tiếp
+        if(currentUser) await markReading(st.id, 1);
+        closeModal();
+        await loadReading();
+        alert("Bước tiếp theo mình sẽ làm trang đọc truyện + chương (đúng yêu cầu bạn).");
       });
     }
 
-    function getNeighborChapter(delta){
-      const s = State.activeStory;
-      const ch = State.activeChapter;
-      if(!s || !ch) return null;
-      const list = s.chaptersCache || [];
-      const idx = list.findIndex(x=>x.id === ch.id);
-      const next = list[idx + delta];
-      return next || null;
-    }
+    // ===== Load stories from Firebase =====
+    async function loadStories(){
+      // ưu tiên /stories; nếu bạn đang dùng node khác, đổi ở đây.
+      const sRef = ref(db, "stories");
+      const snap = await get(sRef);
+      const raw = snap.exists() ? snap.val() : null;
 
-    async function gainExp(amount){
-      if(amount <= 0) return;
-      // local first
-      if(!State.user){
-        // guest exp in localStorage
-        const key = "ct_guest_cult";
-        const cur = JSON.parse(localStorage.getItem(key) || '{"exp":0,"idx":0}');
-        let exp = (cur.exp||0) + amount;
-        let idx = cur.idx||0;
-        while(idx < CULT_REALMS.length-1 && exp >= CULT_REALMS[idx].need){
-          exp -= CULT_REALMS[idx].need;
-          idx++;
-        }
-        localStorage.setItem(key, JSON.stringify({exp, idx}));
-        // reflect to UI as pseudo userDoc
-        State.userDoc = { ...(State.userDoc||{}), cultivationExp: exp, cultivationRealmIndex: idx };
-        calcCultivationView();
-        return;
+      if(!raw){
+        // tạo dữ liệu demo MIN để bạn thấy UI (bạn có thể xóa sau)
+        stories = [
+          { id:"demo1", title:"Kinh Thiên Kiếm Đế", coverUrl:"", categories:["Tiên hiệp"], latestChapNo:250, updatedAt:Date.now()-86400000*2, views:1200, hotScore:50, desc:"Demo (không có dữ liệu stories trên Firebase)." },
+          { id:"demo2", title:"Thôn Phệ Cổ Đế", coverUrl:"", categories:["Huyền huyễn"], latestChapNo:3740, updatedAt:Date.now()-86400000*1, views:900, hotScore:45, desc:"Demo (hãy thêm node /stories trong RTDB)." },
+          { id:"demo3", title:"Thái Hoang Thôn Thiên Quyết", coverUrl:"", categories:["Tiên hiệp"], latestChapNo:255, updatedAt:Date.now()-86400000*3, views:800, hotScore:40, desc:"Demo" },
+          { id:"demo4", title:"Nhất Kiếm Độc Tôn", coverUrl:"", categories:["Kiếm hiệp"], latestChapNo:120, updatedAt:Date.now()-86400000*4, views:700, hotScore:35, desc:"Demo" },
+          { id:"demo5", title:"Nghịch Thiên Chí Tôn", coverUrl:"", categories:["Huyền huyễn"], latestChapNo:22, updatedAt:Date.now()-86400000*5, views:500, hotScore:25, desc:"Demo" },
+          { id:"demo6", title:"Vô Địch Thiên Hạ", coverUrl:"", categories:["Huyền huyễn"], latestChapNo:95, updatedAt:Date.now()-86400000*6, views:400, hotScore:20, desc:"Demo" },
+        ];
+      }else{
+        stories = Object.entries(raw).map(([id,val])=>normalizeStory(id,val));
       }
 
-      // logged-in: update Firestore atomically-ish
-      const ref = doc(db, "users", State.user.uid);
-      // pull latest from state
-      let exp = State.userDoc?.cultivationExp ?? 0;
-      let idx = State.userDoc?.cultivationRealmIndex ?? 0;
-      exp += amount;
-      while(idx < CULT_REALMS.length-1 && exp >= CULT_REALMS[idx].need){
-        exp -= CULT_REALMS[idx].need;
-        idx++;
-      }
-      State.userDoc.cultivationExp = exp;
-      State.userDoc.cultivationRealmIndex = idx;
-      calcCultivationView();
-      try{
-        await updateDoc(ref, { cultivationExp: exp, cultivationRealmIndex: idx });
-      }catch(e){}
+      categories = computeCategories(stories);
+      fillCategorySelect($("hotCategory"), categories);
+      fillCategorySelect($("updateCategory"), categories);
+
+      renderHot();
+      renderUpdated();
+      await loadReading();
     }
 
-    // =============================
-    // 8) Load stories (realtime)
-    // =============================
-    function subscribeStories(){
-      if(State.unsubStories) State.unsubStories();
-      const qy = query(collection(db, "stories"), orderBy("updatedAt", "desc"), limit(60));
-      State.unsubStories = onSnapshot(qy, (snap)=>{
-        const arr = [];
-        snap.forEach(d=>{
-          const data = d.data();
-          arr.push({
-            id: d.id,
-            ...data,
-            updatedAtMillis: data.updatedAt?.toMillis ? data.updatedAt.toMillis() : null
-          });
-        });
-        State.stories = arr;
-        State.storyMap = new Map(arr.map(s=>[s.id, s]));
-        renderHome();
-        if(State.isAdmin) refreshAdminStorySelect();
-      }, (err)=>{
-        console.error(err);
-        toast("Không tải được truyện từ Firebase. Kiểm tra mạng / Firestore rules.");
+    $("hotCategory").addEventListener("change", renderHot);
+    $("updateCategory").addEventListener("change", renderUpdated);
+
+    // Start
+    loadStories();
+
+    // ===== Tip: sample admin push (không chạy tự động) =====
+    // Bạn có thể mở DevTools và gọi window.__seedStories() để tạo 1 truyện mẫu lên RTDB.
+    window.__seedStories = async ()=>{
+      const id = push(ref(db, "stories")).key;
+      await set(ref(db, "stories/" + id), {
+        title: "Truyện mẫu seed",
+        coverUrl: "",
+        categories: "Tiên hiệp, Huyền huyễn",
+        latestChapNo: 1,
+        chapterCount: 1,
+        updatedAt: Date.now(),
+        views: 0,
+        hotScore: 10,
+        desc: "Truyện mẫu để test giao diện trang chủ."
       });
-    }
-
-    // =============================
-    // 9) Admin
-    // =============================
-    function refreshAdminStorySelect(){
-      const sel = $("#a_storySelect");
-      if(!sel) return;
-      sel.innerHTML = "";
-      State.stories.forEach(s=>{
-        const op = document.createElement("option");
-        op.value = s.id;
-        op.textContent = s.title || s.id;
-        sel.appendChild(op);
-      });
-    }
-
-    async function adminCreateStory(){
-      const title = $("#a_title").value.trim();
-      const author = $("#a_author").value.trim();
-      const coverUrl = $("#a_cover").value.trim();
-      const category = $("#a_category").value.trim();
-      const desc = $("#a_desc").value.trim();
-      if(!title || !desc) return toast("Nhập Tên truyện + Mô tả.");
-
-      try{
-        await addDoc(collection(db,"stories"), {
-          title, author,
-          coverUrl: coverUrl || DEFAULT_COVER,
-          category,
-          desc,
-          views: 0,
-          likes: 0,
-          chapterCount: 0,
-          status: "HOT",
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
-        toast("✅ Đã thêm truyện!");
-        $("#a_title").value = "";
-        $("#a_author").value = "";
-        $("#a_cover").value = "";
-        $("#a_category").value = "";
-        $("#a_desc").value = "";
-      }catch(e){
-        console.error(e);
-        toast("❌ Không thêm được. Kiểm tra Firestore rules.");
-      }
-    }
-
-    async function adminAddChapter(){
-      const storyId = $("#a_storySelect").value;
-      const index = Number($("#a_chapIndex").value);
-      const title = $("#a_chapTitle").value.trim();
-      const content = $("#a_chapContent").value.trim();
-      if(!storyId || !index || !title || !content) return toast("Nhập đủ: truyện + số chương + tên + nội dung.");
-
-      try{
-        await addDoc(collection(db,"stories",storyId,"chapters"), {
-          index,
-          title,
-          content,
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
-        await updateDoc(doc(db,"stories",storyId), { updatedAt: serverTimestamp(), chapterCount: increment(1) });
-        toast("✅ Đã thêm chương!");
-        $("#a_chapIndex").value = "";
-        $("#a_chapTitle").value = "";
-        $("#a_chapContent").value = "";
-      }catch(e){
-        console.error(e);
-        toast("❌ Không thêm được chương. Kiểm tra Firestore rules.");
-      }
-    }
-
-    function adminOpenImport(){
-      const html = `
-        <div class="small">
-          Tính năng này sẽ đọc dữ liệu truyện cũ trong LocalStorage (file HTML trước) và đẩy sang Firestore.<br>
-          - Truyện cũ dạng: localStorage["stories"] (có episodes).<br>
-          - Mình sẽ đổi episodes → chapters (nội dung để “(chưa có nội dung)” nếu trước đó là audio).<br><br>
-          ⚠️ Nên chạy 1 lần. Tránh import trùng.
-        </div>
-        <div class="sep"></div>
-        <button class="btn gold" onclick="App.adminImportOld()">Bắt đầu import</button>
-      `;
-      App.openModal("⬆️ Import dữ liệu cũ", html);
-    }
-
-    async function adminImportOld(){
-      const raw = localStorage.getItem("stories");
-      if(!raw) return toast("Không thấy localStorage['stories'] để import.");
-      let list = [];
-      try{ list = JSON.parse(raw) || []; }catch(e){ return toast("Dữ liệu cũ không hợp lệ."); }
-      if(!Array.isArray(list) || !list.length) return toast("Dữ liệu cũ trống.");
-
-      toast("Đang import... (đừng tắt trang)");
-      for(const s of list){
-        const title = (s.title || "").trim();
-        if(!title) continue;
-        // Create story
-        const docRef = await addDoc(collection(db,"stories"), {
-          title,
-          author: s.author || "",
-          coverUrl: s.image || s.coverUrl || DEFAULT_COVER,
-          category: s.category || "",
-          desc: s.desc || "",
-          views: s.views || 0,
-          likes: s.stars || 0,
-          chapterCount: (s.episodes||[]).length || 0,
-          status: s.isHot ? "HOT" : (s.isFull ? "FULL" : ""),
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
-
-        // Chapters (episodes)
-        const eps = Array.isArray(s.episodes) ? s.episodes : [];
-        let idx = 0;
-        for(const ep of eps){
-          idx++;
-          const ct = ep?.content || `(Chương này trước đây là audio: ${ep?.audio || ""})\n\n(Chưa có nội dung chữ. Bạn có thể sửa lại bằng cách thêm chương mới hoặc chỉnh trực tiếp trong Firestore.)`;
-          await addDoc(collection(db,"stories",docRef.id,"chapters"), {
-            index: idx,
-            title: ep?.name || `Chương ${idx}`,
-            content: ct,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-          });
-        }
-      }
-      toast("✅ Import xong! Quay lại Trang chủ để xem.");
-      App.closeModal();
-    }
-
-    // =============================
-    // 10) Search
-    // =============================
-    function runSearch(){
-      const q = ($("#qSearch")?.value || "").trim().toLowerCase();
-      const cat = ($("#qCategory")?.value || "").trim();
-      const box = $("#searchResults");
-      if(!box) return;
-
-      let list = State.stories;
-      if(cat) list = list.filter(s => (s.category||"") === cat);
-      if(q){
-        list = list.filter(s => (s.title||"").toLowerCase().includes(q) || (s.desc||"").toLowerCase().includes(q));
-      }
-      box.innerHTML = list.length ? list.map(s=>rowCardHTML(s)).join("") : `<div class="muted">Không có kết quả.</div>`;
-      attachStoryClicks(box);
-    }
-
-    // =============================
-    // 11) Theme
-    // =============================
-    function applyTheme(theme){
-      const isLight = theme === "light";
-      document.body.classList.toggle("light", isLight);
-      $("#themeBtn").textContent = isLight ? "☀️" : "🌙";
-      localStorage.setItem(LS.theme, theme);
-    }
-
-    // =============================
-    // 12) Public API for onclick
-    // =============================
-    window.App = {
-      toast,
-      nav: setNav,
-
-      openDrawer(){
-        $("#overlay").classList.add("show");
-        $("#drawer").classList.add("open");
-      },
-      closeDrawer(){
-        $("#overlay").classList.remove("show");
-        $("#drawer").classList.remove("open");
-      },
-
-      openModal(title, html, after){
-        $("#sheetTitle").textContent = title || "";
-        $("#sheetBody").innerHTML = html || "";
-        $("#modal").classList.add("show");
-        ttsStop();
-        requestAnimationFrame(()=>after && after());
-      },
-      closeModal(){
-        $("#modal").classList.remove("show");
-        $("#sheetBody").innerHTML = "";
-        ttsStop();
-      },
-
-      openSearch(){ renderSearchPage(); setNav("search"); },
-      openLibrary(){ renderLibraryPage(); setNav("library"); },
-      openFollowed(){ renderFollowedPage(); setNav("follow"); },
-      openCultivation(){ renderCultivationPage(); setNav("cult"); },
-
-      openPay(){
-        App.openDrawer();
-        $("#payCode").value = `CT${Math.floor(1000 + Math.random()*9000)}`;
-        toast("Mã nạp đã tạo. Copy và dán vào nội dung chuyển khoản.");
-      },
-      copyPayCode(){
-        const v = $("#payCode").value.trim();
-        if(!v) return toast("Chưa có mã.");
-        navigator.clipboard?.writeText(v);
-        toast("✅ Đã copy mã nạp.");
-      },
-
-      toggleTheme(){
-        const cur = localStorage.getItem(LS.theme) || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-        applyTheme(cur === "light" ? "dark" : "light");
-      },
-
-      openStory(storyId){
-        renderStoryDetail(storyId);
-      },
-      async reloadChapters(){
-        const s = State.activeStory;
-        if(!s) return;
-        const box = $("#chapterList");
-        if(box) box.innerHTML = `<div class="muted">Đang tải chương...</div>`;
-        try{ await renderChaptersList(s.id); }catch(e){
-          console.error(e);
-          toast("Không tải được chương.");
-        }
-      },
-      readFirst(){
-        const s = State.activeStory;
-        if(!s) return;
-        const ch = (s.chaptersCache||[])[0];
-        if(ch) App.openReader(s.id, ch.id);
-        else App.reloadChapters().then(()=>{
-          const ch2 = (s.chaptersCache||[])[0];
-          if(ch2) App.openReader(s.id, ch2.id);
-        });
-      },
-      readContinue(){
-        const s = State.activeStory;
-        if(!s) return;
-        const lastRead = State.userDoc?.lastRead || JSON.parse(localStorage.getItem(LS.lastRead) || "null");
-        if(lastRead?.storyId === s.id && lastRead?.chapterId) return App.openReader(s.id, lastRead.chapterId);
-        App.readFirst();
-      },
-
-      openReader,
-
-      prevChapter(){
-        const prev = getNeighborChapter(-1);
-        if(!prev) return toast("Đã ở chương đầu.");
-        App.openReader(State.activeStory.id, prev.id);
-      },
-      nextChapter(){
-        const next = getNeighborChapter(1);
-        if(!next) return toast("Đã ở chương cuối.");
-        App.openReader(State.activeStory.id, next.id);
-      },
-
-      tts(){
-        const text = $("#readerText")?.textContent || "";
-        if(!text.trim()) return toast("Chương trống.");
-        ttsSpeak(text);
-      },
-      ttsStop(){ ttsStop(); toast("Đã dừng đọc."); },
-
-      fontMinus(){
-        setReaderSize(getReaderSize()-1);
-        toast(`Cỡ chữ: ${getReaderSize()}px`);
-      },
-      fontPlus(){
-        setReaderSize(getReaderSize()+1);
-        toast(`Cỡ chữ: ${getReaderSize()}px`);
-      },
-
-      async finishChapter(){
-        const s = State.activeStory, ch = State.activeChapter;
-        if(!s || !ch) return;
-        if(isChapterDone(s.id, ch.id)) return toast("Bạn đã nhận EXP chương này rồi.");
-        markChapterDone(s.id, ch.id);
-
-        // exp based on length (simple)
-        const len = (ch.content||"").length;
-        const amount = clamp(8 + Math.floor(len/1200)*2, 8, 24);
-
-        await gainExp(amount);
-        toast(`✅ Nhận +${amount} EXP!`);
-      },
-
-      toggleFollow(storyId){
-        const yes = !isInList("follow", storyId);
-        setInList("follow", storyId, yes);
-        toast(yes ? "Đã theo dõi" : "Đã bỏ theo dõi");
-        // rerender story detail buttons
-        renderStoryDetail(storyId);
-      },
-      toggleLibrary(storyId){
-        const yes = !isInList("library", storyId);
-        setInList("library", storyId, yes);
-        toast(yes ? "Đã thêm vào tủ" : "Đã xoá khỏi tủ");
-        renderStoryDetail(storyId);
-      },
-
-      shuffleRandom(){
-        renderHome();
-        toast("🎲 Đã làm mới danh sách ngẫu nhiên!");
-      },
-
-      runSearch,
-
-      // Auth
-      async loginGoogle(){
-        try{
-          await signInWithPopup(auth, provider);
-        }catch(e){
-          console.error(e);
-          toast("❌ Không đăng nhập được. Kiểm tra popup / trình duyệt.");
-        }
-      },
-      async logout(){
-        try{ await signOut(auth); }catch(e){}
-      },
-
-      // Admin
-      adminCreateStory,
-      adminAddChapter,
-      adminOpenImport,
-      adminImportOld,
+      alert("Đã seed 1 truyện mẫu vào /stories");
+      loadStories();
     };
-
-    // =============================
-    // 13) Boot
-    // =============================
-    function boot(){
-      // theme
-      const saved = localStorage.getItem(LS.theme);
-      if(saved) applyTheme(saved);
-      else applyTheme(matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-
-      // reader font
-      setReaderSize(getReaderSize());
-
-      // cultivation for guest
-      if(!State.user){
-        const g = JSON.parse(localStorage.getItem("ct_guest_cult") || '{"exp":0,"idx":0}');
-        State.userDoc = { cultivationExp: g.exp||0, cultivationRealmIndex: g.idx||0, library: JSON.parse(localStorage.getItem(LS.library)||"[]"), follow: JSON.parse(localStorage.getItem(LS.follow)||"[]"), history: JSON.parse(localStorage.getItem(LS.history)||"[]"), lastRead: JSON.parse(localStorage.getItem(LS.lastRead)||"null") };
-        calcCultivationView();
-      }
-
-      // online placeholder (sau này dùng Realtime Database presence)
-      $("#onlineCount").textContent = "0";
-
-      subscribeStories();
-
-      // global click close modal if tap outside sheet on desktop
-      $("#modal").addEventListener("click", (e)=>{
-        if(e.target.id === "modal") App.closeModal();
-      });
-
-      // close modal on ESC
-      window.addEventListener("keydown",(e)=>{
-        if(e.key === "Escape") App.closeModal();
-      });
-
-      renderHome();
-    }
-
-    onAuthStateChanged(auth, async (user)=>{
-      State.user = user || null;
-      State.isAdmin = !!(user?.email && ADMIN_EMAILS.has(user.email));
-      if(user){
-        await ensureUserDoc(user);
-        State.userDoc = await loadUserState(user.uid);
-      } else {
-        // back to guest state
-        const g = JSON.parse(localStorage.getItem("ct_guest_cult") || '{"exp":0,"idx":0}');
-        State.userDoc = { cultivationExp: g.exp||0, cultivationRealmIndex: g.idx||0, library: JSON.parse(localStorage.getItem(LS.library)||"[]"), follow: JSON.parse(localStorage.getItem(LS.follow)||"[]"), history: JSON.parse(localStorage.getItem(LS.history)||"[]"), lastRead: JSON.parse(localStorage.getItem(LS.lastRead)||"null") };
-      }
-
-      updateHeaderProfile();
-      calcCultivationView();
-      renderHome();
-    });
-
-    boot();
-
-    // =============================
-    // 14) Firestore Security Rules (dán vào Firebase Console > Firestore > Rules)
-    // =============================
-    // rules_version = '2';
-    // service cloud.firestore {
-    //   match /databases/{database}/documents {
-    //     function isSignedIn() { return request.auth != null; }
-    //     function isAdmin() {
-    //       // Cách 1 (đơn giản): check email admin
-    //       return isSignedIn() && (request.auth.token.email in ['sumi22122005@gmail.com']);
-    //     }
-    //
-    //     match /stories/{storyId} {
-    //       allow read: if true; // ai cũng đọc được
-    //       allow write: if isAdmin();
-    //       match /chapters/{chapterId} {
-    //         allow read: if true;
-    //         allow write: if isAdmin();
-    //       }
-    //     }
-    //
-    //     match /users/{uid} {
-    //       allow read, write: if isSignedIn() && request.auth.uid == uid;
-    //     }
-    //   }
-    // }
   </script>
+
 </body>
 </html>
 
