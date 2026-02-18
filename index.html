@@ -576,6 +576,55 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     }
     .btn:active{transform:translateY(1px)}
 
+
+    /* ======= CHAT (trò chuyện cộng đồng) ======= */
+    .chatWrap{display:flex;flex-direction:column;gap:10px}
+    .chatList{
+      max-height:320px;
+      overflow:auto;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:rgba(0,0,0,.02);
+      padding:10px;
+    }
+    html[data-theme="dark"] .chatList{background:rgba(255,255,255,.03)}
+    .chatMsg{
+      display:flex;
+      gap:10px;
+      padding:8px 0;
+      border-top:1px dashed var(--line);
+      align-items:flex-start;
+    }
+    .chatMsg:first-child{border-top:0}
+    .chatAvt{
+      width:34px;height:34px;border-radius:999px;
+      background:linear-gradient(135deg,#d1d5db,#9ca3af);
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,.08);
+      flex:none;
+      display:grid;place-items:center;
+      font-weight:900;color:#111827;
+    }
+    .chatAvt img{width:100%;height:100%;object-fit:cover;display:block}
+    .chatMain{min-width:0;flex:1}
+    .chatHeadLine{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+    .chatName{font-weight:900;font-size:12.5px}
+    .chatTime{font-size:11.5px;color:var(--muted)}
+    .chatText{margin-top:3px;font-size:13px;line-height:1.5;word-break:break-word}
+    .chatInputRow{display:flex;gap:8px}
+    .chatInput{
+      flex:1;
+      height:42px;
+      border-radius:10px;
+      border:1px solid #cfd6df;
+      padding:0 12px;
+      font-weight:800;
+      outline:none;
+      background:#fff;
+      color:var(--text);
+    }
+    .chatInput:focus{box-shadow:0 0 0 3px rgba(42,120,201,.18)}
+
     /* ======= Responsive ======= */
     @media (max-width: 760px){
       :root{ --hotCols: 4; }
@@ -723,6 +772,42 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       </div>
     </section>
 
+    <!-- TRÒ CHUYỆN -->
+    <section class="section" id="secChat">
+      <div class="sectionHead">
+        <div class="secTitle">💬 TRÒ CHUYỆN CỘNG ĐỒNG</div>
+        <div class="secRight">
+          <div class="hint" id="chatStatus"></div>
+        </div>
+      </div>
+      <div class="contentPad">
+        <div class="chatWrap">
+          <div class="chatList" id="chatList"></div>
+          <div class="chatInputRow">
+            <input class="chatInput" id="chatInput" placeholder="Nhập tin nhắn..." maxlength="300" autocomplete="off" />
+            <button class="btn primary" id="chatSend">Gửi</button>
+          </div>
+          <div class="hint" id="chatHint">* Để gửi tin nhắn bạn cần đăng nhập Google.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUYỆN HOÀN THÀNH -->
+    <section class="section" id="secCompleted">
+      <div class="sectionHead">
+        <div class="secTitle">✅ TRUYỆN HOÀN THÀNH</div>
+        <div class="secRight">
+          <select class="select" id="completedCategory">
+            <option value="all">CHỌN THỂ LOẠI</option>
+          </select>
+        </div>
+      </div>
+      <div id="completedList"></div>
+      <div class="contentPad">
+        <div class="hint" id="completedHint"></div>
+      </div>
+
+
   </main>
 
   <!-- DRAWER -->
@@ -772,7 +857,7 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     // ===== Firebase (modular) =====
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import { getDatabase, ref, get, set, update, push, onValue, onDisconnect, remove } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+    import { getDatabase, ref, get, set, update, push, onValue, onDisconnect, remove, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -1056,6 +1141,112 @@ $("themeBtn")?.addEventListener("click", ()=>{
       }catch(e){}
 
       await loadReading(); // phụ thuộc user
+
+
+    // ===== Chat cộng đồng (Realtime Database) =====
+    // Data: chat/messages/{pushId}: { uid, name, photoURL, text, createdAt }
+    const chatListEl = $("chatList");
+    const chatInputEl = $("chatInput");
+    const chatSendBtn = $("chatSend");
+    const chatStatusEl = $("chatStatus");
+    const chatHintEl = $("chatHint");
+
+    let _lastChatSendAt = 0;
+
+    function renderChatMessages(list){
+      if(!chatListEl) return;
+      if(!list.length){
+        chatListEl.innerHTML = '<div class="searchEmpty">Chưa có tin nhắn nào. Hãy là người đầu tiên!</div>';
+        return;
+      }
+      const atBottom = (chatListEl.scrollTop + chatListEl.clientHeight >= chatListEl.scrollHeight - 40);
+
+      chatListEl.innerHTML = list.map(m=>{
+        const name = esc(m?.name || "Người dùng");
+        const t = m?.createdAt ? new Date(m.createdAt).toLocaleString("vi-VN", { hour:"2-digit", minute:"2-digit", day:"2-digit", month:"2-digit" }) : "";
+        const text = esc(m?.text || "");
+        const photo = m?.photoURL ? esc(m.photoURL) : "";
+        const letter = (name.trim()[0] || "U").toUpperCase();
+        return `
+          <div class="chatMsg">
+            <div class="chatAvt">${photo ? `<img src="${photo}" alt="">` : letter}</div>
+            <div class="chatMain">
+              <div class="chatHeadLine">
+                <div class="chatName">${name}</div>
+                <div class="chatTime">${t}</div>
+              </div>
+              <div class="chatText">${text}</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      if(atBottom) chatListEl.scrollTop = chatListEl.scrollHeight;
+    }
+
+    function watchChat(){
+      chatStatusEl.textContent = "Đang tải…";
+      const qRef = query(ref(db, "chat/messages"), orderByChild("createdAt"), limitToLast(60));
+      onValue(qRef, (snap)=>{
+        const val = snap.exists() ? (snap.val() || {}) : {};
+        const arr = Object.values(val)
+          .filter(Boolean)
+          .sort((a,b)=> (a.createdAt||0) - (b.createdAt||0));
+        renderChatMessages(arr);
+        chatStatusEl.textContent = "Live";
+        chatHintEl.textContent = currentUser ? "* Chat đang hoạt động." : "* Để gửi tin nhắn bạn cần đăng nhập Google.";
+      }, (err)=>{
+        chatStatusEl.textContent = "Lỗi";
+        chatListEl.innerHTML = '<div class="mutedBox">Không thể tải chat. Nếu bạn muốn bật chat, hãy mở quyền đọc/ghi cho node <b>/chat/messages</b> trong Realtime Database Rules.</div>';
+        console.warn(err);
+      });
+    }
+
+    async function sendChat(){
+      const text = (chatInputEl.value || "").trim();
+      if(!text) return;
+
+      if(!currentUser){
+        alert("Bạn cần đăng nhập để chat với mọi người.");
+        openDrawer();
+        return;
+      }
+
+      const now = Date.now();
+      if(now - _lastChatSendAt < 2000){
+        chatHintEl.textContent = "Bạn gửi quá nhanh, thử lại sau 2 giây.";
+        return;
+      }
+      _lastChatSendAt = now;
+
+      try{
+        const msgRef = push(ref(db, "chat/messages"));
+        await set(msgRef, {
+          uid: currentUser.uid,
+          name: currentUser.displayName || currentUser.email || "Người dùng",
+          photoURL: currentUser.photoURL || "",
+          text: text.slice(0, 300),
+          createdAt: now
+        });
+        chatInputEl.value = "";
+        chatHintEl.textContent = "* Đã gửi.";
+      }catch(err){
+        console.warn(err);
+        chatHintEl.textContent = "Không gửi được. Có thể Rules đang chặn ghi /chat/messages.";
+        alert("Không gửi được tin nhắn. Kiểm tra Realtime Database Rules cho /chat/messages.");
+      }
+    }
+
+    chatSendBtn?.addEventListener("click", sendChat);
+    chatInputEl?.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter"){
+        e.preventDefault();
+        sendChat();
+      }
+    });
+
+    watchChat();
+
     });
 
     // ===== Data model (Realtime Database)
@@ -1079,7 +1270,9 @@ $("themeBtn")?.addEventListener("click", ()=>{
         updatedAt: raw?.updatedAt ?? raw?.updated ?? raw?.time ?? null,
         views: raw?.views ?? raw?.view ?? 0,
         hotScore: raw?.hotScore ?? raw?.hot ?? 0,
-        desc: raw?.desc || raw?.description || ""
+        desc: raw?.desc || raw?.description || "",
+        status: raw?.status || raw?.state || "",
+        completed: raw?.completed ?? raw?.isCompleted ?? raw?.finish ?? raw?.full ?? null
       };
     }
 
@@ -1100,6 +1293,21 @@ $("themeBtn")?.addEventListener("click", ()=>{
       });
       sel.value = items.includes(cur) ? cur : "all";
     }
+
+    function isCompletedStory(s){
+      const st = String(s?.status || "").toLowerCase().trim();
+      if(st === "completed" || st === "done" || st === "full") return true;
+      if(s?.completed === true) return true;
+      // nếu completed là string "true"/"1"
+      if(typeof s?.completed === "string" && ["true","1","yes","y"].includes(s.completed.toLowerCase().trim())) return true;
+
+      const cc = (s?.chapterCount != null) ? Number(s.chapterCount) : null;
+      const lc = (s?.latestChapNo != null) ? Number(s.latestChapNo) : null;
+      if(cc && lc && !Number.isNaN(cc) && !Number.isNaN(lc) && lc >= cc) return true;
+
+      return false;
+    }
+
 
 
     function renderSearch(q){
@@ -1180,7 +1388,7 @@ $("themeBtn")?.addEventListener("click", ()=>{
               <div style="min-width:0">
                 <div class="lineTitle" title="${esc(s.title)}">${esc(s.title)}</div>
                 <div class="lineMeta">
-                  ${(s.latestChapNo!=null) ? `<span class="pill">Full</span>` : ``}
+                  ${isCompletedStory(s) ? `<span class="pill">Full</span>` : ``}
                   ${(s.updatedAt!=null) ? `<span>🕒 ${new Date(s.updatedAt).toLocaleDateString("vi-VN")}</span>` : ``}
                 </div>
               </div>
@@ -1200,7 +1408,49 @@ $("themeBtn")?.addEventListener("click", ()=>{
       });
     }
 
-    // ===== Render Reading (user) =====
+    
+
+    // ===== Render Completed (Truyện hoàn thành) =====
+    function renderCompleted(){
+      const cat = $("completedCategory").value;
+      const list = stories
+        .filter(s => isCompletedStory(s))
+        .filter(s => cat==="all" ? true : (s.categories||[]).includes(cat))
+        .slice()
+        .sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0) || (b.views||0)-(a.views||0))
+        .slice(0, 20);
+
+      const box = $("completedList");
+      box.innerHTML = list.map(s=>`
+        <div class="listRow" data-story="${esc(s.id)}">
+          <div class="leftLine">
+            <div class="storyLine">
+              <div class="miniCover">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
+              <div style="min-width:0">
+                <div class="lineTitle" title="${esc(s.title)}">${esc(s.title)}</div>
+                <div class="lineMeta">
+                  <span class="pill">Full</span>
+                  ${(s.chapterCount!=null) ? `<span>📚 ${Number(s.chapterCount)} chương</span>` : ``}
+                  ${(s.updatedAt!=null) ? `<span>🕒 ${new Date(s.updatedAt).toLocaleDateString("vi-VN")}</span>` : ``}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chapCount">${(s.chapterCount!=null) ? ("C. " + s.chapterCount) : (s.latestChapNo!=null ? ("C. " + s.latestChapNo) : "—")}</div>
+        </div>
+      `).join("");
+
+      $("completedHint").textContent = list.length ? "" : "Chưa có truyện hoàn thành trong dữ liệu.";
+      box.querySelectorAll("[data-story]").forEach(row=>{
+        row.addEventListener("click", ()=>{
+          const id = row.getAttribute("data-story");
+          const st = stories.find(x=>x.id===id);
+          openStoryModal(st);
+        });
+      });
+    }
+
+// ===== Render Reading (user) =====
     async function loadReading(){
       if(!currentUser){
         $("readingList").innerHTML = "";
@@ -1275,6 +1525,7 @@ $("themeBtn")?.addEventListener("click", ()=>{
           <div>
             <div class="lineMeta" style="margin:0 0 6px 0">
               ${cats || `<span class="pill">Chưa có thể loại</span>`}
+              ${isCompletedStory(st) ? `<span class="pill">Full</span>` : ``}
               ${(st.latestChapNo!=null) ? `<span class="pill">C. ${st.latestChapNo}</span>` : ``}
               ${(st.views!=null) ? `<span class="pill">👁 ${st.views}</span>` : ``}
             </div>
@@ -1325,8 +1576,8 @@ $("themeBtn")?.addEventListener("click", ()=>{
       if(!raw){
         // tạo dữ liệu demo MIN để bạn thấy UI (bạn có thể xóa sau)
         stories = [
-          { id:"demo1", title:"Kinh Thiên Kiếm Đế", coverUrl:"", categories:["Tiên hiệp"], latestChapNo:250, updatedAt:Date.now()-86400000*2, views:1200, hotScore:50, desc:"Demo (không có dữ liệu stories trên Firebase)." },
-          { id:"demo2", title:"Thôn Phệ Cổ Đế", coverUrl:"", categories:["Huyền huyễn"], latestChapNo:3740, updatedAt:Date.now()-86400000*1, views:900, hotScore:45, desc:"Demo (hãy thêm node /stories trong RTDB)." },
+          { id:"demo1", title:"Kinh Thiên Kiếm Đế", coverUrl:"", categories:["Tiên hiệp"], latestChapNo:250, chapterCount:250, updatedAt:Date.now()-86400000*2, views:1200, hotScore:50, desc:"Demo (không có dữ liệu stories trên Firebase)." },
+          { id:"demo2", title:"Thôn Phệ Cổ Đế", coverUrl:"", categories:["Huyền huyễn"], latestChapNo:3740, chapterCount:3740, updatedAt:Date.now()-86400000*1, views:900, hotScore:45, desc:"Demo (hãy thêm node /stories trong RTDB)." },
           { id:"demo3", title:"Thái Hoang Thôn Thiên Quyết", coverUrl:"", categories:["Tiên hiệp"], latestChapNo:255, updatedAt:Date.now()-86400000*3, views:800, hotScore:40, desc:"Demo" },
           { id:"demo4", title:"Nhất Kiếm Độc Tôn", coverUrl:"", categories:["Kiếm hiệp"], latestChapNo:120, updatedAt:Date.now()-86400000*4, views:700, hotScore:35, desc:"Demo" },
           { id:"demo5", title:"Nghịch Thiên Chí Tôn", coverUrl:"", categories:["Huyền huyễn"], latestChapNo:22, updatedAt:Date.now()-86400000*5, views:500, hotScore:25, desc:"Demo" },
@@ -1339,14 +1590,17 @@ $("themeBtn")?.addEventListener("click", ()=>{
       categories = computeCategories(stories);
       fillCategorySelect($("hotCategory"), categories);
       fillCategorySelect($("updateCategory"), categories);
+      fillCategorySelect($("completedCategory"), categories);
 
       renderHot();
       renderUpdated();
+      renderCompleted();
       await loadReading();
     }
 
     $("hotCategory").addEventListener("change", renderHot);
     $("updateCategory").addEventListener("change", renderUpdated);
+    $("completedCategory").addEventListener("change", renderCompleted);
 
     // Start
     loadStories();
