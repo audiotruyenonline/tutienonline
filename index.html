@@ -1039,7 +1039,133 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       .readContent{ font-size: 16px; }
       .readGoInput{ width: 110px; }
     }
-</style>
+
+
+    /* ===== Read: Chapter Drawer ===== */
+    .chapDrawerBg{
+      position:fixed; inset:0; background:rgba(0,0,0,.45);
+      display:none; z-index:80;
+      padding:12px;
+    }
+    .chapDrawer{
+      max-width:860px; margin:0 auto;
+      height: calc(100dvh - 24px);
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:flex; flex-direction:column;
+    }
+    .chapDrawerTop{
+      padding:12px 14px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:10px;
+    }
+    .chapDrawerSub{ font-size:12px; color:var(--muted); margin-top:2px; }
+    .chapDrawerClose{
+      width:40px; height:40px; border-radius:10px;
+      border:1px solid var(--line); background:#fff;
+      font-size:18px; cursor:pointer;
+    }
+    .chapDrawerBody{ padding:12px 14px; overflow:auto; -webkit-overflow-scrolling:touch; }
+    .chapSec{ margin-bottom:14px; }
+    .chapSecTitle{ font-weight:800; letter-spacing:.02em; font-size:13px; color:#111827; margin-bottom:8px; }
+    .chapLatestGrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .chapLatestGrid a{
+      display:block; color:var(--blue1); text-decoration:none;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      font-size:13px;
+    }
+    .chapListGrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .chapListGrid a{
+      display:block; color:#111827; text-decoration:none;
+      font-size:13px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      padding:6px 8px; border-radius:8px;
+      border:1px solid var(--line); background:#fff;
+    }
+    .chapListGrid a.active{ border-color: rgba(34,197,94,.55); box-shadow:0 0 0 3px rgba(34,197,94,.12); }
+    .chapListGrid a:hover{ border-color:#cbd5e1; }
+    .chapPager{
+      display:flex; flex-wrap:wrap; gap:6px;
+      margin-top:10px;
+      align-items:center;
+    }
+    .chapPager button{
+      border:1px solid var(--line); background:#fff;
+      padding:6px 10px; border-radius:8px;
+      cursor:pointer; font-size:13px;
+    }
+    .chapPager button.active{ background: #111827; color:#fff; border-color:#111827; }
+    .chapPager .dots{ color:var(--muted); padding:0 4px; }
+
+    /* ===== Comments ===== */
+    .cmtTabs{ display:flex; gap:10px; margin:10px 0 12px; flex-wrap:wrap; }
+    .cmtTab{
+      border:1px solid var(--line); background:#fff;
+      padding:8px 12px; border-radius:10px;
+      cursor:pointer; font-weight:700;
+    }
+    .cmtTab.active{ background:#111827; color:#fff; border-color:#111827; }
+    .cmtComposer{ display:flex; gap:10px; align-items:flex-start; margin-bottom:12px; }
+    .cmtAvatar{
+      width:40px; height:40px; border-radius:999px;
+      background:#e5e7eb; object-fit:cover; flex:0 0 auto;
+    }
+    .cmtBox{ flex:1; }
+    .cmtInput{
+      width:100%; border:1px solid var(--line); border-radius:10px;
+      padding:10px 12px; font:inherit; resize:vertical;
+      min-height:44px;
+    }
+    .cmtRow{ margin-top:8px; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .cmtList{ display:flex; flex-direction:column; gap:10px; }
+    .cmtItem{
+      border:1px solid var(--line); background:#fff; border-radius:12px;
+      padding:10px 12px; display:flex; gap:10px;
+    }
+    .cmtItem .meta{ display:flex; gap:8px; align-items:center; }
+    .cmtItem .name{ font-weight:800; }
+    .cmtItem .time{ color:var(--muted); font-size:12px; }
+    .cmtItem .text{ margin-top:6px; line-height:1.55; white-space:pre-wrap; }
+    .fbPlaceholder{
+      border:1px dashed #cbd5e1; border-radius:12px; padding:14px;
+      background:#f8fafc;
+    }
+
+    /* ===== Recommendations ===== */
+    .recoGrid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width: 720px){
+      .recoGrid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    .recoCard{
+      border:1px solid var(--line); border-radius:12px;
+      overflow:hidden; background:#fff; cursor:pointer;
+      display:flex; flex-direction:column;
+    }
+    .recoCover{
+      aspect-ratio: 3 / 4;
+      background:#e5e7eb;
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    .recoCover img{ width:100%; height:100%; object-fit:cover; }
+    .recoBody{ padding:10px 10px 12px; }
+    .recoTitle{
+      font-weight:800; font-size:13px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .recoSub{
+      margin-top:4px; color:var(--muted); font-size:12px;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+  </style>
 </head>
 <body>
 
@@ -1172,7 +1298,7 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
             <input class="chatInput" id="chatInput" placeholder="Nhập tin nhắn..." maxlength="300" autocomplete="off" />
             <button class="btn primary" id="chatSend">Gửi</button>
           </div>
-          <div class="hint" id="chatHint">* Để gửi tin nhắn bạn cần đăng nhập Google.</div>
+          <div class="hint" id="chatHint">* Bạn có thể chat khách (ẩn danh). Đăng nhập Google để hiện avatar.</div>
         </div>
       </div>
     </section>
@@ -1376,6 +1502,51 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
           <div class="loadMoreRow">
             <button class="btn" id="chapLoadMore">Xem thêm ▼</button>
           </div>
+          <!-- COMMENTS -->
+          <div class="storyBody" style="padding-top:0">
+            <h3 class="storySectionTitle">BÌNH LUẬN</h3>
+
+            <div class="cmtTabs" role="tablist" aria-label="Bình luận">
+              <button class="cmtTab active" id="cmtTabSystem" role="tab" aria-selected="true">Bình luận hệ thống</button>
+              <button class="cmtTab" id="cmtTabFb" role="tab" aria-selected="false">Bình luận Facebook</button>
+            </div>
+
+            <div class="cmtPanel" id="cmtPanelSystem" role="tabpanel">
+              <div class="cmtComposer">
+                <img class="cmtAvatar" id="cmtMeAvatar" alt="" />
+                <div class="cmtBox">
+                  <textarea class="cmtInput" id="cmtInput" rows="2" placeholder="Viết bình luận..."></textarea>
+                  <div class="cmtRow">
+                    <span class="hint" id="cmtHint">Đăng nhập để bình luận.</span>
+                    <button class="btn btnBlue" id="cmtSendBtn">Gửi</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cmtList" id="cmtList"></div>
+              <div class="loadMoreRow">
+                <button class="btn" id="cmtLoadMore">Xem thêm bình luận ▼</button>
+              </div>
+            </div>
+
+            <div class="cmtPanel" id="cmtPanelFb" role="tabpanel" style="display:none">
+              <div class="hint">
+                * Nếu bạn muốn dùng Facebook Comments giống web mẫu, hãy nhúng plugin Facebook tại đây (cần cấu hình domain + App ID).
+                Hiện tại web đang dùng bình luận hệ thống để hoạt động ngay.
+              </div>
+              <div class="fbPlaceholder">
+                <b>Facebook Comments (tuỳ chọn)</b>
+                <div class="muted" style="margin-top:6px">Bạn có thể thay khối này bằng iframe/plugin của Facebook.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RECOMMENDATIONS -->
+          <div class="storyBody" style="padding-top:0">
+            <h3 class="storySectionTitle">CÓ THỂ BẠN CŨNG MUỐN ĐỌC</h3>
+            <div class="recoGrid" id="recoGrid"></div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1441,6 +1612,34 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       </div>
     </div>
   </main>
+
+  <!-- CHAPTER DRAWER (Read page ≡) -->
+  <div class="chapDrawerBg" id="chapDrawerBg" aria-hidden="true" style="display:none">
+    <div class="chapDrawer" role="dialog" aria-modal="true" aria-label="Danh sách chương">
+      <div class="chapDrawerTop">
+        <div>
+          <b id="chapDrawerStoryTitle">Danh sách chương</b>
+          <div class="chapDrawerSub" id="chapDrawerStorySub">—</div>
+        </div>
+        <button class="chapDrawerClose" id="chapDrawerClose" aria-label="Đóng">✕</button>
+      </div>
+
+      <div class="chapDrawerBody">
+        <div class="chapSec">
+          <div class="chapSecTitle">CHƯƠNG MỚI NHẤT</div>
+          <div class="chapLatestGrid" id="chapLatestGrid"></div>
+        </div>
+
+        <div class="chapSec">
+          <div class="chapSecTitle">DANH SÁCH CHƯƠNG</div>
+          <div class="chapListGrid" id="chapDrawerList"></div>
+          <div class="chapPager" id="chapDrawerPager"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 </div>
 
 
@@ -1469,7 +1668,7 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
   <script type="module">
     // ===== Firebase (modular) =====
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, signInAnonymously, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
     import { getDatabase, ref, get, set, update, push, onValue, onDisconnect, remove, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
     // Your web app's Firebase configuration
@@ -1662,6 +1861,16 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       $("chapLoadMore").onclick = async ()=>{
         limit = Math.min(200, limit + 50);
         await loadChaps();
+
+
+      // ===== COMMENTS (system) =====
+      bindCommentTabsOnce();
+      await loadAndRenderComments(st.id);
+      bindCommentComposer(st.id);
+
+      // ===== RECOMMENDATIONS =====
+      renderRecommendations(st.id);
+
       };
 
       $("chapGoBtn").onclick = ()=>{
@@ -1672,6 +1881,194 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
 
       await loadChaps();
     }
+
+    // ===== Comments + Recommendations helpers =====
+    let _commentTabsBound = false;
+    let _commentStoryId = null;
+    let _commentLimit = 10;
+
+    function bindCommentTabsOnce(){
+      if(_commentTabsBound) return;
+      _commentTabsBound = true;
+
+      $("cmtTabSystem").onclick = ()=>{
+        $("cmtTabSystem").classList.add("active");
+        $("cmtTabFb").classList.remove("active");
+        $("cmtPanelSystem").style.display = "block";
+        $("cmtPanelFb").style.display = "none";
+      };
+      $("cmtTabFb").onclick = ()=>{
+        $("cmtTabFb").classList.add("active");
+        $("cmtTabSystem").classList.remove("active");
+        $("cmtPanelFb").style.display = "block";
+        $("cmtPanelSystem").style.display = "none";
+      };
+
+      $("cmtLoadMore").onclick = async ()=>{
+        _commentLimit = Math.min(50, _commentLimit + 10);
+        if(_commentStoryId) await loadAndRenderComments(_commentStoryId);
+      };
+    }
+
+    function bindCommentComposer(storyId){
+      _commentStoryId = storyId;
+      _commentLimit = 10;
+
+      // avatar + hint
+      const ava = $("cmtMeAvatar");
+      if(currentUser?.photoURL){
+        ava.src = currentUser.photoURL;
+      }else{
+        ava.removeAttribute("src");
+      }
+      $("cmtHint").textContent = currentUser ? "Bình luận sẽ hiển thị công khai trên web." : "Đăng nhập để bình luận.";
+      $("cmtSendBtn").disabled = !currentUser;
+
+      $("cmtSendBtn").onclick = async ()=>{
+        if(!currentUser){ alert("Bạn cần đăng nhập để bình luận."); return; }
+        const text = ($("cmtInput").value||"").trim();
+        if(!text){ alert("Bạn chưa nhập nội dung."); return; }
+
+        $("cmtSendBtn").disabled = true;
+        try{
+          const now = Date.now();
+          const refPath = `comments/${storyId}/${now}_${currentUser.uid}`;
+          await set(ref(db, refPath), {
+            uid: currentUser.uid,
+            name: currentUser.displayName || "Người dùng",
+            avatar: currentUser.photoURL || "",
+            text,
+            createdAt: now
+          });
+          $("cmtInput").value = "";
+          _commentLimit = Math.min(50, _commentLimit + 1);
+          await loadAndRenderComments(storyId);
+        }catch(e){
+          console.warn(e);
+          alert("Không gửi được bình luận. Kiểm tra Rules cho /comments.");
+        }finally{
+          $("cmtSendBtn").disabled = !currentUser;
+        }
+      };
+    }
+
+    async function loadAndRenderComments(storyId){
+      const listEl = $("cmtList");
+      listEl.innerHTML = "<div class='muted'>Đang tải bình luận...</div>";
+      try{
+        // load last N comments under /comments/<storyId>
+        const qy = query(ref(db, `comments/${storyId}`), orderByChild("createdAt"), limitToLast(_commentLimit));
+        const snap = await get(qy);
+        if(!snap.exists()){
+          listEl.innerHTML = "<div class='muted'>Chưa có bình luận. Hãy là người đầu tiên!</div>";
+          return;
+        }
+        const obj = snap.val() || {};
+        // keys are sortable by createdAt_uid
+        const arr = Object.keys(obj).map(k=>obj[k]).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+        listEl.innerHTML = arr.map(c=>{
+          const t = formatTimeAgo(c.createdAt||0);
+          const name = esc(c.name||"Người dùng");
+          const avatar = c.avatar ? esc(c.avatar) : "";
+          const text = esc(String(c.text||""));
+          return `
+            <div class="cmtItem">
+              <img class="cmtAvatar" alt="" src="${avatar}" onerror="this.style.display='none'"/>
+              <div style="flex:1">
+                <div class="meta">
+                  <span class="name">${name}</span>
+                  <span class="time">${esc(t)}</span>
+                </div>
+                <div class="text">${text}</div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }catch(e){
+        console.warn(e);
+        listEl.innerHTML = "<div class='muted'>Không tải được bình luận. Kiểm tra Rules cho /comments.</div>";
+      }
+    }
+
+    function formatTimeAgo(ts){
+      if(!ts) return "";
+      const diff = Date.now() - ts;
+      const s = Math.floor(diff/1000);
+      if(s < 60) return "vừa xong";
+      const m = Math.floor(s/60);
+      if(m < 60) return m + " phút trước";
+      const h = Math.floor(m/60);
+      if(h < 24) return h + " giờ trước";
+      const d = Math.floor(h/24);
+      if(d < 30) return d + " ngày trước";
+      const mo = Math.floor(d/30);
+      if(mo < 12) return mo + " tháng trước";
+      const y = Math.floor(mo/12);
+      return y + " năm trước";
+    }
+
+    function renderRecommendations(currentStoryId){
+      const box = $("recoGrid");
+      if(!box) return;
+      if(!stories || stories.length < 2){
+        box.innerHTML = "<div class='muted'>Chưa có truyện để đề cử.</div>";
+        return;
+      }
+      // random stable-ish: based on day + storyId
+      const seed = (Date.now()//86400000) + hashCode(String(currentStoryId||""));
+      const rng = mulberry32(seed);
+
+      const pool = stories.filter(s=>s && s.id !== currentStoryId);
+      // pick 6
+      const picks = [];
+      const used = new Set();
+      while(picks.length < Math.min(6, pool.length)){
+        const i = Math.floor(rng() * pool.length);
+        const it = pool[i];
+        if(!it || used.has(it.id)) continue;
+        used.add(it.id);
+        picks.push(it);
+      }
+
+      box.innerHTML = picks.map(s=>{
+        const cover = s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : "";
+        const author = s.author || s.tacGia || s.writer || "Đang cập nhật";
+        return `
+          <div class="recoCard" data-id="${esc(s.id)}">
+            <div class="recoCover">${cover}</div>
+            <div class="recoBody">
+              <div class="recoTitle">${esc(s.title||"—")}</div>
+              <div class="recoSub">👤 ${esc(author)}</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      box.querySelectorAll(".recoCard").forEach(card=>{
+        card.addEventListener("click", ()=>{
+          const id = card.getAttribute("data-id");
+          go("story/" + id);
+        });
+      });
+    }
+
+    function hashCode(str){
+      let h = 0;
+      for(let i=0;i<str.length;i++){
+        h = ((h<<5)-h) + str.charCodeAt(i);
+        h |= 0;
+      }
+      return Math.abs(h);
+    }
+    function mulberry32(a){
+      return function(){
+        let t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      }
+    }
+
 
 
     // Hot ranking range: day / week / month / all
@@ -2201,7 +2598,44 @@ onAuthStateChanged(auth, async (u)=>{
       if(atBottom) chatListEl.scrollTop = chatListEl.scrollHeight;
     }
 
-    function watchChat(){
+    
+    // ===== Chat identity helpers (guest/anonymous) =====
+    const CHAT_NAME_KEY = "chat_display_name_v1";
+    function getGuestName(){
+      const saved = (localStorage.getItem(CHAT_NAME_KEY) || "").trim();
+      return saved || "";
+    }
+    function askGuestName(){
+      let name = getGuestName();
+      if(!name){
+        name = prompt("Nhập tên hiển thị để chat (có thể đổi sau):", "") || "";
+        name = name.trim().slice(0, 24);
+        if(!name) name = "Khách";
+        localStorage.setItem(CHAT_NAME_KEY, name);
+      }
+      return name;
+    }
+    async function ensureAuthedForChat(){
+      // Prefer Google user if already logged in. Otherwise try anonymous auth (guest chat).
+      if(currentUser) return currentUser;
+
+      try{
+        const cred = await signInAnonymously(auth);
+        // Set display name for anonymous user (optional)
+        const displayName = askGuestName();
+        try{
+          if(cred?.user && displayName && !cred.user.displayName){
+            await updateProfile(cred.user, { displayName });
+          }
+        }catch(_){ /* ignore */ }
+        return cred.user;
+      }catch(err){
+        console.warn("Anonymous auth failed:", err);
+        return null;
+      }
+    }
+
+function watchChat(){
       chatStatusEl.textContent = "Đang tải…";
       const qRef = query(ref(db, "chat/messages"), orderByChild("createdAt"), limitToLast(60));
       onValue(qRef, (snap)=>{
@@ -2211,7 +2645,7 @@ onAuthStateChanged(auth, async (u)=>{
           .sort((a,b)=> (a.createdAt||0) - (b.createdAt||0));
         renderChatMessages(arr);
         chatStatusEl.textContent = "Live";
-        chatHintEl.textContent = currentUser ? "* Chat đang hoạt động." : "* Để gửi tin nhắn bạn cần đăng nhập Google.";
+        chatHintEl.textContent = currentUser ? "* Chat đang hoạt động." : "* Bạn có thể chat khách (ẩn danh). Nếu muốn hiện avatar Google, hãy đăng nhập.";
       }, (err)=>{
         chatStatusEl.textContent = "Lỗi";
         chatListEl.innerHTML = '<div class="mutedBox">Không thể tải chat. Nếu bạn muốn bật chat, hãy mở quyền đọc/ghi cho node <b>/chat/messages</b> trong Realtime Database Rules.</div>';
@@ -2224,9 +2658,14 @@ onAuthStateChanged(auth, async (u)=>{
       if(!text) return;
 
       if(!currentUser){
-        alert("Bạn cần đăng nhập để chat với mọi người.");
-        openDrawer();
-        return;
+        // Auto guest chat via Anonymous Auth
+        const u = await ensureAuthedForChat();
+        if(!u){
+          alert("Không thể chat vì Firebase đang chặn khách. Hãy bật Anonymous Sign-in trong Firebase Auth hoặc mở quyền ghi cho /chat/messages trong Realtime Database Rules.");
+          return;
+        }
+        // onAuthStateChanged will set currentUser soon, but we can proceed with u
+        currentUser = u;
       }
 
       const now = Date.now();
@@ -2240,7 +2679,7 @@ onAuthStateChanged(auth, async (u)=>{
         const msgRef = push(ref(db, "chat/messages"));
         await set(msgRef, {
           uid: currentUser.uid,
-          name: currentUser.displayName || currentUser.email || "Người dùng",
+          name: (currentUser.displayName || currentUser.email || getGuestName() || "Khách"),
           photoURL: currentUser.photoURL || "",
           text: text.slice(0, 300),
           createdAt: now
@@ -2587,7 +3026,177 @@ function computeCategories(list){
       return arr;
     }
 
-        async function renderReadPage(storyId, chapNo){
+        async 
+    // ===== Read: Chapter Drawer (≡) =====
+    let chapDrawerState = { storyId:null, chapNo:1, max:0, page:1, pageSize:50, metaMap:{} };
+
+    function openChapterDrawer(storyId, chapNo, st){
+      chapDrawerState.storyId = storyId;
+      chapDrawerState.chapNo = Number(chapNo||1)||1;
+
+      const maxGuess = Number(st?.latestChapNo || st?.chapterCount || 0) || 0;
+      chapDrawerState.max = maxGuess;
+
+      // title
+      $("chapDrawerStoryTitle").textContent = st?.title ? st.title : "Danh sách chương";
+      $("chapDrawerStorySub").textContent = `Chọn chương để đọc nhanh`;
+
+      // show
+      const bg = $("chapDrawerBg");
+      bg.style.display = "block";
+      bg.setAttribute("aria-hidden","false");
+
+      // close handlers
+      $("chapDrawerClose").onclick = closeChapterDrawer;
+      bg.onclick = (e)=>{ if(e.target === bg) closeChapterDrawer(); };
+      document.addEventListener("keydown", _chapEscClose);
+
+      // load latest meta (để hiện tiêu đề giống ảnh)
+      renderChapterDrawerLatest(storyId, chapDrawerState.chapNo);
+
+      // default page around current chapter
+      const ps = chapDrawerState.pageSize;
+      chapDrawerState.page = Math.max(1, Math.floor((chapDrawerState.chapNo-1)/ps)+1);
+
+      renderChapterDrawerList();
+    }
+
+    function _chapEscClose(e){
+      if(e.key === "Escape") closeChapterDrawer();
+    }
+
+    function closeChapterDrawer(){
+      const bg = $("chapDrawerBg");
+      bg.style.display = "none";
+      bg.setAttribute("aria-hidden","true");
+      document.removeEventListener("keydown", _chapEscClose);
+    }
+
+    async function renderChapterDrawerLatest(storyId, currentNo){
+      const latestBox = $("chapLatestGrid");
+      latestBox.innerHTML = "<span class='muted'>Đang tải...</span>";
+
+      try{
+        const list = await fetchLastChaptersMeta(storyId, 8);
+        const sortedDesc = (list||[]).slice().sort((a,b)=>(b.no||0)-(a.no||0));
+        // build meta map
+        chapDrawerState.metaMap = chapDrawerState.metaMap || {};
+        sortedDesc.forEach(c=>{ if(c && c.no!=null) chapDrawerState.metaMap[Number(c.no)] = c; });
+
+        // update max if unknown
+        const maxFromMeta = sortedDesc.length ? Number(sortedDesc[0].no)||0 : 0;
+        if(!chapDrawerState.max && maxFromMeta) chapDrawerState.max = maxFromMeta;
+
+        latestBox.innerHTML = (sortedDesc.length ? sortedDesc : [{no:currentNo,title:""}]).map(c=>{
+          const no = Number(c.no)||1;
+          const t = c.title ? (": " + String(c.title)) : "";
+          const label = `Chương ${no}${t}`;
+          return `<a href="javascript:void(0)" data-no="${no}" title="${esc(label)}">• ${esc(label)}</a>`;
+        }).join("");
+
+        latestBox.querySelectorAll("a").forEach(a=>{
+          a.addEventListener("click", ()=>{
+            const no = Number(a.getAttribute("data-no")||"1")||1;
+            closeChapterDrawer();
+            go("read/" + storyId + "/" + no);
+          });
+        });
+
+      }catch(e){
+        latestBox.innerHTML = "<span class='muted'>Không tải được chương mới nhất</span>";
+      }
+    }
+
+    function renderChapterDrawerList(){
+      const storyId = chapDrawerState.storyId;
+      const ps = chapDrawerState.pageSize;
+      const max = Number(chapDrawerState.max)||0;
+
+      // nếu chưa biết max, fallback 200
+      const total = max || 200;
+      const totalPages = Math.max(1, Math.ceil(total/ps));
+      chapDrawerState.page = Math.min(Math.max(1, chapDrawerState.page), totalPages);
+
+      const startNo = (chapDrawerState.page-1)*ps + 1;
+      const endNo = Math.min(total, chapDrawerState.page*ps);
+
+      // build list numbers
+      const listBox = $("chapDrawerList");
+      const items = [];
+      for(let n=startNo; n<=endNo; n++){
+        const meta = chapDrawerState.metaMap?.[n];
+        const t = meta?.title ? (": " + String(meta.title)) : "";
+        const label = `Chương ${n}${t}`;
+        const active = (n === chapDrawerState.chapNo) ? "active" : "";
+        items.push(`<a class="${active}" href="javascript:void(0)" data-no="${n}" title="${esc(label)}">${esc(label)}</a>`);
+      }
+      listBox.innerHTML = items.join("");
+
+      listBox.querySelectorAll("a").forEach(a=>{
+        a.addEventListener("click", ()=>{
+          const no = Number(a.getAttribute("data-no")||"1")||1;
+          closeChapterDrawer();
+          go("read/" + storyId + "/" + no);
+        });
+      });
+
+      // pager like ảnh mẫu: 1..10 … last-1 last
+      const pager = $("chapDrawerPager");
+      pager.innerHTML = "";
+
+      function addBtn(p, label=null, active=false){
+        const b = document.createElement("button");
+        b.textContent = label || String(p);
+        if(active) b.classList.add("active");
+        b.onclick = ()=>{
+          chapDrawerState.page = p;
+          renderChapterDrawerList();
+          try{ document.querySelector(".chapDrawerBody").scrollTo({top:0, behavior:"smooth"}); }catch(e){}
+        };
+        pager.appendChild(b);
+      }
+      function addDots(){
+        const s = document.createElement("span");
+        s.className = "dots";
+        s.textContent = "…";
+        pager.appendChild(s);
+      }
+
+      const cur = chapDrawerState.page;
+
+      if(totalPages <= 12){
+        for(let p=1; p<=totalPages; p++) addBtn(p, String(p), cur===p);
+        return;
+      }
+
+      if(cur <= 10){
+        for(let p=1; p<=10; p++) addBtn(p, String(p), cur===p);
+        addDots();
+        addBtn(totalPages-1, String(totalPages-1), cur===totalPages-1);
+        addBtn(totalPages, String(totalPages), cur===totalPages);
+        return;
+      }
+
+      if(cur >= totalPages-9){
+        addBtn(1, "1", cur===1);
+        addBtn(2, "2", cur===2);
+        addDots();
+        for(let p=totalPages-9; p<=totalPages; p++) addBtn(p, String(p), cur===p);
+        return;
+      }
+
+      // middle
+      addBtn(1, "1", cur===1);
+      addBtn(2, "2", cur===2);
+      addDots();
+      for(let p=cur-2; p<=cur+2; p++) addBtn(p, String(p), cur===p);
+      addDots();
+      addBtn(totalPages-1, String(totalPages-1), cur===totalPages-1);
+      addBtn(totalPages, String(totalPages), cur===totalPages);
+    }
+
+
+    function renderReadPage(storyId, chapNo){
       // đảm bảo đã có stories
       let st = stories.find(x=>x.id===storyId);
       if(!st){
@@ -2616,8 +3225,7 @@ function computeCategories(list){
       nextBtn.onclick = ()=> { go("read/" + storyId + "/" + (chapNo+1)); };
       if(maxGuess && chapNo >= maxGuess) nextBtn.disabled = true;
 
-      $("btnChapterMenu").onclick = ()=> go("story/" + storyId);
-
+      $("btnChapterMenu").onclick = ()=> openChapterDrawer(storyId, chapNo, st);
       // tools: select recent chapters + go input
       const sel = $("readChapterSelect");
       sel.innerHTML = "<option>Đang tải danh sách chương...</option>";
