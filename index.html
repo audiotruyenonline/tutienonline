@@ -45,7 +45,7 @@
 .topBar{
   max-width:var(--max);
   margin:0 auto;
-  padding:10px 12px;
+  padding:10px calc(12px + env(safe-area-inset-right)) 10px calc(12px + env(safe-area-inset-left));
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -661,6 +661,18 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     @media (max-width: 760px){
       :root{ --hotCols: 4; }
       .wrap{margin-top:10px}
+
+    @media (max-width: 560px){
+      /* Header tự xuống dòng để không bị tràn (fix lỗi AVT bị lệch như ảnh) */
+      .topBar{flex-wrap:wrap; justify-content:flex-start;}
+      .brand{flex:1 1 100%;}
+      .topActions{
+        flex:1 1 100%;
+        width:100%;
+        justify-content:space-between;
+      }
+    }
+
       .sectionHead{padding:10px}
       .contentPad{padding:10px}
     }
@@ -686,7 +698,9 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
   
     @media (max-width: 360px){
       .brandText{font-size:15px}
-      .topActions{flex-wrap:wrap; justify-content:flex-end}
+      .topActions{flex-wrap:wrap; justify-content:space-between; gap:6px}
+      .pillBtn{height:38px}
+      .circleBtn{width:38px;height:38px}
     }
 </style>
 </head>
@@ -2106,3 +2120,4 @@ $("themeBtn")?.addEventListener("click", ()=>{
 
 </body>
 </html>
+
