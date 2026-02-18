@@ -625,6 +625,38 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     }
     .chatInput:focus{box-shadow:0 0 0 3px rgba(42,120,201,.18)}
 
+
+    /* ======= ADMIN ======= */
+    .adminGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .adminCard{
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:rgba(255,255,255,.7);
+      box-shadow: var(--shadow);
+      padding:12px;
+    }
+    html[data-theme="dark"] .adminCard{background:rgba(0,0,0,.18)}
+    .adminCardTitle{font-weight:950;margin-bottom:10px}
+    .formRow{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+    .formRow label{font-size:12px;color:var(--muted);font-weight:900}
+    .input, .textarea{
+      border:1px solid #cfd6df;
+      border-radius:10px;
+      padding:10px 12px;
+      font-weight:800;
+      outline:none;
+      background:#fff;
+      color:var(--text);
+    }
+    .textarea{min-height:160px;resize:vertical;line-height:1.5;font-weight:700}
+    .input:focus, .textarea:focus{box-shadow:0 0 0 3px rgba(42,120,201,.18)}
+    .adminRow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .adminSmall{font-size:12px;color:var(--muted)}
+    @media (max-width: 860px){
+      .adminGrid{grid-template-columns:1fr}
+    }
+
+
     /* ======= Responsive ======= */
     @media (max-width: 760px){
       :root{ --hotCols: 4; }
@@ -772,6 +804,22 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       </div>
     </section>
 
+    <!-- TRUYỆN HOÀN THÀNH -->
+    <section class="section" id="secCompleted">
+      <div class="sectionHead">
+        <div class="secTitle">✅ TRUYỆN HOÀN THÀNH</div>
+        <div class="secRight">
+          <select class="select" id="completedCategory">
+            <option value="all">CHỌN THỂ LOẠI</option>
+          </select>
+        </div>
+      </div>
+      <div id="completedList"></div>
+      <div class="contentPad">
+        <div class="hint" id="completedHint"></div>
+      </div>
+    </section>
+
     <!-- TRÒ CHUYỆN -->
     <section class="section" id="secChat">
       <div class="sectionHead">
@@ -792,20 +840,103 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       </div>
     </section>
 
-    <!-- TRUYỆN HOÀN THÀNH -->
-    <section class="section" id="secCompleted">
+
+    <!-- ADMIN (chỉ hiện với admin) -->
+    <section class="section" id="secAdmin" style="display:none">
       <div class="sectionHead">
-        <div class="secTitle">✅ TRUYỆN HOÀN THÀNH</div>
-        <div class="secRight">
-          <select class="select" id="completedCategory">
-            <option value="all">CHỌN THỂ LOẠI</option>
-          </select>
+        <div class="secTitle">🛠 QUẢN TRỊ (ADMIN)</div>
+        <div class="secRight"><div class="hint" id="adminState"></div></div>
+      </div>
+      <div class="contentPad">
+        <div class="mutedBox" style="margin:0 0 10px 0">
+          • Khu này chỉ hiện với tài khoản admin.<br/>
+          • Dữ liệu sẽ lưu vào <b>Realtime Database</b>: <code>/stories</code> và <code>/chapters</code>.
+        </div>
+
+        <div class="adminGrid">
+          <div class="adminCard">
+            <div class="adminCardTitle">➕ Thêm truyện</div>
+
+            <div class="formRow">
+              <label>Tiêu đề truyện</label>
+              <input class="input" id="aStoryTitle" placeholder="Ví dụ: Vô Cực Đạo Giới" />
+            </div>
+
+            <div class="formRow">
+              <label>Tác giả (tuỳ chọn)</label>
+              <input class="input" id="aStoryAuthor" placeholder="Bút danh" />
+            </div>
+
+            <div class="formRow">
+              <label>Thể loại (phân cách bằng dấu phẩy)</label>
+              <input class="input" id="aStoryCats" placeholder="Tiên hiệp, Huyền huyễn, Kiếm hiệp" />
+            </div>
+
+            <div class="formRow">
+              <label>Ảnh bìa (URL) (tuỳ chọn)</label>
+              <input class="input" id="aStoryCover" placeholder="https://..." />
+            </div>
+
+            <div class="formRow">
+              <label>Mô tả (tuỳ chọn)</label>
+              <textarea class="textarea" id="aStoryDesc" placeholder="Giới thiệu ngắn về truyện..."></textarea>
+            </div>
+
+            <div class="adminRow">
+              <label style="display:flex;align-items:center;gap:8px;font-weight:900">
+                <input type="checkbox" id="aStoryCompleted" />
+                Hoàn thành (Full)
+              </label>
+              <span class="adminSmall">Có thể bật/tắt sau bằng cách sửa node story.</span>
+            </div>
+
+            <div class="btnRow" style="margin-top:10px">
+              <button class="btn primary" id="aStorySave">Lưu truyện</button>
+              <button class="btn" id="aStoryReset">Xoá nhập</button>
+            </div>
+
+            <div class="hint" id="aStoryMsg"></div>
+          </div>
+
+          <div class="adminCard">
+            <div class="adminCardTitle">📄 Thêm chương</div>
+
+            <div class="formRow">
+              <label>Chọn truyện</label>
+              <select class="select" id="aChapStory">
+                <option value="">— Chọn truyện —</option>
+              </select>
+            </div>
+
+            <div class="adminRow">
+              <div class="formRow" style="flex:1;min-width:140px;margin:0">
+                <label>Số chương</label>
+                <input class="input" id="aChapNo" type="number" min="1" step="1" placeholder="1" />
+              </div>
+              <div class="formRow" style="flex:2;min-width:180px;margin:0">
+                <label>Tiêu đề chương (tuỳ chọn)</label>
+                <input class="input" id="aChapTitle" placeholder="Chương 1: ..." />
+              </div>
+            </div>
+
+            <div class="formRow" style="margin-top:10px">
+              <label>Nội dung chương (hỗ trợ xuống dòng; có thể dán HTML &lt;p&gt;...)</label>
+              <textarea class="textarea" id="aChapContent" placeholder="Dán nội dung chương vào đây..."></textarea>
+            </div>
+
+            <div class="btnRow">
+              <button class="btn primary" id="aChapSave">Đăng chương</button>
+              <button class="btn" id="aChapReset">Xoá nhập</button>
+            </div>
+
+            <div class="hint" id="aChapMsg"></div>
+            <div class="mutedBox" style="margin-top:10px">
+              Mẹo: nếu truyện có nhiều chương (rất nhiều), mình sẽ nâng cấp thành <b>import hàng loạt</b> (dán nhiều chương một lần) + <b>phân trang</b> ở trang đọc.
+            </div>
+          </div>
         </div>
       </div>
-      <div id="completedList"></div>
-      <div class="contentPad">
-        <div class="hint" id="completedHint"></div>
-      </div>
+    </section>
 
 
   </main>
@@ -822,6 +953,7 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
         <button class="drawerBtn" id="navHistory">🕘 Lịch sử đọc <span class="r">›</span></button>
         <button class="drawerBtn" id="navProfile">👤 Hồ sơ <span class="r">›</span></button>
         <div class="divider"></div>
+        <button class="drawerBtn" id="navAdmin" style="display:none">🛠 Quản trị (Admin) <span class="r">›</span></button>
         <button class="drawerBtn" id="navLogin">🔐 Đăng nhập Google <span class="r" id="loginState">›</span></button>
         <button class="drawerBtn" id="navLogout" style="display:none">🚪 Đăng xuất <span class="r">›</span></button>
         <div class="divider"></div>
@@ -1109,6 +1241,7 @@ $("themeBtn")?.addEventListener("click", ()=>{
     $("navHome").addEventListener("click", ()=>{ closeDrawer(); window.scrollTo({top:0, behavior:"smooth"}); });
     $("navProfile").addEventListener("click", ()=>{ closeDrawer(); alert("Trang Hồ sơ: sẽ làm ở bước tiếp theo (đúng yêu cầu bạn)."); });
     $("navHistory").addEventListener("click", ()=>{ closeDrawer(); alert("Trang Lịch sử: sẽ làm ở bước tiếp theo."); });
+    $("navAdmin")?.addEventListener("click", ()=>{ closeDrawer(); document.getElementById("secAdmin")?.scrollIntoView({behavior:"smooth"}); });
     $("homeBtn").addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
 
     onAuthStateChanged(auth, async (u)=>{
@@ -1141,6 +1274,13 @@ $("themeBtn")?.addEventListener("click", ()=>{
       }catch(e){}
 
       await loadReading(); // phụ thuộc user
+
+      // Admin UI
+      const adminOk = toggleAdminUI(currentUser);
+      if(adminOk){
+        bindAdminUIOnce();
+        await refreshAdminStorySelect();
+      }
 
 
     // ===== Chat cộng đồng (Realtime Database) =====
@@ -1516,6 +1656,347 @@ $("themeBtn")?.addEventListener("click", ()=>{
       await set(ref(db, `userData/${currentUser.uid}/reading/${storyId}`), payload);
     }
 
+
+    // ===== Reader (đọc truyện theo chương từ RTDB) =====
+    // Data:
+    // chapters/{storyId}/{chapNo}: { no: number, title: string, content: string, createdAt }
+    function stripScripts(htmlText){
+      // loại bỏ script đơn giản (admin là người đăng nội dung nên đây là lớp bảo vệ nhẹ)
+      return String(htmlText||"").replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "");
+    }
+
+    function safeRenderChapter(htmlText){
+      // Bảo vệ nhẹ: bỏ <script> + bỏ on* handlers
+      let t = stripScripts(htmlText);
+      t = t.replace(/\son\w+="[^"]*"/gi, "");
+      t = t.replace(/\son\w+='[^']*'/gi, "");
+      return t;
+    }
+
+    async function fetchChapter(storyId, chapNo){
+      const sn = await get(ref(db, `chapters/${storyId}/${chapNo}`));
+      return sn.exists() ? sn.val() : null;
+    }
+
+    async function fetchLastChaptersMeta(storyId, limit=200){
+      // dùng orderByChild('no') để lấy chương mới nhất (cần có field no)
+      const q = query(ref(db, `chapters/${storyId}`), orderByChild("no"), limitToLast(limit));
+      const sn = await get(q);
+      if(!sn.exists()) return [];
+      const raw = sn.val();
+      const arr = Object.entries(raw).map(([k,v])=>({
+        key: k,
+        no: Number(v?.no ?? k),
+        title: v?.title || ""
+      })).filter(x=>Number.isFinite(x.no));
+      arr.sort((a,b)=>a.no-b.no);
+      return arr;
+    }
+
+    async function openReader(st){
+      if(!st) return;
+
+      const storyId = st.id;
+      // ưu tiên: đang đọc -> latest -> 1
+      let startNo = 1;
+      try{
+        if(currentUser){
+          const rs = await get(ref(db, `userData/${currentUser.uid}/reading/${storyId}`));
+          if(rs.exists()){
+            startNo = Number(rs.val()?.chapNo || 1) || 1;
+          }else if(st.latestChapNo!=null){
+            startNo = Number(st.latestChapNo)||1;
+          }else if(st.chapterCount!=null){
+            startNo = Number(st.chapterCount)||1;
+          }
+        }else{
+          startNo = Number(st.latestChapNo || st.chapterCount || 1) || 1;
+        }
+      }catch(e){
+        startNo = Number(st.latestChapNo || st.chapterCount || 1) || 1;
+      }
+
+      // UI
+      openModal(st.title, `
+        <div class="mutedBox" style="margin-bottom:10px">
+          <b>${esc(st.title)}</b><br/>
+          Chế độ đọc chương (lấy từ Firebase RTDB). 
+          ${currentUser ? "" : "<br/><span class='adminSmall'>* Đăng nhập để tự lưu vị trí đang đọc.</span>"}
+        </div>
+
+        <div class="adminRow" style="justify-content:space-between">
+          <div class="adminRow" style="gap:8px">
+            <button class="btn" id="rPrev">◀</button>
+            <button class="btn" id="rNext">▶</button>
+          </div>
+
+          <div class="adminRow" style="gap:8px;flex:1;justify-content:flex-end">
+            <input class="input" id="rGoNo" type="number" min="1" step="1" style="max-width:120px" placeholder="Chương..." />
+            <button class="btn" id="rGoBtn">Đi</button>
+          </div>
+        </div>
+
+        <div class="adminRow" style="margin-top:10px">
+          <select class="select" id="rChapSelect" style="flex:1;min-width:0">
+            <option value="">Đang tải danh sách chương...</option>
+          </select>
+          <button class="btn primary" id="rClose">Đóng</button>
+        </div>
+
+        <div class="hint" id="rHint" style="margin-top:8px"></div>
+
+        <div class="mutedBox" style="margin-top:10px">
+          <div id="rTitle" style="font-weight:950;margin-bottom:6px">—</div>
+          <div id="rContent" style="font-size:14px;line-height:1.75"></div>
+        </div>
+      `);
+
+      const sel = $("rChapSelect");
+      const hint = $("rHint");
+      const titleEl = $("rTitle");
+      const contentEl = $("rContent");
+      const goNo = $("rGoNo");
+
+      let chapterList = [];
+      let currentNo = startNo;
+
+      async function loadList(){
+        try{
+          chapterList = await fetchLastChaptersMeta(storyId, 200);
+          if(!chapterList.length){
+            sel.innerHTML = `<option value="">Chưa có chương nào</option>`;
+            hint.textContent = "Chưa có chương trong /chapters/" + storyId + ".";
+            return;
+          }
+          sel.innerHTML = chapterList.map(c=>{
+            const label = `Chương ${c.no}` + (c.title ? `: ${esc(c.title)}` : "");
+            return `<option value="${c.no}">${label}</option>`;
+          }).join("");
+          // nếu startNo không nằm trong list cuối, vẫn set value (sẽ không có option) -> dùng go input
+          if(chapterList.some(c=>c.no===currentNo)) sel.value = String(currentNo);
+          hint.textContent = "Đang hiển thị danh sách 200 chương mới nhất. (Bạn có thể nhập số chương để đi thẳng.)";
+        }catch(err){
+          console.warn(err);
+          sel.innerHTML = `<option value="">Không tải được danh sách chương</option>`;
+          hint.textContent = "Không tải được danh sách chương. Kiểm tra Rules cho /chapters.";
+        }
+      }
+
+      async function loadChap(no){
+        no = Number(no||1)||1;
+        currentNo = no;
+        titleEl.textContent = `Chương ${no}` + (st.title ? ` — ${st.title}` : "");
+        contentEl.innerHTML = "<i>Đang tải...</i>";
+        hint.textContent = "";
+
+        try{
+          const ch = await fetchChapter(storyId, String(no));
+          if(!ch){
+            contentEl.innerHTML = "<div class='searchEmpty'>Không tìm thấy chương này. (Kiểm tra /chapters/" + esc(storyId) + "/" + no + ")</div>";
+            return;
+          }
+          const cTitle = ch?.title ? String(ch.title) : "";
+          titleEl.textContent = `Chương ${no}` + (cTitle ? `: ${cTitle}` : "");
+          const raw = ch?.content ?? ch?.text ?? "";
+          const rendered = safeRenderChapter(raw);
+          // nếu là text thuần, tự xuống dòng
+          const looksLikeHtml = /<\w+[^>]*>/.test(rendered);
+          contentEl.innerHTML = looksLikeHtml ? rendered : esc(rendered).replace(/\n/g,"<br/>");
+
+          // lưu vị trí đang đọc
+          if(currentUser){
+            await markReading(storyId, no);
+            await loadReading();
+          }
+          // sync select / input
+          if(sel && chapterList.some(c=>c.no===no)) sel.value = String(no);
+          if(goNo) goNo.value = String(no);
+        }catch(err){
+          console.warn(err);
+          contentEl.innerHTML = "<div class='searchEmpty'>Không tải được chương. Kiểm tra Realtime Database Rules cho /chapters.</div>";
+        }
+      }
+
+      $("rClose")?.addEventListener("click", closeModal);
+      $("rPrev")?.addEventListener("click", ()=> loadChap(Math.max(1, currentNo-1)));
+      $("rNext")?.addEventListener("click", ()=> loadChap(currentNo+1));
+      $("rGoBtn")?.addEventListener("click", ()=> loadChap(goNo.value));
+      goNo?.addEventListener("keydown",(e)=>{ if(e.key==="Enter"){ e.preventDefault(); loadChap(goNo.value);} });
+      sel?.addEventListener("change", ()=>{ if(sel.value) loadChap(sel.value); });
+
+      await loadList();
+      await loadChap(currentNo);
+    }
+
+    // ===== Admin UI (thêm truyện / chương vào RTDB) =====
+    const ADMIN_EMAILS = ["sumi22122005@gmail.com"].map(s=>s.toLowerCase());
+    let _adminBound = false;
+
+    function isAdmin(u){
+      const em = (u?.email||"").toLowerCase();
+      return !!em && ADMIN_EMAILS.includes(em);
+    }
+
+    function toggleAdminUI(u){
+      const ok = isAdmin(u);
+      const sec = $("secAdmin");
+      const nav = $("navAdmin");
+      if(sec) sec.style.display = ok ? "block" : "none";
+      if(nav) nav.style.display = ok ? "block" : "none";
+      if($("adminState")) $("adminState").textContent = ok ? "✓ Admin" : "";
+      return ok;
+    }
+
+    function bindAdminUIOnce(){
+      if(_adminBound) return;
+      _adminBound = true;
+
+      const msgStory = $("aStoryMsg");
+      const msgChap = $("aChapMsg");
+
+      function resetStoryForm(){
+        $("aStoryTitle").value = "";
+        $("aStoryAuthor").value = "";
+        $("aStoryCats").value = "";
+        $("aStoryCover").value = "";
+        $("aStoryDesc").value = "";
+        $("aStoryCompleted").checked = false;
+        msgStory.textContent = "";
+      }
+
+      function resetChapForm(){
+        $("aChapNo").value = "";
+        $("aChapTitle").value = "";
+        $("aChapContent").value = "";
+        msgChap.textContent = "";
+      }
+
+      $("aStoryReset")?.addEventListener("click", resetStoryForm);
+      $("aChapReset")?.addEventListener("click", resetChapForm);
+
+      $("aStorySave")?.addEventListener("click", async ()=>{
+        msgStory.textContent = "";
+        if(!currentUser || !isAdmin(currentUser)){
+          alert("Bạn không có quyền admin.");
+          return;
+        }
+        const title = $("aStoryTitle").value.trim();
+        if(!title){ msgStory.textContent = "Nhập tiêu đề truyện."; return; }
+
+        const now = Date.now();
+        const author = $("aStoryAuthor").value.trim();
+        const cats = $("aStoryCats").value.split(",").map(s=>s.trim()).filter(Boolean);
+        const coverUrl = $("aStoryCover").value.trim();
+        const desc = $("aStoryDesc").value.trim();
+        const completed = $("aStoryCompleted").checked;
+
+        try{
+          const newRef = push(ref(db, "stories"));
+          const storyId = newRef.key;
+          const payload = {
+            title,
+            author,
+            categories: cats,
+            coverUrl,
+            desc,
+            completed,
+            status: completed ? "completed" : "ongoing",
+            createdAt: now,
+            updatedAt: now,
+            latestChapNo: 0,
+            chapterCount: 0,
+            views: 0,
+            hotScore: 0
+          };
+          await set(newRef, payload);
+
+          msgStory.textContent = "✓ Đã lưu truyện. ID: " + storyId;
+          resetStoryForm();
+
+          // reload lists + refresh select
+          await loadStories();
+          await refreshAdminStorySelect();
+          window.scrollTo({top:0,behavior:"smooth"});
+        }catch(err){
+          console.warn(err);
+          msgStory.textContent = "Không lưu được. Kiểm tra Rules cho /stories.";
+          alert("Không lưu được truyện. Kiểm tra Realtime Database Rules cho /stories.");
+        }
+      });
+
+      $("aChapSave")?.addEventListener("click", async ()=>{
+        msgChap.textContent = "";
+        if(!currentUser || !isAdmin(currentUser)){
+          alert("Bạn không có quyền admin.");
+          return;
+        }
+        const storyId = $("aChapStory").value;
+        if(!storyId){ msgChap.textContent = "Chọn truyện."; return; }
+
+        const no = Number($("aChapNo").value || 0);
+        if(!Number.isFinite(no) || no < 1){ msgChap.textContent = "Nhập số chương hợp lệ (>=1)."; return; }
+
+        const title = $("aChapTitle").value.trim();
+        let content = $("aChapContent").value || "";
+        content = stripScripts(content);
+
+        if(!content.trim()){
+          msgChap.textContent = "Nội dung chương đang trống.";
+          return;
+        }
+
+        const now = Date.now();
+
+        try{
+          // lưu theo key là số chương để dễ truy vấn trực tiếp
+          await set(ref(db, `chapters/${storyId}/${no}`), {
+            no,
+            title,
+            content,
+            createdAt: now
+          });
+
+          // cập nhật story meta
+          const sSnap = await get(ref(db, `stories/${storyId}`));
+          const sVal = sSnap.exists() ? sSnap.val() : {};
+          const prevLatest = Number(sVal?.latestChapNo || 0) || 0;
+          const prevCount  = Number(sVal?.chapterCount || 0) || 0;
+
+          const nextLatest = Math.max(prevLatest, no);
+          const nextCount  = Math.max(prevCount, no);
+
+          await update(ref(db, `stories/${storyId}`), {
+            latestChapNo: nextLatest,
+            chapterCount: nextCount,
+            updatedAt: now
+          });
+
+          msgChap.textContent = `✓ Đã đăng Chương ${no}.`;
+          $("aChapNo").value = String(no+1);
+          $("aChapTitle").value = "";
+          $("aChapContent").value = "";
+
+          await loadStories();
+        }catch(err){
+          console.warn(err);
+          msgChap.textContent = "Không đăng được chương. Kiểm tra Rules cho /chapters và /stories.";
+          alert("Không đăng được chương. Kiểm tra Realtime Database Rules.");
+        }
+      });
+    }
+
+    async function refreshAdminStorySelect(){
+      const sel = $("aChapStory");
+      if(!sel) return;
+      const cur = sel.value;
+
+      // nếu đang là demo thì vẫn show, nhưng admin nên có stories thật
+      const list = (stories||[]).slice().sort((a,b)=>String(a.title||"").localeCompare(String(b.title||""), "vi"));
+      sel.innerHTML = `<option value="">— Chọn truyện —</option>` + list.map(s=>`<option value="${esc(s.id)}">${esc(s.title)}</option>`).join("");
+      if(cur && list.some(s=>s.id===cur)) sel.value = cur;
+    }
+
+
     function openStoryModal(st, opts={}){
       if(!st) return;
       const cats = (st.categories||[]).slice(0,4).map(c=>`<span class="pill">${esc(c)}</span>`).join(" ");
@@ -1541,7 +2022,7 @@ $("themeBtn")?.addEventListener("click", ()=>{
 
             <div class="mutedBox">
               • Hiện tại là bản <b>trang chủ giống ảnh</b> + lấy dữ liệu từ Firebase.<br/>
-              • Khi bấm <b>Đọc ngay</b>, mình đang demo (sẽ làm trang đọc truyện & chương ở bước tiếp theo).
+              • Khi bấm <b>Đọc ngay</b>, web sẽ tải chương từ <b>Realtime Database</b> (node <code>/chapters/{storyId}/{chapNo}</code>).
             </div>
           </div>
         </div>
@@ -1558,11 +2039,9 @@ $("themeBtn")?.addEventListener("click", ()=>{
         await loadReading();
       });
       $("btnReadNow").addEventListener("click", async ()=>{
-        // Demo: chỉ đánh dấu đang đọc, còn trang đọc sẽ làm tiếp
-        if(currentUser) await markReading(st.id, 1);
+        // Mở trang đọc chương (lấy từ RTDB /chapters/{storyId}/{chapNo})
         closeModal();
-        await loadReading();
-        alert("Bước tiếp theo mình sẽ làm trang đọc truyện + chương (đúng yêu cầu bạn).");
+        await openReader(st);
       });
     }
 
@@ -1627,4 +2106,3 @@ $("themeBtn")?.addEventListener("click", ()=>{
 
 </body>
 </html>
-
