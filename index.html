@@ -25,6 +25,7 @@
       --heaShadow:0 2px 18px rgba(0,0,0,.28);
       --heaBtnBg:rgba(0,0,0,.20);
       --heaBtnBorder:rgba(255,255,255,.18);
+          --topH:0px;
     }
     *{box-sizing:border-box}
     html,body{height:100%;overflow-x:hidden}
@@ -33,14 +34,19 @@
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
       background:var(--bg);
+      padding-top: var(--topH);
+      scroll-padding-top: var(--topH);
     }
     a{color:inherit;text-decoration:none}
     /* ======= HEADER (icon/pill kiểu như ảnh bạn gửi) ======= */
 .top{
-  position:sticky; top:0; z-index:50;
+  position:fixed; top:0; left:0; right:0;
+  z-index:50;
+  width:100%;
   background: linear-gradient(180deg, var(--heaA), var(--heaB));
   box-shadow: var(--heaShadow);
   border-bottom:1px solid var(--heaBorder);
+  transform: translateZ(0);
 }
 .topBar{
   max-width:var(--max);
@@ -1228,6 +1234,24 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     const fmtNum = (n)=> (n==null? "—" : ("C. " + n));
     const num = (v)=>{ const n = Number(v); return Number.isFinite(n) ? n : 0; };
     const toLower = (s)=>String(s||"").toLowerCase();
+    // ===== Fixed header offset (để header luôn cố định khi cuộn) =====
+    function syncTopOffset(){
+      const header = document.querySelector("header.top");
+      if(!header) return;
+      const h = header.getBoundingClientRect().height || header.offsetHeight || 0;
+      document.documentElement.style.setProperty("--topH", Math.ceil(h) + "px");
+    }
+    window.addEventListener("resize", syncTopOffset);
+    window.addEventListener("orientationchange", syncTopOffset);
+    try{
+      if(window.ResizeObserver){
+        const ro = new ResizeObserver(()=>syncTopOffset());
+        const header = document.querySelector("header.top");
+        if(header) ro.observe(header);
+      }
+    }catch(e){}
+    requestAnimationFrame(syncTopOffset);
+
 
     // ===== Simple Router (Hash) cho "không gian riêng" =====
     const viewHome = document.getElementById("viewHome");
@@ -2556,3 +2580,4 @@ function computeCategories(list){
 
 </body>
 </html>
+
