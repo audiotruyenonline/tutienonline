@@ -2,2891 +2,2623 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Truyện Online</title>
-  <meta name="theme-color" content="#0d2f66" />
+  <meta name="theme-color" content="#0b1020" />
   <style>
     :root{
-      --blue0:#0d2f66;
-      --blue1:#1e5aa7;
-      --blue2:#2a78c9;
-      --text:#1b1b1b;
-      --muted:#6b7280;
-      --bg:#f3f4f6;
-      --card:#ffffff;
-      --line:#e5e7eb;
-      --shadow:0 4px 18px rgba(0,0,0,.08);
-      --radius:10px;
-      --max:1100px;
-      --hotCols:4;
-      --heaA:#1d5bb7;
-      --heaB:#0d2f66;
-      --heaBorder:rgba(255,255,255,.22);
-      --heaShadow:0 2px 18px rgba(0,0,0,.28);
-      --heaBtnBg:rgba(0,0,0,.20);
-      --heaBtnBorder:rgba(255,255,255,.18);
+      --bg:#070a14;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --soft: rgba(255,255,255,.12);
+      --line: rgba(255,255,255,.14);
+      --brand1:#7c3aed;
+      --brand2:#22d3ee;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 28px;
+      --blur: 18px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
-    *{box-sizing:border-box}
-    html,body{height:100%;overflow-x:hidden}
+    [data-theme="light"]{
+      --bg:#f6f7fb;
+      --panel: rgba(10,20,40,.06);
+      --panel2: rgba(10,20,40,.08);
+      --text: rgba(10,20,40,.92);
+      --muted: rgba(10,20,40,.65);
+      --soft: rgba(10,20,40,.12);
+      --line: rgba(10,20,40,.14);
+      --shadow: 0 18px 40px rgba(10,20,40,.10);
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-family:var(--font);
       color:var(--text);
-      background:var(--bg);
+      background:
+        radial-gradient(1000px 600px at 20% -10%, rgba(124,58,237,.35), transparent 55%),
+        radial-gradient(900px 520px at 90% 0%, rgba(34,211,238,.25), transparent 55%),
+        radial-gradient(900px 600px at 50% 120%, rgba(99,102,241,.22), transparent 55%),
+        var(--bg);
+      overflow-x:hidden;
     }
-    a{color:inherit;text-decoration:none}
-    /* ======= HEADER (icon/pill kiểu như ảnh bạn gửi) ======= */
-.top{
-  position:sticky; top:0; z-index:50;
-  background: linear-gradient(180deg, var(--heaA), var(--heaB));
-  box-shadow: var(--heaShadow);
-  border-bottom:1px solid var(--heaBorder);
-}
-.topBar{
-  max-width:var(--max);
-  margin:0 auto;
-  padding:10px calc(12px + env(safe-area-inset-right)) 10px calc(12px + env(safe-area-inset-left));
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-.brand{
-  display:flex; align-items:center; gap:10px;
-  color:#fff;
-  font-weight:900;
-  letter-spacing:.2px;
-  user-select:none;
-}
-.brandLogo{
-  width:40px;height:40px;
-  border-radius:12px;
-  display:grid;place-items:center;
-  background:rgba(255,255,255,.14);
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
-}
-.brandText{
-  font-size:18px;
-  font-weight:900;
-  letter-spacing:.4px;
-}
-
-.topActions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.hdrBtn{
-  border:1px solid var(--heaBtnBorder);
-  background:var(--heaBtnBg);
-  color:#fff;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  cursor:pointer;
-  user-select:none;
-}
-.hdrBtn:active{transform:translateY(1px)}
-.hdrBtn:focus{outline:none; box-shadow:0 0 0 3px rgba(99,102,241,.22), inset 0 0 0 1px rgba(255,255,255,.04);}
-
-.circleBtn{
-  width:44px;height:44px;
-  border-radius:999px;
-  display:grid;place-items:center;
-  position:relative;
-}
-.circleBtn .ico{font-size:18px; line-height:1;}
-
-.pillBtn{
-  height:44px;
-  border-radius:999px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:0 14px;
-  position:relative;
-  font-weight:900;
-}
-
-.onlinePill{
-  color:#67e8f9;
-  border-color:rgba(103,232,249,.22);
-  min-width:78px;
-  justify-content:center;
-}
-.onlineGreenDot{
-  width:10px;height:10px;border-radius:999px;
-  background:#22c55e;
-  box-shadow:0 0 0 3px rgba(34,197,94,.14);
-  opacity:.95;
-}
-.onlineNum{
-  font-size:18px;
-  letter-spacing:.2px;
-  min-width:12px;
-  text-align:center;
-}
-
-.vipPill{
-  border:0;
-  background: linear-gradient(180deg, #f7d24d, #c9940a);
-  color:#111827;
-  box-shadow:0 10px 28px rgba(0,0,0,.35);
-  padding:0 16px;
-}
-.vipPill .vipText{font-weight:900}
-.vipPill .vipCoin{font-size:18px; line-height:1}
-.vipShort{display:none;font-weight:900}
-
-.badge{
-  position:absolute;
-  top:-2px; right:-2px;
-  min-width:18px;
-  height:18px;
-  padding:0 5px;
-  border-radius:999px;
-  background:#ef4444;
-  color:#fff;
-  font-size:11px;
-  font-weight:900;
-  display:grid;
-  place-items:center;
-  border:2px solid rgba(0,0,0,.55);
-}
-
-.avatarPill{
-  padding:0 10px 0 8px;
-  gap:10px;
-  min-width:78px;
-}
-#menuAvatar{
-  width:32px;height:32px;
-  border-radius:999px;
-  object-fit:cover;
-  display:none;
-}
-#menuIcon{
-  width:32px;height:32px;
-  border-radius:999px;
-  display:grid;
-  place-items:center;
-  font-weight:900;
-  background:rgba(255,255,255,.10);
-  border:1px solid rgba(255,255,255,.10);
-}
-.caret{
-  font-size:14px;
-  opacity:.75;
-  transform: translateY(-1px);
-}
-
-    /* ====== Search modal ====== */
-    .searchBg{
+    .stars{
       position:fixed; inset:0;
-      background:rgba(0,0,0,.35);
-      display:none;
-      z-index:95;
-      padding:12px;
+      pointer-events:none;
+      opacity:.55;
+      filter: blur(.2px);
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.35), transparent 60%),
+        radial-gradient(1.5px 1.5px at 140px 80px, rgba(255,255,255,.30), transparent 60%),
+        radial-gradient(1.2px 1.2px at 260px 140px, rgba(255,255,255,.25), transparent 60%),
+        radial-gradient(1.8px 1.8px at 420px 60px, rgba(255,255,255,.28), transparent 60%),
+        radial-gradient(1.3px 1.3px at 520px 180px, rgba(255,255,255,.22), transparent 60%),
+        radial-gradient(1.6px 1.6px at 760px 90px, rgba(255,255,255,.22), transparent 60%);
+      background-size: 900px 380px;
+      animation: drift 14s linear infinite;
     }
-    .searchBox{
-      max-width:720px;
-      margin:0 auto;
-      background:var(--card);
-      border-radius:12px;
-      overflow:hidden;
-      box-shadow:0 30px 80px rgba(0,0,0,.35);
-      border:1px solid rgba(0,0,0,.10);
-    }
-    .searchHead{
-      display:flex; align-items:center; gap:10px;
-      padding:10px 12px;
-      background:#f5f6f8;
+    @keyframes drift{ 0%{transform:translate3d(0,0,0)} 100%{transform:translate3d(-60px,40px,0)} }
+
+    .app{ min-height:100%; display:flex; flex-direction:column; }
+    .header{
+      position:sticky; top:0; z-index:50;
+      padding: 10px 12px;
+      padding-top: calc(10px + env(safe-area-inset-top));
+      backdrop-filter: blur(var(--blur));
+      background: linear-gradient(to bottom, rgba(10,14,28,.65), rgba(10,14,28,.25));
       border-bottom:1px solid var(--line);
     }
-    .searchInput{
-      flex:1;
-      height:40px;
-      border-radius:10px;
-      border:1px solid #cfd6df;
-      padding:0 12px;
-      font-weight:800;
-      outline:none;
-      background:#fff;
+    [data-theme="light"] .header{
+      background: linear-gradient(to bottom, rgba(246,247,251,.90), rgba(246,247,251,.55));
     }
-    .searchInput:focus{box-shadow:0 0 0 3px rgba(42,120,201,.18)}
-    .searchBody{max-height:70vh; overflow:auto}
-    .searchItem{
-      padding:10px 12px;
-      border-top:1px solid var(--line);
-      display:flex; gap:10px; align-items:center;
-      cursor:pointer;
-      background:var(--card);
-    }
-    .searchItem:hover{background:rgba(0,0,0,.03)}
-    .searchItem .t{font-weight:900; font-size:13px; min-width:0; flex:1}
-    .searchItem .c{font-size:12px; color:var(--muted); white-space:nowrap}
-    .searchEmpty{padding:14px 12px; color:var(--muted); font-size:13px}
-
-    /* ====== Dark mode theo hệ thống ====== */
-    @media (prefers-color-scheme: dark){
-      :root{
-        --text:#e5e7eb;
-        --muted:#9ca3af;
-        --bg:#0b1220;
-        --card:#0f172a;
-        --line:#1f2937;
-        --shadow:0 6px 24px rgba(0,0,0,.35);
-      
-        --heaA:#0b1d3c;
-        --heaB:#061225;
-        --heaBorder:rgba(255,255,255,.10);
-        --heaShadow:0 2px 18px rgba(0,0,0,.55);
-        --heaBtnBg:rgba(255,255,255,.06);
-        --heaBtnBorder:rgba(255,255,255,.12);
-      }
-      body{background:var(--bg); color:var(--text);}
-      .sectionHead{background:rgba(255,255,255,.04)}
-      .select{background:#0b1220;color:var(--text);border-color:#334155}
-      .drawer{background:#0f172a;color:var(--text)}
-      .drawerBtn{background:#0f172a;color:var(--text);border-color:#1f2937}
-      .drawerBtn:hover{background:rgba(255,255,255,.06)}
-      .modal{background:var(--card)}
-      .modalHead{background:rgba(255,255,255,.04)}
-      .searchHead{background:rgba(255,255,255,.04)}
-      .searchInput{background:#0b1220;color:var(--text);border-color:#334155}
-      .mutedBox{background:rgba(255,255,255,.03);border-color:#334155;color:var(--text)}
-
-}
-
-html[data-theme="dark"]{
-  --text:#e5e7eb;
-  --muted:#9ca3af;
-  --bg:#0b1220;
-  --card:#0f172a;
-  --line:#1f2937;
-  --shadow:0 6px 24px rgba(0,0,0,.35);
-
-  --heaA:#0b1d3c;
-  --heaB:#061225;
-  --heaBorder:rgba(255,255,255,.10);
-  --heaShadow:0 2px 18px rgba(0,0,0,.55);
-  --heaBtnBg:rgba(255,255,255,.06);
-  --heaBtnBorder:rgba(255,255,255,.12);
-}
-html[data-theme="dark"] body{background:var(--bg); color:var(--text);}
-html[data-theme="dark"] .sectionHead{background:rgba(255,255,255,.04)}
-html[data-theme="dark"] .select{background:#0b1220;color:var(--text);border-color:#334155}
-html[data-theme="dark"] .drawer{background:#0f172a;color:var(--text)}
-html[data-theme="dark"] .drawerBtn{background:#0f172a;color:var(--text);border-color:#1f2937}
-html[data-theme="dark"] .drawerBtn:hover{background:rgba(255,255,255,.06)}
-html[data-theme="dark"] .modal{background:var(--card)}
-html[data-theme="dark"] .modalHead{background:rgba(255,255,255,.04)}
-html[data-theme="dark"] .searchHead{background:rgba(255,255,255,.04)}
-html[data-theme="dark"] .searchInput{background:#0b1220;color:var(--text);border-color:#334155}
-html[data-theme="dark"] .mutedBox{background:rgba(255,255,255,.03);border-color:#334155;color:var(--text)}
-
-html[data-theme="light"]{
-  --text:#1b1b1b;
-  --muted:#6b7280;
-  --bg:#f3f4f6;
-  --card:#ffffff;
-  --line:#e5e7eb;
-  --shadow:0 4px 18px rgba(0,0,0,.08);
-}
-html[data-theme="light"] body{background:var(--bg); color:var(--text);}
-html[data-theme="light"] .sectionHead{background:#f6f7f9}
-html[data-theme="light"] .select{background:#ffffff;color:var(--text);border-color:#d1d5db}
-html[data-theme="light"] .drawer{background:#ffffff;color:var(--text)}
-html[data-theme="light"] .drawerBtn{background:#ffffff;color:var(--text);border-color:#e5e7eb}
-html[data-theme="light"] .drawerBtn:hover{background:rgba(0,0,0,.03)}
-html[data-theme="light"] .modal{background:var(--card)}
-html[data-theme="light"] .modalHead{background:#f6f7f9}
-html[data-theme="light"] .searchHead{background:#f5f6f8}
-html[data-theme="light"] .searchInput{background:#ffffff;color:var(--text);border-color:#cfd6df}
-html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7eb;color:var(--text)}
-
-.subline{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:8px 12px 10px 12px;
-      color:rgba(255,255,255,.88);
-      font-size:12.5px;
-      border-top:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.06);
-      backdrop-filter: blur(8px);
-    }
-
-    /* ======= LAYOUT ======= */
-    .wrap{
-      max-width:var(--max);
-      margin:12px auto 40px auto;
-      padding:0 12px;
-    }
-    .section{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      margin-bottom:12px;
-    }
-    .sectionHead{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding:10px 10px;
-      background:#f5f6f8;
-      border-bottom:1px solid var(--line);
-    }
-    .secTitle{
-      font-weight:800;
-      color:#4b5563;
-      display:flex; align-items:center; gap:8px;
-      text-transform:uppercase;
-      font-size:15px;
-      letter-spacing:.2px;
-    }
-    .secTitle .flame{filter:grayscale(.1)}
-    .secRight{
-      display:flex; align-items:center; gap:8px;
-    }
-    .select{
-      height:34px;
-      border-radius:6px;
-      border:1px solid #cfd6df;
-      background:#fff;
-      padding:0 10px;
-      font-weight:700;
-      color:#3b4452;
-      outline:none;
-    }
-    .select:focus{box-shadow:0 0 0 3px rgba(42,120,201,.18)}
-    .contentPad{padding:10px}
-
-    /* ======= TRUYỆN HOT grid giống ảnh ======= */
-    .hotGrid{
-      display:grid;
-      grid-template-columns: repeat(var(--hotCols), 1fr);
-      gap:10px;
-    }
-    .hotItem{
-      display:block;
-      border-radius:6px;
-      overflow:hidden;
-      background:#fff;
-      border:1px solid rgba(0,0,0,.06);
-      box-shadow:0 2px 10px rgba(0,0,0,.06);
-      cursor:pointer;
-    }
-    .hotCover{
-      position:relative;
-      width:100%;
-      aspect-ratio: 3 / 4;
-      background: linear-gradient(135deg, #d1d5db, #9ca3af);
-      overflow:hidden;
-    }
-    .hotCover img{
-      width:100%; height:100%; object-fit:cover; display:block;
-      transform:scale(1.02);
-    }
-    .hotName{
-      padding:7px 6px;
-      font-size:12px;
-      font-weight:800;
-      line-height:1.15;
-      color:#111827;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-      min-height:30px;
-      background:#fff;
-    }
-
-    /* ======= LIST giống phần "Mới cập nhật" trong ảnh ======= */
-    .listRow{
-      display:grid;
-      grid-template-columns: 1fr 70px;
-      gap:10px;
-      padding:10px 10px;
-      border-top:1px solid var(--line);
+    .hrow{
+      max-width: 1180px;
+      margin: 0 auto;
+      display:flex;
       align-items:center;
+      gap:10px;
+      flex-wrap: wrap;
+      row-gap: 10px;
     }
-    .listRow:first-child{border-top:0}
-    .leftLine{min-width:0}
-    .storyLine{
+    .logo{
       display:flex; align-items:center; gap:10px;
-      min-width:0;
-    }
-    .miniCover{
-      width:34px;height:46px;
-      border-radius:6px;
-      background:linear-gradient(135deg,#d1d5db,#9ca3af);
-      overflow:hidden;
-      flex:none;
-      border:1px solid rgba(0,0,0,.08);
-    }
-    .miniCover img{width:100%;height:100%;object-fit:cover;display:block}
-    .lineTitle{
-      font-weight:800;
-      font-size:13px;
+      padding:8px 10px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      box-shadow: 0 8px 20px rgba(0,0,0,.18);
+      cursor:pointer;
+      user-select:none;
       white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
     }
-    .lineMeta{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:2px;
-      display:flex; gap:8px; flex-wrap:wrap;
+    .mark{
+      width:34px; height:34px;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.0) 60%),
+        linear-gradient(135deg, var(--brand1), var(--brand2));
+      position:relative; overflow:hidden;
     }
+    .mark:after{
+      content:"";
+      position:absolute; inset:-10px;
+      background: radial-gradient(20px 20px at 30% 40%, rgba(255,255,255,.5), transparent 65%);
+      transform: rotate(18deg);
+      opacity:.8;
+    }
+    .brand{ display:flex; flex-direction:column; line-height:1.05; }
+    .brand b{ font-size: 14px; letter-spacing:.2px;}
+    .brand span{ font-size: 11px; color:var(--muted);}
+
     .pill{
-      display:inline-flex; align-items:center; gap:6px;
-      border:1px solid #cfe3ff;
-      background:#eef6ff;
-      color:#1f5fa7;
-      font-weight:800;
-      font-size:11px;
-      padding:2px 7px;
-      border-radius:999px;
-    }
-    .chapCount{
-      text-align:right;
-      font-weight:800;
-      color:#2a5da6;
-      font-size:13px;
+      display:flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      color: var(--muted);
       white-space:nowrap;
     }
+    .pill.hide{ display:none; }
+    .onlineText{ display:flex; align-items:center; gap:6px; }
+    .onlineWord{ opacity:.88; }
 
-    /* ======= Drawer menu giống icon 3 gạch ======= */
-    .drawerBg{
-      position:fixed; inset:0;
-      background:rgba(0,0,0,.35);
-      display:none;
-      z-index:80;
-    }
-    .drawer{
-      position:absolute; top:0; right:0;
-      width:min(320px, 88vw);
-      height:100%;
-      background:#fff;
-      box-shadow:-10px 0 30px rgba(0,0,0,.25);
-      display:flex;
-      flex-direction:column;
-    }
-    .drawerTop{
-      padding:12px;
-      background:linear-gradient(180deg, var(--blue2), var(--blue0));
-      color:#fff;
-    }
-    .drawerTop b{display:block;font-size:15px}
-    .drawerTop small{opacity:.9}
-    .drawerBody{padding:10px; display:grid; gap:8px}
-    .drawerBtn{
-      width:100%;
-      text-align:left;
-      padding:10px 10px;
-      border-radius:8px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-weight:800;
-      cursor:pointer;
-      display:flex; align-items:center; justify-content:space-between;
-    }
-    .drawerBtn:hover{background:#f3f4f6}
-    .drawerBtn .r{color:#6b7280;font-weight:900}
-    .divider{height:1px;background:var(--line);margin:2px 0}
-    .hint{
-      font-size:12px;
-      color:#6b7280;
-      padding:0 2px;
-      line-height:1.4;
-    }
-    .mutedBox{
-      margin-top:8px;
-      border:1px dashed #cfd6df;
-      border-radius:8px;
-      padding:8px;
-      background:#fbfcff;
-      color:#475569;
-      font-size:12px;
+    .dot{
+      width:8px; height:8px; border-radius:50%;
+      background: var(--ok);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.15);
     }
 
-    /* ======= Modal (story preview) ======= */
-    .modalBg{
-      position:fixed; inset:0;
-      background:rgba(0,0,0,.35);
-      display:none;
-      z-index:90;
-      padding:12px;
-    }
-    .modal{
-      max-width:720px;
-      margin:0 auto;
-      background:#fff;
-      border-radius:12px;
-      overflow:hidden;
-      box-shadow:0 30px 80px rgba(0,0,0,.35);
-      border:1px solid rgba(0,0,0,.10);
-    }
-    .modalHead{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding:10px 12px;
-      background:#f5f6f8;
-      border-bottom:1px solid var(--line);
-    }
-    .modalHead b{font-size:14px}
-    .closeBtn{
-      width:38px;height:38px;
-      border-radius:9px;
-      border:1px solid var(--line);
-      background:#fff;
-      cursor:pointer;
-      font-weight:900;
-    }
-    .modalBody{padding:12px}
-    .modalGrid{
-      display:grid;
-      grid-template-columns: 88px 1fr;
-      gap:12px;
-    }
-    .modalCover{
-      width:88px; aspect-ratio: 3/4;
-      border-radius:10px;
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,.10);
-      background:linear-gradient(135deg,#d1d5db,#9ca3af);
-    }
-    .modalCover img{width:100%;height:100%;object-fit:cover;display:block}
-    .modalDesc{color:#374151;font-size:13px;line-height:1.55}
-    .btnRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .btn{
-      padding:10px 12px;
-      border-radius:10px;
-      border:1px solid rgba(0,0,0,.10);
-      background:#fff;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .btn.primary{
-      background:linear-gradient(180deg,#2a78c9,#1e5aa7);
-      color:#fff;
-      border-color:rgba(255,255,255,.22);
-      box-shadow:0 10px 20px rgba(30,90,167,.25);
-    }
-    .btn:active{transform:translateY(1px)}
-
-
-    /* ======= CHAT (trò chuyện cộng đồng) ======= */
-    .chatWrap{display:flex;flex-direction:column;gap:10px}
-    .chatList{
-      max-height:320px;
-      overflow:auto;
-      border:1px solid var(--line);
-      border-radius:10px;
-      background:rgba(0,0,0,.02);
-      padding:10px;
-    }
-    html[data-theme="dark"] .chatList{background:rgba(255,255,255,.03)}
-    .chatMsg{
-      display:flex;
-      gap:10px;
-      padding:8px 0;
-      border-top:1px dashed var(--line);
-      align-items:flex-start;
-    }
-    .chatMsg:first-child{border-top:0}
-    .chatAvt{
-      width:34px;height:34px;border-radius:999px;
-      background:linear-gradient(135deg,#d1d5db,#9ca3af);
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,.08);
-      flex:none;
-      display:grid;place-items:center;
-      font-weight:900;color:#111827;
-    }
-    .chatAvt img{width:100%;height:100%;object-fit:cover;display:block}
-    .chatMain{min-width:0;flex:1}
-    .chatHeadLine{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
-    .chatName{font-weight:900;font-size:12.5px}
-    .chatTime{font-size:11.5px;color:var(--muted)}
-    .chatText{margin-top:3px;font-size:13px;line-height:1.5;word-break:break-word}
-    .chatInputRow{display:flex;gap:8px}
-    .chatInput{
+    .search{
       flex:1;
+      display:flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      min-width: 140px;
+    }
+    .search input{
+      width:100%;
+      border:none; outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size: 14px;
+    }
+
+    .iconbtn{
+      width:42px; height:42px;
+      border-radius: 16px;
+      display:grid; place-items:center;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease;
+      user-select:none;
+    }
+    .iconbtn:active{ transform: scale(.98); }
+    .iconbtn:hover{ background: rgba(255,255,255,.09); }
+
+    .btn{
       height:42px;
-      border-radius:10px;
-      border:1px solid #cfd6df;
-      padding:0 12px;
-      font-weight:800;
-      outline:none;
-      background:#fff;
-      color:var(--text);
-    }
-    .chatInput:focus{box-shadow:0 0 0 3px rgba(42,120,201,.18)}
-
-
-    /* ======= ADMIN ======= */
-    .adminGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .adminCard{
+      padding: 0 14px;
+      border-radius: 16px;
       border:1px solid var(--line);
-      border-radius:12px;
-      background:rgba(255,255,255,.7);
-      box-shadow: var(--shadow);
-      padding:12px;
-    }
-    html[data-theme="dark"] .adminCard{background:rgba(0,0,0,.18)}
-    .adminCardTitle{font-weight:950;margin-bottom:10px}
-    .formRow{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
-    .formRow label{font-size:12px;color:var(--muted);font-weight:900}
-    .input, .textarea{
-      border:1px solid #cfd6df;
-      border-radius:10px;
-      padding:10px 12px;
-      font-weight:800;
-      outline:none;
-      background:#fff;
-      color:var(--text);
-    }
-    .textarea{min-height:160px;resize:vertical;line-height:1.5;font-weight:700}
-    .input:focus, .textarea:focus{box-shadow:0 0 0 3px rgba(42,120,201,.18)}
-    .adminRow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    .adminSmall{font-size:12px;color:var(--muted)}
-    @media (max-width: 860px){
-      .adminGrid{grid-template-columns:1fr}
-    }
-
-
-    /* ======= Responsive ======= */
-    @media (max-width: 760px){
-      :root{ --hotCols: 4; }
-      .wrap{margin-top:10px}
-
-    @media (max-width: 560px){
-      /* Header tự xuống dòng để không bị tràn (fix lỗi AVT bị lệch như ảnh) */
-      .topBar{flex-wrap:wrap; justify-content:flex-start;}
-      .brand{flex:1 1 100%;}
-      .topActions{
-        flex:1 1 100%;
-        width:100%;
-        justify-content:space-between;
-      }
-    }
-
-      .sectionHead{padding:10px}
-      .contentPad{padding:10px}
-    }
-    @media (max-width: 420px){
-      :root{ --hotCols: 2; }
-      .hotGrid{gap:10px}
-
-      /* Header compact để không tràn ngang */
-      .topBar{padding:8px 10px; gap:8px}
-      .brandLogo{width:36px;height:36px}
-      .brandText{font-size:16px}
-      .topActions{gap:8px}
-      .pillBtn{height:40px; padding:0 10px; gap:8px}
-      .circleBtn{width:40px;height:40px}
-      .onlinePill{min-width:62px}
-      .onlineNum{font-size:16px}
-      .vipPill{padding:0 12px}
-      .vipText{display:none}
-      .vipShort{display:inline}
-      .avatarPill{min-width:60px; padding:0 8px; gap:8px}
-      .caret{font-size:12px}
-    }
-  
-    @media (max-width: 360px){
-      .brandText{font-size:15px}
-      .topActions{flex-wrap:wrap; justify-content:space-between; gap:6px}
-      .pillBtn{height:38px}
-      .circleBtn{width:38px;height:38px}
-    }
-
-    /* ======= PAGES: List view (Truyện Hot / Mới cập nhật / Hoàn thành) ======= */
-    .pageHeader{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding:12px 12px;
-      background:linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.00));
-      border-bottom:1px solid var(--line);
-          position:relative;
-    }
-    html[data-theme="dark"] .pageHeader{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.00));}
-    .pageBackBtn{
-      width:44px;height:44px;
-      border-radius:10px;
-      border:1px solid var(--line);
-      background:var(--card);
+      background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(34,211,238,.18));
+      color: var(--text);
       cursor:pointer;
-      font-weight:950;
-      flex:none;
-    }
-    .pageBackBtn:active{transform:translateY(1px)}
-    .pageHeaderMain{min-width:0; flex:1}
-    .crumb{font-size:12px;color:var(--muted);font-weight:800}
-    .pageTitle{margin-top:2px;font-size:18px;font-weight:950;letter-spacing:.2px}
-    .pageDesc{margin-top:4px;font-size:13px;color:var(--muted);line-height:1.5}
-    .pageActionBtn{
-      height:44px;
-      border-radius:10px;
-      border:1px solid #cfe3ff;
-      background:#eef6ff;
-      color:#1f5fa7;
-      font-weight:950;
-      cursor:pointer;
-      flex:none;
-      padding:0 12px;
+      font-weight:600;
+      letter-spacing:.2px;
+      display:flex; align-items:center; gap:10px;
+      user-select:none;
       white-space:nowrap;
     }
+    .btn:hover{ filter: brightness(1.04); }
+    .btn:active{ transform: translateY(1px); }
 
-.pageActionWrap{ position:relative; margin-left:auto; }
-.fullMenu{
-  position:absolute;
-  right:0;
-  top:calc(100% + 8px);
-  width: 210px;
-  background: var(--card);
-  border:1px solid var(--line);
-  box-shadow: var(--shadow);
-  border-radius: 12px;
-  overflow:hidden;
-  z-index: 50;
-}
-.fullMenuTitle{
-  padding:10px 12px;
-  font-weight:800;
-  color:#111827;
-  background: linear-gradient(180deg, rgba(13,47,102,.06), rgba(13,47,102,0));
-  border-bottom:1px solid var(--line);
-  font-size:13px;
-}
-.fullMenuItem{
-  width:100%;
-  text-align:left;
-  padding:10px 12px;
-  border:0;
-  background:transparent;
-  font-weight:700;
-  color:#111827;
-  cursor:pointer;
-}
-.fullMenuItem:hover{ background: rgba(13,47,102,.06); }
-.fullMenuItem.isActive{ background: rgba(13,47,102,.10); }
-    html[data-theme="dark"] .pageActionBtn{
-      border-color:#294b7a;
-      background:rgba(42,120,201,.12);
-      color:#93c5fd;
+    .right{ display:flex; align-items:center; gap:10px; }
+
+    /* ====== Header responsive: luôn hiện đủ, không bị ẩn ====== */
+    @media (max-width: 980px){
+      .hrow{ gap: 8px; }
+      .logo{ order: 1; }
+      .right{ order: 2; margin-left: auto; }
+      .pill{ order: 3; }
+      .btn{ order: 4; }
+      .search{ order: 5; flex: 1 1 100%; min-width: 0; }
     }
-    .pageFilters{
+    @media (max-width: 520px){
+      /* thu gọn nút Nạp thành icon để không tràn header */
+      #topupBtn{
+        width: 42px;
+        padding: 0;
+        justify-content: center;
+        gap: 0;
+        font-size: 0;
+      }
+      #topupBtn .ico{ width: 18px; height: 18px; }
+      .search{ padding: 9px 10px; }
+      .search input{ font-size: 13px; }
+    }
+
+    .view{
+      width:100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px 12px 78px;
+    }
+
+    .pageTop{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      padding:10px 12px;
+      margin-bottom: 14px;
     }
-    .pageHint{font-size:12px;color:var(--muted);font-weight:800}
-
-    .bigList{padding:0}
-    .bigItem{
-      display:grid;
-      grid-template-columns: 92px 1fr;
-      gap:12px;
-      padding:12px;
-      border-top:1px solid var(--line);
+    .crumb{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .crumb b{ color: var(--text); }
+    .back{
+      height:40px; padding:0 12px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
       cursor:pointer;
-      background:var(--card);
-    }
-    .bigItem:first-child{border-top:0}
-    .bigItem:hover{background:rgba(0,0,0,.02)}
-    html[data-theme="dark"] .bigItem:hover{background:rgba(255,255,255,.03)}
-    .bigCover{
-      width:92px;
-      aspect-ratio: 3/4;
-      border-radius:10px;
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,.10);
-      background:linear-gradient(135deg,#d1d5db,#9ca3af);
-    }
-    .bigCover img{width:100%;height:100%;object-fit:cover;display:block}
-    .bigTitle{
-      font-weight:950;
-      font-size:16px;
-      line-height:1.2;
-    }
-    .bigAuthor{
-      margin-top:4px;
-      font-size:13px;
-      color:var(--muted);
-      font-style:italic;
-      font-weight:700;
-      display:flex;align-items:center;gap:6px;
-    }
-    .bigDesc{
-      margin-top:6px;
-      font-size:13px;
-      color:var(--text);
-      opacity:.95;
-      line-height:1.55;
-      display:-webkit-box;
-      -webkit-line-clamp:3;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-    }
-    .bigBadges{margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center}
-    .badgeBlue{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:4px 10px;
-      border-radius:6px;
-      background:#2a78c9;
-      color:#fff;
-      font-weight:950;
-      font-size:12px;
-    }
-    .badgeFull{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:4px 10px;
-      border-radius:6px;
-      border:1px solid #22c55e;
-      color:#15803d;
-      background:#ecfdf5;
-      font-weight:950;
-      font-size:12px;
-    }
-    html[data-theme="dark"] .badgeFull{
-      border-color:#16a34a;
-      color:#86efac;
-      background:rgba(22,163,74,.12);
-    }
-    @media (max-width: 520px){
-      .bigItem{grid-template-columns: 84px 1fr}
-      .bigCover{width:84px}
-      .pageTitle{font-size:17px}
+      display:flex; align-items:center; gap:8px;
+      user-select:none;
     }
 
-
-    /* ======= STORY DETAIL PAGE (Không gian truyện) ======= */
-    .storyWrap{max-width:var(--max);margin:0 auto;padding:12px}
-    .crumbBar{
-      display:flex;align-items:center;gap:10px;
-      color:var(--muted);font-size:12px;
-      padding:10px 12px;
-      border-bottom:1px solid var(--line);
-      background:#fff;
-    }
-    .crumbBar .homeIco{font-weight:950;color:#1f5fa7}
-    .storyCard{
-      background:#fff;border:1px solid var(--line);
-      border-radius:12px;box-shadow:var(--shadow);
+    .card{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(var(--blur));
       overflow:hidden;
     }
-    .storyHead{
-      padding:14px 14px 0 14px;
-      background:linear-gradient(180deg,#f9fafb,#fff);
-      border-bottom:1px solid var(--line);
+    .card .hd{
+      padding: 14px 14px 10px;
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:10px;
     }
-    .storyTitle{font-size:22px;font-weight:950;margin:0 0 10px 0}
-    .storyGrid{
+    .card .hd h2{ margin:0; font-size: 16px; letter-spacing:.2px; }
+    .card .hd .sub{ color:var(--muted); font-size: 12px; }
+    .card .bd{ padding: 0 14px 14px; }
+
+    .tabs{ display:flex; gap:8px; flex-wrap:wrap; }
+    .tab{
+      padding: 8px 10px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      cursor:pointer;
+      font-size: 12px;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .tab.active{
+      background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(34,211,238,.14));
+      color: var(--text);
+    }
+
+    .grid{
       display:grid;
-      grid-template-columns: 220px 1fr;
-      gap:14px;
-      padding:14px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+    }
+    @media (max-width: 720px){
+      .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .brand span{ display:none; }
+      /* Online pill dạng icon nhỏ trên mobile */
+      .pill{ padding: 8px 10px; }
+      .onlineWord{ display:none; }
+    }
+
+    .story{
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .15s ease;
+    }
+    .story:hover{ transform: translateY(-2px); }
+    .cover{
+      height: 92px;
+      background:
+        radial-gradient(120px 80px at 30% 20%, rgba(255,255,255,.22), transparent 60%),
+        linear-gradient(135deg, rgba(124,58,237,.55), rgba(34,211,238,.22));
+      position:relative;
+    }
+    .badge{
+      position:absolute; left:10px; top:10px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.22);
+      backdrop-filter: blur(10px);
+    }
+    .story .meta{
+      padding: 10px 10px 12px;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .title{
+      font-weight:700;
+      font-size: 13px;
+      line-height:1.25;
+      display:-webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+    }
+    .mini{
+      display:flex; gap:10px; flex-wrap:wrap;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .mini span{ display:flex; align-items:center; gap:6px; }
+
+    .list{ display:flex; flex-direction:column; gap:10px; }
+    .row{
+      display:flex; gap:10px;
+      padding: 10px;
+      border-radius: 18px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      align-items:center;
+      cursor:pointer;
+    }
+    .rank{
+      width:34px; height:34px;
+      border-radius: 14px;
+      display:grid; place-items:center;
+      font-weight:800;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--line);
+    }
+    .row .info{ flex:1; min-width:0; }
+    .row .info b{
+      display:block;
+      font-size: 13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .row .info span{ color:var(--muted); font-size: 11px; }
+    .kpi{ font-size: 12px; color: var(--muted); white-space:nowrap; }
+
+    /* Drawer */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.45);
+      opacity:0; pointer-events:none;
+      transition: opacity .2s ease;
+      z-index:80;
+    }
+    .overlay.show{ opacity:1; pointer-events:auto; }
+    .drawer{
+      position:fixed; top:0; right:0; height:100%;
+      width: 340px; max-width: 92vw;
+      background: rgba(10,14,28,.75);
+      backdrop-filter: blur(22px);
+      border-left: 1px solid rgba(255,255,255,.14);
+      transform: translateX(110%);
+      transition: transform .22s ease;
+      z-index:90;
+      display:flex; flex-direction:column;
+    }
+    [data-theme="light"] .drawer{ background: rgba(246,247,251,.92); }
+    .drawer.show{ transform: translateX(0%); }
+    .dhd{
+      padding: 14px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom:1px solid var(--line);
+    }
+    .userbox{ display:flex; align-items:center; gap:10px; padding: 12px 14px; }
+    .ava{
+      width:44px; height:44px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(124,58,237,.6), rgba(34,211,238,.25));
+      border:1px solid rgba(255,255,255,.22);
+      display:grid; place-items:center;
+      font-weight:900;
+    }
+    .userbox b{ display:block; font-size: 14px; }
+    .userbox span{ display:block; font-size: 12px; color:var(--muted); }
+    .dnav{
+      padding: 10px 10px 18px;
+      display:flex; flex-direction:column; gap:8px;
+      overflow:auto;
+    }
+    .navitem{
+      padding: 12px 12px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+      user-select:none;
+    }
+    .navitem .left{ min-width:0; }
+    .navitem .left b{ font-size: 13px; display:block; }
+    .navitem .left span{ font-size: 11px; color:var(--muted); display:block; }
+    .navitem:hover{ background: rgba(255,255,255,.08); }
+    .navitem.danger{ border-color: rgba(239,68,68,.35); }
+    .navitem.danger:hover{ background: rgba(239,68,68,.10); }
+
+    /* Story page (full info space) */
+    .storyHero{
+      border-radius: var(--radius2);
+      border:1px solid var(--line);
+      background:
+        radial-gradient(520px 260px at 20% 0%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(420px 260px at 100% 0%, rgba(34,211,238,.22), transparent 60%),
+        rgba(255,255,255,.04);
+      padding: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(var(--blur));
+      overflow:hidden;
+    }
+    .storyHeroGrid{
+      display:grid;
+      grid-template-columns: 130px 1fr;
+      gap: 12px;
       align-items:start;
     }
-    .storyCover{
+    @media (max-width: 520px){
+      .storyHeroGrid{ grid-template-columns: 110px 1fr; }
+    }
+    .coverBig{
       width:100%;
-      border-radius:10px;
+      height: 170px;
+      border-radius: 18px;
+      border:1px solid var(--line);
+      background:
+        radial-gradient(120px 90px at 25% 25%, rgba(255,255,255,.25), transparent 60%),
+        linear-gradient(135deg, rgba(124,58,237,.55), rgba(34,211,238,.20));
+      position:relative;
       overflow:hidden;
-      border:1px solid rgba(0,0,0,.10);
-      background:linear-gradient(135deg,#d1d5db,#9ca3af);
-      aspect-ratio: 3 / 4;
     }
-    .storyCover img{width:100%;height:100%;object-fit:cover;display:block}
-    .storyMeta{
+    .pillTag{
+      display:inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      font-size: 11px;
+      color: var(--text);
+      margin-right: 6px;
+      margin-top: 6px;
+    }
+    .heroTitle{
+      font-size: 18px;
+      font-weight: 900;
+      margin:0;
+      line-height:1.25;
+    }
+    .heroMeta{
+      margin-top:6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height:1.45;
+    }
+    .heroActions{
+      margin-top: 10px;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .smallbtn{
+      height:38px;
+      padding: 0 10px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      cursor:pointer;
+      display:flex; align-items:center; gap:8px;
+      font-size: 12px;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .smallbtn:hover{ background: rgba(255,255,255,.08); }
+    .smallbtn.primary{ background: linear-gradient(135deg, rgba(124,58,237,.35), rgba(34,211,238,.12)); }
+    .smallbtn.danger{ border-color: rgba(239,68,68,.35); }
+    .smallbtn.danger:hover{ background: rgba(239,68,68,.10); }
+
+    .storyLayout{
+      margin-top: 14px;
       display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .storyLayout{ grid-template-columns: 1fr; }
+    }
+    .reader{
+      border-radius: 22px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+    }
+    .readerTop{
+      padding: 12px;
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center; justify-content:space-between;
+      border-bottom:1px solid var(--line);
+    }
+    .controls{ display:flex; gap:8px; flex-wrap:wrap; }
+    .text{
+      padding: 14px;
+      line-height:1.7;
+      color: rgba(255,255,255,.88);
+      font-size: 14px;
+      max-height: 58vh;
+      overflow:auto;
+      white-space: pre-wrap;
+    }
+    [data-theme="light"] .text{ color: rgba(10,20,40,.88); }
+
+    .box{
+      border-radius: 22px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      padding: 12px;
+    }
+    .box h3{ margin:0 0 8px; font-size: 13px; }
+    .chapters{
+      display:flex; flex-direction:column; gap:8px;
+      max-height: 36vh;
+      overflow:auto;
+      padding-right: 4px;
+    }
+    .chapter{
+      padding: 10px 10px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      user-select:none;
+    }
+    .chapter.active{
+      background: rgba(124,58,237,.18);
+      border-color: rgba(124,58,237,.35);
+    }
+    .chapter span{ font-size: 12px; color: var(--muted); }
+
+    .comment{
+      padding: 10px;
+      border-radius: 18px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .comment .bubble{
+      flex:1; min-width:0;
+    }
+    .comment .bubble b{ display:block; font-size: 12px; }
+    .comment .bubble p{ margin:6px 0 0; color: var(--muted); font-size: 12px; line-height:1.5; }
+
+    .formRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .input{
+      flex:1; min-width: 160px;
+      height:42px; padding:0 12px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      outline:none;
+    }
+    textarea.input{ height:auto; padding: 10px 12px; }
+    .hint{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height:1.45;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(10,14,28,.82);
+      border:1px solid rgba(255,255,255,.16);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 16px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 200;
+      max-width: 92vw;
+      font-size: 13px;
+    }
+    [data-theme="light"] .toast{ background: rgba(246,247,251,.95); }
+    .toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
+
+    .ico{ width:18px; height:18px; opacity:.92; }
+    .ico.muted{ opacity:.72; }
+  
+    /* ====== Modern sections + horizontal carousel (home) ====== */
+    .hnav{
+      display:none;
+      gap:10px;
+      align-items:center;
+      padding: 8px 14px 12px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .hnav::-webkit-scrollbar{ display:none; }
+    @media (min-width: 880px){
+      .hnav{ display:flex; }
+    }
+    .hlink{
+      display:inline-flex;
+      align-items:center;
       gap:8px;
-      font-size:13px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      color: var(--muted);
+      text-decoration:none;
+      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(255,255,255,.03);
+      white-space: nowrap;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      cursor:pointer;
+      font-size: 13px;
+      font-weight: 700;
     }
-    .metaRow{display:flex;gap:10px;align-items:flex-start}
-    .metaRow .ico{width:18px;flex:none;opacity:.85}
-    .metaRow b{font-weight:900}
-    .metaRow span{color:#374151}
-    .statusTag{
-      display:inline-flex;align-items:center;
-      padding:3px 10px;border-radius:999px;
-      font-weight:900;font-size:12px;
-      border:1px solid rgba(0,0,0,.08);
+    .hlink:hover{ transform: translateY(-1px); background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); color: var(--text); }
+    .hlink.ghost{ background: rgba(255,255,255,.02); }
+
+    .section{
+      margin-top: 14px;
     }
-    .statusFull{background:#e8f7ea;color:#0f7a2a;border-color:#b8e3c0}
-    .statusOngoing{background:#eef6ff;color:#1f5fa7;border-color:#cfe3ff}
-    .rateRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .stars{letter-spacing:1px;color:#f59e0b;font-size:16px;line-height:1}
-    .storyBtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-    .storyBtns .btn{border-radius:999px;padding:10px 14px}
-    .btnBlue{background:#2a78c9;color:#fff;border:1px solid rgba(0,0,0,.06)}
-    .btnOrange{background:#f4b24a;color:#1f2937;border:1px solid rgba(0,0,0,.06)}
-    .btnRed{background:#ef4444;color:#fff;border:1px solid rgba(0,0,0,.06)}
-    .storyBody{padding:14px}
-    .storySectionTitle{
-      font-weight:950;
-      margin:0 0 10px 0;
-      border-bottom:2px solid #111827;
-      display:inline-block;
-      padding-bottom:6px;
+    .sectionTop{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin: 0 0 10px;
     }
-    .descBox{
-      color:#111827;
-      line-height:1.75;
-      font-size:14px;
+    .sectionTop h2{
+      margin:0;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: .2px;
     }
-    .chapTopRow{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      padding:12px 0 6px 0;
+    .sectionTop .sub{
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .seeAll{
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor:pointer;
+      transition: transform .12s ease, background .12s ease;
+      white-space: nowrap;
+    }
+    .seeAll:hover{ transform: translateY(-1px); background: rgba(255,255,255,.05); color: var(--text); }
+
+    .hscroll{
+      display:flex;
+      gap: 12px;
+      overflow-x:auto;
+      padding: 2px 2px 10px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .hscroll::-webkit-scrollbar{ display:none; }
+    .hcard{
+      min-width: 160px;
+      max-width: 160px;
+      scroll-snap-align: start;
+      border-radius: var(--radius2);
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      box-shadow: 0 10px 40px rgba(0,0,0,.22);
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+    .hcard:hover{ transform: translateY(-2px); border-color: rgba(255,255,255,.12); }
+    .hcover{
+      height: 210px;
+      position:relative;
+      background-size: cover;
+      background-position: center;
+    }
+    .hcover::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,.12), rgba(0,0,0,0));
+    }
+    .hbadge{
+      position:absolute;
+      left:10px; top:10px;
+      z-index:2;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.12);
+      color: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+    }
+    .hcta{
+      position:absolute;
+      left:10px; bottom:10px;
+      z-index:2;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,214,84,.9);
+      color: rgba(0,0,0,.9);
+      font-weight: 1000;
+      font-size: 12px;
+      cursor:pointer;
+    }
+    .hmeta{ padding: 10px 10px 12px; }
+    .htitle{
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      min-height: 33px;
+    }
+    .hmini{
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+      display:flex;
+      gap:10px;
       flex-wrap:wrap;
     }
-    .chapTools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    .chapGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:8px 18px;
-      border-top:1px solid var(--line);
-      padding-top:12px;
+
+    /* ====== Popover (theme menu) ====== */
+    .popover{
+      position: fixed;
+      z-index: 120;
+      right: 14px;
+      top: 66px;
+      width: 260px;
+      display:none;
+      border-radius: 18px;
+      background: rgba(20,20,30,.78);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      backdrop-filter: blur(14px);
+      overflow:hidden;
     }
-    .chapItem{
-      display:flex;gap:8px;align-items:baseline;
-      font-size:13px;
-      color:#111827;
+    .popover.show{ display:block; }
+    .popTitle{
+      padding: 12px 14px;
+      font-weight: 1000;
+      letter-spacing: .2px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .popItem{
+      width:100%;
+      text-align:left;
+      padding: 12px 14px;
+      border:0;
+      background: transparent;
+      color: var(--text);
       cursor:pointer;
-      padding:6px 0;
-      border-bottom:1px dashed rgba(0,0,0,.08);
+      display:flex;
+      flex-direction:column;
+      gap: 3px;
     }
-    .chapItem:hover{color:#1f5fa7}
-    .chapNo{font-weight:950;min-width:70px;color:#374151}
-    .chapName{
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    .popItem:hover{ background: rgba(255,255,255,.06); }
+    .popMain{ font-weight: 1000; }
+    .popSub{ font-size: 12px; color: var(--muted); }
+
+    /* ====== Extra themes ====== */
+    html[data-theme="sepia"]{
+      --bg:#0f0b06;
+      --panel: rgba(255,243,228,.08);
+      --panel2: rgba(255,243,228,.12);
+      --text: rgba(255,247,236,.92);
+      --muted: rgba(255,235,210,.68);
+      --soft: rgba(255,243,228,.14);
+      --line: rgba(255,243,228,.12);
     }
-    .loadMoreRow{display:flex;justify-content:center;padding:12px 0}
-    @media (max-width: 720px){
-      .storyGrid{grid-template-columns: 1fr; }
-      .storyCover{max-width:260px;margin:0 auto}
-      .chapGrid{grid-template-columns:1fr;}
-      .storyTitle{font-size:20px}
+    html[data-theme="amoled"]{
+      --bg:#000;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.66);
+      --soft: rgba(255,255,255,.12);
+      --line: rgba(255,255,255,.10);
     }
 
   </style>
 </head>
 <body>
+  <div class="stars"></div>
 
-  <!-- HEADER -->
-  <header class="top">
-    <div class="topBar">
-      <div class="brand" id="homeBtn" title="Trang chủ">
-        <div class="brandLogo" aria-hidden="true">
-          <!-- Logo kiểu giống ảnh: icon sách + chữ TRUYỆN Online -->
-          <svg viewBox="0 0 64 64" width="34" height="34" role="img" aria-label="Logo">
-            <defs>
-              <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#ffffff" stop-opacity="0.98"/>
-                <stop offset="1" stop-color="#dbeafe" stop-opacity="0.92"/>
-              </linearGradient>
-            </defs>
-            <path d="M10 14c10 0 16 4 22 8 6-4 12-8 22-8 4 0 6 2 6 6v28c0 3-2 5-5 5-9 0-15 3-21 7-6-4-12-7-21-7-3 0-5-2-5-5V20c0-4 2-6 6-6Z" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
-            <path d="M32 24v34" stroke="rgba(255,255,255,.65)" stroke-width="2"/>
-            <path d="M12 20c8 0 13 3 20 7v29c-6-4-12-6-20-6V20Z" fill="url(#g1)" opacity="0.98"/>
-            <path d="M52 20c-8 0-13 3-20 7v29c6-4 12-6 20-6V20Z" fill="url(#g1)" opacity="0.98"/>
-          </svg>
-        </div>
-        <div class="brandTitle">
-          <span class="brandText">TRUYỆN Online</span>
-        </div>
-      </div>
-
-      <div class="topActions">
-  <div class="pillBtn hdrBtn onlinePill" id="onlinePill" title="Người đang online">
-    <span class="onlineGreenDot" id="onlineDot" aria-hidden="true"></span>
-    <span class="onlineNum" id="onlineNum" aria-live="polite"></span>
-  </div>
-
-  <button class="circleBtn hdrBtn" id="searchBtn" aria-label="Tìm kiếm" title="Tìm kiếm">
-    <span class="ico">🔍</span>
-  </button>
-
-  <button class="pillBtn vipPill" id="vipBtn" aria-label="Nạp VIP" title="Nạp VIP">
-    <span class="vipCoin" aria-hidden="true">💰</span>
-    <span class="vipText">Nạp VIP</span><span class="vipShort">Nạp</span>
-  </button>
-
-  <button class="circleBtn hdrBtn" id="themeBtn" aria-label="Đổi giao diện" title="Đổi giao diện">
-    <span class="ico" id="themeIco">🌙</span>
-  </button>
-
-  <button class="circleBtn hdrBtn" id="notifBtn" aria-label="Thông báo" title="Thông báo">
-    <span class="ico">🔔</span>
-    <span class="badge" id="notifBadge" style="display:none">0</span>
-  </button>
-
-  <!-- Khi đăng nhập: nút này sẽ hiển thị AVT; chưa đăng nhập: ☰ -->
-  <button class="pillBtn hdrBtn avatarPill" id="menuBtn" aria-label="Tài khoản & Menu">
-    <span id="menuIcon">☰</span>
-    <img id="menuAvatar" alt="Avatar" />
-    <span class="caret" aria-hidden="true">▾</span>
-  </button>
-</div>
-    </div>
-
-    <div class="subline">
-      Đọc truyện online mới nhất, đọc truyện chữ, truyện hay. Tổng hợp và cập nhật liên tục, đầy đủ nhất.
-    </div>
-  </header>
-
-  <div id="viewHome">
-
-  <main class="wrap">
-
-    <!-- TRUYỆN ĐANG ĐỌC -->
-    <section class="section" id="secReading">
-      <div class="sectionHead">
-        <div class="secTitle">🕓 TRUYỆN ĐANG ĐỌC</div>
-        <div class="secRight">
-          <button class="btn" id="btnLoginSmall" style="padding:8px 10px;border-radius:8px;display:none">Đăng nhập</button>
-        </div>
-      </div>
-      <div id="readingList"></div>
-      <div class="contentPad" id="readingEmpty" style="display:none">
-        <div class="mutedBox">
-          Chưa có truyện đang đọc. Khi bạn mở truyện, mục này sẽ tự hiện.
-        </div>
-      </div>
-    </section>
-
-    <!-- TRUYỆN HOT -->
-    <section class="section" id="secHot">
-      <div class="sectionHead">
-        <div class="secTitle"><span>TRUYỆN HOT</span> <span class="flame">🔥</span></div>
-        <div class="secRight">
-          <select class="select" id="hotCategory">
-            <option value="all">THỂ LOẠI: TẤT CẢ</option>
-          </select>
-        </div>
-      </div>
-      <div class="contentPad">
-        <div class="hotGrid" id="hotGrid"></div>
-        <div class="hint" id="hotHint" style="padding-top:8px"></div>
-      </div>
-    </section>
-
-    <!-- MỚI CẬP NHẬT -->
-    <section class="section" id="secUpdate">
-      <div class="sectionHead">
-        <div class="secTitle">↻ MỚI CẬP NHẬT</div>
-        <div class="secRight">
-          <select class="select" id="updateCategory">
-            <option value="all">THỂ LOẠI: TẤT CẢ</option>
-          </select>
-        </div>
-      </div>
-      <div id="updateList"></div>
-      <div class="contentPad">
-        <div class="hint" id="updateHint"></div>
-      </div>
-    </section>
-
-<!-- TRÒ CHUYỆN -->
-    <section class="section" id="secChat">
-      <div class="sectionHead">
-        <div class="secTitle">💬 TRÒ CHUYỆN CỘNG ĐỒNG</div>
-        <div class="secRight">
-          <div class="hint" id="chatStatus"></div>
-        </div>
-      </div>
-      <div class="contentPad">
-        <div class="chatWrap">
-          <div class="chatList" id="chatList"></div>
-          <div class="chatInputRow">
-            <input class="chatInput" id="chatInput" placeholder="Nhập tin nhắn..." maxlength="300" autocomplete="off" />
-            <button class="btn primary" id="chatSend">Gửi</button>
-          </div>
-          <div class="hint" id="chatHint">* Để gửi tin nhắn bạn cần đăng nhập Google.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TRUYỆN HOÀN THÀNH -->
-    <section class="section" id="secCompleted">
-      <div class="sectionHead">
-        <div class="secTitle">✅ TRUYỆN HOÀN THÀNH</div>
-        <div class="secRight">
-          <select class="select" id="completedCategory">
-            <option value="all">THỂ LOẠI: TẤT CẢ</option>
-          </select>
-        </div>
-      </div>
-      <div id="completedList"></div>
-      <div class="contentPad">
-        <div class="hint" id="completedHint"></div>
-      </div>
-    </section>
-
-    <!-- ADMIN (chỉ hiện với admin) -->
-    <section class="section" id="secAdmin" style="display:none">
-      <div class="sectionHead">
-        <div class="secTitle">🛠 QUẢN TRỊ (ADMIN)</div>
-        <div class="secRight"><div class="hint" id="adminState"></div></div>
-      </div>
-      <div class="contentPad">
-        <div class="mutedBox" style="margin:0 0 10px 0">
-          • Khu này chỉ hiện với tài khoản admin.<br/>
-          • Dữ liệu sẽ lưu vào <b>Realtime Database</b>: <code>/stories</code> và <code>/chapters</code>.
-        </div>
-
-        <div class="adminGrid">
-          <div class="adminCard">
-            <div class="adminCardTitle">➕ Thêm truyện</div>
-
-            <div class="formRow">
-              <label>Tiêu đề truyện</label>
-              <input class="input" id="aStoryTitle" placeholder="Ví dụ: Vô Cực Đạo Giới" />
-            </div>
-
-            <div class="formRow">
-              <label>Tác giả (tuỳ chọn)</label>
-              <input class="input" id="aStoryAuthor" placeholder="Bút danh" />
-            </div>
-
-            <div class="formRow">
-              <label>Thể loại (phân cách bằng dấu phẩy)</label>
-              <input class="input" id="aStoryCats" placeholder="Tiên hiệp, Huyền huyễn, Kiếm hiệp" />
-            </div>
-
-            <div class="formRow">
-              <label>Ảnh bìa (URL) (tuỳ chọn)</label>
-              <input class="input" id="aStoryCover" placeholder="https://..." />
-            </div>
-
-            <div class="formRow">
-              <label>Mô tả (tuỳ chọn)</label>
-              <textarea class="textarea" id="aStoryDesc" placeholder="Giới thiệu ngắn về truyện..."></textarea>
-            </div>
-
-            <div class="adminRow">
-              <label style="display:flex;align-items:center;gap:8px;font-weight:900">
-                <input type="checkbox" id="aStoryCompleted" />
-                Hoàn thành (Full)
-              </label>
-              <span class="adminSmall">Có thể bật/tắt sau bằng cách sửa node story.</span>
-            </div>
-
-            <div class="btnRow" style="margin-top:10px">
-              <button class="btn primary" id="aStorySave">Lưu truyện</button>
-              <button class="btn" id="aStoryReset">Xoá nhập</button>
-            </div>
-
-            <div class="hint" id="aStoryMsg"></div>
-          </div>
-
-          <div class="adminCard">
-            <div class="adminCardTitle">📄 Thêm chương</div>
-
-            <div class="formRow">
-              <label>Chọn truyện</label>
-              <select class="select" id="aChapStory">
-                <option value="">— Chọn truyện —</option>
-              </select>
-            </div>
-
-            <div class="adminRow">
-              <div class="formRow" style="flex:1;min-width:140px;margin:0">
-                <label>Số chương</label>
-                <input class="input" id="aChapNo" type="number" min="1" step="1" placeholder="1" />
-              </div>
-              <div class="formRow" style="flex:2;min-width:180px;margin:0">
-                <label>Tiêu đề chương (tuỳ chọn)</label>
-                <input class="input" id="aChapTitle" placeholder="Chương 1: ..." />
-              </div>
-            </div>
-
-            <div class="formRow" style="margin-top:10px">
-              <label>Nội dung chương (hỗ trợ xuống dòng; có thể dán HTML &lt;p&gt;...)</label>
-              <textarea class="textarea" id="aChapContent" placeholder="Dán nội dung chương vào đây..."></textarea>
-            </div>
-
-            <div class="btnRow">
-              <button class="btn primary" id="aChapSave">Đăng chương</button>
-              <button class="btn" id="aChapReset">Xoá nhập</button>
-            </div>
-
-            <div class="hint" id="aChapMsg"></div>
-            <div class="mutedBox" style="margin-top:10px">
-              Mẹo: nếu truyện có nhiều chương (rất nhiều), mình sẽ nâng cấp thành <b>import hàng loạt</b> (dán nhiều chương một lần) + <b>phân trang</b> ở trang đọc.
-            </div>
+  <div class="app" id="app">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="hrow">
+        <div class="logo" id="goHome" title="Về trang chủ">
+          <div class="mark"></div>
+          <div class="brand">
+            <b>Truyện Online</b>
+            <span>Đọc & nghe truyện mỗi ngày</span>
           </div>
         </div>
-      </div>
-    </section>
 
-
-  
-  </main>
-</div>
-
-<div id="viewList" style="display:none">
-  <main class="wrap">
-    <section class="section" style="overflow:visible">
-      <div class="pageHeader">
-        <button class="pageBackBtn" id="listBackBtn" aria-label="Quay lại trang chủ" title="Quay lại">←</button>
-        <div class="pageHeaderMain">
-          <div class="crumb" id="listCrumb">Trang chủ / ...</div>
-          <div class="pageTitle" id="listTitle">—</div>
-          <div class="pageDesc" id="listDesc">—</div>
+        <div class="pill hide" id="onlinePill" title="Số người đang online">
+          <span class="dot" id="onlineDot"></span>
+          <span class="onlineText"><b id="onlineCount">0</b> <span class="onlineWord">online</span></span>
         </div>
-        <div class="pageActionWrap">
-  <button class="pageActionBtn" id="listFullBtn" title="Lọc Full">LỌC FULL</button>
-  <div class="fullMenu" id="listFullMenu" hidden>
-    <div class="fullMenuTitle">Xếp hạng Hot theo lượt xem</div>
-<button class="fullMenuItem" data-hot-range="all">Toàn bộ</button>
-    <button class="fullMenuItem" data-hot-range="day">Hot ngày</button>
-    <button class="fullMenuItem" data-hot-range="week">Hot tuần</button>
-    <button class="fullMenuItem" data-hot-range="month">Hot tháng</button>
-  </div>
+
+        <div class="search" title="Tìm kiếm truyện">
+          <svg class="ico muted" viewBox="0 0 24 24" fill="none"><path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input id="searchInput" placeholder="Tìm truyện, tác giả, thể loại..." autocomplete="off" />
+        </div>
+
+        <button class="btn" id="topupBtn" title="Nạp / VIP">
+          <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M4 7h16v10H4V7Z" stroke="currentColor" stroke-width="2"/><path d="M7 10h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M4 9h16" stroke="currentColor" stroke-width="2" opacity=".6"/></svg>
+          Nạp
+        </button>
+
+        <div class="right">
+          <div class="iconbtn" id="themeBtn" title="Chế độ sáng / tối">
+            <svg class="ico" viewBox="0 0 24 24" fill="none">
+              <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M5 19l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".65"/>
+            </svg>
+          </div>
+
+          <div class="iconbtn" id="notiBtn" title="Thông báo">
+            <svg class="ico" viewBox="0 0 24 24" fill="none">
+              <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M10 19a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <div class="iconbtn" id="menuBtn" title="Menu">
+            <svg class="ico" viewBox="0 0 24 24" fill="none">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
 </div>
       </div>
 
-      <div class="pageFilters">
-        <select class="select" id="listCategory">
-          <option value="all">THỂ LOẠI: TẤT CẢ</option>
-        </select>
-        <div class="pageHint" id="listHint"></div>
-      </div>
+      <nav class="hnav" aria-label="Điều hướng nhanh">
+        <button class="hlink ghost" id="navGenres" type="button">Thể loại</button>
+        <a class="hlink" href="#/updated" data-to="#/updated">Mới cập nhật</a>
+        <a class="hlink" href="#/top/day" data-to="#/top/day">Top view</a>
+        <a class="hlink" href="#/completed" data-to="#/completed">Hoàn thành</a>
+        <a class="hlink" href="#/vip" data-to="#/vip">Bảng giá VIP</a>
+        <a class="hlink" href="#/profile" data-to="#/profile">Hồ sơ</a>
+      </nav>
 
-      <div class="bigList" id="listBox"></div>
-    </section>
-  </main>
-</div>
+        
+    </header>
 
-<div id="viewStory" style="display:none">
-  <main class="wrap" style="padding:0">
-    <div class="crumbBar">
-      <button class="pageBackBtn" id="storyBackBtn" aria-label="Quay lại" title="Quay lại">←</button>
-      <div class="crumb" id="storyCrumb"><span class="homeIco">🏠</span> Trang chủ / Truyện / ...</div>
+
+    <!-- THEME POPOVER -->
+    <div class="popover" id="themePopover" aria-hidden="true">
+      <div class="popTitle">Giao diện</div>
+      <button class="popItem" data-theme="dark" type="button">
+        <span class="popMain">Tối</span>
+        <span class="popSub">Dễ đọc, đúng tông truyện</span>
+      </button>
+      <button class="popItem" data-theme="light" type="button">
+        <span class="popMain">Sáng</span>
+        <span class="popSub">Sáng rõ, hợp ban ngày</span>
+      </button>
+      <button class="popItem" data-theme="sepia" type="button">
+        <span class="popMain">Sepia</span>
+        <span class="popSub">Nền ấm, đỡ mỏi mắt</span>
+      </button>
+      <button class="popItem" data-theme="amoled" type="button">
+        <span class="popMain">AMOLED</span>
+        <span class="popSub">Đen sâu, tiết kiệm pin</span>
+      </button>
     </div>
 
-    <div class="storyWrap">
-      <div class="storyCard">
-        <div class="storyHead">
-          <h1 class="storyTitle" id="storyTitle">—</h1>
-        </div>
 
-        <div class="storyGrid">
-          <div class="storyCover" id="storyCover"></div>
+    <!-- ROUTER VIEW -->
+    <main class="view" id="view"></main>
 
-          <div>
-            <div class="storyMeta" id="storyMeta">
-              <!-- filled by JS -->
-            </div>
-
-            <div class="storyBtns">
-              <button class="btn btnBlue" id="btnReadFromStart">⏮ Đọc Từ Đầu</button>
-              <button class="btn btnBlue" id="btnReadLatest">⏭ Đọc Mới Nhất</button>
-              <button class="btn btnOrange" id="btnContinueReading" style="display:none">▶ Tiếp tục đọc</button>
-              <button class="btn" id="btnShareStory">🔗 Chia sẻ</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="storyBody">
-          <h3 class="storySectionTitle">NỘI DUNG TRUYỆN</h3>
-          <div class="descBox" id="storyDesc">—</div>
-
-          <div class="chapTopRow">
-            <h3 class="storySectionTitle" style="margin:0">DANH SÁCH CHƯƠNG</h3>
-            <div class="chapTools">
-              <input class="input" id="chapGoInput" type="number" min="1" step="1" style="max-width:140px" placeholder="Chương..." />
-              <button class="btn" id="chapGoBtn">Đi</button>
-              <span class="hint" id="chapHint" style="margin:0"></span>
-            </div>
-          </div>
-
-          <div class="chapGrid" id="chapList"></div>
-          <div class="loadMoreRow">
-            <button class="btn" id="chapLoadMore">Xem thêm ▼</button>
-          </div>
+    <!-- DRAWER -->
+    <div class="overlay" id="overlay"></div>
+    <div class="drawer" id="drawer">
+      <div class="dhd">
+        <b>Menu</b>
+        <div class="iconbtn" id="closeDrawer" title="Đóng">
+          <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
       </div>
+
+      <div class="userbox">
+        <div class="ava" id="drawerAva">T</div>
+        <div>
+          <b id="drawerName">Khách</b>
+          <span id="drawerEmail">Chưa đăng nhập</span>
+        </div>
+      </div>
+
+      <div class="dnav">
+        <div class="navitem" data-to="#/profile">
+          <div class="left">
+            <b>Hồ sơ cá nhân</b>
+            <span>Tên • thống kê • tu vi • lực chiến</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem" data-to="#/vip">
+          <div class="left">
+            <b>VIP</b>
+            <span>Nạp • quyền lợi • huy hiệu</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem" data-to="#/tutien">
+          <div class="left">
+            <b>Tu tiên</b>
+            <span>Tu vi • lực chiến • nhiệm vụ</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem" data-to="#/settings">
+          <div class="left">
+            <b>Cài đặt</b>
+            <span>Giao diện • giọng đọc • lưu dữ liệu</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem" data-to="#/reading">
+          <div class="left">
+            <b>Đang đọc</b>
+            <span>Tiếp tục truyện gần nhất</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem" data-to="#/discover">
+          <div class="left">
+            <b>Khám phá ngẫu nhiên</b>
+            <span>Chọn truyện ngẫu nhiên</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem" data-to="#/updated">
+          <div class="left">
+            <b>Mới cập nhật</b>
+            <span>Truyện mới update</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem" data-to="#/completed">
+          <div class="left">
+            <b>Truyện hoàn thành</b>
+            <span>Danh sách hoàn thành</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem" data-to="#/top/day">
+          <div class="left">
+            <b>Bảng xếp hạng</b>
+            <span>Ngày / Tuần / Tháng</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem" id="loginBtn">
+          <div class="left">
+            <b id="loginLabel">Đăng nhập</b>
+            <span id="loginSub">Demo (lưu local), sau gắn Firebase</span>
+          </div>
+          <span>›</span>
+        </div>
+
+        <div class="navitem danger" id="logoutBtn" style="display:none;">
+          <div class="left">
+            <b>Đăng xuất</b>
+            <span>Thoát tài khoản hiện tại</span>
+          </div>
+          <span>!</span>
+        </div>
+
+        <div class="hint" style="padding:6px 6px 0;">
+          <b>Đúng yêu cầu:</b> mỗi mục là 1 trang riêng, không còn “chồng lên nhau”.
+        </div>
+      </div>
     </div>
-  </main>
-</div>
 
-  <!-- DRAWER -->
-
-  <div class="drawerBg" id="drawerBg" aria-hidden="true">
-    <aside class="drawer" role="dialog" aria-modal="true">
-      <div class="drawerTop">
-        <b>Truyện Online</b>
-        <small id="drawerUser">Chưa đăng nhập</small>
-      </div>
-      <div class="drawerBody">
-        <button class="drawerBtn" id="navHome">🏠 Trang chủ <span class="r">›</span></button>
-        <button class="drawerBtn" id="navHistory">🕘 Lịch sử đọc <span class="r">›</span></button>
-        <button class="drawerBtn" id="navProfile">👤 Hồ sơ <span class="r">›</span></button>
-        <div class="divider"></div>
-        <button class="drawerBtn" id="navAdmin" style="display:none">🛠 Quản trị (Admin) <span class="r">›</span></button>
-        <button class="drawerBtn" id="navLogin">🔐 Đăng nhập Google <span class="r" id="loginState">›</span></button>
-        <button class="drawerBtn" id="navLogout" style="display:none">🚪 Đăng xuất <span class="r">›</span></button>
-        <div class="divider"></div>
-        <div class="hint">* Menu này giống nút ☰ trên ảnh. Các trang chi tiết (hồ sơ/đọc truyện) sẽ mở dần ở bước sau.</div>
-      </div>
-    </aside>
+    <div class="toast" id="toast">—</div>
   </div>
 
+  <!-- Firebase (optional): dùng để đếm online thật; nếu không cấu hình thì tự chạy demo -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-  <!-- SEARCH -->
-  <div class="searchBg" id="searchBg" aria-hidden="true">
-    <div class="searchBox" role="dialog" aria-modal="true" aria-label="Tìm kiếm">
-      <div class="searchHead">
-        <input class="searchInput" id="searchInput" placeholder="Tìm truyện..." autocomplete="off" />
-        <button class="closeBtn" id="searchClose" aria-label="Đóng tìm kiếm">✕</button>
-      </div>
-      <div class="searchBody" id="searchResults"></div>
-    </div>
-  </div>
 
-  <!-- MODAL STORY -->
-  <div class="modalBg" id="modalBg" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modalHead">
-        <b id="modalTitle">—</b>
-        <button class="closeBtn" id="modalClose" aria-label="Đóng">✕</button>
-      </div>
-      <div class="modalBody" id="modalBody"></div>
-    </div>
-  </div>
+  <script>
+    /***************
+     * Store
+     ***************/
+    const LS_KEY = "truyen_online_pages_v2";
+    const now = () => Date.now();
 
-  <script type="module">
-    // ===== Firebase (modular) =====
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import { getDatabase, ref, get, set, update, push, onValue, onDisconnect, remove, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
-
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDhq66ZZzNp9_-FnY7T-2gxNlrUDxeDPrU",
-      authDomain: "truyen-b3470.firebaseapp.com",
-      databaseURL: "https://truyen-b3470-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "truyen-b3470",
-      storageBucket: "truyen-b3470.firebasestorage.app",
-      messagingSenderId: "93210370757",
-      appId: "1:93210370757:web:87828b963906ac862f46ac"
+    const defaultState = {
+      theme: "dark",
+      user: {
+        loggedIn: false,
+        uid: "guest",
+        name: "Khách",
+        email: "Chưa đăng nhập",
+        joinedAt: now(),
+        lastNameChangeAt: 0,
+        stats: { storiesRead: 0, comments: 0 },
+        cultivation: { tuvi: "Luyện Khí 1", lucchien: 1200 }
+      },
+      reading: {
+        lastStoryId: null,
+        progressByStory: {} // storyId: { chapterIndex, scrollTop }
+      },
+      follows: {},          // storyId: true
+      comments: {}          // storyId: [{id, uid, name, text, createdAt}]
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
-    const provider = new GoogleAuthProvider();
-
-    // ===== Helpers =====
-    const $ = (id)=>document.getElementById(id);
-    const esc = (s)=>String(s??"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
-    const fmtNum = (n)=> (n==null? "—" : ("C. " + n));
-    const num = (v)=>{ const n = Number(v); return Number.isFinite(n) ? n : 0; };
-    const toLower = (s)=>String(s||"").toLowerCase();
-
-    // ===== Simple Router (Hash) cho "không gian riêng" =====
-    const viewHome = document.getElementById("viewHome");
-    const viewList = document.getElementById("viewList");
-    const viewStory = document.getElementById("viewStory");
-
-    function parseHash(){
-      const raw = (location.hash || "#/").replace(/^#\/?/, "");
-      const parts = raw.split("/").filter(Boolean);
-      const name = parts[0] || "home";
-      return { name, parts };
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        if(!raw) return structuredClone(defaultState);
+        const s = JSON.parse(raw);
+        return {
+          ...structuredClone(defaultState),
+          ...s,
+          user: { ...structuredClone(defaultState.user), ...(s.user||{}) },
+          reading: { ...structuredClone(defaultState.reading), ...(s.reading||{}) },
+          follows: { ...(s.follows||{}) },
+          comments: { ...(s.comments||{}) }
+        };
+      }catch(e){ return structuredClone(defaultState); }
     }
-    function go(route){
-      // route: "home" | "hot" | "update" | "completed" | "story/<id>"
-      if(!route || route==="home") location.hash = "#/";
-      else location.hash = "#/" + route;
-    }
-    function showView(mode){
-      // mode: "home" | "list" | "story"
-      const menu = document.getElementById("listFullMenu");
-      if(menu) menu.hidden = true;
+    function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+    let state = loadState();
 
-      if(viewHome) viewHome.style.display  = (mode==="home")  ? "block" : "none";
-      if(viewList) viewList.style.display  = (mode==="list")  ? "block" : "none";
-      if(viewStory) viewStory.style.display = (mode==="story") ? "block" : "none";
-
-      window.scrollTo({ top: 0, behavior: "instant" });
-    }
-
-    function goStory(storyId){
-      if(!storyId) return;
-      closeDrawer?.();
-      closeSearch?.();
-      closeModal?.();
-      go("story/" + storyId);
-    }
-
-    async function renderStoryPage(storyId){
-      // đảm bảo đã có stories
-      let st = stories.find(x=>x.id===storyId);
-      if(!st){
-        // thử load lại nếu chưa có
-        try{ await loadStories(); }catch(e){}
-        st = stories.find(x=>x.id===storyId);
+    function normalizeState(){
+      state.readerPrefs ??= { fontSize: 18, lineHeight: 1.8, maxWidth: 820, ttsRate: 1.15 };
+      state.reading ??= {};
+      state.reading.progressByStory ??= {};
+      state.reading.completed ??= {}; // storyId -> { [chapterIndex]: true }
+      for(const sid of Object.keys(state.reading.progressByStory)){
+        const p = state.reading.progressByStory[sid] || {};
+        if(typeof p.chapterIndex !== "number") p.chapterIndex = 0;
+        if(!p.scrollByChapter){
+          p.scrollByChapter = {};
+          if(typeof p.scrollTop === "number"){
+            p.scrollByChapter[p.chapterIndex] = p.scrollTop;
+            delete p.scrollTop;
+          }
+        }
+        state.reading.progressByStory[sid] = p;
       }
-      if(!st){
-        $("storyTitle").textContent = "Không tìm thấy truyện";
-        $("storyDesc").textContent = "Truyện này không tồn tại hoặc chưa được load từ Firebase.";
-        $("chapList").innerHTML = "";
-        $("chapHint").textContent = "";
-        $("chapLoadMore").style.display="none";
+    }
+    normalizeState();
+
+
+    /****************
+     * Demo Data
+     ****************/
+    function lorem(seed){
+      const p = [
+        "Gió đêm thổi qua mái ngói, ánh đèn trong ngõ nhỏ lay động như có linh khí.",
+        "Hắn mở mắt, trong lòng như có tiếng chuông vang lên: con đường tu hành bắt đầu từ hôm nay.",
+        "Bên ngoài thành, mưa rơi lộp bộp, từng giọt như rửa sạch máu trên lưỡi kiếm.",
+        "Người đời chỉ thấy kết quả, nhưng không biết phía sau là vô số lần gục ngã và đứng dậy.",
+        "Một tia linh quang lóe lên, hệ thống đáp xuống như định mệnh đã sắp đặt.",
+        "Nếu muốn vượt qua thiên đạo, trước tiên phải thắng chính mình."
+      ];
+      let out = "";
+      for(let i=0;i<8;i++) out += p[(seed+i)%p.length] + " ";
+      out += "\n\n" + "—".repeat(22) + "\n\n";
+      for(let i=0;i<9;i++) out += p[(seed+i+3)%p.length] + " ";
+      return out.trim();
+    }
+
+    const stories = [
+      { id:"t1", title:"Vô Cực Đạo Giới: Khai Thiên", author:"Thiên Ngoại Khách", tags:["Tu Tiên","Huyền Huyễn"], status:"Đang ra", updatedAt:"Hôm nay",
+        desc:"Thiên đạo rạn nứt, khí vận hỗn loạn. Một thiếu niên bình thường vô tình mở ra con đường 'khai thiên' để đối kháng vận mệnh.",
+        views:{ day: 18400, week: 95300, month: 412000 },
+        chapters:[ {name:"Chương 1: Thiên Đạo Tàn Khuyết", text:lorem(1)}, {name:"Chương 2: Linh Căn Thức Tỉnh", text:lorem(2)}, {name:"Chương 3: Nhập Môn", text:lorem(3)} ]
+      },
+      { id:"t2", title:"Trảm Thần: Đêm Mưa Trên Thành", author:"Hắc Vũ", tags:["Kiếm Hiệp","Dị Năng"], status:"Hoàn thành", updatedAt:"2 ngày trước",
+        desc:"Một đêm mưa, thành thị chìm trong bí ẩn. Lưỡi kiếm vô danh chém mở màn cuộc săn thần giữa nhân gian.",
+        views:{ day: 9200, week: 60800, month: 210000 },
+        chapters:[ {name:"Chương 1: Lời Thề", text:lorem(4)}, {name:"Chương 2: Mũi Kiếm", text:lorem(5)} ]
+      },
+      { id:"t3", title:"Ta Ở Dị Giới Nuôi Linh Thú", author:"Mộc Dương", tags:["Hài","Tu Tiên"], status:"Đang ra", updatedAt:"Hôm qua",
+        desc:"Xuyên không, mở trang trại linh thú và vô tình trở thành đại lão. Hài hước + tu luyện + hệ thống.",
+        views:{ day: 12200, week: 70200, month: 298000 },
+        chapters:[ {name:"Chương 1: Trứng Linh Thú", text:lorem(6)}, {name:"Chương 2: Hệ Thống", text:lorem(7)}, {name:"Chương 3: Thôn Nhỏ", text:lorem(8)}, {name:"Chương 4: Thử Nghiệm", text:lorem(9)} ]
+      },
+      { id:"t4", title:"Bắc Vực Thiên Tôn", author:"Lam Vân", tags:["Huyền Huyễn","Nhiệt Huyết"], status:"Đang ra", updatedAt:"3 giờ trước",
+        desc:"Bắc Vực băng hàn, tôn giả xuất thế. Một dấu ấn thiên tôn làm rung chuyển vạn giới.",
+        views:{ day: 15800, week: 81500, month: 356000 },
+        chapters:[ {name:"Chương 1: Vực Bắc", text:lorem(10)}, {name:"Chương 2: Thiên Tôn Ấn", text:lorem(11)} ]
+      },
+      { id:"t5", title:"Tân Thần Y: Quy Thành", author:"Bạch Y", tags:["Đô Thị","Y Thuật"], status:"Hoàn thành", updatedAt:"1 tuần trước",
+        desc:"Trở về sau biến cố, thần y tái xuất. Y thuật cứu người, cũng là con đường tu tâm.",
+        views:{ day: 6100, week: 40200, month: 188000 },
+        chapters:[ {name:"Chương 1: Trở Về", text:lorem(12)} ]
+      },
+      { id:"t6", title:"Tuyết Lạc Trường An", author:"Tiêu Dao", tags:["Cổ Đại","Ngôn Tình"], status:"Đang ra", updatedAt:"Mới cập nhật",
+        desc:"Trường An tuyết rơi, một cuộc gặp gỡ đổi thay nhân sinh. Dịu dàng nhưng đầy sóng gió.",
+        views:{ day: 7400, week: 48800, month: 160000 },
+        chapters:[ {name:"Chương 1: Tuyết", text:lorem(13)}, {name:"Chương 2: Gặp Gỡ", text:lorem(14)} ]
+      }
+    ];
+
+    /****************
+     * Helpers
+     ****************/
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+    function escapeHtml(str){
+      return (str||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+    }
+    function toast(msg){
+      const t = $("#toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(()=> t.classList.remove("show"), 2200);
+    }
+    function formatNum(n){ return new Intl.NumberFormat("vi-VN").format(n); }
+    function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+    function daysBetween(ts){ return Math.max(0, Math.floor((now()-ts)/(1000*60*60*24))); }
+    function initials(name){
+      const s = (name||"T").trim().split(/\s+/);
+      const a = (s[0]||"T")[0] || "T";
+      const b = (s.length>1 ? s[s.length-1][0] : "") || "";
+      return (a+b).toUpperCase();
+    }
+    function storyBadge(s){
+      if((s.status||"").toLowerCase().includes("hoàn")) return "Hoàn thành";
+      return "Mới";
+    }
+
+    /****************
+     * Theme
+     ****************/
+    function applyTheme(){
+      const allowed = ["dark","light","sepia","amoled"];
+      if(!allowed.includes(state.theme)) state.theme = "dark";
+      document.documentElement.setAttribute("data-theme", state.theme);
+      saveState();
+    }
+
+        /****************
+     * Online (Firebase realtime + fallback demo)
+     * - Nếu bạn cấu hình Firebase RTDB, pill online sẽ hiện khi có người đang online thật.
+     * - Nếu chưa cấu hình / bị chặn CDN (content://), hệ thống tự chạy số demo để không bị trống.
+     ****************/
+    // DÁN firebaseConfig (có databaseURL) vào đây hoặc set window.FIREBASE_CONFIG trước khi load trang.
+    // Ví dụ:
+    // window.FIREBASE_CONFIG = { apiKey:"...", authDomain:"...", databaseURL:"https://xxx.asia-southeast1.firebasedatabase.app", projectId:"...", ... };
+    const FIREBASE_CONFIG = window.FIREBASE_CONFIG || null;
+
+    const __clamp = (n,a,b)=> Math.max(a, Math.min(b,n));
+    const __randId = (p="v") => p + "_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+
+    function updateOnlineUI(count){
+      const pill = document.getElementById("onlinePill");
+      const countEl = document.getElementById("onlineCount");
+      if(!pill || !countEl) return;
+      const c = Math.max(0, Number(count)||0);
+      countEl.textContent = c;
+      if(c > 0) pill.classList.remove("hide");
+      else pill.classList.add("hide"); // đúng yêu cầu: chỉ hiện khi có người online
+    }
+
+    function initOnlineFirebase(){
+      try{
+        // Firebase CDN compat phải load được
+        if(!window.firebase || typeof firebase.initializeApp !== "function") return false;
+        if(!FIREBASE_CONFIG || !FIREBASE_CONFIG.databaseURL) return false;
+
+        if(!firebase.apps || firebase.apps.length === 0) firebase.initializeApp(FIREBASE_CONFIG);
+        const db = firebase.database();
+
+        // UID theo session để tính “đang online” cho cả khách
+        const ssKey = "to_presence_uid_v1";
+        let uid = sessionStorage.getItem(ssKey) || state.user?.uid || null;
+        if(!uid || uid === "guest"){
+          uid = __randId("guest");
+          sessionStorage.setItem(ssKey, uid);
+          // đồng bộ vào state để các chỗ khác dùng
+          state.user.uid = uid;
+          saveState();
+        }
+
+        const presenceRoot = db.ref("presence");
+        const meRef = presenceRoot.child(uid);
+
+        // Khi có kết nối: set online + đảm bảo tự xóa khi rời trang / mất mạng
+        db.ref(".info/connected").on("value", (snap)=>{
+          if(snap.val() === false) return;
+          meRef.onDisconnect().remove();
+          meRef.set({
+            uid,
+            name: (state.user?.name || "Khách"),
+            at: firebase.database.ServerValue.TIMESTAMP
+          });
+        });
+
+        // Cập nhật tên/heartbeat định kỳ (giữ kết nối, tránh bị “treo” trên vài thiết bị)
+        setInterval(()=>{
+          try{
+            meRef.update({
+              name: (state.user?.name || "Khách"),
+              last: firebase.database.ServerValue.TIMESTAMP
+            });
+          }catch(_){}
+        }, 30000);
+
+        // Đếm online: số key trong /presence
+        presenceRoot.on("value", (snap)=>{
+          const val = snap.val() || {};
+          updateOnlineUI(Object.keys(val).length);
+        });
+
+        return true;
+      }catch(e){
+        console.warn("Online Firebase init failed:", e);
+        return false;
+      }
+    }
+
+    function initOnlineFallbackDemo(){
+      // Demo: luôn >0 để pill hiện (trong trường hợp bạn mở file local / chặn CDN)
+      function setOnlineDemo(){
+        const seed = (state.user?.uid || "guest").split("").reduce((a,c)=>a+c.charCodeAt(0), 0);
+        const base = 120 + (seed % 80);
+        const wave = Math.round(40 * Math.sin(Date.now()/15000));
+        updateOnlineUI(__clamp(base + wave, 80, 420));
+      }
+      setOnlineDemo();
+      setInterval(setOnlineDemo, 1500);
+    }
+
+    // Khởi động online
+    updateOnlineUI(0);
+    const __onlineOk = initOnlineFirebase();
+    if(!__onlineOk) initOnlineFallbackDemo();
+
+
+    /****************
+     * Drawer
+     ****************/
+    function openDrawer(){
+      $("#overlay").classList.add("show");
+      $("#drawer").classList.add("show");
+    }
+    function closeDrawer(){
+      $("#overlay").classList.remove("show");
+      $("#drawer").classList.remove("show");
+    }
+
+    /****************
+     * TTS
+     ****************/
+    let speaking = false;
+    function canTTS(){ return "speechSynthesis" in window && "SpeechSynthesisUtterance" in window; }
+    function speak(text, opts={}){
+      try{
+        if(!("speechSynthesis" in window)){ toast("Thiết bị không hỗ trợ TTS."); return; }
+        stopTTS();
+        const rate = clamp(Number(opts.rate ?? state.readerPrefs?.ttsRate ?? 1.15), 0.6, 2.5);
+        const lang = opts.lang || "vi-VN";
+        // chunk text to avoid very long utterances
+        const chunks = String(text||"")
+          .replace(/\s+/g," ")
+          .split(/(?<=[\.\!\?\n])\s+/)
+          .filter(Boolean);
+        let i = 0;
+        speaking = true;
+
+        const speakNext = ()=>{
+          if(i >= chunks.length){ speaking = false; return; }
+          const u = new SpeechSynthesisUtterance(chunks[i++]);
+          u.lang = lang;
+          u.rate = rate;
+          u.onend = ()=> speakNext();
+          u.onerror = ()=> { speaking = false; };
+          window.speechSynthesis.speak(u);
+        };
+        speakNext();
+      }catch(e){
+        speaking = false;
+        console.error(e);
+      }
+    }
+function stopTTS(){
+      if(canTTS()) window.speechSynthesis.cancel();
+      speaking = false;
+    }
+
+    /****************
+     * Auth (demo)
+     ****************/
+    function demoLogin(){
+      const name = prompt("Nhập tên hiển thị:", state.user.name === "Khách" ? "" : state.user.name) || "";
+      if(!name.trim()) return;
+      const email = prompt("Nhập email (demo):", "user@example.com") || "user@example.com";
+      state.user.loggedIn = true;
+      state.user.uid = "u_" + Math.random().toString(16).slice(2);
+      state.user.name = name.trim();
+      state.user.email = email.trim();
+      if(!state.user.joinedAt) state.user.joinedAt = now();
+      saveState();
+      syncUserUI();
+      toast("Đăng nhập thành công (demo).");
+      location.hash = "#/profile";
+    }
+    function logout(){
+      if(!confirm("Bạn chắc chắn muốn đăng xuất?")) return;
+      state.user = structuredClone(defaultState.user);
+      saveState();
+      syncUserUI();
+      toast("Đã đăng xuất.");
+      location.hash = "#/home";
+    }
+    function syncUserUI(){
+      const u = state.user;
+      $("#drawerName").textContent = u.name || "Khách";
+      $("#drawerEmail").textContent = u.loggedIn ? (u.email || "") : "Chưa đăng nhập";
+      $("#drawerAva").textContent = initials(u.name || "T");
+      $("#logoutBtn").style.display = u.loggedIn ? "" : "none";
+      $("#loginLabel").textContent = u.loggedIn ? "Tài khoản" : "Đăng nhập";
+      $("#loginSub").textContent = u.loggedIn ? "Xem hồ sơ • tu vi • đổi tên" : "Demo (lưu local), sau gắn Firebase";
+    }
+
+    /****************
+     * Profile: change name every 7 days
+     ****************/
+    function nameCooldownRemaining(){
+      const last = state.user.lastNameChangeAt || 0;
+      if(!last) return 0;
+      const diffDays = Math.floor((now() - last) / (1000*60*60*24));
+      return Math.max(0, 7 - diffDays);
+    }
+    function saveName(newName){
+      newName = (newName||"").trim();
+      if(newName.length < 2){ toast("Tên quá ngắn."); return false; }
+      const remain = nameCooldownRemaining();
+      if(remain > 0){ toast(`Chưa thể đổi tên. Còn ${remain} ngày.`); return false; }
+      state.user.name = newName;
+      state.user.lastNameChangeAt = now();
+      saveState();
+      syncUserUI();
+      toast("Đổi tên thành công!");
+      return true;
+    }
+
+    /****************
+     * Cultivation demo
+     ****************/
+    function markRead(){
+      state.user.stats.storiesRead = (state.user.stats.storiesRead||0) + 1;
+      state.user.cultivation.lucchien = (state.user.cultivation.lucchien||1200) + 120;
+      const n = state.user.stats.storiesRead;
+      const level = 1 + Math.floor(n / 3);
+      state.user.cultivation.tuvi = `Luyện Khí ${clamp(level, 1, 10)}`;
+      saveState();
+      toast("Đã ghi nhận! +Tu vi +Lực chiến (demo)");
+    }
+
+    /****************
+     * Follow
+     ****************/
+    function isFollowed(storyId){ return !!state.follows[storyId]; }
+    function toggleFollow(storyId){
+      if(isFollowed(storyId)) delete state.follows[storyId];
+      else state.follows[storyId] = true;
+      saveState();
+    }
+
+    /****************
+     * Comments (demo)
+     ****************/
+    function getComments(storyId){
+      state.comments[storyId] ??= [];
+      return state.comments[storyId];
+    }
+    function addComment(storyId, text){
+      text = (text||"").trim();
+      if(text.length < 2){ toast("Bình luận quá ngắn."); return false; }
+      const u = state.user;
+      const c = {
+        id: "c_"+Math.random().toString(16).slice(2),
+        uid: u.uid,
+        name: u.name || "Khách",
+        text,
+        createdAt: now()
+      };
+      state.comments[storyId] ??= [];
+      state.comments[storyId].unshift(c);
+      state.user.stats.comments = (state.user.stats.comments||0) + 1;
+      saveState();
+      toast("Đã gửi bình luận (demo).");
+      return true;
+    }
+    function timeAgo(ts){
+      const s = Math.floor((now()-ts)/1000);
+      if(s < 60) return "vừa xong";
+      const m = Math.floor(s/60);
+      if(m < 60) return m+" phút trước";
+      const h = Math.floor(m/60);
+      if(h < 24) return h+" giờ trước";
+      const d = Math.floor(h/24);
+      return d+" ngày trước";
+    }
+
+    /****************
+     * Router
+     ****************/
+    function parseRoute(){
+      const raw = (location.hash || "#/home").replace(/^#/, "");
+      const parts = raw.split("/").filter(Boolean);
+      const page = parts[0] || "home";
+      const p1 = parts[1] || null;
+      const p2 = parts[2] || null;
+      return { page, p1, p2, raw };
+    }
+    function nav(to){
+      location.hash = to.startsWith("#") ? to : ("#"+to);
+    }
+
+    /****************
+     * Shared render helpers
+     ****************/
+    function renderStoryGrid(list, container){
+      container.innerHTML = "";
+      if(list.length === 0){
+        container.innerHTML = `<div style="grid-column:1/-1; padding:18px; color:var(--muted)">Không có dữ liệu.</div>`;
         return;
       }
+      container.innerHTML = list.map(s => `
+        <div class="story" data-story="${s.id}">
+          <div class="cover"><div class="badge">${storyBadge(s)}</div></div>
+          <div class="meta">
+            <div class="title">${escapeHtml(s.title)}</div>
+            <div class="mini">
+              <span>👤 ${escapeHtml(s.author)}</span>
+              <span>👁️ ${formatNum(s.views.month)} /tháng</span>
+              <span>⏱️ ${escapeHtml(s.updatedAt)}</span>
+            </div>
+          </div>
+        </div>
+      `).join("");
+      $$(".story", container).forEach(el=>{
+        el.addEventListener("click", ()=> nav(`#/story/${el.dataset.story}`));
+      });
+    }
 
-      document.title = st.title + " - Truyện Online";
-      $("storyTitle").textContent = st.title;
-      $("storyCrumb").innerHTML = `<span class="homeIco">🏠</span> Trang chủ / Truyện / <b>${esc(st.title)}</b>`;
 
-      // cover
-      $("storyCover").innerHTML = st.coverUrl ? `<img src="${esc(st.coverUrl)}" alt="">` : "";
+    function coverGradient(key){
+      // deterministic gradient from id/title
+      let h = 0;
+      for(let i=0;i<key.length;i++) h = (h*31 + key.charCodeAt(i)) >>> 0;
+      const a = 160 + (h % 70);
+      const b = 40 + (h % 60);
+      const c = 190 + ((h>>>8) % 50);
+      const d = 50 + ((h>>>16) % 80);
+      return `linear-gradient(135deg, rgba(${a},${b},${c},.45), rgba(${d},${a%255},${b%255},.12)), radial-gradient(1200px 500px at 20% 10%, rgba(255,214,84,.25), transparent 60%), radial-gradient(900px 500px at 80% 30%, rgba(142,110,255,.22), transparent 60%)`;
+    }
 
-      // meta (giống web mẫu)
-      const catText = (st.categories||[]).join(", ") || "Chưa rõ";
-      const author = st.author || st.tacGia || st.writer || "Đang cập nhật";
-      const statusFull = isCompletedStory(st);
-      const statusHtml = statusFull
-        ? `<span class="statusTag statusFull">Hoàn thành</span>`
-        : `<span class="statusTag statusOngoing">Đang cập nhật</span>`;
+    function renderStoryRow(list, container, { ctaLabel="Đọc tiếp", max=10 } = {}){
+      container.innerHTML = "";
+      const arr = (list||[]).slice(0, max);
+      if(arr.length === 0){
+        container.innerHTML = `<div style="padding:14px; color:var(--muted)">Chưa có dữ liệu.</div>`;
+        return;
+      }
+      container.innerHTML = arr.map(s => `
+        <div class="hcard" data-story="${s.id}">
+          <div class="hcover" style="background-image:${coverGradient(s.id + s.title)}">
+            <div class="hbadge">${storyBadge(s)}</div>
+            <button class="hcta" type="button">${ctaLabel}</button>
+          </div>
+          <div class="hmeta">
+            <div class="htitle">${escapeHtml(s.title)}</div>
+            <div class="hmini">
+              <span>👤 ${escapeHtml(s.author)}</span>
+              <span>👁️ ${formatNum(s.views.month)} /tháng</span>
+            </div>
+          </div>
+        </div>
+      `).join("");
 
-      const chapCount = (st.chapterCount!=null) ? `${st.chapterCount} chương` : "—";
-      const latest = (st.latestChapNo!=null) ? `Chương ${st.latestChapNo}` : "—";
+      $$(".hcard", container).forEach(el=>{
+        const sid = el.dataset.story;
+        el.addEventListener("click", ()=> nav(`#/story/${sid}`));
+        const btn = el.querySelector(".hcta");
+        if(btn){
+          btn.addEventListener("click", (e)=>{ e.stopPropagation(); nav(`#/story/${sid}`); });
+        }
+      });
+    }
 
-      const rating = (st.rating!=null) ? Number(st.rating).toFixed(1) : "8.2";
-      const ratingCount = (st.ratingCount!=null) ? st.ratingCount : 0;
-      const stars = "★★★★★☆☆☆☆☆".slice(0, 10); // hiển thị demo nếu chưa có rating thật
 
-      $("storyMeta").innerHTML = `
-        <div class="metaRow"><div class="ico">👤</div><div><b>Tác giả:</b> <span>${esc(author)}</span></div></div>
-        <div class="metaRow"><div class="ico">🏷️</div><div><b>Thể loại:</b> <span>${esc(catText)}</span></div></div>
-        <div class="metaRow"><div class="ico">📚</div><div><b>Số chương:</b> <span>${esc(chapCount)}</span></div></div>
-        <div class="metaRow"><div class="ico">ℹ️</div><div><b>Trạng thái:</b> ${statusHtml}</div></div>
-        <div class="metaRow"><div class="ico">🆕</div><div><b>Mới nhất:</b> <span>${esc(latest)}</span></div></div>
-        <div class="rateRow"><div class="stars">${stars}</div><div><b>Đánh giá:</b> <span>${esc(rating)}/10</span> ${ratingCount?`<span class="muted">từ ${ratingCount} lượt</span>`:""}</div></div>
+    function filteredStoriesBySearch(q){
+      q = (q||"").trim().toLowerCase();
+      let arr = stories.slice();
+      if(q){
+        arr = arr.filter(s =>
+          s.title.toLowerCase().includes(q) ||
+          s.author.toLowerCase().includes(q) ||
+          s.tags.join(" ").toLowerCase().includes(q)
+        );
+      }
+      return arr;
+    }
+
+    /****************
+     * Pages
+     ****************/
+    function renderHome(){
+      const view = $("#view");
+      const q = $("#searchInput").value || "";
+      const arr = filteredStoriesBySearch(q);
+
+      // Build "Đang đọc" row: last read + followed, fallback to top month
+      const readingIds = [];
+      if(state.reading.lastStoryId) readingIds.push(state.reading.lastStoryId);
+      Object.keys(state.follows||{}).forEach(id=>{
+        if(!readingIds.includes(id)) readingIds.push(id);
+      });
+      let readingList = readingIds.map(id=> arr.find(s=>s.id===id)).filter(Boolean);
+      if(readingList.length < 4){
+        const filler = arr.slice().sort((a,b)=> (b.views.month||0)-(a.views.month||0));
+        filler.forEach(s=>{
+          if(readingList.length >= 10) return;
+          if(!readingList.find(x=>x.id===s.id)) readingList.push(s);
+        });
+      }
+
+      // Discover row: random
+      const shuffled = arr.slice().sort(()=> Math.random()-0.5);
+      const discoverList = shuffled.slice(0, 10);
+
+      // Featured grid
+      const featured = arr.slice().sort((a,b)=> (b.views.month||0)-(a.views.month||0)).slice(0,6);
+
+      view.innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>Trang chủ</b> <span>• Giao diện hiện đại + không gian riêng</span></div>
+        </div>
+
+        <div class="section">
+          <div class="sectionTop">
+            <div>
+              <h2>⏱️ Đang đọc</h2>
+              <div class="sub">Kéo ngang để xem thêm • bấm “Đọc tiếp” để vào truyện</div>
+            </div>
+            <button class="seeAll" data-to="#/reading" type="button">Xem tất cả →</button>
+          </div>
+          <div class="hscroll" id="homeReadingRow"></div>
+        </div>
+
+        <div class="section">
+          <div class="sectionTop">
+            <div>
+              <h2>🎲 Khám phá ngẫu nhiên</h2>
+              <div class="sub">Gợi ý ngẫu nhiên để đổi “khẩu vị”</div>
+            </div>
+            <button class="seeAll" data-to="#/discover" type="button">Thử vận may →</button>
+          </div>
+          <div class="hscroll" id="homeDiscoverRow"></div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>Truyện nổi bật</h2>
+              <div class="sub">Gợi ý từ top tháng</div>
+            </div>
+            <div class="tabs">
+              <div class="tab active">Danh sách</div>
+              <div class="tab" data-to="#/updated">Mới cập nhật</div>
+              <div class="tab" data-to="#/completed">Hoàn thành</div>
+              <div class="tab" data-to="#/top/month">Top tháng</div>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="grid" id="homeGrid"></div>
+          </div>
+        </div>
       `;
 
-      $("storyDesc").textContent = st.desc ? st.desc : "Chưa có mô tả.";
+      // Bind nav buttons inside home
+      $$(".tab[data-to], .seeAll[data-to]", view).forEach(t=>{
+        t.addEventListener("click", ()=> nav(t.dataset.to));
+      });
 
-      // continue reading button
-      const btnContinue = $("btnContinueReading");
-      btnContinue.style.display = "none";
-      let continueNo = null;
-      if(currentUser){
-        try{
-          const rs = await get(ref(db, `userData/${currentUser.uid}/reading/${st.id}`));
-          if(rs.exists()){
-            continueNo = Number(rs.val()?.chapNo || 1) || 1;
-            btnContinue.style.display = "inline-flex";
-            btnContinue.textContent = `▶ Tiếp tục đọc (C.${continueNo})`;
-          }
-        }catch(e){}
-      }
+      renderStoryRow(readingList, $("#homeReadingRow"), { ctaLabel: "Đọc tiếp", max: 12 });
+      renderStoryRow(discoverList, $("#homeDiscoverRow"), { ctaLabel: "Đọc thử", max: 12 });
 
-      // buttons
-      $("btnReadFromStart").onclick = async ()=> openReader(st, 1);
-      $("btnReadLatest").onclick = async ()=> openReader(st, Number(st.latestChapNo || st.chapterCount || 1) || 1);
-      btnContinue.onclick = async ()=> openReader(st, continueNo || 1);
-      $("btnShareStory").onclick = async ()=>{
-        const url = location.href;
-        try{
-          if(navigator.share){
-            await navigator.share({ title: st.title, text: st.title, url });
-          }else{
-            await navigator.clipboard.writeText(url);
-            alert("Đã copy link truyện!");
-          }
-        }catch(e){
-          try{
-            await navigator.clipboard.writeText(url);
-            alert("Đã copy link truyện!");
-          }catch(err){}
-        }
-      };
-
-      // chapters
-      let limit = 50;
-      async function loadChaps(){
-        $("chapHint").textContent = "Đang tải chương...";
-        try{
-          const list = await fetchLastChaptersMeta(st.id, Math.min(200, limit));
-          renderChapList(list);
-          $("chapHint").textContent = list.length ? `Đang hiển thị ${list.length} chương mới nhất.` : "Chưa có chương.";
-          $("chapLoadMore").style.display = (limit < 200) ? "inline-flex" : "none";
-          if(limit >= 200) $("chapLoadMore").textContent = "Đã tới giới hạn (200)";
-        }catch(err){
-          console.warn(err);
-          $("chapHint").textContent = "Không tải được danh sách chương. Kiểm tra Rules cho /chapters.";
-          $("chapList").innerHTML = "";
-          $("chapLoadMore").style.display = "none";
-        }
-      }
-      function renderChapList(list){
-        const box = $("chapList");
-        if(!list.length){
-          box.innerHTML = "";
-          return;
-        }
-        // list đã sort tăng dần
-        box.innerHTML = list.map(c=>{
-          const t = c.title ? `: ${esc(c.title)}` : "";
-          return `<div class="chapItem" data-no="${c.no}">
-            <span class="chapNo">Chương ${c.no}</span>
-            <span class="chapName">${t ? t.slice(2) : "—"}</span>
-          </div>`;
-        }).join("");
-
-        box.querySelectorAll(".chapItem").forEach(el=>{
-          el.addEventListener("click", ()=>{
-            const no = Number(el.getAttribute("data-no")||"1")||1;
-            openReader(st, no);
-          });
-        });
-      }
-
-      $("chapLoadMore").onclick = async ()=>{
-        limit = Math.min(200, limit + 50);
-        await loadChaps();
-      };
-
-      $("chapGoBtn").onclick = ()=>{
-        const no = Number($("chapGoInput").value||"0");
-        if(!no || no < 1){ alert("Nhập số chương hợp lệ (>=1)."); return; }
-        openReader(st, no);
-      };
-
-      await loadChaps();
+      renderStoryGrid(featured, $("#homeGrid"));
     }
 
 
-    // Hot ranking range: day / week / month / all
-let hotRankRange = (localStorage.getItem("hotRankRange") || "all");
-const HOT_RANGE_LABEL = { day:"HOT NGÀY", week:"HOT TUẦN", month:"HOT THÁNG", all:"HOT TOÀN BỘ" };
+    function renderReading(){
+      const view = $("#view");
+      const id = state.reading.lastStoryId || stories[0].id;
+      const s = stories.find(x=>x.id===id);
 
-function getHotViewsKey(){
-  return hotRankRange==="day" ? "viewsDay"
-    : hotRankRange==="week" ? "viewsWeek"
-    : hotRankRange==="month" ? "viewsMonth"
-    : "viewsAll";
-}
+      view.innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>Đang đọc</b><span>• Không gian riêng</span></div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
 
-function setListHeader(route){
-  const crumb = document.getElementById("listCrumb");
-  const title = document.getElementById("listTitle");
-  const desc  = document.getElementById("listDesc");
-  const fullBtn = document.getElementById("listFullBtn");
-
-  const map = {
-    hot: { t: "TỔNG HỢP TRUYỆN HAY VÀ HOT NHẤT", d: "Tổng hợp những truyện Hot, truyện hay nhất có lượt xem cao và được độc giả bình chọn." },
-    update: { t: "TRUYỆN MỚI CẬP NHẬT", d: "Danh sách truyện vừa cập nhật chương mới, sắp xếp theo thời gian cập nhật." },
-    completed: { t: "TRUYỆN HOÀN THÀNH (FULL)", d: "Tổng hợp truyện đã hoàn thành. Bạn có thể đọc trọn bộ từ đầu đến cuối." }
-  };
-  const it = map[route] || { t:"DANH SÁCH TRUYỆN", d:"" };
-
-  if(crumb) crumb.textContent = "Trang chủ / " + (route==="hot" ? "Truyện Hot" : route==="update" ? "Mới cập nhật" : "Truyện hoàn thành");
-  if(title) title.textContent = it.t;
-  if(desc)  desc.textContent  = it.d;
-
-  // "LỌC FULL" trên trang Hot: mở menu xếp hạng theo lượt xem (ngày/tuần/tháng/toàn bộ)
-  if(fullBtn){
-    if(route === "hot"){
-      fullBtn.style.display = "inline-flex";
-      fullBtn.textContent = "LỌC FULL";
-      fullBtn.setAttribute("data-mode", hotRankRange);
-    }else{
-      fullBtn.style.display = "none";
-    }
-  }
-
-  document.title = (route==="hot" ? "Truyện Hot" : route==="update" ? "Mới cập nhật" : route==="completed" ? "Truyện hoàn thành" : "Truyện Online") + " • Truyện Online";
-}
-
-function renderListPage(route){
-      setListHeader(route);
-
-      const sel = document.getElementById("listCategory");
-      const hint = document.getElementById("listHint");
-      const box = document.getElementById("listBox");
-
-      if(!sel || !box) return;
-
-      // đổ thể loại
-      fillCategorySelect(sel, categories);
-
-      const cat = sel.value || "all";
-
-// Hint: hot range
-if(route === "hot" && hint){
-  hint.textContent = "Xếp hạng: " + (HOT_RANGE_LABEL[hotRankRange] || "HOT TOÀN BỘ");
-}else if(hint && route !== "hot"){
-  hint.textContent = "";
-}
-
-      let list = stories.slice();
-
-      if(route === "hot"){
-        const k = getHotViewsKey();
-        list.sort((a,b)=> (num(b[k]) - num(a[k])) || (num(b.hotScore)-num(a.hotScore)) || (num(b.views)-num(a.views)) || (num(b.updatedAt)-num(a.updatedAt)));
-      }else if(route === "update"){
-        list.sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0) || (b.latestChapNo||0) - (a.latestChapNo||0));
-      }else if(route === "completed"){
-        list = list.filter(s=> isCompletedStory(s));
-        list.sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0) || (b.views||0)-(a.views||0));
-      }
-
-      if(cat !== "all"){
-        list = list.filter(s => (s.categories||[]).includes(cat));
-      }
-
-      const limit = route === "hot" ? 40 : 60;
-      list = list.slice(0, limit);
-
-      if(!list.length){
-        box.innerHTML = '<div class="contentPad"><div class="mutedBox">Chưa có truyện phù hợp trong dữ liệu Firebase.</div></div>';
-        if(hint) hint.textContent = "";
-        return;
-      }
-
-      if(hint) hint.textContent = "Hiển thị " + list.length + " truyện" + (cat==="all" ? "" : (" • " + cat));
-
-      box.innerHTML = list.map(s=>{
-        const author = s.author ? esc(s.author) : "";
-        const chap = (s.latestChapNo ?? s.chapterCount);
-        const chapText = chap != null ? ("Chương " + chap) : "Chương —";
-        const full = isCompletedStory(s);
-        const desc = (s.desc || "").trim() || "Chưa có mô tả.";
-        return `
-          <div class="bigItem" data-story="${esc(s.id)}">
-            <div class="bigCover">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
+        <div class="card">
+          <div class="hd">
             <div>
-              <div class="bigTitle">${esc(s.title)}</div>
-              ${author ? `<div class="bigAuthor">✍️ ${author}</div>` : ``}
-              <div class="bigDesc">${esc(desc)}</div>
-              <div class="bigBadges">
-                <span class="badgeBlue">${esc(chapText)}</span>
-                ${full ? `<span class="badgeFull">Full</span>` : ``}
-              </div>
+              <h2>Tiếp tục</h2>
+              <div class="sub">${s ? "Truyện gần nhất của bạn" : "Chưa có tiến độ"}</div>
             </div>
           </div>
-        `;
-      }).join("");
-
-      box.querySelectorAll("[data-story]").forEach(row=>{
-        row.addEventListener("click", ()=>{
-          const id = row.getAttribute("data-story");
-          const st = stories.find(x=>x.id===id);
-          goStory(st.id);
-        });
-      });
-    }
-
-    function applyRoute(){
-      const { name, parts } = parseHash();
-
-      if(name === "story"){
-        const storyId = parts[1];
-        if(!storyId){ go("home"); return; }
-        showView("story");
-        renderStoryPage(storyId);
-        return;
-      }
-
-      // list pages
-      if(["hot","update","completed"].includes(name)){
-        showView("list");
-        renderListPage(name);
-        return;
-      }
-
-      // home
-      showView("home");
-      document.title = "Truyện Online";
-    }
-
-    window.addEventListener("hashchange", applyRoute);
-
-
-
-    // ===== UI: Drawer =====
-    function openDrawer(){ $("drawerBg").style.display="block"; $("drawerBg").setAttribute("aria-hidden","false"); }
-    function closeDrawer(){ $("drawerBg").style.display="none"; $("drawerBg").setAttribute("aria-hidden","true"); }
-    $("menuBtn").addEventListener("click", openDrawer);
-    $("drawerBg").addEventListener("click", (e)=>{ if(e.target.id==="drawerBg") closeDrawer(); });
-
-    // ===== UI: Search =====
-    function openSearch(){
-      $("searchBg").style.display = "block";
-      $("searchBg").setAttribute("aria-hidden","false");
-      $("searchInput").value = "";
-      renderSearch("");
-      setTimeout(()=> $("searchInput").focus(), 50);
-    }
-    function closeSearch(){
-      $("searchBg").style.display = "none";
-      $("searchBg").setAttribute("aria-hidden","true");
-      $("searchResults").innerHTML = "";
-    }
-    $("searchBtn").addEventListener("click", openSearch);
-    $("searchClose").addEventListener("click", closeSearch);
-    $("searchBg").addEventListener("click", (e)=>{ if(e.target.id==="searchBg") closeSearch(); });
-    $("searchInput").addEventListener("input", (e)=> renderSearch(e.target.value));
-
-    // VIP + Thông báo (placeholder UI)
-    $("vipBtn").addEventListener("click", ()=>{
-      alert("Nạp VIP: mình sẽ nối thanh toán (MoMo/Stripe...) ở bước tiếp theo.");
-    });
-    $("notifBtn").addEventListener("click", ()=>{
-      if(!currentUser) return alert("Bạn cần đăng nhập để xem thông báo.");
-      alert("Thông báo: mình sẽ làm danh sách thông báo + chuông có badge ở bước tiếp theo.");
-    });
-
-    // ===== Online counter (Realtime Database presence) =====
-    function setOnlineCount(n){
-      const dot = $("onlineDot");
-      const num = $("onlineNum");
-      // Luôn hiển thị số để tránh bị trống
-      if(n == null || Number.isNaN(Number(n))){
-        dot.style.opacity = ".55";
-        num.textContent = "--";
-        return;
-      }
-      const v = Math.max(0, Math.floor(Number(n)));
-      dot.style.opacity = v > 0 ? "1" : ".75";
-      num.textContent = String(v);
-    }
-    // mặc định (trước khi Firebase trả về)
-    setOnlineCount(0);
-    // Listen online users (tính trong 60s gần nhất)
-    const _presenceListRef = ref(db, "presence/users");
-    onValue(_presenceListRef, (snap)=>{
-      const now = Date.now();
-      const val = snap.exists() ? (snap.val()||{}) : {};
-      // tính những người có heartbeat trong 90 giây gần nhất (mobile đôi khi delay)
-      const count = Object.values(val).filter(x => x && (now - (x.lastActive||0) < 90000)).length;
-      setOnlineCount(count);
-    }, (err)=>{
-      console.warn("presence/users read blocked:", err);
-      // Nếu Rules chặn read, vẫn hiển thị để không bị trống
-      setOnlineCount(null);
-    });
-
-    // Presence for current user
-    let _presenceTimer = null;
-    let _presenceConnectedUnsub = null;
-
-    function startPresence(u){
-      // cleanup
-      if(_presenceTimer){ clearInterval(_presenceTimer); _presenceTimer = null; }
-      if(_presenceConnectedUnsub){ try{ _presenceConnectedUnsub(); }catch(e){} _presenceConnectedUnsub = null; }
-
-      if(!u) return;
-
-      const pRef = ref(db, "presence/users/" + u.uid);
-      const connectedRef = ref(db, ".info/connected");
-
-      const writePresence = ()=>{
-        return set(pRef, { uid: u.uid, name: u.displayName||"", lastActive: Date.now() })
-          .catch(e=>console.warn("presence write blocked:", e));
-      };
-
-      // Chỉ set onDisconnect khi đã connect thật sự
-      _presenceConnectedUnsub = onValue(connectedRef, (snap)=>{
-        if(snap.val() === true){
-          writePresence();
-          onDisconnect(pRef).remove().catch(e=>console.warn("onDisconnect failed:", e));
-        }
-      }, (err)=>{
-        console.warn(".info/connected read blocked:", err);
-      });
-
-      // heartbeat
-      _presenceTimer = setInterval(writePresence, 25000);
-    }
-
-    // Menu button: đổi ☰ ↔ avatar khi đăng nhập
-    function syncMenuAvatar(u){
-      const icon = $("menuIcon");
-      const img = $("menuAvatar");
-      if(u && u.photoURL){
-        img.src = u.photoURL;
-        img.style.display = "block";
-        icon.style.display = "none";
-      }else if(u){
-        img.style.display = "none";
-        icon.style.display = "block";
-        // fallback: chữ cái đầu nếu không có ảnh
-        const t = (u.displayName || u.email || "U").trim();
-        icon.textContent = (t[0] || "U").toUpperCase();
-      }else{
-        img.style.display = "none";
-        icon.style.display = "block";
-        icon.textContent = "☰";
-      }
-    }
-
-    // ===== Theme (theo hệ thống + nút 🌙/☀️) =====
-const THEME_KEY = "truyen_theme";
-const mqDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
-
-function getThemePref(){
-  return localStorage.getItem(THEME_KEY) || "system"; // system | light | dark
-}
-function isDarkNow(themePref){
-  if(themePref === "dark") return true;
-  if(themePref === "light") return false;
-  return mqDark ? mqDark.matches : false;
-}
-function syncThemeIcon(themePref){
-  const el = $("themeIco");
-  if(!el) return;
-  el.textContent = isDarkNow(themePref) ? "🌙" : "☀️";
-}
-function syncThemeColor(themePref){
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if(!meta) return;
-  meta.setAttribute("content", isDarkNow(themePref) ? "#061225" : "#0d2f66");}
-function applyTheme(themePref, persist=true){
-  const root = document.documentElement;
-  if(themePref === "dark") root.dataset.theme = "dark";
-  else if(themePref === "light") root.dataset.theme = "light";
-  else root.removeAttribute("data-theme"); // system
-  if(persist) localStorage.setItem(THEME_KEY, themePref);
-  syncThemeIcon(themePref);
-  syncThemeColor(themePref);
-}
-function nextThemePref(curr){
-  if(curr === "system") return isDarkNow("system") ? "light" : "dark";
-  if(curr === "dark") return "light";
-  return "dark";
-}
-
-// áp dụng lúc load
-applyTheme(getThemePref(), false);
-
-// đổi theo hệ thống nếu đang ở chế độ system
-mqDark?.addEventListener?.("change", ()=>{
-  if(getThemePref() === "system"){
-    syncThemeIcon("system");
-    syncThemeColor("system");
-  }
-});
-
-// nút đổi theme
-$("themeBtn")?.addEventListener("click", ()=>{
-  const cur = getThemePref();
-  applyTheme(nextThemePref(cur));
-});
-
-
-    // ===== UI: Modal =====
-    function openModal(title, bodyHtml){
-      $("modalTitle").textContent = title;
-      $("modalBody").innerHTML = bodyHtml;
-      $("modalBg").style.display = "block";
-      $("modalBg").setAttribute("aria-hidden","false");
-    }
-    function closeModal(){
-      $("modalBg").style.display = "none";
-      $("modalBg").setAttribute("aria-hidden","true");
-      $("modalBody").innerHTML = "";
-    }
-    $("modalClose").addEventListener("click", closeModal);
-    $("modalBg").addEventListener("click", (e)=>{ if(e.target.id==="modalBg") closeModal(); });
-
-    // ===== Auth =====
-    let currentUser = null;
-
-    async function ensureUserDoc(u){
-      if(!u) return;
-      const userRef = ref(db, "users/" + u.uid);
-      const snap = await get(userRef);
-      if(!snap.exists()){
-        await set(userRef, {
-          uid: u.uid,
-          displayName: u.displayName || "",
-          email: u.email || "",
-          photoURL: u.photoURL || "",
-          createdAt: Date.now(),
-          lastLoginAt: Date.now()
-        });
-      }else{
-        await update(userRef, { lastLoginAt: Date.now(), displayName: u.displayName||"", photoURL: u.photoURL||"" });
-      }
-    }
-
-    async function login(){
-      try{
-        await signInWithPopup(auth, provider);
-        closeDrawer();
-      }catch(err){
-        alert("Đăng nhập thất bại: " + (err?.message || err));
-      }
-    }
-    async function logout(){
-      await signOut(auth);
-      closeDrawer();
-    }
-
-    $("navLogin").addEventListener("click", login);
-    $("btnLoginSmall").addEventListener("click", login);
-    $("navLogout").addEventListener("click", logout);
-
-    // Placeholder routes (bước sau nâng cấp)
-    $("navHome").addEventListener("click", ()=>{ closeDrawer(); window.scrollTo({top:0, behavior:"smooth"}); });
-    $("navProfile").addEventListener("click", ()=>{ closeDrawer(); alert("Trang Hồ sơ: sẽ làm ở bước tiếp theo (đúng yêu cầu bạn)."); });
-    $("navHistory").addEventListener("click", ()=>{ closeDrawer(); alert("Trang Lịch sử: sẽ làm ở bước tiếp theo."); });
-    $("navAdmin")?.addEventListener("click", ()=>{ closeDrawer(); document.getElementById("secAdmin")?.scrollIntoView({behavior:"smooth"}); });
-    $("homeBtn").addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
-
-    // ===== Điều hướng: bấm vào các mục ở trang chủ để sang "không gian riêng" =====
-    function bindHomeSectionNav(){
-      const hotHead = document.querySelector("#secHot .sectionHead");
-      const updHead = document.querySelector("#secUpdate .sectionHead");
-      const comHead = document.querySelector("#secCompleted .sectionHead");
-
-      hotHead?.addEventListener("click", (e)=>{ if(e.target.closest("select") || e.target.closest("button")) return; go("hot"); });
-      updHead?.addEventListener("click", (e)=>{ if(e.target.closest("select") || e.target.closest("button")) return; go("update"); });
-      comHead?.addEventListener("click", (e)=>{ if(e.target.closest("select") || e.target.closest("button")) return; go("completed"); });
-
-      // thêm cursor để nhìn giống link
-      [hotHead, updHead, comHead].forEach(h=>{ if(h) h.style.cursor="pointer"; });
-    }
-    bindHomeSectionNav();
-
-    // List page controls
-    document.getElementById("listBackBtn")?.addEventListener("click", ()=> go("home"));
-    document.getElementById("storyBackBtn")?.addEventListener("click", ()=> history.length>1 ? history.back() : go("home"));
-    document.getElementById("listCategory")?.addEventListener("change", ()=> renderListPage(parseHash().name));
-    document.getElementById("listFullBtn")?.addEventListener("click", (e)=>{
-  const r = parseHash().name;
-  if(r !== "hot") return;
-
-  const menu = document.getElementById("listFullMenu");
-  if(!menu) return;
-
-  // toggle menu
-  menu.hidden = !menu.hidden;
-
-  // set active
-  menu.querySelectorAll(".fullMenuItem").forEach(btn=>{
-    btn.classList.toggle("isActive", btn.getAttribute("data-hot-range") === hotRankRange);
-  });
-
-  e.stopPropagation();
-});
-
-// chọn range trong menu
-document.getElementById("listFullMenu")?.addEventListener("click", (e)=>{
-  const btn = e.target?.closest?.(".fullMenuItem");
-  if(!btn) return;
-  const range = btn.getAttribute("data-hot-range");
-  if(!range) return;
-  hotRankRange = range;
-  localStorage.setItem("hotRankRange", hotRankRange);
-
-  // đóng menu + render lại
-  const menu = document.getElementById("listFullMenu");
-  if(menu) menu.hidden = true;
-  renderListPage("hot");
-  e.stopPropagation();
-});
-
-// click ngoài để đóng menu
-document.addEventListener("click", ()=>{
-  const menu = document.getElementById("listFullMenu");
-  if(menu && !menu.hidden) menu.hidden = true;
-});
-onAuthStateChanged(auth, async (u)=>{
-      currentUser = u || null;
-      syncMenuAvatar(currentUser);
-      startPresence(currentUser);
-      if(u) await ensureUserDoc(u);
-
-      $("drawerUser").textContent = u ? (u.displayName || u.email || "Đã đăng nhập") : "Chưa đăng nhập";
-      $("navLogout").style.display = u ? "block" : "none";
-      $("btnLoginSmall").style.display = u ? "none" : "inline-flex";
-      $("loginState").textContent = u ? "✓" : "›";
-
-      // badge thông báo (nếu bạn có lưu userData/{uid}/notificationsUnread = number)
-      try{
-        if(u){
-          onValue(ref(db, `userData/${u.uid}/notificationsUnread`), (sn)=>{
-            const n = sn.exists() ? (sn.val()||0) : 0;
-            const b = $("notifBadge");
-            if(n>0){
-              b.textContent = n>99 ? "99+" : String(n);
-              b.style.display = "grid";
-            }else{
-              b.style.display = "none";
-            }
-          });
-        }else{
-          $("notifBadge").style.display = "none";
-        }
-      }catch(e){}
-
-      await loadReading(); // phụ thuộc user
-
-      // Admin UI
-      const adminOk = toggleAdminUI(currentUser);
-      if(adminOk){
-        bindAdminUIOnce();
-        await refreshAdminStorySelect();
-      }
-
-
-    // ===== Chat cộng đồng (Realtime Database) =====
-    // Data: chat/messages/{pushId}: { uid, name, photoURL, text, createdAt }
-    const chatListEl = $("chatList");
-    const chatInputEl = $("chatInput");
-    const chatSendBtn = $("chatSend");
-    const chatStatusEl = $("chatStatus");
-    const chatHintEl = $("chatHint");
-
-    let _lastChatSendAt = 0;
-
-    function renderChatMessages(list){
-      if(!chatListEl) return;
-      if(!list.length){
-        chatListEl.innerHTML = '<div class="searchEmpty">Chưa có tin nhắn nào. Hãy là người đầu tiên!</div>';
-        return;
-      }
-      const atBottom = (chatListEl.scrollTop + chatListEl.clientHeight >= chatListEl.scrollHeight - 40);
-
-      chatListEl.innerHTML = list.map(m=>{
-        const name = esc(m?.name || "Người dùng");
-        const t = m?.createdAt ? new Date(m.createdAt).toLocaleString("vi-VN", { hour:"2-digit", minute:"2-digit", day:"2-digit", month:"2-digit" }) : "";
-        const text = esc(m?.text || "");
-        const photo = m?.photoURL ? esc(m.photoURL) : "";
-        const letter = (name.trim()[0] || "U").toUpperCase();
-        return `
-          <div class="chatMsg">
-            <div class="chatAvt">${photo ? `<img src="${photo}" alt="">` : letter}</div>
-            <div class="chatMain">
-              <div class="chatHeadLine">
-                <div class="chatName">${name}</div>
-                <div class="chatTime">${t}</div>
-              </div>
-              <div class="chatText">${text}</div>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-      if(atBottom) chatListEl.scrollTop = chatListEl.scrollHeight;
-    }
-
-    function watchChat(){
-      chatStatusEl.textContent = "Đang tải…";
-      const qRef = query(ref(db, "chat/messages"), orderByChild("createdAt"), limitToLast(60));
-      onValue(qRef, (snap)=>{
-        const val = snap.exists() ? (snap.val() || {}) : {};
-        const arr = Object.values(val)
-          .filter(Boolean)
-          .sort((a,b)=> (a.createdAt||0) - (b.createdAt||0));
-        renderChatMessages(arr);
-        chatStatusEl.textContent = "Live";
-        chatHintEl.textContent = currentUser ? "* Chat đang hoạt động." : "* Để gửi tin nhắn bạn cần đăng nhập Google.";
-      }, (err)=>{
-        chatStatusEl.textContent = "Lỗi";
-        chatListEl.innerHTML = '<div class="mutedBox">Không thể tải chat. Nếu bạn muốn bật chat, hãy mở quyền đọc/ghi cho node <b>/chat/messages</b> trong Realtime Database Rules.</div>';
-        console.warn(err);
-      });
-    }
-
-    async function sendChat(){
-      const text = (chatInputEl.value || "").trim();
-      if(!text) return;
-
-      if(!currentUser){
-        alert("Bạn cần đăng nhập để chat với mọi người.");
-        openDrawer();
-        return;
-      }
-
-      const now = Date.now();
-      if(now - _lastChatSendAt < 2000){
-        chatHintEl.textContent = "Bạn gửi quá nhanh, thử lại sau 2 giây.";
-        return;
-      }
-      _lastChatSendAt = now;
-
-      try{
-        const msgRef = push(ref(db, "chat/messages"));
-        await set(msgRef, {
-          uid: currentUser.uid,
-          name: currentUser.displayName || currentUser.email || "Người dùng",
-          photoURL: currentUser.photoURL || "",
-          text: text.slice(0, 300),
-          createdAt: now
-        });
-        chatInputEl.value = "";
-        chatHintEl.textContent = "* Đã gửi.";
-      }catch(err){
-        console.warn(err);
-        chatHintEl.textContent = "Không gửi được. Có thể Rules đang chặn ghi /chat/messages.";
-        alert("Không gửi được tin nhắn. Kiểm tra Realtime Database Rules cho /chat/messages.");
-      }
-    }
-
-    chatSendBtn?.addEventListener("click", sendChat);
-    chatInputEl?.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter"){
-        e.preventDefault();
-        sendChat();
-      }
-    });
-
-    watchChat();
-
-    });
-
-    // ===== Data model (Realtime Database)
-    // stories/{storyId}: { title, coverUrl, categories: "Tiên hiệp,..." OR ["..."], latestChapNo, chapterCount, updatedAt, views, hotScore, desc }
-    // userData/{uid}/reading/{storyId}: { storyId, chapNo, updatedAt }
-    // =====
-
-    // ===== Story cache =====
-    let stories = []; // normalized
-    let categories = [];
-
-    function normalizeStory(id, raw){
-      const cats = Array.isArray(raw?.categories)
-        ? raw.categories
-        : String(raw?.categories||"").split(",").map(s=>s.trim()).filter(Boolean);
-
-      // Views fields (hot theo ngày/tuần/tháng/toàn bộ)
-      // Ưu tiên các field rõ ràng; nếu không có thì fallback về views tổng.
-      const vAll = num(raw?.viewsAll ?? raw?.viewsTotal ?? raw?.views ?? raw?.view ?? 0);
-      const vMonth = num(raw?.viewsMonth ?? raw?.viewMonth ?? raw?.monthViews ?? raw?.views30d ?? vAll);
-      const vWeek  = num(raw?.viewsWeek  ?? raw?.viewWeek  ?? raw?.weekViews  ?? raw?.views7d  ?? vMonth);
-      const vDay   = num(raw?.viewsDay   ?? raw?.viewDay   ?? raw?.dayViews   ?? raw?.views1d  ?? vWeek);
-
-      return {
-        id,
-        title: raw?.title || raw?.name || "Không tên",
-        coverUrl: raw?.coverUrl || raw?.cover || raw?.image || "",
-        categories: cats,
-        chapterCount: raw?.chapterCount ?? raw?.chapters ?? raw?.chap ?? raw?.totalChapters ?? null,
-        latestChapNo: raw?.latestChapNo ?? raw?.latestChap ?? raw?.latest ?? null,
-        updatedAt: raw?.updatedAt ?? raw?.updated ?? raw?.time ?? null,
-
-        // views tổng (giữ lại tương thích chỗ khác)
-        views: vAll,
-        // views theo mốc thời gian
-        viewsAll: vAll,
-        viewsMonth: vMonth,
-        viewsWeek: vWeek,
-        viewsDay: vDay,
-
-        hotScore: raw?.hotScore ?? raw?.hot ?? 0,
-        desc: raw?.desc || raw?.description || "",
-        status: raw?.status || raw?.state || "",
-        completed: raw?.completed ?? raw?.isCompleted ?? raw?.finish ?? raw?.full ?? null
-      };
-    }
-function computeCategories(list){
-      const set = new Set();
-      list.forEach(s => (s.categories||[]).forEach(c => set.add(c)));
-      return Array.from(set).sort((a,b)=>a.localeCompare(b,"vi"));
-    }
-
-    function fillCategorySelect(sel, items){
-      const cur = sel.value || "all";
-      sel.innerHTML = '<option value="all">' + (sel.id==="hotCategory" ? "THỂ LOẠI: TẤT CẢ" : "CHỌN THỂ LOẠI") + '</option>';
-      items.forEach(c=>{
-        const opt = document.createElement("option");
-        opt.value = c;
-        opt.textContent = c.toUpperCase();
-        sel.appendChild(opt);
-      });
-      sel.value = items.includes(cur) ? cur : "all";
-    }
-
-    function isCompletedStory(s){
-      const st = String(s?.status || "").toLowerCase().trim();
-      if(st === "completed" || st === "done" || st === "full") return true;
-      if(s?.completed === true) return true;
-      // nếu completed là string "true"/"1"
-      if(typeof s?.completed === "string" && ["true","1","yes","y"].includes(s.completed.toLowerCase().trim())) return true;
-
-      const cc = (s?.chapterCount != null) ? Number(s.chapterCount) : null;
-      const lc = (s?.latestChapNo != null) ? Number(s.latestChapNo) : null;
-      if(cc && lc && !Number.isNaN(cc) && !Number.isNaN(lc) && lc >= cc) return true;
-
-      return false;
-    }
-
-
-
-    function renderSearch(q){
-      const query = toLower((q||"").trim());
-      const results = !query ? [] : stories
-        .filter(s => toLower(s.title).includes(query) || (s.categories||[]).some(c => toLower(c).includes(query)))
-        .slice(0, 30);
-
-      const box = $("searchResults");
-      if(!query){
-        box.innerHTML = '<div class="searchEmpty">Nhập tên truyện hoặc thể loại để tìm…</div>';
-        return;
-      }
-      if(!results.length){
-        box.innerHTML = '<div class="searchEmpty">Không tìm thấy kết quả.</div>';
-        return;
-      }
-      box.innerHTML = results.map(s=>`
-        <div class="searchItem" data-story="${esc(s.id)}">
-          <div class="miniCover" style="width:34px;height:46px">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
-          <div class="t" title="${esc(s.title)}">${esc(s.title)}</div>
-          <div class="c">${(s.latestChapNo!=null) ? ("C. " + s.latestChapNo) : ""}</div>
-        </div>
-      `).join("");
-      box.querySelectorAll("[data-story]").forEach(row=>{
-        row.addEventListener("click", ()=>{
-          const id = row.getAttribute("data-story");
-          const st = stories.find(x=>x.id===id);
-          closeSearch();
-          goStory(st.id);
-        });
-      });
-    }
-
-
-    // ===== Render Hot =====
-    function renderHot(){
-      const cat = $("hotCategory").value;
-      const list = stories
-        .filter(s => cat==="all" ? true : (s.categories||[]).includes(cat))
-        .slice()
-        .sort((a,b)=> (b.hotScore||0) - (a.hotScore||0) || (b.views||0)-(a.views||0) || (b.updatedAt||0)-(a.updatedAt||0))
-        .slice(0, 12);
-
-      const grid = $("hotGrid");
-      grid.innerHTML = list.map(s => `
-        <a class="hotItem" data-story="${esc(s.id)}" href="javascript:void(0)">
-          <div class="hotCover">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
-          <div class="hotName">${esc(s.title)}</div>
-        </a>
-      `).join("");
-
-      $("hotHint").textContent = list.length ? "" : "Chưa có truyện HOT phù hợp trong dữ liệu Firebase.";
-      grid.querySelectorAll("[data-story]").forEach(a=>{
-        a.addEventListener("click", ()=>{
-          const id = a.getAttribute("data-story");
-          const st = stories.find(x=>x.id===id);
-          goStory(st.id);
-        });
-      });
-    }
-
-    // ===== Render Updated =====
-    function renderUpdated(){
-      const cat = $("updateCategory").value;
-      const list = stories
-        .filter(s => cat==="all" ? true : (s.categories||[]).includes(cat))
-        .slice()
-        .sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0) || (b.latestChapNo||0) - (a.latestChapNo||0))
-        .slice(0, 20);
-
-      const box = $("updateList");
-      box.innerHTML = list.map(s=>`
-        <div class="listRow" data-story="${esc(s.id)}">
-          <div class="leftLine">
-            <div class="storyLine">
-              <div class="miniCover">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
-              <div style="min-width:0">
-                <div class="lineTitle" title="${esc(s.title)}">${esc(s.title)}</div>
-                <div class="lineMeta">
-                  ${isCompletedStory(s) ? `<span class="pill">Full</span>` : ``}
-                  ${(s.updatedAt!=null) ? `<span>🕒 ${new Date(s.updatedAt).toLocaleDateString("vi-VN")}</span>` : ``}
+          <div class="bd" style="padding-top:12px">
+            ${s ? `
+              <div class="row" id="resumeRow">
+                <div class="rank">▶</div>
+                <div class="info">
+                  <b>${escapeHtml(s.title)}</b>
+                  <span>Chạm để vào trang truyện • lưu tiến độ tự động</span>
                 </div>
+                <div class="kpi">→</div>
               </div>
+            ` : `<div style="color:var(--muted); padding:10px">Chưa có truyện đang đọc.</div>`}
+          </div>
+        </div>
+      `;
+      $("#goBack").addEventListener("click", ()=> history.back());
+      if(s) $("#resumeRow").addEventListener("click", ()=> nav(`#/story/${s.id}`));
+    }
+
+    function renderDiscover(){
+      const view = $("#view");
+      const pick = stories[Math.floor(Math.random()*stories.length)];
+      view.innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>Khám phá ngẫu nhiên</b><span>• Không gian riêng</span></div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>Gợi ý ngẫu nhiên</h2>
+              <div class="sub">Bấm đổi để lấy truyện khác</div>
+            </div>
+            <div class="tabs">
+              <div class="tab" id="btnReroll">Đổi truyện</div>
             </div>
           </div>
-          <div class="chapCount">${fmtNum(s.latestChapNo ?? s.chapterCount)}</div>
+          <div class="bd">
+            <div class="grid" id="discoverGrid"></div>
+          </div>
+        </div>
+      `;
+      $("#goBack").addEventListener("click", ()=> history.back());
+      $("#btnReroll").addEventListener("click", ()=> renderDiscover());
+      renderStoryGrid([pick], $("#discoverGrid"));
+    }
+
+    function renderUpdated(){
+      const view = $("#view");
+      const q = $("#searchInput").value || "";
+      const arr = filteredStoriesBySearch(q);
+
+      const priority = (s) => {
+        const t = (s.updatedAt||"").toLowerCase();
+        if(t.includes("hôm nay") || t.includes("mới") || t.includes("giờ")) return 0;
+        if(t.includes("hôm qua")) return 1;
+        if(t.includes("ngày")) return 2;
+        if(t.includes("tuần")) return 3;
+        return 9;
+      };
+      const list = arr.slice().sort((a,b)=> priority(a)-priority(b));
+
+      view.innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>Mới cập nhật</b><span>• Không gian riêng</span></div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>Danh sách mới cập nhật</h2>
+              <div class="sub">Sắp xếp theo “độ mới” (demo)</div>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="grid" id="updatedGrid"></div>
+          </div>
+        </div>
+      `;
+      $("#goBack").addEventListener("click", ()=> history.back());
+      renderStoryGrid(list, $("#updatedGrid"));
+    }
+
+    function renderCompleted(){
+      const view = $("#view");
+      const q = $("#searchInput").value || "";
+      const arr = filteredStoriesBySearch(q);
+      const list = arr.filter(s=> (s.status||"").toLowerCase().includes("hoàn"));
+
+      view.innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>Truyện hoàn thành</b><span>• Không gian riêng</span></div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>Danh sách hoàn thành</h2>
+              <div class="sub">Chỉ hiển thị truyện đã hoàn thành</div>
+            </div>
+          </div>
+          <div class="bd">
+            <div class="grid" id="completedGrid"></div>
+          </div>
+        </div>
+      `;
+      $("#goBack").addEventListener("click", ()=> history.back());
+      renderStoryGrid(list, $("#completedGrid"));
+    }
+
+    function renderTop(mode){
+      mode = mode || "day";
+      const view = $("#view");
+      const q = $("#searchInput").value || "";
+      const arr = filteredStoriesBySearch(q);
+
+      const title = mode==="day" ? "Top ngày" : mode==="week" ? "Top tuần" : "Top tháng";
+      const list = arr.slice().sort((a,b)=> (b.views[mode]||0)-(a.views[mode]||0)).slice(0, 20);
+
+      view.innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>Bảng xếp hạng</b> <span>• ${title} • Không gian riêng</span></div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>${title}</h2>
+              <div class="sub">Xếp theo lượt xem ${mode==="day"?"ngày":mode==="week"?"tuần":"tháng"} (demo)</div>
+            </div>
+            <div class="tabs">
+              <div class="tab ${mode==="day"?"active":""}" data-to="#/top/day">Ngày</div>
+              <div class="tab ${mode==="week"?"active":""}" data-to="#/top/week">Tuần</div>
+              <div class="tab ${mode==="month"?"active":""}" data-to="#/top/month">Tháng</div>
+            </div>
+          </div>
+          <div class="bd" style="padding-top:12px">
+            <div class="list" id="topList"></div>
+          </div>
+        </div>
+      `;
+
+      $("#goBack").addEventListener("click", ()=> history.back());
+      $$(".tab[data-to]", view).forEach(t=> t.addEventListener("click", ()=> nav(t.dataset.to)));
+
+      const wrap = $("#topList");
+      wrap.innerHTML = list.map((s,i)=>`
+        <div class="row" data-story="${s.id}">
+          <div class="rank">${i+1}</div>
+          <div class="info">
+            <b>${escapeHtml(s.title)}</b>
+            <span>${escapeHtml(s.author)} • ${escapeHtml(s.status)}</span>
+          </div>
+          <div class="kpi">👁️ ${formatNum(s.views[mode])}</div>
         </div>
       `).join("");
-
-      $("updateHint").textContent = list.length ? "" : "Chưa có truyện trong mục Mới cập nhật.";
-      box.querySelectorAll("[data-story]").forEach(row=>{
-        row.addEventListener("click", ()=>{
-          const id = row.getAttribute("data-story");
-          const st = stories.find(x=>x.id===id);
-          goStory(st.id);
-        });
+      $$(".row", wrap).forEach(r=>{
+        r.addEventListener("click", ()=> nav(`#/story/${r.dataset.story}`));
       });
     }
 
     
+function getStoryOrNull(storyId){
+      return stories.find(x=>x.id===storyId) || null;
+    }
+    function getChapterOrNull(story, chapterIndex){
+      if(!story) return null;
+      chapterIndex = Number(chapterIndex);
+      if(!Number.isFinite(chapterIndex)) chapterIndex = 0;
+      chapterIndex = clamp(chapterIndex, 0, story.chapters.length-1);
+      return { chapter: story.chapters[chapterIndex], chapterIndex };
+    }
+    function ensureProgress(storyId){
+      state.reading.lastStoryId = storyId;
+      state.reading.progressByStory[storyId] ??= { chapterIndex: 0, scrollByChapter: {} };
+      saveState();
+      return state.reading.progressByStory[storyId];
+    }
 
-    // ===== Render Completed (Truyện hoàn thành) =====
-    function renderCompleted(){
-      const cat = $("completedCategory").value;
-      const list = stories
-        .filter(s => isCompletedStory(s))
-        .filter(s => cat==="all" ? true : (s.categories||[]).includes(cat))
-        .slice()
-        .sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0) || (b.views||0)-(a.views||0))
-        .slice(0, 20);
+    /****************
+     * Story detail (không gian riêng)
+     ****************/
+    function renderStory(storyId){
+      const s = getStoryOrNull(storyId);
+      const view = $("#view");
+      if(!s){
+        view.innerHTML = `
+          <div class="pageTop">
+            <div class="crumb"><b>Không tìm thấy truyện</b></div>
+            <button class="back" id="goBack">← Quay lại</button>
+          </div>
+          <div class="card"><div class="bd" style="padding:16px;color:var(--muted)">Truyện không tồn tại.</div></div>
+        `;
+        $("#goBack").addEventListener("click", ()=> history.back());
+        return;
+      }
 
-      const box = $("completedList");
-      box.innerHTML = list.map(s=>`
-        <div class="listRow" data-story="${esc(s.id)}">
-          <div class="leftLine">
-            <div class="storyLine">
-              <div class="miniCover">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
-              <div style="min-width:0">
-                <div class="lineTitle" title="${esc(s.title)}">${esc(s.title)}</div>
-                <div class="lineMeta">
-                  <span class="pill">Full</span>
-                  ${(s.chapterCount!=null) ? `<span>📚 ${Number(s.chapterCount)} chương</span>` : ``}
-                  ${(s.updatedAt!=null) ? `<span>🕒 ${new Date(s.updatedAt).toLocaleDateString("vi-VN")}</span>` : ``}
+      const prog = ensureProgress(s.id);
+      const lastIdx = clamp(prog.chapterIndex ?? 0, 0, s.chapters.length-1);
+      const lastCh = s.chapters[lastIdx];
+      const followed = isFollowed(s.id);
+
+      // related stories: same first tag
+      const tag0 = s.tags?.[0];
+      const related = tag0 ? stories.filter(x=>x.id!==s.id && (x.tags||[]).includes(tag0)).slice(0,4) : [];
+
+      view.innerHTML = `
+        <div class="pageTop">
+          <div class="crumb">
+            <span style="opacity:.8">Trang chủ</span> <span style="opacity:.7">›</span> <b>${escapeHtml(s.title)}</b>
+            <span>• Không gian riêng</span>
+          </div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
+
+        <div class="storyHero">
+          <div class="coverBig" style="background-image:${coverGradient(s.id + s.title)}"></div>
+          <div class="heroMeta">
+            <div class="heroTop">
+              <div>
+                <div class="heroTitle">${escapeHtml(s.title)}</div>
+                <div class="heroMini">
+                  <span>👤 ${escapeHtml(s.author)}</span>
+                  <span>🏷️ ${(s.tags||[]).slice(0,3).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join("")}</span>
+                  <span>⏱️ ${escapeHtml(s.updatedAt||"")}</span>
+                </div>
+              </div>
+              <div class="heroActions">
+                <button class="smallbtn ${followed ? "" : "primary"}" id="btnFollow">${followed ? "✓ Đang theo dõi" : "+ Theo dõi"}</button>
+                <button class="smallbtn" id="btnShare">⤴ Chia sẻ</button>
+              </div>
+            </div>
+
+            <div class="heroDesc">${escapeHtml(s.desc||"")}</div>
+
+            <div class="heroPrimary">
+              <button class="bigbtn primary" id="btnReadContinue">📖 Đọc tiếp</button>
+              <button class="bigbtn" id="btnListenContinue">🎧 Nghe tiếp</button>
+              <div class="hint" style="margin:0">
+                Tiếp tục: <b>${escapeHtml(lastCh.name)}</b> • Chương ${lastIdx+1}/${s.chapters.length}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <div class="hd">
+              <div>
+                <h2>Danh sách chương</h2>
+                <div class="sub">Bấm chương để đọc • giữ lâu để nghe (hoặc bấm nút Nghe)</div>
+              </div>
+              <div class="tabs">
+                <div class="tab" id="btnGoTop">Về đầu</div>
+              </div>
+            </div>
+            <div class="bd">
+              <div class="chapList" id="chapList"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="hd">
+              <div>
+                <h2>Gợi ý cùng thể loại</h2>
+                <div class="sub">${tag0 ? `Cùng tag “${escapeHtml(tag0)}”` : "Ngẫu nhiên"}</div>
+              </div>
+            </div>
+            <div class="bd">
+              <div class="grid" id="relatedGrid"></div>
+              <div style="height:10px"></div>
+              <div class="box">
+                <h3>Mẹo đọc nhanh</h3>
+                <div class="hint" style="margin-top:0">
+                  Bạn có thể chỉnh <b>cỡ chữ</b>, <b>line-height</b>, <b>tốc độ TTS</b> trong trang đọc/nghe (Sprint 1).
                 </div>
               </div>
             </div>
           </div>
-          <div class="chapCount">${(s.chapterCount!=null) ? ("C. " + s.chapterCount) : (s.latestChapNo!=null ? ("C. " + s.latestChapNo) : "—")}</div>
         </div>
-      `).join("");
+      `;
 
-      $("completedHint").textContent = list.length ? "" : "Chưa có truyện hoàn thành trong dữ liệu.";
-      box.querySelectorAll("[data-story]").forEach(row=>{
-        row.addEventListener("click", ()=>{
-          const id = row.getAttribute("data-story");
-          const st = stories.find(x=>x.id===id);
-          goStory(st.id);
-        });
+      $("#goBack").addEventListener("click", ()=> history.back());
+      $("#btnReadContinue").addEventListener("click", ()=> nav(`#/read/${s.id}/${lastIdx}`));
+      $("#btnListenContinue").addEventListener("click", ()=> nav(`#/listen/${s.id}/${lastIdx}`));
+      $("#btnFollow").addEventListener("click", ()=>{
+        toggleFollow(s.id);
+        renderStory(s.id);
+        toast(isFollowed(s.id) ? "Đã theo dõi." : "Đã bỏ theo dõi.");
       });
-    }
+      $("#btnShare").addEventListener("click", async ()=>{
+        const url = location.origin + location.pathname + `#/story/${s.id}`;
+        try{
+          if(navigator.share) await navigator.share({ title: s.title, text: s.desc || s.title, url });
+          else { await navigator.clipboard.writeText(url); toast("Đã copy link."); }
+        }catch(e){
+          try{ await navigator.clipboard.writeText(url); toast("Đã copy link."); }catch(_){ toast("Không thể chia sẻ trên thiết bị này."); }
+        }
+      });
 
-// ===== Render Reading (user) =====
-    async function loadReading(){
-      if(!currentUser){
-        $("readingList").innerHTML = "";
-        $("readingEmpty").style.display = "block";
-        return;
-      }
-      const rRef = ref(db, `userData/${currentUser.uid}/reading`);
-      const snap = await get(rRef);
-      const data = snap.exists() ? snap.val() : {};
-      const arr = Object.values(data||{})
-        .filter(Boolean)
-        .sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0))
-        .slice(0, 8);
-
-      if(!arr.length){
-        $("readingList").innerHTML = "";
-        $("readingEmpty").style.display = "block";
-        return;
-      }
-      $("readingEmpty").style.display = "none";
-
-      $("readingList").innerHTML = arr.map(it=>{
-        const st = stories.find(s=>s.id===it.storyId) || { title: it.title||"Truyện", coverUrl:"" };
-        const chapNo = it.chapNo ?? it.latestChapNo ?? null;
+      const chapList = $("#chapList");
+      chapList.innerHTML = s.chapters.map((c, idx)=>{
+        const done = !!(state.reading.completed?.[s.id]?.[idx]);
         return `
-          <div class="listRow" data-story="${esc(it.storyId)}">
-            <div class="leftLine">
-              <div class="storyLine">
-                <div class="miniCover">${st.coverUrl ? `<img src="${esc(st.coverUrl)}" alt="">` : ""}</div>
-                <div style="min-width:0">
-                  <div class="lineTitle" title="${esc(st.title)}">${esc(st.title)}</div>
-                  <div class="lineMeta">
-                    <span>Tiếp tục: ${chapNo!=null ? ("Chương " + chapNo) : "—"}</span>
-                    ${it.updatedAt ? `<span>🕒 ${new Date(it.updatedAt).toLocaleString("vi-VN")}</span>` : ``}
-                  </div>
-                </div>
-              </div>
+          <div class="chapItem" data-idx="${idx}">
+            <div class="left">
+              <b>${escapeHtml(c.name)}</b>
+              <span>Chương ${idx+1} ${done ? "• ✅ đã đọc" : ""}</span>
             </div>
-            <div class="chapCount">▶</div>
+            <div class="right">
+              <button class="smallbtn" data-act="read">Đọc</button>
+              <button class="smallbtn" data-act="listen">Nghe</button>
+            </div>
           </div>
         `;
       }).join("");
 
-      $("readingList").querySelectorAll("[data-story]").forEach(row=>{
-        row.addEventListener("click", ()=>{
-          const id = row.getAttribute("data-story");
-          const st = stories.find(x=>x.id===id);
-          goStory(st.id);
+      $$(".chapItem", chapList).forEach(row=>{
+        const idx = Number(row.dataset.idx);
+        row.addEventListener("click", (e)=>{
+          const btn = e.target.closest("button");
+          if(btn){
+            const act = btn.dataset.act;
+            if(act==="listen") nav(`#/listen/${s.id}/${idx}`);
+            else nav(`#/read/${s.id}/${idx}`);
+            return;
+          }
+          nav(`#/read/${s.id}/${idx}`);
         });
+
+        // long-press to listen (mobile-friendly)
+        let pressTimer = null;
+        row.addEventListener("touchstart", ()=>{
+          pressTimer = setTimeout(()=> nav(`#/listen/${s.id}/${idx}`), 420);
+        }, {passive:true});
+        row.addEventListener("touchend", ()=>{ if(pressTimer){ clearTimeout(pressTimer); pressTimer=null; } }, {passive:true});
       });
+
+      $("#btnGoTop").addEventListener("click", ()=>{
+        chapList.scrollTop = 0;
+      });
+
+      renderStoryGrid(related.length ? related : stories.slice().sort(()=>Math.random()-0.5).slice(0,4), $("#relatedGrid"));
     }
 
-    // ===== Story Modal + "đánh dấu đang đọc" =====
-    async function markReading(storyId, chapNo=1){
-      if(!currentUser) return;
-      const st = stories.find(x=>x.id===storyId);
-      const payload = {
-        storyId,
-        chapNo,
-        updatedAt: Date.now(),
-        title: st?.title || ""
-      };
-      await set(ref(db, `userData/${currentUser.uid}/reading/${storyId}`), payload);
+    /****************
+     * Reader (Trang đọc chương)
+     ****************/
+    function clampPrefs(){
+      state.readerPrefs.fontSize = clamp(Number(state.readerPrefs.fontSize||18), 12, 34);
+      state.readerPrefs.lineHeight = clamp(Number(state.readerPrefs.lineHeight||1.8), 1.2, 2.6);
+      state.readerPrefs.maxWidth = clamp(Number(state.readerPrefs.maxWidth||820), 520, 1100);
+      state.readerPrefs.ttsRate = clamp(Number(state.readerPrefs.ttsRate||1.15), 0.6, 2.5);
+      saveState();
     }
 
+    function renderReader(storyId, chapterIndex){
+      const s = getStoryOrNull(storyId);
+      const view = $("#view");
+      if(!s){ renderNotFound(); return; }
 
-    // ===== Reader (đọc truyện theo chương từ RTDB) =====
-    // Data:
-    // chapters/{storyId}/{chapNo}: { no: number, title: string, content: string, createdAt }
-    function stripScripts(htmlText){
-      // loại bỏ script đơn giản (admin là người đăng nội dung nên đây là lớp bảo vệ nhẹ)
-      return String(htmlText||"").replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "");
-    }
+      const prog = ensureProgress(s.id);
+      const info = getChapterOrNull(s, chapterIndex);
+      const idx = info.chapterIndex;
+      const c = info.chapter;
 
-    function safeRenderChapter(htmlText){
-      // Bảo vệ nhẹ: bỏ <script> + bỏ on* handlers
-      let t = stripScripts(htmlText);
-      t = t.replace(/\son\w+="[^"]*"/gi, "");
-      t = t.replace(/\son\w+='[^']*'/gi, "");
-      return t;
-    }
+      prog.chapterIndex = idx;
+      saveState();
 
-    async function fetchChapter(storyId, chapNo){
-      const sn = await get(ref(db, `chapters/${storyId}/${chapNo}`));
-      return sn.exists() ? sn.val() : null;
-    }
+      // restore scroll for this chapter
+      prog.scrollByChapter ??= {};
+      const savedScroll = Number(prog.scrollByChapter[idx] || 0);
 
-    async function fetchLastChaptersMeta(storyId, limit=200){
-      // dùng orderByChild('no') để lấy chương mới nhất (cần có field no)
-      const q = query(ref(db, `chapters/${storyId}`), orderByChild("no"), limitToLast(limit));
-      const sn = await get(q);
-      if(!sn.exists()) return [];
-      const raw = sn.val();
-      const arr = Object.entries(raw).map(([k,v])=>({
-        key: k,
-        no: Number(v?.no ?? k),
-        title: v?.title || ""
-      })).filter(x=>Number.isFinite(x.no));
-      arr.sort((a,b)=>a.no-b.no);
-      return arr;
-    }
+      const pct = Math.round(((idx+1)/s.chapters.length)*100);
 
-    async function openReader(st, forcedNo=null){
-      if(!st) return;
+      clampPrefs();
 
-      const storyId = st.id;
-      // ưu tiên: đang đọc -> latest -> 1
-      let startNo = 1;
-      try{
-        if(currentUser){
-          const rs = await get(ref(db, `userData/${currentUser.uid}/reading/${storyId}`));
-          if(rs.exists()){
-            startNo = Number(rs.val()?.chapNo || 1) || 1;
-          }else if(st.latestChapNo!=null){
-            startNo = Number(st.latestChapNo)||1;
-          }else if(st.chapterCount!=null){
-            startNo = Number(st.chapterCount)||1;
-          }
+      view.innerHTML = `
+        <div class="pageTop">
+          <div class="crumb">
+            <span style="opacity:.8">${escapeHtml(s.title)}</span> <span style="opacity:.7">›</span>
+            <b>${escapeHtml(c.name)}</b>
+            <span>• Đọc chương</span>
+          </div>
+          <button class="back" id="goStory">← Truyện</button>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>${escapeHtml(c.name)}</h2>
+              <div class="sub">Tiến độ: ${pct}% • Chương ${idx+1}/${s.chapters.length}</div>
+            </div>
+            <div class="tabs">
+              <div class="tab" id="btnPrefs">Cỡ chữ</div>
+              <div class="tab" id="btnMarkDone">Đã đọc xong</div>
+            </div>
+          </div>
+
+          <div class="bd">
+            <div class="readerBar">
+              <div class="controls">
+                <button class="smallbtn" id="btnPrev">‹ Trước</button>
+                <button class="smallbtn primary" id="btnTTS">🔊 TTS</button>
+                <button class="smallbtn" id="btnStop">■ Dừng</button>
+                <button class="smallbtn" id="btnNext">Sau ›</button>
+              </div>
+              <div class="controls">
+                <button class="smallbtn" id="fsMinus">A−</button>
+                <button class="smallbtn" id="fsPlus">A+</button>
+                <button class="smallbtn" id="lhMinus">LH−</button>
+                <button class="smallbtn" id="lhPlus">LH+</button>
+                <button class="smallbtn" id="rateMinus">x−</button>
+                <button class="smallbtn" id="ratePlus">x+</button>
+              </div>
+            </div>
+
+            <div class="textWrap" id="textWrap">
+              <div class="text2" id="readerText"></div>
+            </div>
+
+            <div class="hint">
+              Mẹo: Lướt đến cuối chương sẽ tự lưu vị trí. Bạn có thể tăng tốc TTS (x+/x−). 
+            </div>
+          </div>
+        </div>
+      `;
+
+      $("#goStory").addEventListener("click", ()=> nav(`#/story/${s.id}`));
+
+      const wrap = $("#textWrap");
+      const textEl = $("#readerText");
+      textEl.textContent = c.text || "";
+
+      function applyPrefs(){
+        clampPrefs();
+        textEl.style.fontSize = state.readerPrefs.fontSize + "px";
+        textEl.style.lineHeight = state.readerPrefs.lineHeight;
+        wrap.style.maxWidth = state.readerPrefs.maxWidth + "px";
+      }
+      applyPrefs();
+
+      requestAnimationFrame(()=> { wrap.scrollTop = savedScroll; });
+
+      // save scroll
+      wrap.addEventListener("scroll", ()=>{
+        prog.scrollByChapter[idx] = wrap.scrollTop;
+        saveState();
+      }, {passive:true});
+
+      function goTo(newIdx){
+        stopTTS();
+        newIdx = clamp(newIdx, 0, s.chapters.length-1);
+        prog.chapterIndex = newIdx;
+        saveState();
+        nav(`#/read/${s.id}/${newIdx}`);
+      }
+
+      $("#btnPrev").addEventListener("click", ()=> goTo(idx-1));
+      $("#btnNext").addEventListener("click", ()=> goTo(idx+1));
+
+      $("#btnTTS").addEventListener("click", ()=>{
+        if(speaking){ toast("Đang đọc... bấm Dừng để ngắt."); return; }
+        clampPrefs();
+        speak(`${s.title}. ${c.name}. ${c.text}`, { rate: state.readerPrefs.ttsRate });
+        toast(`Bắt đầu TTS (x${state.readerPrefs.ttsRate.toFixed(2)})`);
+      });
+      $("#btnStop").addEventListener("click", ()=>{ stopTTS(); toast("Đã dừng."); });
+
+      $("#fsMinus").addEventListener("click", ()=>{ state.readerPrefs.fontSize -= 1; applyPrefs(); });
+      $("#fsPlus").addEventListener("click", ()=>{ state.readerPrefs.fontSize += 1; applyPrefs(); });
+      $("#lhMinus").addEventListener("click", ()=>{ state.readerPrefs.lineHeight = (Number(state.readerPrefs.lineHeight)||1.8) - 0.1; applyPrefs(); });
+      $("#lhPlus").addEventListener("click", ()=>{ state.readerPrefs.lineHeight = (Number(state.readerPrefs.lineHeight)||1.8) + 0.1; applyPrefs(); });
+      $("#rateMinus").addEventListener("click", ()=>{ state.readerPrefs.ttsRate = (Number(state.readerPrefs.ttsRate)||1.15) - 0.1; applyPrefs(); toast(`TTS x${state.readerPrefs.ttsRate.toFixed(2)}`); });
+      $("#ratePlus").addEventListener("click", ()=>{ state.readerPrefs.ttsRate = (Number(state.readerPrefs.ttsRate)||1.15) + 0.1; applyPrefs(); toast(`TTS x${state.readerPrefs.ttsRate.toFixed(2)}`); });
+
+      $("#btnPrefs").addEventListener("click", ()=>{
+        toast(`Cỡ chữ: ${state.readerPrefs.fontSize}px • LH: ${Number(state.readerPrefs.lineHeight).toFixed(2)} • TTS: x${Number(state.readerPrefs.ttsRate).toFixed(2)}`);
+      });
+
+      $("#btnMarkDone").addEventListener("click", ()=>{
+        state.reading.completed[s.id] ??= {};
+        if(!state.reading.completed[s.id][idx]){
+          state.reading.completed[s.id][idx] = true;
+          saveState();
+          toast("✅ Đã đánh dấu đã đọc xong chương.");
+          // optional: game hook (demo)
+          state.user.stats.storiesRead = (state.user.stats.storiesRead||0) + 1;
+          saveState();
         }else{
-          startNo = Number(st.latestChapNo || st.chapterCount || 1) || 1;
-        }
-      }catch(e){
-        startNo = Number(st.latestChapNo || st.chapterCount || 1) || 1;
-      }
-
-
-      if(forcedNo != null){
-        const fn = Number(forcedNo);
-        if(Number.isFinite(fn) && fn >= 1) startNo = fn;
-      }
-      // UI
-      openModal(st.title, `
-        <div class="mutedBox" style="margin-bottom:10px">
-          <b>${esc(st.title)}</b><br/>
-          Chế độ đọc chương (lấy từ Firebase RTDB). 
-          ${currentUser ? "" : "<br/><span class='adminSmall'>* Đăng nhập để tự lưu vị trí đang đọc.</span>"}
-        </div>
-
-        <div class="adminRow" style="justify-content:space-between">
-          <div class="adminRow" style="gap:8px">
-            <button class="btn" id="rPrev">◀</button>
-            <button class="btn" id="rNext">▶</button>
-          </div>
-
-          <div class="adminRow" style="gap:8px;flex:1;justify-content:flex-end">
-            <input class="input" id="rGoNo" type="number" min="1" step="1" style="max-width:120px" placeholder="Chương..." />
-            <button class="btn" id="rGoBtn">Đi</button>
-          </div>
-        </div>
-
-        <div class="adminRow" style="margin-top:10px">
-          <select class="select" id="rChapSelect" style="flex:1;min-width:0">
-            <option value="">Đang tải danh sách chương...</option>
-          </select>
-          <button class="btn primary" id="rClose">Đóng</button>
-        </div>
-
-        <div class="hint" id="rHint" style="margin-top:8px"></div>
-
-        <div class="mutedBox" style="margin-top:10px">
-          <div id="rTitle" style="font-weight:950;margin-bottom:6px">—</div>
-          <div id="rContent" style="font-size:14px;line-height:1.75"></div>
-        </div>
-      `);
-
-      const sel = $("rChapSelect");
-      const hint = $("rHint");
-      const titleEl = $("rTitle");
-      const contentEl = $("rContent");
-      const goNo = $("rGoNo");
-
-      let chapterList = [];
-      let currentNo = startNo;
-
-      async function loadList(){
-        try{
-          chapterList = await fetchLastChaptersMeta(storyId, 200);
-          if(!chapterList.length){
-            sel.innerHTML = `<option value="">Chưa có chương nào</option>`;
-            hint.textContent = "Chưa có chương trong /chapters/" + storyId + ".";
-            return;
-          }
-          sel.innerHTML = chapterList.map(c=>{
-            const label = `Chương ${c.no}` + (c.title ? `: ${esc(c.title)}` : "");
-            return `<option value="${c.no}">${label}</option>`;
-          }).join("");
-          // nếu startNo không nằm trong list cuối, vẫn set value (sẽ không có option) -> dùng go input
-          if(chapterList.some(c=>c.no===currentNo)) sel.value = String(currentNo);
-          hint.textContent = "Đang hiển thị danh sách 200 chương mới nhất. (Bạn có thể nhập số chương để đi thẳng.)";
-        }catch(err){
-          console.warn(err);
-          sel.innerHTML = `<option value="">Không tải được danh sách chương</option>`;
-          hint.textContent = "Không tải được danh sách chương. Kiểm tra Rules cho /chapters.";
-        }
-      }
-
-      async function loadChap(no){
-        no = Number(no||1)||1;
-        currentNo = no;
-        titleEl.textContent = `Chương ${no}` + (st.title ? ` — ${st.title}` : "");
-        contentEl.innerHTML = "<i>Đang tải...</i>";
-        hint.textContent = "";
-
-        try{
-          const ch = await fetchChapter(storyId, String(no));
-          if(!ch){
-            contentEl.innerHTML = "<div class='searchEmpty'>Không tìm thấy chương này. (Kiểm tra /chapters/" + esc(storyId) + "/" + no + ")</div>";
-            return;
-          }
-          const cTitle = ch?.title ? String(ch.title) : "";
-          titleEl.textContent = `Chương ${no}` + (cTitle ? `: ${cTitle}` : "");
-          const raw = ch?.content ?? ch?.text ?? "";
-          const rendered = safeRenderChapter(raw);
-          // nếu là text thuần, tự xuống dòng
-          const looksLikeHtml = /<\w+[^>]*>/.test(rendered);
-          contentEl.innerHTML = looksLikeHtml ? rendered : esc(rendered).replace(/\n/g,"<br/>");
-
-          // lưu vị trí đang đọc
-          if(currentUser){
-            await markReading(storyId, no);
-            await loadReading();
-          }
-          // sync select / input
-          if(sel && chapterList.some(c=>c.no===no)) sel.value = String(no);
-          if(goNo) goNo.value = String(no);
-        }catch(err){
-          console.warn(err);
-          contentEl.innerHTML = "<div class='searchEmpty'>Không tải được chương. Kiểm tra Realtime Database Rules cho /chapters.</div>";
-        }
-      }
-
-      $("rClose")?.addEventListener("click", closeModal);
-      $("rPrev")?.addEventListener("click", ()=> loadChap(Math.max(1, currentNo-1)));
-      $("rNext")?.addEventListener("click", ()=> loadChap(currentNo+1));
-      $("rGoBtn")?.addEventListener("click", ()=> loadChap(goNo.value));
-      goNo?.addEventListener("keydown",(e)=>{ if(e.key==="Enter"){ e.preventDefault(); loadChap(goNo.value);} });
-      sel?.addEventListener("change", ()=>{ if(sel.value) loadChap(sel.value); });
-
-      await loadList();
-      await loadChap(currentNo);
-    }
-
-    // ===== Admin UI (thêm truyện / chương vào RTDB) =====
-    const ADMIN_EMAILS = ["sumi22122005@gmail.com"].map(s=>s.toLowerCase());
-    let _adminBound = false;
-
-    function isAdmin(u){
-      const em = (u?.email||"").toLowerCase();
-      return !!em && ADMIN_EMAILS.includes(em);
-    }
-
-    function toggleAdminUI(u){
-      const ok = isAdmin(u);
-      const sec = $("secAdmin");
-      const nav = $("navAdmin");
-      if(sec) sec.style.display = ok ? "block" : "none";
-      if(nav) nav.style.display = ok ? "block" : "none";
-      if($("adminState")) $("adminState").textContent = ok ? "✓ Admin" : "";
-      return ok;
-    }
-
-    function bindAdminUIOnce(){
-      if(_adminBound) return;
-      _adminBound = true;
-
-      const msgStory = $("aStoryMsg");
-      const msgChap = $("aChapMsg");
-
-      function resetStoryForm(){
-        $("aStoryTitle").value = "";
-        $("aStoryAuthor").value = "";
-        $("aStoryCats").value = "";
-        $("aStoryCover").value = "";
-        $("aStoryDesc").value = "";
-        $("aStoryCompleted").checked = false;
-        msgStory.textContent = "";
-      }
-
-      function resetChapForm(){
-        $("aChapNo").value = "";
-        $("aChapTitle").value = "";
-        $("aChapContent").value = "";
-        msgChap.textContent = "";
-      }
-
-      $("aStoryReset")?.addEventListener("click", resetStoryForm);
-      $("aChapReset")?.addEventListener("click", resetChapForm);
-
-      $("aStorySave")?.addEventListener("click", async ()=>{
-        msgStory.textContent = "";
-        if(!currentUser || !isAdmin(currentUser)){
-          alert("Bạn không có quyền admin.");
-          return;
-        }
-        const title = $("aStoryTitle").value.trim();
-        if(!title){ msgStory.textContent = "Nhập tiêu đề truyện."; return; }
-
-        const now = Date.now();
-        const author = $("aStoryAuthor").value.trim();
-        const cats = $("aStoryCats").value.split(",").map(s=>s.trim()).filter(Boolean);
-        const coverUrl = $("aStoryCover").value.trim();
-        const desc = $("aStoryDesc").value.trim();
-        const completed = $("aStoryCompleted").checked;
-
-        try{
-          const newRef = push(ref(db, "stories"));
-          const storyId = newRef.key;
-          const payload = {
-            title,
-            author,
-            categories: cats,
-            coverUrl,
-            desc,
-            completed,
-            status: completed ? "completed" : "ongoing",
-            createdAt: now,
-            updatedAt: now,
-            latestChapNo: 0,
-            chapterCount: 0,
-            views: 0,
-            hotScore: 0
-          };
-          await set(newRef, payload);
-
-          msgStory.textContent = "✓ Đã lưu truyện. ID: " + storyId;
-          resetStoryForm();
-
-          // reload lists + refresh select
-          await loadStories();
-          await refreshAdminStorySelect();
-          window.scrollTo({top:0,behavior:"smooth"});
-        }catch(err){
-          console.warn(err);
-          msgStory.textContent = "Không lưu được. Kiểm tra Rules cho /stories.";
-          alert("Không lưu được truyện. Kiểm tra Realtime Database Rules cho /stories.");
-        }
-      });
-
-      $("aChapSave")?.addEventListener("click", async ()=>{
-        msgChap.textContent = "";
-        if(!currentUser || !isAdmin(currentUser)){
-          alert("Bạn không có quyền admin.");
-          return;
-        }
-        const storyId = $("aChapStory").value;
-        if(!storyId){ msgChap.textContent = "Chọn truyện."; return; }
-
-        const no = Number($("aChapNo").value || 0);
-        if(!Number.isFinite(no) || no < 1){ msgChap.textContent = "Nhập số chương hợp lệ (>=1)."; return; }
-
-        const title = $("aChapTitle").value.trim();
-        let content = $("aChapContent").value || "";
-        content = stripScripts(content);
-
-        if(!content.trim()){
-          msgChap.textContent = "Nội dung chương đang trống.";
-          return;
-        }
-
-        const now = Date.now();
-
-        try{
-          // lưu theo key là số chương để dễ truy vấn trực tiếp
-          await set(ref(db, `chapters/${storyId}/${no}`), {
-            no,
-            title,
-            content,
-            createdAt: now
-          });
-
-          // cập nhật story meta
-          const sSnap = await get(ref(db, `stories/${storyId}`));
-          const sVal = sSnap.exists() ? sSnap.val() : {};
-          const prevLatest = Number(sVal?.latestChapNo || 0) || 0;
-          const prevCount  = Number(sVal?.chapterCount || 0) || 0;
-
-          const nextLatest = Math.max(prevLatest, no);
-          const nextCount  = Math.max(prevCount, no);
-
-          await update(ref(db, `stories/${storyId}`), {
-            latestChapNo: nextLatest,
-            chapterCount: nextCount,
-            updatedAt: now
-          });
-
-          msgChap.textContent = `✓ Đã đăng Chương ${no}.`;
-          $("aChapNo").value = String(no+1);
-          $("aChapTitle").value = "";
-          $("aChapContent").value = "";
-
-          await loadStories();
-        }catch(err){
-          console.warn(err);
-          msgChap.textContent = "Không đăng được chương. Kiểm tra Rules cho /chapters và /stories.";
-          alert("Không đăng được chương. Kiểm tra Realtime Database Rules.");
+          toast("Chương này đã được đánh dấu trước đó.");
         }
       });
     }
 
-    async function refreshAdminStorySelect(){
-      const sel = $("aChapStory");
-      if(!sel) return;
-      const cur = sel.value;
+    /****************
+     * Listen (Nghe truyện)
+     ****************/
+    function renderListen(storyId, chapterIndex){
+      const s = getStoryOrNull(storyId);
+      const view = $("#view");
+      if(!s){ renderNotFound(); return; }
 
-      // nếu đang là demo thì vẫn show, nhưng admin nên có stories thật
-      const list = (stories||[]).slice().sort((a,b)=>String(a.title||"").localeCompare(String(b.title||""), "vi"));
-      sel.innerHTML = `<option value="">— Chọn truyện —</option>` + list.map(s=>`<option value="${esc(s.id)}">${esc(s.title)}</option>`).join("");
-      if(cur && list.some(s=>s.id===cur)) sel.value = cur;
-    }
+      const prog = ensureProgress(s.id);
+      const info = getChapterOrNull(s, chapterIndex);
+      const idx = info.chapterIndex;
+      const c = info.chapter;
 
+      prog.chapterIndex = idx;
+      saveState();
 
-    function openStoryModal(st, opts={}){
-      if(!st) return;
-      const cats = (st.categories||[]).slice(0,4).map(c=>`<span class="pill">${esc(c)}</span>`).join(" ");
-      openModal(st.title, `
-        <div class="modalGrid">
-          <div class="modalCover">${st.coverUrl ? `<img src="${esc(st.coverUrl)}" alt="">` : ""}</div>
-          <div>
-            <div class="lineMeta" style="margin:0 0 6px 0">
-              ${cats || `<span class="pill">Chưa có thể loại</span>`}
-              ${isCompletedStory(st) ? `<span class="pill">Full</span>` : ``}
-              ${(st.latestChapNo!=null) ? `<span class="pill">C. ${st.latestChapNo}</span>` : ``}
-              ${(st.views!=null) ? `<span class="pill">👁 ${st.views}</span>` : ``}
+      clampPrefs();
+
+      const audioUrl = c.audioUrl || ""; // nếu bạn lưu Storage: chapters[].audioUrl
+      view.innerHTML = `
+        <div class="pageTop">
+          <div class="crumb">
+            <span style="opacity:.8">${escapeHtml(s.title)}</span> <span style="opacity:.7">›</span>
+            <b>${escapeHtml(c.name)}</b>
+            <span>• Nghe chương</span>
+          </div>
+          <button class="back" id="goStory">← Truyện</button>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>🎧 ${escapeHtml(c.name)}</h2>
+              <div class="sub">Chương ${idx+1}/${s.chapters.length} • Ưu tiên audioUrl, không có thì dùng TTS</div>
             </div>
-            <div class="modalDesc">
-              ${st.desc ? esc(st.desc) : "Chưa có mô tả. (Bước sau mình sẽ làm trang chi tiết truyện + chương giống web mẫu.)"}
+            <div class="tabs">
+              <div class="tab" id="btnReadPage">Mở trang đọc</div>
+            </div>
+          </div>
+
+          <div class="bd">
+            <div class="box">
+              <h3>Audio theo chương</h3>
+              ${audioUrl ? `
+                <audio id="audioPlayer" controls preload="metadata" style="width:100%">
+                  <source src="${escapeHtml(audioUrl)}" />
+                </audio>
+              ` : `
+                <div class="hint" style="margin-top:0">Chương này chưa có <b>audioUrl</b>. Bạn có thể dùng TTS bên dưới.</div>
+              `}
             </div>
 
-            <div class="btnRow">
-              <button class="btn primary" id="btnReadNow">Đọc ngay</button>
-              <button class="btn" id="btnMarkReading">${opts.continue ? "Tiếp tục đọc" : "Đánh dấu đang đọc"}</button>
-              <button class="btn" id="btnCloseModal">Đóng</button>
+            <div style="height:12px"></div>
+
+            <div class="box">
+              <h3>TTS đọc chữ</h3>
+              <div class="formRow" style="gap:10px; flex-wrap:wrap">
+                <button class="smallbtn primary" id="btnTTS">🔊 Bắt đầu TTS</button>
+                <button class="smallbtn" id="btnStop">■ Dừng</button>
+                <button class="smallbtn" id="rateMinus">x−</button>
+                <button class="smallbtn" id="ratePlus">x+</button>
+                <span class="hint" id="rateInfo" style="margin:0; padding:0">Tốc độ: x${Number(state.readerPrefs.ttsRate).toFixed(2)}</span>
+              </div>
+              <div class="hint">TTS sẽ đọc nội dung chương hiện tại. Trên Android, đôi khi cần bật tiếng Việt trong “Text-to-speech output”.</div>
             </div>
 
-            <div class="mutedBox">
-              • Hiện tại là bản <b>trang chủ giống ảnh</b> + lấy dữ liệu từ Firebase.<br/>
-              • Khi bấm <b>Đọc ngay</b>, web sẽ tải chương từ <b>Realtime Database</b> (node <code>/chapters/{storyId}/{chapNo}</code>).
+            <div style="height:12px"></div>
+
+            <div class="readerBar">
+              <div class="controls">
+                <button class="smallbtn" id="btnPrev">‹ Trước</button>
+                <button class="smallbtn" id="btnNext">Sau ›</button>
+              </div>
             </div>
           </div>
         </div>
-      `);
+      `;
 
-      $("btnCloseModal").addEventListener("click", closeModal);
-      $("btnMarkReading").addEventListener("click", async ()=>{
-        if(!currentUser){
-          alert("Bạn cần đăng nhập để lưu 'đang đọc' lên Firebase.");
-          return;
-        }
-        await markReading(st.id, 1);
-        closeModal();
-        await loadReading();
-      });
-      $("btnReadNow").addEventListener("click", async ()=>{
-        // Mở trang đọc chương (lấy từ RTDB /chapters/{storyId}/{chapNo})
-        closeModal();
-        await openReader(st);
-      });
-    }
+      $("#goStory").addEventListener("click", ()=> nav(`#/story/${s.id}`));
+      $("#btnReadPage").addEventListener("click", ()=> nav(`#/read/${s.id}/${idx}`));
 
-    // ===== Load stories from Firebase =====
-    async function loadStories(){
-      // ưu tiên /stories; nếu bạn đang dùng node khác, đổi ở đây.
-      const sRef = ref(db, "stories");
-      const snap = await get(sRef);
-      const raw = snap.exists() ? snap.val() : null;
-
-      if(!raw){
-        // tạo dữ liệu demo MIN để bạn thấy UI (bạn có thể xóa sau)
-        stories = [
-          { id:"demo1", title:"Kinh Thiên Kiếm Đế", coverUrl:"", categories:["Tiên hiệp"], latestChapNo:250, chapterCount:250, updatedAt:Date.now()-86400000*2, views:1200, hotScore:50, desc:"Demo (không có dữ liệu stories trên Firebase)." },
-          { id:"demo2", title:"Thôn Phệ Cổ Đế", coverUrl:"", categories:["Huyền huyễn"], latestChapNo:3740, chapterCount:3740, updatedAt:Date.now()-86400000*1, views:900, hotScore:45, desc:"Demo (hãy thêm node /stories trong RTDB)." },
-          { id:"demo3", title:"Thái Hoang Thôn Thiên Quyết", coverUrl:"", categories:["Tiên hiệp"], latestChapNo:255, updatedAt:Date.now()-86400000*3, views:800, hotScore:40, desc:"Demo" },
-          { id:"demo4", title:"Nhất Kiếm Độc Tôn", coverUrl:"", categories:["Kiếm hiệp"], latestChapNo:120, updatedAt:Date.now()-86400000*4, views:700, hotScore:35, desc:"Demo" },
-          { id:"demo5", title:"Nghịch Thiên Chí Tôn", coverUrl:"", categories:["Huyền huyễn"], latestChapNo:22, updatedAt:Date.now()-86400000*5, views:500, hotScore:25, desc:"Demo" },
-          { id:"demo6", title:"Vô Địch Thiên Hạ", coverUrl:"", categories:["Huyền huyễn"], latestChapNo:95, updatedAt:Date.now()-86400000*6, views:400, hotScore:20, desc:"Demo" },
-        ];
-      }else{
-        stories = Object.entries(raw).map(([id,val])=>normalizeStory(id,val));
+      function goTo(newIdx){
+        stopTTS();
+        newIdx = clamp(newIdx, 0, s.chapters.length-1);
+        prog.chapterIndex = newIdx;
+        saveState();
+        nav(`#/listen/${s.id}/${newIdx}`);
       }
+      $("#btnPrev").addEventListener("click", ()=> goTo(idx-1));
+      $("#btnNext").addEventListener("click", ()=> goTo(idx+1));
 
-      categories = computeCategories(stories);
-      fillCategorySelect($("hotCategory"), categories);
-      fillCategorySelect($("updateCategory"), categories);
-      fillCategorySelect($("completedCategory"), categories);
+      const rateInfo = $("#rateInfo");
+      const updateRate = ()=>{
+        clampPrefs();
+        rateInfo.textContent = `Tốc độ: x${Number(state.readerPrefs.ttsRate).toFixed(2)}`;
+      };
+      updateRate();
 
-      renderHot();
-      renderUpdated();
-      renderCompleted();
-      await loadReading();
+      $("#rateMinus").addEventListener("click", ()=>{ state.readerPrefs.ttsRate -= 0.1; updateRate(); toast(rateInfo.textContent); });
+      $("#ratePlus").addEventListener("click", ()=>{ state.readerPrefs.ttsRate += 0.1; updateRate(); toast(rateInfo.textContent); });
+
+      $("#btnTTS").addEventListener("click", ()=>{
+        if(speaking){ toast("Đang đọc... bấm Dừng để ngắt."); return; }
+        speak(`${s.title}. ${c.name}. ${c.text}`, { rate: state.readerPrefs.ttsRate });
+        toast(`Bắt đầu TTS (x${state.readerPrefs.ttsRate.toFixed(2)})`);
+      });
+      $("#btnStop").addEventListener("click", ()=>{ stopTTS(); toast("Đã dừng."); });
     }
 
-    $("hotCategory").addEventListener("change", renderHot);
-    $("updateCategory").addEventListener("change", renderUpdated);
-    $("completedCategory").addEventListener("change", renderCompleted);
 
-    // Start
-    loadStories().then(()=>applyRoute()).catch(()=>applyRoute());
+    function renderProfile(){
+      const u = state.user;
+      const remain = nameCooldownRemaining();
+      $("#view").innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>Hồ sơ cá nhân</b><span>• Không gian riêng</span></div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
 
-    // ===== Tip: sample admin push (không chạy tự động) =====
-    // Bạn có thể mở DevTools và gọi window.__seedStories() để tạo 1 truyện mẫu lên RTDB.
-    window.__seedStories = async ()=>{
-      const id = push(ref(db, "stories")).key;
-      await set(ref(db, "stories/" + id), {
-        title: "Truyện mẫu seed",
-        coverUrl: "",
-        categories: "Tiên hiệp, Huyền huyễn",
-        latestChapNo: 1,
-        chapterCount: 1,
-        updatedAt: Date.now(),
-        views: 0,
-        hotScore: 10,
-        desc: "Truyện mẫu để test giao diện trang chủ."
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>Thông tin tài khoản</h2>
+              <div class="sub">Tên • số ngày tham gia • số truyện đã đọc • số bình luận • tu vi • lực chiến</div>
+            </div>
+          </div>
+          <div class="bd" style="padding-top:14px">
+            <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+              <div class="ava">${initials(u.name)}</div>
+              <div>
+                <div style="font-weight:900; font-size:16px">${escapeHtml(u.name)}</div>
+                <div style="color:var(--muted); font-size:12px">${u.loggedIn ? escapeHtml(u.email) : "Chưa đăng nhập"}</div>
+              </div>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <div class="box">
+              <h3>Thống kê</h3>
+              <div class="hint" style="margin-top:0">
+                <b>Số ngày tham gia:</b> ${daysBetween(u.joinedAt)} ngày<br>
+                <b>Số truyện đã đọc:</b> ${u.stats?.storiesRead||0}<br>
+                <b>Số bình luận:</b> ${u.stats?.comments||0}
+              </div>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <div class="box">
+              <h3>Tu vi & Lực chiến</h3>
+              <div class="hint" style="margin-top:0">
+                <b>Tu vi hiện tại:</b> ${escapeHtml(u.cultivation?.tuvi||"Luyện Khí 1")}<br>
+                <b>Lực chiến:</b> ${formatNum(u.cultivation?.lucchien||1200)}
+              </div>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <div class="box">
+              <h3>Đổi tên</h3>
+              <div class="formRow">
+                <input class="input" id="nameInput" value="${escapeHtml(u.name)}" placeholder="Đổi tên (mỗi 7 ngày)" />
+                <button class="smallbtn primary" id="saveNameBtn">Lưu</button>
+              </div>
+              <div class="hint" id="nameHint">${remain>0 ? `Bạn còn <b>${remain}</b> ngày nữa mới đổi tên được.` : "Bạn có thể đổi tên mỗi 7 ngày."}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      $("#goBack").addEventListener("click", ()=> history.back());
+      $("#saveNameBtn").addEventListener("click", ()=>{
+        const ok = saveName($("#nameInput").value);
+        if(ok) renderProfile();
       });
-      alert("Đã seed 1 truyện mẫu vào /stories");
-      loadStories();
-    };
+    }
+
+    function renderVip(){
+      $("#view").innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>VIP / Nạp</b><span>• Không gian riêng</span></div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>VIP / Nạp</h2>
+              <div class="sub">Nạp • quyền lợi • huy hiệu</div>
+            </div>
+          </div>
+          <div class="bd" style="padding-top:14px">
+            <div class="box">
+              <h3>Gợi ý triển khai</h3>
+              <div class="hint" style="margin-top:0">
+                • Tạo gói VIP: Tháng / Quý / Năm.<br>
+                • Quyền lợi: tắt quảng cáo, tốc độ load nhanh, huy hiệu, quà tu vi.<br>
+                • Khi làm “online thật”: thanh toán nên xác thực bằng webhook server (chống giả mạo).<br>
+              </div>
+              <div style="height:10px"></div>
+              <button class="smallbtn primary" id="goTutien">Xem Tu tiên</button>
+            </div>
+          </div>
+        </div>
+      `;
+      $("#goBack").addEventListener("click", ()=> history.back());
+      $("#goTutien").addEventListener("click", ()=> nav("#/tutien"));
+    }
+
+    function renderTutien(){
+      const c = state.user.cultivation;
+      $("#view").innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>Tu tiên</b><span>• Không gian riêng</span></div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>Tu luyện</h2>
+              <div class="sub">Tu vi • lực chiến • nhiệm vụ (khung)</div>
+            </div>
+          </div>
+          <div class="bd" style="padding-top:14px">
+            <div class="box">
+              <h3>Trạng thái hiện tại</h3>
+              <div class="hint" style="margin-top:0">
+                <b>Tu vi:</b> ${escapeHtml(c.tuvi)}<br>
+                <b>Lực chiến:</b> ${formatNum(c.lucchien)}
+              </div>
+              <div style="height:10px"></div>
+              <div class="formRow">
+                <button class="smallbtn" id="btnPlus">+ Tu vi (demo)</button>
+                <button class="smallbtn" id="btnBackStory">Quay lại truyện đang đọc</button>
+              </div>
+              <div class="hint">Gợi ý: đọc chương/nghe chương → +EXP tu luyện, nhiệm vụ ngày/tuần, boss/pvp…</div>
+            </div>
+          </div>
+        </div>
+      `;
+      $("#goBack").addEventListener("click", ()=> history.back());
+      $("#btnPlus").addEventListener("click", ()=>{
+        markRead();
+        renderTutien();
+      });
+      $("#btnBackStory").addEventListener("click", ()=>{
+        const id = state.reading.lastStoryId || stories[0].id;
+        nav(`#/story/${id}`);
+      });
+    }
+
+    function renderSettings(){
+      $("#view").innerHTML = `
+        <div class="pageTop">
+          <div class="crumb"><b>Cài đặt</b><span>• Không gian riêng</span></div>
+          <button class="back" id="goBack">← Quay lại</button>
+        </div>
+
+        <div class="card">
+          <div class="hd">
+            <div>
+              <h2>Cài đặt</h2>
+              <div class="sub">Giao diện • giọng đọc • lưu dữ liệu</div>
+            </div>
+          </div>
+          <div class="bd" style="padding-top:14px">
+            <div class="box">
+              <h3>Giao diện</h3>
+              <div class="formRow">
+                <button class="smallbtn" id="toggleTheme">Đổi Dark/Light</button>
+              </div>
+              <div class="hint">Bạn cũng có thể đổi bằng nút trên header.</div>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <div class="box">
+              <h3>Giọng đọc (TTS)</h3>
+              <div class="hint" style="margin-top:0">
+                • Dùng Web Speech API. Một số máy sẽ có nhiều giọng hơn.<br>
+                • Nếu muốn “audio thật”: bạn có thể lưu mp3 theo chương và phát bằng audio tag.
+              </div>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <div class="box">
+              <h3>Lưu dữ liệu</h3>
+              <div class="hint" style="margin-top:0">
+                • Hiện tại: LocalStorage (offline).<br>
+                • Khi online thật: gắn Firebase Auth + Database/Firestore để sync lịch sử đọc, theo dõi, bình luận.
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      $("#goBack").addEventListener("click", ()=> history.back());
+      $("#toggleTheme").addEventListener("click", ()=>{
+        state.theme = state.theme === "light" ? "dark" : "light";
+        applyTheme();
+        toast(state.theme === "light" ? "Chế độ sáng" : "Chế độ tối");
+      });
+    }
+
+    function renderNotFound(){
+      $("#view").innerHTML = `
+        <div class="card">
+          <div class="bd" style="padding:16px;color:var(--muted)">
+            Không tìm thấy trang. Quay về <a href="#/home" style="color:inherit">Trang chủ</a>.
+          </div>
+        </div>
+      `;
+    }
+
+    function render(){
+      stopTTS();
+      const { page, p1 } = parseRoute();
+
+      // search active on listing pages
+      const allowSearch = ["home","updated","completed","top"].includes(page);
+      $("#searchInput").disabled = !allowSearch;
+      $("#searchInput").style.opacity = allowSearch ? "1" : ".55";
+      $("#searchInput").style.pointerEvents = allowSearch ? "auto" : "none";
+      if(!allowSearch) $("#searchInput").value = "";
+
+      if(page === "home") renderHome();
+      else if(page === "reading") renderReading();
+      else if(page === "discover") renderDiscover();
+      else if(page === "updated") renderUpdated();
+      else if(page === "completed") renderCompleted();
+      else if(page === "top") renderTop(p1 || "day");
+      else if(page === "story") renderStory(p1);
+      else if(page === "read") renderReader(p1, p2);
+      else if(page === "listen") renderListen(p1, p2);
+      else if(page === "profile") renderProfile();
+      else if(page === "vip") renderVip();
+      else if(page === "tutien") renderTutien();
+      else if(page === "settings") renderSettings();
+      else renderNotFound();
+    }
+
+    /****************
+     * Header events
+     ****************/
+    $("#menuBtn").addEventListener("click", openDrawer);
+    $("#closeDrawer").addEventListener("click", closeDrawer);
+    $("#overlay").addEventListener("click", closeDrawer);
+
+    
+    function positionPopover(){
+      const pop = $("#themePopover");
+      const btn = $("#themeBtn");
+      if(!pop || !btn) return;
+      const r = btn.getBoundingClientRect();
+      const w = pop.offsetWidth || 260;
+      const top = Math.min(window.innerHeight - 12 - pop.offsetHeight, Math.max(56, r.bottom + 10));
+      let left = r.right - w;
+      left = Math.max(12, Math.min(left, window.innerWidth - 12 - w));
+      pop.style.top = top + "px";
+      pop.style.left = left + "px";
+      pop.style.right = "auto";
+    }
+    function openThemePopover(){
+      const pop = $("#themePopover");
+      pop.classList.add("show");
+      pop.setAttribute("aria-hidden","false");
+      positionPopover();
+    }
+    function closeThemePopover(){
+      const pop = $("#themePopover");
+      pop.classList.remove("show");
+      pop.setAttribute("aria-hidden","true");
+    }
+    function toggleThemePopover(){
+      const pop = $("#themePopover");
+      pop.classList.contains("show") ? closeThemePopover() : openThemePopover();
+    }
+    function setTheme(theme){
+      state.theme = theme;
+      applyTheme();
+      const map = { dark:"Giao diện tối", light:"Giao diện sáng", sepia:"Giao diện Sepia", amoled:"Giao diện AMOLED" };
+      toast(map[theme] || "Đã đổi giao diện");
+      closeThemePopover();
+    }
+
+    $("#themeBtn").addEventListener("click", (e)=>{
+      e.stopPropagation();
+      toggleThemePopover();
+    });
+    window.addEventListener("resize", ()=>{ if($("#themePopover").classList.contains("show")) positionPopover(); });
+    document.addEventListener("click", (e)=>{
+      const pop = $("#themePopover");
+      if(!pop.classList.contains("show")) return;
+      if(e.target.closest("#themePopover") || e.target.closest("#themeBtn")) return;
+      closeThemePopover();
+    });
+    $$("#themePopover .popItem").forEach(b=>{
+      b.addEventListener("click", ()=> setTheme(b.dataset.theme));
+    });
+
+$("#notiBtn").addEventListener("click", ()=> toast("Thông báo (demo): Chưa có thông báo mới."));
+
+    // Desktop nav bar (under header)
+    $("#navGenres")?.addEventListener("click", ()=>{
+      openDrawer();
+      setTimeout(()=>{ $("#genreFilter")?.scrollIntoView?.({behavior:"smooth", block:"center"}); }, 80);
+    });
+    $$(".hnav [data-to]").forEach(a=>{
+      a.addEventListener("click", (e)=>{ e.preventDefault(); nav(a.dataset.to); });
+    });
+
+    $("#topupBtn").addEventListener("click", ()=> nav("#/vip"));
+    $("#goHome").addEventListener("click", ()=> nav("#/home"));
+
+    $("#searchInput").addEventListener("input", ()=>{
+      if(["home","updated","completed","top"].includes(parseRoute().page)) render();
+    });
+
+    // drawer nav
+    $$("#drawer .navitem[data-to]").forEach(item=>{
+      item.addEventListener("click", ()=>{
+        closeDrawer();
+        nav(item.dataset.to);
+      });
+    });
+
+    $("#loginBtn").addEventListener("click", ()=>{
+      closeDrawer();
+      if(state.user.loggedIn) nav("#/profile");
+      else demoLogin();
+    });
+
+    $("#logoutBtn").addEventListener("click", ()=>{
+      closeDrawer();
+      logout();
+    });
+
+    /****************
+     * Init
+     ****************/
+    function init(){
+      applyTheme();
+      syncUserUI();
+      // Online được khởi động ở phần Online (Firebase realtime)
+
+      if(!location.hash) location.hash = "#/home";
+      window.addEventListener("hashchange", render);
+      render();
+    }
+    init();
   </script>
-
 </body>
 </html>
-
