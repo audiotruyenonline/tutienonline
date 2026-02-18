@@ -25,7 +25,6 @@
       --heaShadow:0 2px 18px rgba(0,0,0,.28);
       --heaBtnBg:rgba(0,0,0,.20);
       --heaBtnBorder:rgba(255,255,255,.18);
-          --topH:0px;
     }
     *{box-sizing:border-box}
     html,body{height:100%;overflow-x:hidden}
@@ -34,17 +33,14 @@
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
       background:var(--bg);
-}
+    }
     a{color:inherit;text-decoration:none}
     /* ======= HEADER (icon/pill kiểu như ảnh bạn gửi) ======= */
 .top{
-  position:relative;
-  z-index:50;
-  width:100%;
+  position:sticky; top:0; z-index:50;
   background: linear-gradient(180deg, var(--heaA), var(--heaB));
   box-shadow: var(--heaShadow);
   border-bottom:1px solid var(--heaBorder);
-  transform: translateZ(0);
 }
 .topBar{
   max-width:var(--max);
@@ -869,7 +865,116 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       .pageTitle{font-size:17px}
     }
 
-</style>
+
+    /* ======= STORY DETAIL PAGE (Không gian truyện) ======= */
+    .storyWrap{max-width:var(--max);margin:0 auto;padding:12px}
+    .crumbBar{
+      display:flex;align-items:center;gap:10px;
+      color:var(--muted);font-size:12px;
+      padding:10px 12px;
+      border-bottom:1px solid var(--line);
+      background:#fff;
+    }
+    .crumbBar .homeIco{font-weight:950;color:#1f5fa7}
+    .storyCard{
+      background:#fff;border:1px solid var(--line);
+      border-radius:12px;box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .storyHead{
+      padding:14px 14px 0 14px;
+      background:linear-gradient(180deg,#f9fafb,#fff);
+      border-bottom:1px solid var(--line);
+    }
+    .storyTitle{font-size:22px;font-weight:950;margin:0 0 10px 0}
+    .storyGrid{
+      display:grid;
+      grid-template-columns: 220px 1fr;
+      gap:14px;
+      padding:14px;
+      align-items:start;
+    }
+    .storyCover{
+      width:100%;
+      border-radius:10px;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,.10);
+      background:linear-gradient(135deg,#d1d5db,#9ca3af);
+      aspect-ratio: 3 / 4;
+    }
+    .storyCover img{width:100%;height:100%;object-fit:cover;display:block}
+    .storyMeta{
+      display:grid;
+      gap:8px;
+      font-size:13px;
+    }
+    .metaRow{display:flex;gap:10px;align-items:flex-start}
+    .metaRow .ico{width:18px;flex:none;opacity:.85}
+    .metaRow b{font-weight:900}
+    .metaRow span{color:#374151}
+    .statusTag{
+      display:inline-flex;align-items:center;
+      padding:3px 10px;border-radius:999px;
+      font-weight:900;font-size:12px;
+      border:1px solid rgba(0,0,0,.08);
+    }
+    .statusFull{background:#e8f7ea;color:#0f7a2a;border-color:#b8e3c0}
+    .statusOngoing{background:#eef6ff;color:#1f5fa7;border-color:#cfe3ff}
+    .rateRow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .stars{letter-spacing:1px;color:#f59e0b;font-size:16px;line-height:1}
+    .storyBtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .storyBtns .btn{border-radius:999px;padding:10px 14px}
+    .btnBlue{background:#2a78c9;color:#fff;border:1px solid rgba(0,0,0,.06)}
+    .btnOrange{background:#f4b24a;color:#1f2937;border:1px solid rgba(0,0,0,.06)}
+    .btnRed{background:#ef4444;color:#fff;border:1px solid rgba(0,0,0,.06)}
+    .storyBody{padding:14px}
+    .storySectionTitle{
+      font-weight:950;
+      margin:0 0 10px 0;
+      border-bottom:2px solid #111827;
+      display:inline-block;
+      padding-bottom:6px;
+    }
+    .descBox{
+      color:#111827;
+      line-height:1.75;
+      font-size:14px;
+    }
+    .chapTopRow{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:12px 0 6px 0;
+      flex-wrap:wrap;
+    }
+    .chapTools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .chapGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px 18px;
+      border-top:1px solid var(--line);
+      padding-top:12px;
+    }
+    .chapItem{
+      display:flex;gap:8px;align-items:baseline;
+      font-size:13px;
+      color:#111827;
+      cursor:pointer;
+      padding:6px 0;
+      border-bottom:1px dashed rgba(0,0,0,.08);
+    }
+    .chapItem:hover{color:#1f5fa7}
+    .chapNo{font-weight:950;min-width:70px;color:#374151}
+    .chapName{
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .loadMoreRow{display:flex;justify-content:center;padding:12px 0}
+    @media (max-width: 720px){
+      .storyGrid{grid-template-columns: 1fr; }
+      .storyCover{max-width:260px;margin:0 auto}
+      .chapGrid{grid-template-columns:1fr;}
+      .storyTitle{font-size:20px}
+    }
+
+  </style>
 </head>
 <body>
 
@@ -1159,6 +1264,59 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
   </main>
 </div>
 
+<div id="viewStory" style="display:none">
+  <main class="wrap" style="padding:0">
+    <div class="crumbBar">
+      <button class="pageBackBtn" id="storyBackBtn" aria-label="Quay lại" title="Quay lại">←</button>
+      <div class="crumb" id="storyCrumb"><span class="homeIco">🏠</span> Trang chủ / Truyện / ...</div>
+    </div>
+
+    <div class="storyWrap">
+      <div class="storyCard">
+        <div class="storyHead">
+          <h1 class="storyTitle" id="storyTitle">—</h1>
+        </div>
+
+        <div class="storyGrid">
+          <div class="storyCover" id="storyCover"></div>
+
+          <div>
+            <div class="storyMeta" id="storyMeta">
+              <!-- filled by JS -->
+            </div>
+
+            <div class="storyBtns">
+              <button class="btn btnBlue" id="btnReadFromStart">⏮ Đọc Từ Đầu</button>
+              <button class="btn btnBlue" id="btnReadLatest">⏭ Đọc Mới Nhất</button>
+              <button class="btn btnOrange" id="btnContinueReading" style="display:none">▶ Tiếp tục đọc</button>
+              <button class="btn" id="btnShareStory">🔗 Chia sẻ</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="storyBody">
+          <h3 class="storySectionTitle">NỘI DUNG TRUYỆN</h3>
+          <div class="descBox" id="storyDesc">—</div>
+
+          <div class="chapTopRow">
+            <h3 class="storySectionTitle" style="margin:0">DANH SÁCH CHƯƠNG</h3>
+            <div class="chapTools">
+              <input class="input" id="chapGoInput" type="number" min="1" step="1" style="max-width:140px" placeholder="Chương..." />
+              <button class="btn" id="chapGoBtn">Đi</button>
+              <span class="hint" id="chapHint" style="margin:0"></span>
+            </div>
+          </div>
+
+          <div class="chapGrid" id="chapList"></div>
+          <div class="loadMoreRow">
+            <button class="btn" id="chapLoadMore">Xem thêm ▼</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
   <!-- DRAWER -->
 
   <div class="drawerBg" id="drawerBg" aria-hidden="true">
@@ -1232,26 +1390,183 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     const fmtNum = (n)=> (n==null? "—" : ("C. " + n));
     const num = (v)=>{ const n = Number(v); return Number.isFinite(n) ? n : 0; };
     const toLower = (s)=>String(s||"").toLowerCase();
-// ===== Simple Router (Hash) cho "không gian riêng" =====
+
+    // ===== Simple Router (Hash) cho "không gian riêng" =====
     const viewHome = document.getElementById("viewHome");
     const viewList = document.getElementById("viewList");
+    const viewStory = document.getElementById("viewStory");
 
-    function getRoute(){
-      const h = (location.hash || "#/").replace(/^#\/?/, "");
-      return h || "home"; // home | hot | update | completed
+    function parseHash(){
+      const raw = (location.hash || "#/").replace(/^#\/?/, "");
+      const parts = raw.split("/").filter(Boolean);
+      const name = parts[0] || "home";
+      return { name, parts };
     }
     function go(route){
-      if(route === "home") location.hash = "#/";
+      // route: "home" | "hot" | "update" | "completed" | "story/<id>"
+      if(!route || route==="home") location.hash = "#/";
       else location.hash = "#/" + route;
     }
-    function showView(route){
-      const isHome = (route === "home");
+    function showView(mode){
+      // mode: "home" | "list" | "story"
       const menu = document.getElementById("listFullMenu");
       if(menu) menu.hidden = true;
-      if(viewHome) viewHome.style.display = isHome ? "block" : "none";
-      if(viewList) viewList.style.display = isHome ? "none" : "block";
+
+      if(viewHome) viewHome.style.display  = (mode==="home")  ? "block" : "none";
+      if(viewList) viewList.style.display  = (mode==="list")  ? "block" : "none";
+      if(viewStory) viewStory.style.display = (mode==="story") ? "block" : "none";
+
       window.scrollTo({ top: 0, behavior: "instant" });
     }
+
+    function goStory(storyId){
+      if(!storyId) return;
+      closeDrawer?.();
+      closeSearch?.();
+      closeModal?.();
+      go("story/" + storyId);
+    }
+
+    async function renderStoryPage(storyId){
+      // đảm bảo đã có stories
+      let st = stories.find(x=>x.id===storyId);
+      if(!st){
+        // thử load lại nếu chưa có
+        try{ await loadStories(); }catch(e){}
+        st = stories.find(x=>x.id===storyId);
+      }
+      if(!st){
+        $("storyTitle").textContent = "Không tìm thấy truyện";
+        $("storyDesc").textContent = "Truyện này không tồn tại hoặc chưa được load từ Firebase.";
+        $("chapList").innerHTML = "";
+        $("chapHint").textContent = "";
+        $("chapLoadMore").style.display="none";
+        return;
+      }
+
+      document.title = st.title + " - Truyện Online";
+      $("storyTitle").textContent = st.title;
+      $("storyCrumb").innerHTML = `<span class="homeIco">🏠</span> Trang chủ / Truyện / <b>${esc(st.title)}</b>`;
+
+      // cover
+      $("storyCover").innerHTML = st.coverUrl ? `<img src="${esc(st.coverUrl)}" alt="">` : "";
+
+      // meta (giống web mẫu)
+      const catText = (st.categories||[]).join(", ") || "Chưa rõ";
+      const author = st.author || st.tacGia || st.writer || "Đang cập nhật";
+      const statusFull = isCompletedStory(st);
+      const statusHtml = statusFull
+        ? `<span class="statusTag statusFull">Hoàn thành</span>`
+        : `<span class="statusTag statusOngoing">Đang cập nhật</span>`;
+
+      const chapCount = (st.chapterCount!=null) ? `${st.chapterCount} chương` : "—";
+      const latest = (st.latestChapNo!=null) ? `Chương ${st.latestChapNo}` : "—";
+
+      const rating = (st.rating!=null) ? Number(st.rating).toFixed(1) : "8.2";
+      const ratingCount = (st.ratingCount!=null) ? st.ratingCount : 0;
+      const stars = "★★★★★☆☆☆☆☆".slice(0, 10); // hiển thị demo nếu chưa có rating thật
+
+      $("storyMeta").innerHTML = `
+        <div class="metaRow"><div class="ico">👤</div><div><b>Tác giả:</b> <span>${esc(author)}</span></div></div>
+        <div class="metaRow"><div class="ico">🏷️</div><div><b>Thể loại:</b> <span>${esc(catText)}</span></div></div>
+        <div class="metaRow"><div class="ico">📚</div><div><b>Số chương:</b> <span>${esc(chapCount)}</span></div></div>
+        <div class="metaRow"><div class="ico">ℹ️</div><div><b>Trạng thái:</b> ${statusHtml}</div></div>
+        <div class="metaRow"><div class="ico">🆕</div><div><b>Mới nhất:</b> <span>${esc(latest)}</span></div></div>
+        <div class="rateRow"><div class="stars">${stars}</div><div><b>Đánh giá:</b> <span>${esc(rating)}/10</span> ${ratingCount?`<span class="muted">từ ${ratingCount} lượt</span>`:""}</div></div>
+      `;
+
+      $("storyDesc").textContent = st.desc ? st.desc : "Chưa có mô tả.";
+
+      // continue reading button
+      const btnContinue = $("btnContinueReading");
+      btnContinue.style.display = "none";
+      let continueNo = null;
+      if(currentUser){
+        try{
+          const rs = await get(ref(db, `userData/${currentUser.uid}/reading/${st.id}`));
+          if(rs.exists()){
+            continueNo = Number(rs.val()?.chapNo || 1) || 1;
+            btnContinue.style.display = "inline-flex";
+            btnContinue.textContent = `▶ Tiếp tục đọc (C.${continueNo})`;
+          }
+        }catch(e){}
+      }
+
+      // buttons
+      $("btnReadFromStart").onclick = async ()=> openReader(st, 1);
+      $("btnReadLatest").onclick = async ()=> openReader(st, Number(st.latestChapNo || st.chapterCount || 1) || 1);
+      btnContinue.onclick = async ()=> openReader(st, continueNo || 1);
+      $("btnShareStory").onclick = async ()=>{
+        const url = location.href;
+        try{
+          if(navigator.share){
+            await navigator.share({ title: st.title, text: st.title, url });
+          }else{
+            await navigator.clipboard.writeText(url);
+            alert("Đã copy link truyện!");
+          }
+        }catch(e){
+          try{
+            await navigator.clipboard.writeText(url);
+            alert("Đã copy link truyện!");
+          }catch(err){}
+        }
+      };
+
+      // chapters
+      let limit = 50;
+      async function loadChaps(){
+        $("chapHint").textContent = "Đang tải chương...";
+        try{
+          const list = await fetchLastChaptersMeta(st.id, Math.min(200, limit));
+          renderChapList(list);
+          $("chapHint").textContent = list.length ? `Đang hiển thị ${list.length} chương mới nhất.` : "Chưa có chương.";
+          $("chapLoadMore").style.display = (limit < 200) ? "inline-flex" : "none";
+          if(limit >= 200) $("chapLoadMore").textContent = "Đã tới giới hạn (200)";
+        }catch(err){
+          console.warn(err);
+          $("chapHint").textContent = "Không tải được danh sách chương. Kiểm tra Rules cho /chapters.";
+          $("chapList").innerHTML = "";
+          $("chapLoadMore").style.display = "none";
+        }
+      }
+      function renderChapList(list){
+        const box = $("chapList");
+        if(!list.length){
+          box.innerHTML = "";
+          return;
+        }
+        // list đã sort tăng dần
+        box.innerHTML = list.map(c=>{
+          const t = c.title ? `: ${esc(c.title)}` : "";
+          return `<div class="chapItem" data-no="${c.no}">
+            <span class="chapNo">Chương ${c.no}</span>
+            <span class="chapName">${t ? t.slice(2) : "—"}</span>
+          </div>`;
+        }).join("");
+
+        box.querySelectorAll(".chapItem").forEach(el=>{
+          el.addEventListener("click", ()=>{
+            const no = Number(el.getAttribute("data-no")||"1")||1;
+            openReader(st, no);
+          });
+        });
+      }
+
+      $("chapLoadMore").onclick = async ()=>{
+        limit = Math.min(200, limit + 50);
+        await loadChaps();
+      };
+
+      $("chapGoBtn").onclick = ()=>{
+        const no = Number($("chapGoInput").value||"0");
+        if(!no || no < 1){ alert("Nhập số chương hợp lệ (>=1)."); return; }
+        openReader(st, no);
+      };
+
+      await loadChaps();
+    }
+
 
     // Hot ranking range: day / week / month / all
 let hotRankRange = (localStorage.getItem("hotRankRange") || "all");
@@ -1369,23 +1684,32 @@ if(route === "hot" && hint){
         row.addEventListener("click", ()=>{
           const id = row.getAttribute("data-story");
           const st = stories.find(x=>x.id===id);
-          openStoryModal(st);
+          goStory(st.id);
         });
       });
     }
 
     function applyRoute(){
-      const r = getRoute();
-      if(!["home","hot","update","completed"].includes(r)){
-        go("home");
+      const { name, parts } = parseHash();
+
+      if(name === "story"){
+        const storyId = parts[1];
+        if(!storyId){ go("home"); return; }
+        showView("story");
+        renderStoryPage(storyId);
         return;
       }
-      showView(r);
-      if(r !== "home"){
-        renderListPage(r);
-      }else{
-        document.title = "Truyện Online";
+
+      // list pages
+      if(["hot","update","completed"].includes(name)){
+        showView("list");
+        renderListPage(name);
+        return;
       }
+
+      // home
+      showView("home");
+      document.title = "Truyện Online";
     }
 
     window.addEventListener("hashchange", applyRoute);
@@ -1640,9 +1964,10 @@ $("themeBtn")?.addEventListener("click", ()=>{
 
     // List page controls
     document.getElementById("listBackBtn")?.addEventListener("click", ()=> go("home"));
-    document.getElementById("listCategory")?.addEventListener("change", ()=> renderListPage(getRoute()));
+    document.getElementById("storyBackBtn")?.addEventListener("click", ()=> history.length>1 ? history.back() : go("home"));
+    document.getElementById("listCategory")?.addEventListener("change", ()=> renderListPage(parseHash().name));
     document.getElementById("listFullBtn")?.addEventListener("click", (e)=>{
-  const r = getRoute();
+  const r = parseHash().name;
   if(r !== "hot") return;
 
   const menu = document.getElementById("listFullMenu");
@@ -1930,7 +2255,7 @@ function computeCategories(list){
           const id = row.getAttribute("data-story");
           const st = stories.find(x=>x.id===id);
           closeSearch();
-          openStoryModal(st);
+          goStory(st.id);
         });
       });
     }
@@ -1958,7 +2283,7 @@ function computeCategories(list){
         a.addEventListener("click", ()=>{
           const id = a.getAttribute("data-story");
           const st = stories.find(x=>x.id===id);
-          openStoryModal(st);
+          goStory(st.id);
         });
       });
     }
@@ -1996,7 +2321,7 @@ function computeCategories(list){
         row.addEventListener("click", ()=>{
           const id = row.getAttribute("data-story");
           const st = stories.find(x=>x.id===id);
-          openStoryModal(st);
+          goStory(st.id);
         });
       });
     }
@@ -2038,7 +2363,7 @@ function computeCategories(list){
         row.addEventListener("click", ()=>{
           const id = row.getAttribute("data-story");
           const st = stories.find(x=>x.id===id);
-          openStoryModal(st);
+          goStory(st.id);
         });
       });
     }
@@ -2091,7 +2416,7 @@ function computeCategories(list){
         row.addEventListener("click", ()=>{
           const id = row.getAttribute("data-story");
           const st = stories.find(x=>x.id===id);
-          openStoryModal(st, { continue: true });
+          goStory(st.id);
         });
       });
     }
@@ -2146,7 +2471,7 @@ function computeCategories(list){
       return arr;
     }
 
-    async function openReader(st){
+    async function openReader(st, forcedNo=null){
       if(!st) return;
 
       const storyId = st.id;
@@ -2169,6 +2494,11 @@ function computeCategories(list){
         startNo = Number(st.latestChapNo || st.chapterCount || 1) || 1;
       }
 
+
+      if(forcedNo != null){
+        const fn = Number(forcedNo);
+        if(Number.isFinite(fn) && fn >= 1) startNo = fn;
+      }
       // UI
       openModal(st.title, `
         <div class="mutedBox" style="margin-bottom:10px">
