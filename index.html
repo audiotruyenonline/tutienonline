@@ -702,6 +702,134 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       .pillBtn{height:38px}
       .circleBtn{width:38px;height:38px}
     }
+
+    /* ======= PAGES: List view (Truyện Hot / Mới cập nhật / Hoàn thành) ======= */
+    .pageHeader{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px 12px;
+      background:linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.00));
+      border-bottom:1px solid var(--line);
+    }
+    html[data-theme="dark"] .pageHeader{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.00));}
+    .pageBackBtn{
+      width:44px;height:44px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:var(--card);
+      cursor:pointer;
+      font-weight:950;
+      flex:none;
+    }
+    .pageBackBtn:active{transform:translateY(1px)}
+    .pageHeaderMain{min-width:0; flex:1}
+    .crumb{font-size:12px;color:var(--muted);font-weight:800}
+    .pageTitle{margin-top:2px;font-size:18px;font-weight:950;letter-spacing:.2px}
+    .pageDesc{margin-top:4px;font-size:13px;color:var(--muted);line-height:1.5}
+    .pageActionBtn{
+      height:44px;
+      border-radius:10px;
+      border:1px solid #cfe3ff;
+      background:#eef6ff;
+      color:#1f5fa7;
+      font-weight:950;
+      cursor:pointer;
+      flex:none;
+      padding:0 12px;
+      white-space:nowrap;
+    }
+    html[data-theme="dark"] .pageActionBtn{
+      border-color:#294b7a;
+      background:rgba(42,120,201,.12);
+      color:#93c5fd;
+    }
+    .pageFilters{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+    }
+    .pageHint{font-size:12px;color:var(--muted);font-weight:800}
+
+    .bigList{padding:0}
+    .bigItem{
+      display:grid;
+      grid-template-columns: 92px 1fr;
+      gap:12px;
+      padding:12px;
+      border-top:1px solid var(--line);
+      cursor:pointer;
+      background:var(--card);
+    }
+    .bigItem:first-child{border-top:0}
+    .bigItem:hover{background:rgba(0,0,0,.02)}
+    html[data-theme="dark"] .bigItem:hover{background:rgba(255,255,255,.03)}
+    .bigCover{
+      width:92px;
+      aspect-ratio: 3/4;
+      border-radius:10px;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,.10);
+      background:linear-gradient(135deg,#d1d5db,#9ca3af);
+    }
+    .bigCover img{width:100%;height:100%;object-fit:cover;display:block}
+    .bigTitle{
+      font-weight:950;
+      font-size:16px;
+      line-height:1.2;
+    }
+    .bigAuthor{
+      margin-top:4px;
+      font-size:13px;
+      color:var(--muted);
+      font-style:italic;
+      font-weight:700;
+      display:flex;align-items:center;gap:6px;
+    }
+    .bigDesc{
+      margin-top:6px;
+      font-size:13px;
+      color:var(--text);
+      opacity:.95;
+      line-height:1.55;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .bigBadges{margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .badgeBlue{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:4px 10px;
+      border-radius:6px;
+      background:#2a78c9;
+      color:#fff;
+      font-weight:950;
+      font-size:12px;
+    }
+    .badgeFull{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:4px 10px;
+      border-radius:6px;
+      border:1px solid #22c55e;
+      color:#15803d;
+      background:#ecfdf5;
+      font-weight:950;
+      font-size:12px;
+    }
+    html[data-theme="dark"] .badgeFull{
+      border-color:#16a34a;
+      color:#86efac;
+      background:rgba(22,163,74,.12);
+    }
+    @media (max-width: 520px){
+      .bigItem{grid-template-columns: 84px 1fr}
+      .bigCover{width:84px}
+      .pageTitle{font-size:17px}
+    }
+
 </style>
 </head>
 <body>
@@ -768,23 +896,9 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     </div>
   </header>
 
-  <main class="wrap">
+  <div id="viewHome">
 
-    <!-- TRUYỆN HOT -->
-    <section class="section" id="secHot">
-      <div class="sectionHead">
-        <div class="secTitle"><span>TRUYỆN HOT</span> <span class="flame">🔥</span></div>
-        <div class="secRight">
-          <select class="select" id="hotCategory">
-            <option value="all">THỂ LOẠI: TẤT CẢ</option>
-          </select>
-        </div>
-      </div>
-      <div class="contentPad">
-        <div class="hotGrid" id="hotGrid"></div>
-        <div class="hint" id="hotHint" style="padding-top:8px"></div>
-      </div>
-    </section>
+  <main class="wrap">
 
     <!-- TRUYỆN ĐANG ĐỌC -->
     <section class="section" id="secReading">
@@ -802,13 +916,29 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       </div>
     </section>
 
+    <!-- TRUYỆN HOT -->
+    <section class="section" id="secHot">
+      <div class="sectionHead">
+        <div class="secTitle"><span>TRUYỆN HOT</span> <span class="flame">🔥</span></div>
+        <div class="secRight">
+          <select class="select" id="hotCategory">
+            <option value="all">THỂ LOẠI: TẤT CẢ</option>
+          </select>
+        </div>
+      </div>
+      <div class="contentPad">
+        <div class="hotGrid" id="hotGrid"></div>
+        <div class="hint" id="hotHint" style="padding-top:8px"></div>
+      </div>
+    </section>
+
     <!-- MỚI CẬP NHẬT -->
     <section class="section" id="secUpdate">
       <div class="sectionHead">
         <div class="secTitle">↻ MỚI CẬP NHẬT</div>
         <div class="secRight">
           <select class="select" id="updateCategory">
-            <option value="all">CHỌN THỂ LOẠI</option>
+            <option value="all">Xem Thêm</option>
           </select>
         </div>
       </div>
@@ -818,23 +948,7 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       </div>
     </section>
 
-    <!-- TRUYỆN HOÀN THÀNH -->
-    <section class="section" id="secCompleted">
-      <div class="sectionHead">
-        <div class="secTitle">✅ TRUYỆN HOÀN THÀNH</div>
-        <div class="secRight">
-          <select class="select" id="completedCategory">
-            <option value="all">CHỌN THỂ LOẠI</option>
-          </select>
-        </div>
-      </div>
-      <div id="completedList"></div>
-      <div class="contentPad">
-        <div class="hint" id="completedHint"></div>
-      </div>
-    </section>
-
-    <!-- TRÒ CHUYỆN -->
+<!-- TRÒ CHUYỆN -->
     <section class="section" id="secChat">
       <div class="sectionHead">
         <div class="secTitle">💬 TRÒ CHUYỆN CỘNG ĐỒNG</div>
@@ -854,6 +968,21 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
       </div>
     </section>
 
+    <!-- TRUYỆN HOÀN THÀNH -->
+    <section class="section" id="secCompleted">
+      <div class="sectionHead">
+        <div class="secTitle">✅ TRUYỆN HOÀN THÀNH</div>
+        <div class="secRight">
+          <select class="select" id="completedCategory">
+            <option value="all">Xem Thêm</option>
+          </select>
+        </div>
+      </div>
+      <div id="completedList"></div>
+      <div class="contentPad">
+        <div class="hint" id="completedHint"></div>
+      </div>
+    </section>
 
     <!-- ADMIN (chỉ hiện với admin) -->
     <section class="section" id="secAdmin" style="display:none">
@@ -953,9 +1082,37 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     </section>
 
 
+  
   </main>
+</div>
+
+<div id="viewList" style="display:none">
+  <main class="wrap">
+    <section class="section" style="overflow:visible">
+      <div class="pageHeader">
+        <button class="pageBackBtn" id="listBackBtn" aria-label="Quay lại trang chủ" title="Quay lại">←</button>
+        <div class="pageHeaderMain">
+          <div class="crumb" id="listCrumb">Trang chủ / ...</div>
+          <div class="pageTitle" id="listTitle">—</div>
+          <div class="pageDesc" id="listDesc">—</div>
+        </div>
+        <button class="pageActionBtn" id="listFullBtn" title="Lọc Full">LỌC FULL</button>
+      </div>
+
+      <div class="pageFilters">
+        <select class="select" id="listCategory">
+          <option value="all">THỂ LOẠI: TẤT CẢ</option>
+        </select>
+        <div class="pageHint" id="listHint"></div>
+      </div>
+
+      <div class="bigList" id="listBox"></div>
+    </section>
+  </main>
+</div>
 
   <!-- DRAWER -->
+
   <div class="drawerBg" id="drawerBg" aria-hidden="true">
     <aside class="drawer" role="dialog" aria-modal="true">
       <div class="drawerTop">
@@ -1026,6 +1183,148 @@ html[data-theme="light"] .mutedBox{background:rgba(0,0,0,.03);border-color:#e5e7
     const esc = (s)=>String(s??"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
     const fmtNum = (n)=> (n==null? "—" : ("C. " + n));
     const toLower = (s)=>String(s||"").toLowerCase();
+
+    // ===== Simple Router (Hash) cho "không gian riêng" =====
+    const viewHome = document.getElementById("viewHome");
+    const viewList = document.getElementById("viewList");
+
+    function getRoute(){
+      const h = (location.hash || "#/").replace(/^#\/?/, "");
+      return h || "home"; // home | hot | update | completed
+    }
+    function go(route){
+      if(route === "home") location.hash = "#/";
+      else location.hash = "#/" + route;
+    }
+    function showView(route){
+      const isHome = (route === "home");
+      if(viewHome) viewHome.style.display = isHome ? "block" : "none";
+      if(viewList) viewList.style.display = isHome ? "none" : "block";
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    let listFullOnly = false;
+
+    function setListHeader(route){
+      const crumb = document.getElementById("listCrumb");
+      const title = document.getElementById("listTitle");
+      const desc  = document.getElementById("listDesc");
+      const fullBtn = document.getElementById("listFullBtn");
+
+      const map = {
+        hot: { t: "TỔNG HỢP TRUYỆN HAY VÀ HOT NHẤT", d: "Tổng hợp những truyện Hot, truyện hay nhất có lượt xem cao và được độc giả bình chọn." },
+        update: { t: "TRUYỆN MỚI CẬP NHẬT", d: "Danh sách truyện vừa cập nhật chương mới, sắp xếp theo thời gian cập nhật." },
+        completed: { t: "TRUYỆN HOÀN THÀNH (FULL)", d: "Tổng hợp truyện đã hoàn thành. Bạn có thể đọc trọn bộ từ đầu đến cuối." }
+      };
+      const it = map[route] || { t:"DANH SÁCH TRUYỆN", d:"" };
+
+      if(crumb) crumb.textContent = "Trang chủ / " + (route==="hot" ? "Truyện Hot" : route==="update" ? "Mới cập nhật" : "Truyện hoàn thành");
+      if(title) title.textContent = it.t;
+      if(desc)  desc.textContent  = it.d;
+
+      if(fullBtn){
+        if(route === "completed"){
+          fullBtn.style.display = "none";
+        }else{
+          fullBtn.style.display = "inline-flex";
+          fullBtn.textContent = listFullOnly ? "BỎ LỌC FULL" : "LỌC FULL";
+        }
+      }
+      document.title = (route==="hot" ? "Truyện Hot" : route==="update" ? "Mới cập nhật" : route==="completed" ? "Truyện hoàn thành" : "Truyện Online") + " • Truyện Online";
+    }
+
+    function renderListPage(route){
+      setListHeader(route);
+
+      const sel = document.getElementById("listCategory");
+      const hint = document.getElementById("listHint");
+      const box = document.getElementById("listBox");
+
+      if(!sel || !box) return;
+
+      // đổ thể loại
+      fillCategorySelect(sel, categories);
+
+      const cat = sel.value || "all";
+
+      let list = stories.slice();
+
+      if(route === "hot"){
+        list.sort((a,b)=> (b.hotScore||0) - (a.hotScore||0) || (b.views||0)-(a.views||0) || (b.updatedAt||0)-(a.updatedAt||0));
+      }else if(route === "update"){
+        list.sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0) || (b.latestChapNo||0) - (a.latestChapNo||0));
+      }else if(route === "completed"){
+        list = list.filter(s=> isCompletedStory(s));
+        list.sort((a,b)=> (b.updatedAt||0) - (a.updatedAt||0) || (b.views||0)-(a.views||0));
+      }
+
+      if(listFullOnly && route !== "completed"){
+        list = list.filter(s=> isCompletedStory(s));
+      }
+
+      if(cat !== "all"){
+        list = list.filter(s => (s.categories||[]).includes(cat));
+      }
+
+      const limit = route === "hot" ? 40 : 60;
+      list = list.slice(0, limit);
+
+      if(!list.length){
+        box.innerHTML = '<div class="contentPad"><div class="mutedBox">Chưa có truyện phù hợp trong dữ liệu Firebase.</div></div>';
+        if(hint) hint.textContent = "";
+        return;
+      }
+
+      if(hint) hint.textContent = "Hiển thị " + list.length + " truyện" + (cat==="all" ? "" : (" • " + cat));
+
+      box.innerHTML = list.map(s=>{
+        const author = s.author ? esc(s.author) : "";
+        const chap = (s.latestChapNo ?? s.chapterCount);
+        const chapText = chap != null ? ("Chương " + chap) : "Chương —";
+        const full = isCompletedStory(s);
+        const desc = (s.desc || "").trim() || "Chưa có mô tả.";
+        return `
+          <div class="bigItem" data-story="${esc(s.id)}">
+            <div class="bigCover">${s.coverUrl ? `<img src="${esc(s.coverUrl)}" alt="">` : ""}</div>
+            <div>
+              <div class="bigTitle">${esc(s.title)}</div>
+              ${author ? `<div class="bigAuthor">✍️ ${author}</div>` : ``}
+              <div class="bigDesc">${esc(desc)}</div>
+              <div class="bigBadges">
+                <span class="badgeBlue">${esc(chapText)}</span>
+                ${full ? `<span class="badgeFull">Full</span>` : ``}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      box.querySelectorAll("[data-story]").forEach(row=>{
+        row.addEventListener("click", ()=>{
+          const id = row.getAttribute("data-story");
+          const st = stories.find(x=>x.id===id);
+          openStoryModal(st);
+        });
+      });
+    }
+
+    function applyRoute(){
+      const r = getRoute();
+      if(!["home","hot","update","completed"].includes(r)){
+        go("home");
+        return;
+      }
+      showView(r);
+      if(r !== "home"){
+        renderListPage(r);
+      }else{
+        document.title = "Truyện Online";
+      }
+    }
+
+    window.addEventListener("hashchange", applyRoute);
+
+
 
     // ===== UI: Drawer =====
     function openDrawer(){ $("drawerBg").style.display="block"; $("drawerBg").setAttribute("aria-hidden","false"); }
@@ -1257,6 +1556,33 @@ $("themeBtn")?.addEventListener("click", ()=>{
     $("navHistory").addEventListener("click", ()=>{ closeDrawer(); alert("Trang Lịch sử: sẽ làm ở bước tiếp theo."); });
     $("navAdmin")?.addEventListener("click", ()=>{ closeDrawer(); document.getElementById("secAdmin")?.scrollIntoView({behavior:"smooth"}); });
     $("homeBtn").addEventListener("click", ()=> window.scrollTo({top:0, behavior:"smooth"}));
+
+    // ===== Điều hướng: bấm vào các mục ở trang chủ để sang "không gian riêng" =====
+    function bindHomeSectionNav(){
+      const hotHead = document.querySelector("#secHot .sectionHead");
+      const updHead = document.querySelector("#secUpdate .sectionHead");
+      const comHead = document.querySelector("#secCompleted .sectionHead");
+
+      hotHead?.addEventListener("click", (e)=>{ if(e.target.closest("select") || e.target.closest("button")) return; go("hot"); });
+      updHead?.addEventListener("click", (e)=>{ if(e.target.closest("select") || e.target.closest("button")) return; go("update"); });
+      comHead?.addEventListener("click", (e)=>{ if(e.target.closest("select") || e.target.closest("button")) return; go("completed"); });
+
+      // thêm cursor để nhìn giống link
+      [hotHead, updHead, comHead].forEach(h=>{ if(h) h.style.cursor="pointer"; });
+    }
+    bindHomeSectionNav();
+
+    // List page controls
+    document.getElementById("listBackBtn")?.addEventListener("click", ()=> go("home"));
+    document.getElementById("listCategory")?.addEventListener("change", ()=> renderListPage(getRoute()));
+    document.getElementById("listFullBtn")?.addEventListener("click", ()=>{
+      const r = getRoute();
+      if(r === "completed") return;
+      listFullOnly = !listFullOnly;
+      renderListPage(r);
+    });
+
+
 
     onAuthStateChanged(auth, async (u)=>{
       currentUser = u || null;
@@ -2096,7 +2422,7 @@ $("themeBtn")?.addEventListener("click", ()=>{
     $("completedCategory").addEventListener("change", renderCompleted);
 
     // Start
-    loadStories();
+    loadStories().then(()=>applyRoute()).catch(()=>applyRoute());
 
     // ===== Tip: sample admin push (không chạy tự động) =====
     // Bạn có thể mở DevTools và gọi window.__seedStories() để tạo 1 truyện mẫu lên RTDB.
