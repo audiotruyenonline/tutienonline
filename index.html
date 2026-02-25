@@ -1044,7 +1044,7 @@
           <div class="brand-name">Truyện <span>Online</span></div>
         </div>
 
-        <button class="pill online" id="onlinePill" title="Người đang online">
+        <button class="pill online hidden" id="onlinePill" title="Người đang online">
           <span class="online-dot"></span>
           <span class="online-text">Online</span>
           <span class="online-count" id="onlineCount">0</span>
@@ -1355,11 +1355,13 @@
     <div class="search-results" id="searchResults"></div>
   </div>
 
-  <script>
+  <script type="module">
     /* ============================
        1) Firebase config
        ============================ */
     const firebaseConfig = {
+      // Firebase chỉ dùng cho: đăng nhập Google, đồng bộ dữ liệu người dùng, lượt xem, lượt online.
+      // KHÔNG dùng để thêm/xóa/sửa truyện/chương/ảnh (dữ liệu nội dung nằm trong HTML tĩnh).
       apiKey: "AIzaSyDhq66ZZzNp9_-FnY7T-2gxNlrUDxeDPrU",
       authDomain: "truyen-b3470.firebaseapp.com",
       databaseURL: "https://truyen-b3470-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -1378,59 +1380,44 @@
     let appInit, getAuth;
     let GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, serverTimestamp;
     let getFirestore, doc, setDoc, onSnapshot, collection, getDocs;
-    let getDatabase, ref, set, onDisconnect, onValue, remove;
-    let firebaseInitError = null;
-    const safeLs = {
-      get(key, fallback = null){ try { const v = localStorage.getItem(key); return v == null ? fallback : v; } catch(_) { return fallback; } },
-      set(key, value){ try { localStorage.setItem(key, String(value)); } catch(_) {} }
-    };
+    let getDatabase, ref, set, onDisconnect, onValue, runTransaction;
 
-    async function setupFirebaseSdk(){
-      if (!ENABLE_FIREBASE) return false;
-      try {
-        const fbApp = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
-        const fbAuth = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
-        const fbFs   = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
-        const fbRtdb = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js");
+    if (ENABLE_FIREBASE) {
+      const fbApp = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js");
+      const fbAuth = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
+      const fbFs   = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+      const fbRtdb = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js");
 
-        ({ initializeApp: appInit } = fbApp);
-        ({
-          getAuth,
-          GoogleAuthProvider,
-          signInWithPopup,
-          onAuthStateChanged,
-          signOut
-        } = fbAuth);
-        ({
-          getFirestore,
-          doc,
-          setDoc,
-          onSnapshot,
-          collection,
-          getDocs,
-          serverTimestamp
-        } = fbFs);
-        ({
-          getDatabase,
-          ref,
-          set,
-          onDisconnect,
-          onValue,
-          remove
-        } = fbRtdb);
+      ({ initializeApp: appInit } = fbApp);
+      ({
+        getAuth,
+        GoogleAuthProvider,
+        signInWithPopup,
+        onAuthStateChanged,
+        signOut
+      } = fbAuth);
+      ({
+        getFirestore,
+        doc,
+        setDoc,
+        onSnapshot,
+        collection,
+        getDocs,
+        serverTimestamp
+      } = fbFs);
+      ({
+        getDatabase,
+        ref,
+        set,
+        onDisconnect,
+        onValue,
+        runTransaction
+      } = fbRtdb);
 
-        app = appInit(firebaseConfig);
-        auth = getAuth(app);
-        db = getFirestore(app);
-        rtdb = getDatabase(app);
-        firebaseInitError = null;
-        return true;
-      } catch (err) {
-        firebaseInitError = err;
-        console.warn("Firebase SDK load/init failed. UI sẽ vẫn chạy, nhưng Firebase có thể không hoạt động trong môi trường này.", err);
-        app = null; auth = null; db = null; rtdb = null;
-        return false;
-      }
+      app = appInit(firebaseConfig);
+      auth = getAuth(app);
+      db = getFirestore(app);
+      rtdb = getDatabase(app);
     }
 
     /* ============================
@@ -1520,78 +1507,21 @@
       followedIds: [],
       historyIds: [],
       lastReading: {},
+      notifications: [],
+      notificationsUnread: 0,
       updatedAt: null
     };
     let presenceUnsub = null;
     let userStateUnsub = null;
-    let presenceMeRef = null;
-    let hasRealtimePresenceCount = false;
-    let presenceHeartbeatTimer = null;
-    let rtdbConnUnsub = null;
-    let rtdbConnected = null;
-    let lastOnlineCountSeen = null;
-    let seenFirstPresenceSnapshot = false;
-    let notifications = [];
-    let notifyUnreadCount = 0;
-    const notifyDedupeMap = new Map();
-    const MAX_NOTIFY_ITEMS = 40;
-    const PRESENCE_HEARTBEAT_MS = 25000;
-    const PRESENCE_TTL_MS = 90000;
-    const presenceSessionId = (() => {
-      try {
-        const k = "presence_session_id";
-        let id = localStorage.getItem(k);
-        if (!id) {
-          id = (typeof crypto !== "undefined" && crypto.randomUUID)
-            ? crypto.randomUUID()
-            : ("sess_" + Math.random().toString(36).slice(2) + Date.now().toString(36));
-          localStorage.setItem(k, id);
-        }
-        return id;
-      } catch (e) {
-        return "sess_" + Math.random().toString(36).slice(2);
-      }
-    })();
+    let storyViewsUnsub = null;
+    let storyViewsMap = {};
+    let presenceSessionId = null;
+    let presenceStarted = false;
 
-    let activeTheme = safeLs.get("theme_mode", "dark") || "dark";
+    let activeTheme = localStorage.getItem("theme_mode") || "dark";
     let websiteIsOnline = (typeof navigator !== "undefined") ? navigator.onLine : true;
-
-    function pushNotification(title, sub, opts = {}){
-      const now = Date.now();
-      const key = opts.key || null;
-      const dedupeMs = Number.isFinite(opts.dedupeMs) ? opts.dedupeMs : 6000;
-      if (key){
-        const last = notifyDedupeMap.get(key) || 0;
-        if (now - last < dedupeMs) return;
-        notifyDedupeMap.set(key, now);
-      }
-      notifications.unshift({
-        id: (typeof crypto !== "undefined" && crypto.randomUUID) ? crypto.randomUUID() : ("n_" + now + "_" + Math.random().toString(36).slice(2,7)),
-        title: String(title || "Thông báo"),
-        sub: String(sub || ""),
-        ts: now
-      });
-      if (notifications.length > MAX_NOTIFY_ITEMS) notifications.length = MAX_NOTIFY_ITEMS;
-      notifyUnreadCount = Math.min(99, notifyUnreadCount + 1);
-      renderNotificationList();
-    }
-
-    function formatNotifyTime(ts){
-      try{
-        const d = new Date(ts || Date.now());
-        const hh = String(d.getHours()).padStart(2, "0");
-        const mm = String(d.getMinutes()).padStart(2, "0");
-        return `${hh}:${mm}`;
-      }catch(_){ return ""; }
-    }
-
-    function markNotificationsRead(){
-      notifyUnreadCount = 0;
-      if (notifyBadge){
-        notifyBadge.classList.add("hidden");
-        notifyBadge.textContent = "0";
-      }
-    }
+    let realtimeOnlineCount = 0;
+    let presenceHeartbeatTimer = null;
 
     /* ============================
        5) DOM refs
@@ -1737,6 +1667,133 @@
       return map[cat] || [s.category || "Hệ Thống","Nhiệt Huyết"];
     }
 
+    const MAX_ACCOUNT_NOTIFICATIONS = 50;
+
+    function normalizeNotifications(list){
+      if (!Array.isArray(list)) return [];
+      return list
+        .filter(n => n && typeof n === "object")
+        .map(n => ({
+          id: String(n.id || ("n_" + Math.random().toString(36).slice(2))),
+          type: String(n.type || "event"),
+          title: String(n.title || "Thông báo"),
+          sub: String(n.sub || ""),
+          ts: Number(n.ts || Date.now()),
+          read: !!n.read
+        }))
+        .sort((a,b) => Number(b.ts||0) - Number(a.ts||0))
+        .slice(0, MAX_ACCOUNT_NOTIFICATIONS);
+    }
+
+    function countUnreadNotifications(list){
+      const arr = Array.isArray(list) ? list : [];
+      return arr.reduce((sum, n) => sum + (n && !n.read ? 1 : 0), 0);
+    }
+
+    function getAccountNotifications(){
+      return normalizeNotifications(userState?.notifications || []);
+    }
+
+    function formatNotifyTime(ts){
+      const t = Number(ts || 0);
+      if (!t) return "";
+      const diff = Math.max(0, Date.now() - t);
+      const m = Math.floor(diff / 60000);
+      if (m < 1) return "Vừa xong";
+      if (m < 60) return `${m} phút trước`;
+      const h = Math.floor(m / 60);
+      if (h < 24) return `${h} giờ trước`;
+      const d = Math.floor(h / 24);
+      if (d < 7) return `${d} ngày trước`;
+      try{
+        return new Date(t).toLocaleString("vi-VN");
+      }catch(_){
+        return "";
+      }
+    }
+
+    async function pushAccountNotification(payload){
+      if (!currentUser) return false;
+      const title = String(payload?.title || "").trim();
+      if (!title) return false;
+      const item = {
+        id: "n_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8),
+        type: String(payload?.type || "event"),
+        title,
+        sub: String(payload?.sub || ""),
+        ts: Date.now(),
+        read: false
+      };
+
+      const nextNotifications = normalizeNotifications([item, ...getAccountNotifications()]);
+      const nextUnread = countUnreadNotifications(nextNotifications);
+
+      return await saveUserStatePatch({
+        notifications: nextNotifications,
+        notificationsUnread: nextUnread
+      });
+    }
+
+    async function markAllAccountNotificationsRead(){
+      if (!currentUser) {
+        renderNotificationList();
+        return false;
+      }
+      const list = getAccountNotifications();
+      if (!list.length){
+        if (Number(userState?.notificationsUnread || 0) !== 0){
+          await saveUserStatePatch({ notifications: [], notificationsUnread: 0 });
+        } else {
+          renderNotificationList();
+        }
+        return true;
+      }
+      const unread = countUnreadNotifications(list);
+      if (unread <= 0){
+        renderNotificationList();
+        return true;
+      }
+      const next = list.map(n => ({ ...n, read: true }));
+      return await saveUserStatePatch({ notifications: next, notificationsUnread: 0 });
+    }
+
+    function getSessionId(){
+      try{
+        let sid = sessionStorage.getItem("web_session_id");
+        if (!sid){
+          sid = "sess_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+          sessionStorage.setItem("web_session_id", sid);
+        }
+        return sid;
+      }catch(_){
+        return "sess_" + Math.random().toString(36).slice(2);
+      }
+    }
+
+    function cloneStoriesFromHtml(){
+      // Nguồn truyện/chương/ảnh là HTML tĩnh (không đọc từ Firebase)
+      return localSeedStories.map(item => ({ ...item, baseViews: Number(item.views || 0) }));
+    }
+
+    function applyRemoteViewMapToStories(){
+      if (!Array.isArray(stories) || !stories.length) return;
+      let changed = false;
+      stories = stories.map(st => {
+        const baseViews = Number((st.baseViews ?? st.views) || 0);
+        const raw = storyViewsMap?.[st.id];
+        const extra = typeof raw === "number"
+          ? raw
+          : Number((raw && typeof raw === "object" ? raw.count : 0) || 0);
+        const total = Math.max(0, baseViews + (Number.isFinite(extra) ? extra : 0));
+        if (Number(st.views || 0) !== total) changed = true;
+        return { ...st, baseViews, views: total };
+      });
+      if (changed){
+        renderAll();
+        if ((location.hash || "").startsWith("#/story/")) renderRoute();
+      }
+    }
+
     function setHomeVisible(isHome){
       homePage.classList.toggle("hidden", !isHome);
       storyPage.classList.toggle("hidden", isHome);
@@ -1782,7 +1839,7 @@
     function applyTheme(mode){
       activeTheme = mode === "light" ? "light" : "dark";
       document.body.classList.toggle("theme-light", activeTheme === "light");
-      safeLs.set("theme_mode", activeTheme);
+      localStorage.setItem("theme_mode", activeTheme);
       setThemeButtonIcon(activeTheme);
       const themeMeta = document.querySelector('meta[name="theme-color"]');
       if (themeMeta) themeMeta.setAttribute("content", activeTheme === "light" ? "#eef2fb" : "#090a12");
@@ -1794,56 +1851,43 @@
 
 
     function setOnlineCountText(val){
+      const n = Math.max(0, Number(val) || 0);
+      realtimeOnlineCount = n;
+
       const el = $("#onlineCount");
-      if (!el) return;
-      const n = Number(val);
-      el.textContent = Number.isFinite(n) && n >= 0 ? String(n) : "0";
+      if (el) el.textContent = String(n);
+
+      // Luôn hiện mục Online; khi không có ai online thì hiển thị 0.
+      // Số lượng vẫn là realtime từ Firebase (không dùng số giả).
+      onlinePill?.classList.remove("hidden");
     }
     function syncHeaderOnlineStatus(){
-      onlinePill?.classList.remove("hidden");
       btnNotify?.classList.remove("hidden");
 
       const textEl = onlinePill?.querySelector(".online-text");
-      if (textEl) textEl.textContent = websiteIsOnline ? "Online" : "Offline";
+      if (textEl) textEl.textContent = "Online";
 
-      onlinePill?.setAttribute("title", websiteIsOnline ? "Website đang online" : "Website đang offline");
-      btnNotify?.setAttribute("title", "Thông báo");
+      btnNotify?.setAttribute("title", websiteIsOnline ? "Thông báo" : "Thông báo (đang offline)");
+      onlinePill?.setAttribute("title", "Online theo tài khoản (bao gồm bạn)");
 
       if (!websiteIsOnline){
         setOnlineCountText(0);
+        closeNotifyPanel();
         return;
       }
 
-      // Chỉ hiển thị số online từ realtime (không dùng số ảo).
-      if (!ENABLE_FIREBASE){
-        setOnlineCountText(0);
-      } else if (!hasRealtimePresenceCount && !lastOnlineCountSeen){
-        setOnlineCountText(0);
-      }
+      // Không dùng số ảo/fallback. Chỉ hiển thị theo realtime count từ Firebase.
+      setOnlineCountText(realtimeOnlineCount);
     }
     function setWebsiteOnlineState(next){
-      const prev = websiteIsOnline;
       websiteIsOnline = !!next;
+      // Dù mất mạng vẫn giữ hiển thị mục Online và đưa về 0 ở syncHeaderOnlineStatus().
       syncHeaderOnlineStatus();
       renderNotificationList();
-      if (!websiteIsOnline) {
-        hasRealtimePresenceCount = false;
-        if (presenceHeartbeatTimer){
-          clearInterval(presenceHeartbeatTimer);
-          presenceHeartbeatTimer = null;
-        }
-      }
-      if (prev !== websiteIsOnline){
-        if (websiteIsOnline){
-          pushNotification("Website đã online", "Kết nối mạng ổn định.", { key: "web-online", dedupeMs: 5000 });
-        } else {
-          pushNotification("Mất kết nối mạng", "Đang chờ kết nối lại để cập nhật realtime.", { key: "web-offline", dedupeMs: 5000 });
-          closeNotifyPanel();
-        }
-      }
     }
 
     function closeNotifyPanel(){
+
       if (!notifyPanel || !notifyBackdrop) return;
       notifyPanel.classList.remove("show");
       notifyBackdrop.classList.remove("show");
@@ -1856,7 +1900,11 @@
       notifyBackdrop?.classList.add("show");
       notifyPanel?.setAttribute("aria-hidden","false");
       notifyBackdrop?.setAttribute("aria-hidden","false");
-      markNotificationsRead();
+
+      // Mở bảng thông báo => đánh dấu đã đọc cho tài khoản (không dùng số giả).
+      if (currentUser) {
+        markAllAccountNotificationsRead().catch(err => console.warn("markAllAccountNotificationsRead error", err));
+      }
     }
     function toggleNotifyPanel(){
       if (notifyPanel?.classList.contains("show")) closeNotifyPanel();
@@ -1866,26 +1914,40 @@
     function renderNotificationList(){
       if (!notifyList) return;
 
-      const items = notifications.slice();
-      if (!items.length){
+      const accountItems = currentUser ? getAccountNotifications() : [];
+      const isOffline = !websiteIsOnline;
+
+      if (!currentUser){
         notifyList.innerHTML = `
           <div class="notify-item">
-            <div class="title">Chưa có thông báo mới</div>
-            <div class="sub">Thông báo sẽ xuất hiện khi có sự kiện thật (đăng nhập, cập nhật kết nối, realtime...).</div>
+            <div class="title">Thông báo tài khoản</div>
+            <div class="sub">${esc(isOffline
+              ? "Web đang offline. Đăng nhập và bật mạng để nhận thông báo sự kiện tài khoản."
+              : "Đăng nhập để nhận thông báo theo sự kiện trên web cho tài khoản của bạn.")}</div>
+          </div>
+        `;
+      } else if (!accountItems.length){
+        notifyList.innerHTML = `
+          <div class="notify-item">
+            <div class="title">Chưa có thông báo</div>
+            <div class="sub">${esc(isOffline
+              ? "Web đang offline. Khi có sự kiện tài khoản, thông báo sẽ xuất hiện tại đây."
+              : "Thông báo chỉ xuất hiện khi có sự kiện thật trên web (theo dõi truyện, lưu lịch sử đọc, đăng nhập...).")}</div>
           </div>
         `;
       } else {
-        notifyList.innerHTML = items.map(n => `
+        notifyList.innerHTML = accountItems.map(n => `
           <div class="notify-item">
             <div class="title">${esc(n.title)}</div>
-            <div class="sub">${esc(n.sub)}${n.ts ? ` • ${formatNotifyTime(n.ts)}` : ""}</div>
+            <div class="sub">${esc(n.sub)}${n.ts ? ` • ${esc(formatNotifyTime(n.ts))}` : ""}</div>
           </div>
         `).join("");
       }
 
       if (notifyBadge){
-        notifyBadge.classList.toggle("hidden", notifyUnreadCount <= 0);
-        notifyBadge.textContent = String(notifyUnreadCount);
+        const unread = currentUser ? Math.max(0, Number(userState?.notificationsUnread || 0)) : 0;
+        notifyBadge.classList.toggle("hidden", unread <= 0);
+        notifyBadge.textContent = String(unread);
       }
     }
 
@@ -1963,7 +2025,7 @@
     function renderReadingStrip(){
       const items = getReadingStories();
       if (!items.length){
-        readingStrip.innerHTML = `<div class="panel muted" style="width:100%">Chưa có truyện. Hãy thêm dữ liệu vào Firestore collection <b>stories</b>.</div>`;
+        readingStrip.innerHTML = `<div class="panel muted" style="width:100%">Chưa có truyện. Hãy thêm dữ liệu truyện/ảnh/chương trực tiếp trong file HTML.</div>`;
         return;
       }
       readingStrip.innerHTML = items.map(s => {
@@ -2066,6 +2128,7 @@
       }
 
       setHomeVisible(false);
+      bumpStoryView(storyId).catch(err => console.warn("bumpStoryView error", err));
 
       storyPageCover.src = s.cover || "";
       storyPageCover.alt = s.title || "";
@@ -2119,7 +2182,7 @@
         }
         storyPageChapters.innerHTML = `
           <div class="chapter-list-wrap">${html.join("")}</div>
-          <div class="muted" style="margin-top:10px">Đang hiển thị ${showCount}/${chapterCount} chương (demo UI). Bạn có thể nối collection chapters sau.</div>
+          <div class="muted" style="margin-top:10px">Đang hiển thị ${showCount}/${chapterCount} chương. Hãy khai báo dữ liệu chương trực tiếp trong file HTML (không dùng Firebase để CRUD nội dung).</div>
         `;
       }
       storyPageChapters.onclick = async (e) => {
@@ -2165,10 +2228,13 @@
       const refUser = doc(db, "users", user.uid);
       userStateUnsub = onSnapshot(refUser, (snap) => {
         const data = snap.data() || {};
+        const nextNotifications = normalizeNotifications(data.notifications);
         userState = {
           followedIds: Array.isArray(data.followedIds) ? data.followedIds : [],
           historyIds: Array.isArray(data.historyIds) ? data.historyIds : [],
           lastReading: (data.lastReading && typeof data.lastReading === "object") ? data.lastReading : {},
+          notifications: nextNotifications,
+          notificationsUnread: countUnreadNotifications(nextNotifications),
           updatedAt: data.lastSeenAt || null
         };
         renderAll();
@@ -2184,15 +2250,22 @@
         toast("Đăng nhập để đồng bộ.");
         return false;
       }
+
+      let nextPatch = { ...(patch || {}) };
+      if (Object.prototype.hasOwnProperty.call(nextPatch, "notifications")){
+        nextPatch.notifications = normalizeNotifications(nextPatch.notifications);
+        nextPatch.notificationsUnread = countUnreadNotifications(nextPatch.notifications);
+      }
+
       if (!ENABLE_FIREBASE || !db){
-        Object.assign(userState, patch);
+        Object.assign(userState, nextPatch);
         renderAll();
         renderRoute();
         return true;
       }
       try{
         const refUser = doc(db, "users", currentUser.uid);
-        await setDoc(refUser, { ...patch, lastSeenAt: serverTimestamp() }, { merge: true });
+        await setDoc(refUser, { ...nextPatch, lastSeenAt: serverTimestamp() }, { merge: true });
         return true;
       }catch(err){
         console.error(err);
@@ -2203,200 +2276,211 @@
 
     async function toggleFollowStory(storyId){
       const next = new Set(userState.followedIds);
-      if (next.has(storyId)) next.delete(storyId);
+      const wasFollowed = next.has(storyId);
+      if (wasFollowed) next.delete(storyId);
       else next.add(storyId);
+
       const ok = await saveUserStatePatch({ followedIds: [...next] });
-      if (ok) toast(next.has(storyId) ? "Đã theo dõi truyện" : "Đã bỏ theo dõi");
+      if (ok){
+        const nowFollowed = next.has(storyId);
+        toast(nowFollowed ? "Đã theo dõi truyện" : "Đã bỏ theo dõi");
+
+        const s = storyById(storyId);
+        if (currentUser){
+          pushAccountNotification({
+            type: nowFollowed ? "follow_add" : "follow_remove",
+            title: nowFollowed ? "Đã theo dõi truyện" : "Đã bỏ theo dõi truyện",
+            sub: s?.title || storyId
+          }).catch(err => console.warn("push follow notification error", err));
+        }
+      }
     }
 
     async function markReadStory(storyId){
+      const wasInHistory = userState.historyIds.includes(storyId);
       const nextHistory = [storyId, ...userState.historyIds.filter(id => id !== storyId)].slice(0, 50);
       const lastReading = { ...(userState.lastReading || {}), [storyId]: 1 };
       const ok = await saveUserStatePatch({ historyIds: nextHistory, lastReading });
-      if (ok) toast("Đã lưu vào lịch sử đọc");
+      if (ok){
+        toast("Đã lưu vào lịch sử đọc");
+        if (currentUser && !wasInHistory){
+          const s = storyById(storyId);
+          pushAccountNotification({
+            type: "history_add",
+            title: "Đã lưu vào lịch sử đọc",
+            sub: s?.title || storyId
+          }).catch(err => console.warn("push history notification error", err));
+        }
+      }
+      // Đồng bộ lượt xem dùng Firebase RTDB, không ảnh hưởng dữ liệu truyện trong HTML.
+      bumpStoryView(storyId).catch(err => console.warn("bumpStoryView error", err));
     }
 
     /* ============================
-       10) Load stories
+       10) Load stories (HTML tĩnh)
        ============================ */
     async function loadStories(){
-      if (ENABLE_FIREBASE && db){
-        try{
-          const snap = await getDocs(collection(db, "stories"));
-          const arr = [];
-          snap.forEach(docSnap => {
-            const d = docSnap.data() || {};
-            let updatedAtMs = Date.now();
-            if (d.updatedAt?.toMillis) updatedAtMs = d.updatedAt.toMillis();
-            else if (typeof d.updatedAtMs === "number") updatedAtMs = d.updatedAtMs;
-
-            arr.push({
-              id: docSnap.id,
-              title: d.title || "Chưa có tên",
-              author: d.author || "Chưa rõ",
-              cover: d.cover || "https://placehold.co/300x400/1f2235/ffffff?text=No+Cover",
-              desc: d.desc || "",
-              chapters: Number(d.chapters || 0),
-              views: Number(d.views || 0),
-              rating: Number(d.rating || 0),
-              category: d.category || "",
-              status: d.status || "Đang ra",
-              updatedAtText: d.updatedAtText || "Mới cập nhật",
-              updatedAtMs
-            });
-          });
-
-          if (arr.length > 0) stories = arr;
-          else stories = USE_LOCAL_SEED_WHEN_EMPTY ? localSeedStories : [];
-        } catch (err){
-          console.error("loadStories error:", err);
-          toast("Lỗi tải truyện từ Firebase, đang dùng dữ liệu test.");
-          stories = localSeedStories;
-        }
-      } else {
-        stories = localSeedStories;
-      }
+      // Dữ liệu nội dung truyện/chương/ảnh nằm trong HTML tĩnh, KHÔNG đọc từ Firebase.
+      stories = cloneStoriesFromHtml();
+      applyRemoteViewMapToStories();
       renderAll();
       renderRoute();
     }
 
     /* ============================
-       11) Realtime presence (optional)
+       11) Realtime presence + view sync
        ============================ */
-    function startRtdbConnectionWatcher(){
-      if (!ENABLE_FIREBASE || !rtdb || !ref || !onValue) return;
-      if (typeof rtdbConnUnsub === "function") return;
+    function startStoryViewsSync(){
+      if (!ENABLE_FIREBASE || !rtdb) return;
       try{
-        const connRef = ref(rtdb, ".info/connected");
-        rtdbConnUnsub = onValue(connRef, (snap) => {
-          const connected = !!snap.val();
-          const prev = rtdbConnected;
-          rtdbConnected = connected;
-
-          if (connected){
-            setWebsiteOnlineState(true);
-            if (prev === false) pushNotification("Realtime đã kết nối lại", "Đồng bộ online đang hoạt động.", { key: "rtdb-reconnected", dedupeMs: 5000 });
-            startPresenceSession();
-          } else {
-            // Trên mobile/webview có lúc .info/connected chập chờn; nếu trình duyệt vẫn online thì giữ trạng thái Online.
-            const browserSaysOnline = (typeof navigator === "undefined") ? true : (navigator.onLine !== false);
-            setWebsiteOnlineState(browserSaysOnline);
-            if (prev === true && !browserSaysOnline){
-              pushNotification("Realtime mất kết nối", "Đang chờ mạng để cập nhật số online.", { key: "rtdb-disconnected", dedupeMs: 5000 });
-            }
-          }
+        const viewsRef = ref(rtdb, "stats/storyViews");
+        if (typeof storyViewsUnsub === "function") storyViewsUnsub();
+        storyViewsUnsub = onValue(viewsRef, (snap) => {
+          storyViewsMap = snap.val() || {};
+          applyRemoteViewMapToStories();
         }, (err) => {
-          console.warn(".info/connected error", err);
+          console.warn("storyViews sync error", err);
         });
       }catch(e){
-        console.warn("startRtdbConnectionWatcher error", e);
+        console.warn("startStoryViewsSync error", e);
       }
     }
 
-    function startPresenceSession(){
-      if (!ENABLE_FIREBASE || !rtdb) return;
-      if (!websiteIsOnline) return;
-      if (rtdbConnected === false) return;
+    async function bumpStoryView(storyId){
+      if (!ENABLE_FIREBASE || !rtdb || !storyId || !runTransaction) return;
       try{
-        startRtdbConnectionWatcher();
-        presenceMeRef = ref(rtdb, `presence/${presenceSessionId}`);
+        const key = `story_view_ping_${storyId}`;
+        const now = Date.now();
+        const last = Number(sessionStorage.getItem(key) || "0");
+        // Chống tăng view lặp quá nhanh do render lại.
+        if (now - last < 45 * 1000) return;
+        sessionStorage.setItem(key, String(now));
 
-        const writePresence = () => {
-          if (!presenceMeRef || !websiteIsOnline) return;
-          const payload = {
-            online: true,
-            ts: Date.now(),
-            guest: !currentUser,
-            uid: currentUser?.uid || null,
-            name: currentUser?.displayName || currentUser?.email || "Khách"
-          };
-          Promise.resolve(set(presenceMeRef, payload)).then(() => {
-            // Nếu ghi thành công thì coi như web đang online (không hiển thị số ảo).
-            if (!websiteIsOnline) setWebsiteOnlineState(true);
-          }).catch((e) => {
-            console.warn("presence set error", e);
-            hasRealtimePresenceCount = false;
-            syncHeaderOnlineStatus();
-          });
-        };
+        const countRef = ref(rtdb, `stats/storyViews/${storyId}/count`);
+        await runTransaction(countRef, (current) => {
+          const n = Number(current || 0);
+          return Number.isFinite(n) ? (n + 1) : 1;
+        });
+      }catch(e){
+        console.warn("bumpStoryView tx error", e);
+      }
+    }
 
-        writePresence();
+    function isPresenceEntryActive(v, nowTs){
+      if (!v || v.online === false) return false;
+      const ts = Number(v.ts || 0);
+      if (!ts) return true;
+      return (Number(nowTs || Date.now()) - ts) <= 90 * 1000;
+    }
+
+    function startPresence(user){
+      // Realtime online cho toàn bộ người truy cập web (không bắt buộc đăng nhập).
+      if (!ENABLE_FIREBASE || !rtdb) return;
+      try{
+        if (!presenceSessionId) presenceSessionId = getSessionId();
+        const meRef = ref(rtdb, `stats/onlineSessions/${presenceSessionId}`);
+
+        const buildPayload = () => ({
+          online: true,
+          ts: Date.now(),
+          uid: user?.uid || null,
+          name: user?.displayName || "Khách",
+          email: user?.email || null
+        });
+
+        // Ghi presence lần đầu + heartbeat để tránh session "treo" lâu.
+        set(meRef, buildPayload());
+
+        if (presenceHeartbeatTimer) clearInterval(presenceHeartbeatTimer);
+        presenceHeartbeatTimer = setInterval(() => {
+          if (!websiteIsOnline) return;
+          try { set(meRef, buildPayload()); } catch(_){}
+        }, 25000);
 
         try {
-          const dc = onDisconnect(presenceMeRef);
+          const dc = onDisconnect(meRef);
           if (dc && typeof dc.remove === "function") dc.remove();
         } catch (e) {
           console.warn("onDisconnect remove error", e);
         }
 
-        if (!presenceHeartbeatTimer){
-          presenceHeartbeatTimer = setInterval(() => {
-            if (!websiteIsOnline) return;
-            writePresence();
-          }, PRESENCE_HEARTBEAT_MS);
-        }
+        const presRef = ref(rtdb, "stats/onlineSessions");
+        if (typeof presenceUnsub === "function") presenceUnsub();
+        presenceUnsub = onValue(presRef, (snap) => {
+          const val = snap.val() || {};
+          const now = Date.now();
 
-        const presRef = ref(rtdb, "presence");
-        if (typeof presenceUnsub !== "function"){
-          presenceUnsub = onValue(presRef, (snap) => {
-            const val = snap.val() || {};
-            const now = Date.now();
-            const count = Object.values(val).filter(v => {
-              if (!v || v.online === false) return false;
-              const ts = Number(v.ts || 0);
-              if (!ts) return false;
-              return (now - ts) <= PRESENCE_TTL_MS;
-            }).length;
-            hasRealtimePresenceCount = true;
-            lastOnlineCountSeen = count;
-            setOnlineCountText(count);
-            if (!seenFirstPresenceSnapshot){
-              seenFirstPresenceSnapshot = true;
-            }
-          }, (err) => {
-            hasRealtimePresenceCount = false;
-            console.warn("presence count error", err);
-            syncHeaderOnlineStatus();
+          // Đếm online theo tài khoản: 1 tài khoản mở nhiều tab vẫn chỉ tính 1.
+          // Khách chưa đăng nhập (không có uid) vẫn tính theo từng session.
+          const activeUidSet = new Set();
+          let guestCount = 0;
+
+          Object.values(val).forEach((v) => {
+            if (!isPresenceEntryActive(v, now)) return;
+            const uid = (typeof v?.uid === "string" && v.uid.trim()) ? v.uid.trim() : "";
+            if (uid) activeUidSet.add(uid);
+            else guestCount += 1;
           });
-        }
-      } catch (e){
-        hasRealtimePresenceCount = false;
-        console.warn("presence error", e);
-        syncHeaderOnlineStatus();
-      }
-    }
 
-    function refreshPresenceSession(){
-      if (!ENABLE_FIREBASE || !rtdb) return;
-      startRtdbConnectionWatcher();
-      if (!websiteIsOnline) return;
-      startPresenceSession();
+          let count = activeUidSet.size + guestCount;
+
+          // Tính cả chính mình khi đang mở website: nếu snapshot chưa kịp phản ánh session local,
+          // cộng bù 1 lần theo đúng chế độ "theo tài khoản" (nếu đã đăng nhập thì bù theo uid; nếu khách thì bù 1 session).
+          const myEntry = presenceSessionId ? val[presenceSessionId] : null;
+          const hasMeInSnapshot = isPresenceEntryActive(myEntry, now);
+          if (websiteIsOnline && presenceSessionId && !hasMeInSnapshot) {
+            const myUid = (typeof currentUser?.uid === "string" && currentUser.uid.trim()) ? currentUser.uid.trim() : "";
+            if (myUid) {
+              if (!activeUidSet.has(myUid)) count += 1;
+            } else {
+              count += 1;
+            }
+          }
+
+          setOnlineCountText(count);
+        }, (err) => {
+          console.warn("presence listen error", err);
+        });
+
+        presenceStarted = true;
+      } catch (e){
+        console.warn("presence error", e);
+      }
     }
 
     /* ============================
        12) Auth init
        ============================ */
     function initAuth(){
-      if (!ENABLE_FIREBASE || !auth || !onAuthStateChanged){
+      if (!ENABLE_FIREBASE){
         applyUserUI();
         return;
       }
       onAuthStateChanged(auth, async (user) => {
-        const prevUser = currentUser;
         currentUser = user || null;
         applyUserUI();
 
         if (user){
-          if (!prevUser || prevUser.uid !== user.uid) pushNotification("Đăng nhập thành công", `Xin chào ${user.displayName || user.email || "bạn"}.`, { key: "login-success", dedupeMs: 4000 });
           await ensureUserDoc(user);
           startUserStateListener(user);
-          refreshPresenceSession();
+          startPresence(user);
+
+          try{
+            const loginNoticeKey = `login_notice_${user.uid}`;
+            if (!sessionStorage.getItem(loginNoticeKey)){
+              sessionStorage.setItem(loginNoticeKey, "1");
+              pushAccountNotification({
+                type: "auth",
+                title: "Đăng nhập thành công",
+                sub: "Tài khoản đã kết nối để đồng bộ theo dõi, lịch sử đọc, thông báo."
+              }).catch(err => console.warn("push login notification error", err));
+            }
+          }catch(_){}
         } else {
-          if (prevUser) pushNotification("Đã đăng xuất", "Bạn đang dùng web ở chế độ khách.", { key: "logout", dedupeMs: 4000 });
           if (userStateUnsub) userStateUnsub();
           userStateUnsub = null;
-          userState = { followedIds: [], historyIds: [], lastReading: {} };
-          refreshPresenceSession();
+          userState = { followedIds: [], historyIds: [], lastReading: {}, notifications: [], notificationsUnread: 0 };
+          startPresence(null); // vẫn giữ realtime online cho khách
           syncHeaderOnlineStatus();
           closeNotifyPanel();
           renderAll();
@@ -2442,7 +2526,7 @@
     });
 
     btnSearch?.addEventListener("click", () => openSearchPanel());
-    $("#btnNap").addEventListener("click", () => toast("Nút nạp - nối Firebase/Payment sau"));
+    $("#btnNap").addEventListener("click", () => toast("Nút nạp - nối cổng thanh toán sau (không dùng Firebase để quản lý nội dung truyện)"));
     btnNotify?.addEventListener("click", (e) => { e.stopPropagation(); toggleNotifyPanel(); });
     btnTheme?.addEventListener("click", () => toggleTheme());
     $("#btnMenu").addEventListener("click", (e) => { e.stopPropagation(); toggleSideMenu(); });
@@ -2493,20 +2577,27 @@
     });
 
     onlinePill?.addEventListener("click", () => {
-      if (websiteIsOnline) toast("Website đang online • " + ($("#onlineCount")?.textContent || "0") + " người");
-      else toast("Website đang offline");
+      const count = Number($("#onlineCount")?.textContent || "0");
+      if (!websiteIsOnline) return toast("Website đang offline");
+      if (count <= 0) return toast("Hiện chưa có người online");
+      toast("Đang online: " + count + " tài khoản/người dùng trên website (bao gồm bạn)");
     });
 
-    window.addEventListener("online", () => { setWebsiteOnlineState(true); refreshPresenceSession(); });
-    window.addEventListener("offline", () => {
-      const allowOffline = (typeof navigator !== "undefined") ? (navigator.onLine === false) : true;
-      if (allowOffline) setWebsiteOnlineState(false);
-    });
+    window.addEventListener("online", () => setWebsiteOnlineState(true));
+    window.addEventListener("offline", () => setWebsiteOnlineState(false));
 
-    // Giữ trạng thái header đồng bộ; không bơm số online ảo.
-    setInterval(() => {
-      syncHeaderOnlineStatus();
-    }, 18000);
+    // Best-effort: rời trang thì đánh dấu offline ngay (onDisconnect vẫn là lớp bảo vệ chính).
+    const markPresenceOfflineNow = () => {
+      try{
+        if (!ENABLE_FIREBASE || !rtdb || !presenceSessionId || !set) return;
+        const meRef = ref(rtdb, `stats/onlineSessions/${presenceSessionId}`);
+        set(meRef, { online:false, ts: Date.now(), uid: currentUser?.uid || null });
+      }catch(_){}
+    };
+    window.addEventListener("pagehide", markPresenceOfflineNow);
+    window.addEventListener("beforeunload", markPresenceOfflineNow);
+
+    // Không dùng số online giả lập. Chỉ hiển thị count realtime từ Firebase presence.
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
@@ -2555,8 +2646,8 @@
     });
 
     btnLogin.addEventListener("click", async () => {
-      if (!ENABLE_FIREBASE || !auth || !GoogleAuthProvider || !signInWithPopup){
-        toast("Môi trường hiện tại không tải được Firebase/Đăng nhập (thường do mở bằng content://). Hãy mở trên GitHub Pages hoặc localhost.");
+      if (!ENABLE_FIREBASE){
+        toast("Hãy bật ENABLE_FIREBASE = true (Firebase chỉ dùng cho user sync / lượt xem / online)");
         return;
       }
       try{
@@ -2591,27 +2682,18 @@
 
     window.addEventListener("hashchange", () => { closeSideMenu(); renderRoute(); });
 
-    function cleanupPresenceOnLeave(){
-      if (!ENABLE_FIREBASE || !presenceMeRef) return;
-      try {
-        if (typeof remove === "function") remove(presenceMeRef);
-        else set(presenceMeRef, { online: false, ts: Date.now() });
-      } catch (e) {}
-    }
-    window.addEventListener("pagehide", cleanupPresenceOnLeave);
-    window.addEventListener("beforeunload", cleanupPresenceOnLeave);
-
     /* ============================
        14) Init
        ============================ */
     async function init(){
       if (!location.hash) location.hash = "#/home";
-      await setupFirebaseSdk();
       applyTheme(activeTheme);
       applyUserUI();
       await loadStories();
-      if (ENABLE_FIREBASE) startRtdbConnectionWatcher();
-      refreshPresenceSession();
+      if (ENABLE_FIREBASE){
+        startStoryViewsSync();
+        startPresence(null);
+      }
       initAuth();
       syncHeaderOnlineStatus();
       renderNotificationList();
