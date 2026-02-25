@@ -1051,7 +1051,7 @@
         </button>
 
         <button class="icon-btn" id="btnNotify" title="Thông báo" aria-label="Thông báo">
-          <span class="badge-dot" id="notifyBadge">43</span>
+          <span class="badge-dot hidden" id="notifyBadge">0</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"/>
             <path d="M9 17a3 3 0 0 0 6 0"/>
@@ -1378,7 +1378,7 @@
     let appInit, getAuth;
     let GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, serverTimestamp;
     let getFirestore, doc, setDoc, onSnapshot, collection, getDocs;
-    let getDatabase, ref, set, onDisconnect, onValue;
+    let getDatabase, ref, set, onDisconnect, onValue, remove;
     let firebaseInitError = null;
     const safeLs = {
       get(key, fallback = null){ try { const v = localStorage.getItem(key); return v == null ? fallback : v; } catch(_) { return fallback; } },
@@ -1415,7 +1415,8 @@
           ref,
           set,
           onDisconnect,
-          onValue
+          onValue,
+          remove
         } = fbRtdb);
 
         app = appInit(firebaseConfig);
@@ -1525,6 +1526,17 @@
     let userStateUnsub = null;
     let presenceMeRef = null;
     let hasRealtimePresenceCount = false;
+    let presenceHeartbeatTimer = null;
+    let rtdbConnUnsub = null;
+    let rtdbConnected = null;
+    let lastOnlineCountSeen = null;
+    let seenFirstPresenceSnapshot = false;
+    let notifications = [];
+    let notifyUnreadCount = 0;
+    const notifyDedupeMap = new Map();
+    const MAX_NOTIFY_ITEMS = 40;
+    const PRESENCE_HEARTBEAT_MS = 25000;
+    const PRESENCE_TTL_MS = 90000;
     const presenceSessionId = (() => {
       try {
         const k = "presence_session_id";
@@ -1543,14 +1555,43 @@
 
     let activeTheme = safeLs.get("theme_mode", "dark") || "dark";
     let websiteIsOnline = (typeof navigator !== "undefined") ? navigator.onLine : true;
-    let fallbackOnlineCount = Number(safeLs.get("fallback_online_count", "12") || "12");
-    if (!Number.isFinite(fallbackOnlineCount) || fallbackOnlineCount < 1) fallbackOnlineCount = 12;
 
-    const demoNotifications = [
-      { title: "Chào mừng quay lại", sub: "Bạn đã đăng nhập thành công trên web." },
-      { title: "Mới cập nhật truyện", sub: "Có truyện mới trong danh sách cập nhật gần đây." },
-      { title: "Mẹo sử dụng", sub: "Dùng ô tìm kiếm để lọc truyện theo tên/tác giả/thể loại." }
-    ];
+    function pushNotification(title, sub, opts = {}){
+      const now = Date.now();
+      const key = opts.key || null;
+      const dedupeMs = Number.isFinite(opts.dedupeMs) ? opts.dedupeMs : 6000;
+      if (key){
+        const last = notifyDedupeMap.get(key) || 0;
+        if (now - last < dedupeMs) return;
+        notifyDedupeMap.set(key, now);
+      }
+      notifications.unshift({
+        id: (typeof crypto !== "undefined" && crypto.randomUUID) ? crypto.randomUUID() : ("n_" + now + "_" + Math.random().toString(36).slice(2,7)),
+        title: String(title || "Thông báo"),
+        sub: String(sub || ""),
+        ts: now
+      });
+      if (notifications.length > MAX_NOTIFY_ITEMS) notifications.length = MAX_NOTIFY_ITEMS;
+      notifyUnreadCount = Math.min(99, notifyUnreadCount + 1);
+      renderNotificationList();
+    }
+
+    function formatNotifyTime(ts){
+      try{
+        const d = new Date(ts || Date.now());
+        const hh = String(d.getHours()).padStart(2, "0");
+        const mm = String(d.getMinutes()).padStart(2, "0");
+        return `${hh}:${mm}`;
+      }catch(_){ return ""; }
+    }
+
+    function markNotificationsRead(){
+      notifyUnreadCount = 0;
+      if (notifyBadge){
+        notifyBadge.classList.add("hidden");
+        notifyBadge.textContent = "0";
+      }
+    }
 
     /* ============================
        5) DOM refs
@@ -1755,12 +1796,8 @@
     function setOnlineCountText(val){
       const el = $("#onlineCount");
       if (!el) return;
-      el.textContent = String(val);
-    }
-    function getFallbackOnlineCount(){
-      if (!websiteIsOnline) return 0;
-      if (!(fallbackOnlineCount >= 1)) fallbackOnlineCount = 12;
-      return fallbackOnlineCount;
+      const n = Number(val);
+      el.textContent = Number.isFinite(n) && n >= 0 ? String(n) : "0";
     }
     function syncHeaderOnlineStatus(){
       onlinePill?.classList.remove("hidden");
@@ -1770,29 +1807,40 @@
       if (textEl) textEl.textContent = websiteIsOnline ? "Online" : "Offline";
 
       onlinePill?.setAttribute("title", websiteIsOnline ? "Website đang online" : "Website đang offline");
-      btnNotify?.setAttribute("title", websiteIsOnline ? "Thông báo" : "Thông báo (đang offline)");
+      btnNotify?.setAttribute("title", "Thông báo");
 
       if (!websiteIsOnline){
         setOnlineCountText(0);
-        closeNotifyPanel();
         return;
       }
 
-      // Nếu chưa có realtime presence, hiển thị số online tạm để vẫn hiện trạng thái web online.
-      if (!ENABLE_FIREBASE || !hasRealtimePresenceCount){
-        setOnlineCountText(getFallbackOnlineCount());
+      // Chỉ hiển thị số online từ realtime (không dùng số ảo).
+      if (!ENABLE_FIREBASE){
+        setOnlineCountText(0);
+      } else if (!hasRealtimePresenceCount && !lastOnlineCountSeen){
+        setOnlineCountText(0);
       }
     }
     function setWebsiteOnlineState(next){
+      const prev = websiteIsOnline;
       websiteIsOnline = !!next;
-      if (websiteIsOnline){
-        // Tạo dao động nhẹ cho số online hiển thị (không thay thế realtime count Firebase).
-        const delta = [-2,-1,0,1,2][Math.floor(Math.random()*5)];
-        fallbackOnlineCount = Math.max(1, Math.min(9999, (fallbackOnlineCount || 12) + delta));
-        safeLs.set("fallback_online_count", String(fallbackOnlineCount));
-      }
       syncHeaderOnlineStatus();
       renderNotificationList();
+      if (!websiteIsOnline) {
+        hasRealtimePresenceCount = false;
+        if (presenceHeartbeatTimer){
+          clearInterval(presenceHeartbeatTimer);
+          presenceHeartbeatTimer = null;
+        }
+      }
+      if (prev !== websiteIsOnline){
+        if (websiteIsOnline){
+          pushNotification("Website đã online", "Kết nối mạng ổn định.", { key: "web-online", dedupeMs: 5000 });
+        } else {
+          pushNotification("Mất kết nối mạng", "Đang chờ kết nối lại để cập nhật realtime.", { key: "web-offline", dedupeMs: 5000 });
+          closeNotifyPanel();
+        }
+      }
     }
 
     function closeNotifyPanel(){
@@ -1803,19 +1851,12 @@
       notifyBackdrop.setAttribute("aria-hidden","true");
     }
     function openNotifyPanel(){
-      if (!websiteIsOnline){
-        renderNotificationList();
-        notifyPanel?.classList.add("show");
-        notifyBackdrop?.classList.add("show");
-        notifyPanel?.setAttribute("aria-hidden","false");
-        notifyBackdrop?.setAttribute("aria-hidden","false");
-        return;
-      }
       renderNotificationList();
       notifyPanel?.classList.add("show");
       notifyBackdrop?.classList.add("show");
       notifyPanel?.setAttribute("aria-hidden","false");
       notifyBackdrop?.setAttribute("aria-hidden","false");
+      markNotificationsRead();
     }
     function toggleNotifyPanel(){
       if (notifyPanel?.classList.contains("show")) closeNotifyPanel();
@@ -1825,33 +1866,26 @@
     function renderNotificationList(){
       if (!notifyList) return;
 
-      let items = [];
-      if (!websiteIsOnline){
-        items = [
-          { title: "Website đang offline", sub: "Kết nối mạng bị gián đoạn. Hãy bật mạng để nhận thông báo mới." }
-        ];
-      } else if (currentUser){
-        items = [
-          { title: "Xin chào " + esc(currentUser.displayName || "bạn"), sub: "Bạn đang online trên website." },
-          ...demoNotifications
-        ];
+      const items = notifications.slice();
+      if (!items.length){
+        notifyList.innerHTML = `
+          <div class="notify-item">
+            <div class="title">Chưa có thông báo mới</div>
+            <div class="sub">Thông báo sẽ xuất hiện khi có sự kiện thật (đăng nhập, cập nhật kết nối, realtime...).</div>
+          </div>
+        `;
       } else {
-        items = [
-          { title: "Website đang online", sub: "Bạn có thể xem thông báo chung mà không cần đăng nhập Google." },
-          ...demoNotifications
-        ];
+        notifyList.innerHTML = items.map(n => `
+          <div class="notify-item">
+            <div class="title">${esc(n.title)}</div>
+            <div class="sub">${esc(n.sub)}${n.ts ? ` • ${formatNotifyTime(n.ts)}` : ""}</div>
+          </div>
+        `).join("");
       }
 
-      notifyList.innerHTML = items.map(n => `
-        <div class="notify-item">
-          <div class="title">${n.title}</div>
-          <div class="sub">${n.sub}</div>
-        </div>
-      `).join("");
-
       if (notifyBadge){
-        notifyBadge.classList.toggle("hidden", items.length <= 0);
-        notifyBadge.textContent = String(items.length);
+        notifyBadge.classList.toggle("hidden", notifyUnreadCount <= 0);
+        notifyBadge.textContent = String(notifyUnreadCount);
       }
     }
 
@@ -2229,20 +2263,64 @@
     /* ============================
        11) Realtime presence (optional)
        ============================ */
-    function startPresenceSession(){
-      if (!ENABLE_FIREBASE || !rtdb || !websiteIsOnline) return;
+    function startRtdbConnectionWatcher(){
+      if (!ENABLE_FIREBASE || !rtdb || !ref || !onValue) return;
+      if (typeof rtdbConnUnsub === "function") return;
       try{
-        presenceMeRef = ref(rtdb, `presence/${presenceSessionId}`);
-        const payload = {
-          online: true,
-          ts: Date.now(),
-          guest: !currentUser,
-          uid: currentUser?.uid || null,
-          name: currentUser?.displayName || currentUser?.email || "Khách"
-        };
-        Promise.resolve(set(presenceMeRef, payload)).catch((e) => {
-          console.warn("presence set error", e);
+        const connRef = ref(rtdb, ".info/connected");
+        rtdbConnUnsub = onValue(connRef, (snap) => {
+          const connected = !!snap.val();
+          const prev = rtdbConnected;
+          rtdbConnected = connected;
+
+          if (connected){
+            setWebsiteOnlineState(true);
+            if (prev === false) pushNotification("Realtime đã kết nối lại", "Đồng bộ online đang hoạt động.", { key: "rtdb-reconnected", dedupeMs: 5000 });
+            startPresenceSession();
+          } else {
+            // Trên mobile/webview có lúc .info/connected chập chờn; nếu trình duyệt vẫn online thì giữ trạng thái Online.
+            const browserSaysOnline = (typeof navigator === "undefined") ? true : (navigator.onLine !== false);
+            setWebsiteOnlineState(browserSaysOnline);
+            if (prev === true && !browserSaysOnline){
+              pushNotification("Realtime mất kết nối", "Đang chờ mạng để cập nhật số online.", { key: "rtdb-disconnected", dedupeMs: 5000 });
+            }
+          }
+        }, (err) => {
+          console.warn(".info/connected error", err);
         });
+      }catch(e){
+        console.warn("startRtdbConnectionWatcher error", e);
+      }
+    }
+
+    function startPresenceSession(){
+      if (!ENABLE_FIREBASE || !rtdb) return;
+      if (!websiteIsOnline) return;
+      if (rtdbConnected === false) return;
+      try{
+        startRtdbConnectionWatcher();
+        presenceMeRef = ref(rtdb, `presence/${presenceSessionId}`);
+
+        const writePresence = () => {
+          if (!presenceMeRef || !websiteIsOnline) return;
+          const payload = {
+            online: true,
+            ts: Date.now(),
+            guest: !currentUser,
+            uid: currentUser?.uid || null,
+            name: currentUser?.displayName || currentUser?.email || "Khách"
+          };
+          Promise.resolve(set(presenceMeRef, payload)).then(() => {
+            // Nếu ghi thành công thì coi như web đang online (không hiển thị số ảo).
+            if (!websiteIsOnline) setWebsiteOnlineState(true);
+          }).catch((e) => {
+            console.warn("presence set error", e);
+            hasRealtimePresenceCount = false;
+            syncHeaderOnlineStatus();
+          });
+        };
+
+        writePresence();
 
         try {
           const dc = onDisconnect(presenceMeRef);
@@ -2251,26 +2329,46 @@
           console.warn("onDisconnect remove error", e);
         }
 
+        if (!presenceHeartbeatTimer){
+          presenceHeartbeatTimer = setInterval(() => {
+            if (!websiteIsOnline) return;
+            writePresence();
+          }, PRESENCE_HEARTBEAT_MS);
+        }
+
         const presRef = ref(rtdb, "presence");
         if (typeof presenceUnsub !== "function"){
           presenceUnsub = onValue(presRef, (snap) => {
             const val = snap.val() || {};
-            const count = Object.values(val).filter(v => v && v.online !== false).length;
+            const now = Date.now();
+            const count = Object.values(val).filter(v => {
+              if (!v || v.online === false) return false;
+              const ts = Number(v.ts || 0);
+              if (!ts) return false;
+              return (now - ts) <= PRESENCE_TTL_MS;
+            }).length;
             hasRealtimePresenceCount = true;
+            lastOnlineCountSeen = count;
             setOnlineCountText(count);
+            if (!seenFirstPresenceSnapshot){
+              seenFirstPresenceSnapshot = true;
+            }
           }, (err) => {
             hasRealtimePresenceCount = false;
             console.warn("presence count error", err);
+            syncHeaderOnlineStatus();
           });
         }
       } catch (e){
         hasRealtimePresenceCount = false;
         console.warn("presence error", e);
+        syncHeaderOnlineStatus();
       }
     }
 
     function refreshPresenceSession(){
       if (!ENABLE_FIREBASE || !rtdb) return;
+      startRtdbConnectionWatcher();
       if (!websiteIsOnline) return;
       startPresenceSession();
     }
@@ -2284,14 +2382,17 @@
         return;
       }
       onAuthStateChanged(auth, async (user) => {
+        const prevUser = currentUser;
         currentUser = user || null;
         applyUserUI();
 
         if (user){
+          if (!prevUser || prevUser.uid !== user.uid) pushNotification("Đăng nhập thành công", `Xin chào ${user.displayName || user.email || "bạn"}.`, { key: "login-success", dedupeMs: 4000 });
           await ensureUserDoc(user);
           startUserStateListener(user);
           refreshPresenceSession();
         } else {
+          if (prevUser) pushNotification("Đã đăng xuất", "Bạn đang dùng web ở chế độ khách.", { key: "logout", dedupeMs: 4000 });
           if (userStateUnsub) userStateUnsub();
           userStateUnsub = null;
           userState = { followedIds: [], historyIds: [], lastReading: {} };
@@ -2397,18 +2498,14 @@
     });
 
     window.addEventListener("online", () => { setWebsiteOnlineState(true); refreshPresenceSession(); });
-    window.addEventListener("offline", () => setWebsiteOnlineState(false));
+    window.addEventListener("offline", () => {
+      const allowOffline = (typeof navigator !== "undefined") ? (navigator.onLine === false) : true;
+      if (allowOffline) setWebsiteOnlineState(false);
+    });
 
-    // Dao động nhẹ số online khi không dùng realtime presence (không ảnh hưởng khi đã có count Firebase).
+    // Giữ trạng thái header đồng bộ; không bơm số online ảo.
     setInterval(() => {
-      if (!websiteIsOnline) return;
-      if (ENABLE_FIREBASE && hasRealtimePresenceCount) return;
-      const delta = [-1,0,1][Math.floor(Math.random()*3)];
-      if (delta !== 0){
-        fallbackOnlineCount = Math.max(1, Math.min(9999, (fallbackOnlineCount || 12) + delta));
-        safeLs.set("fallback_online_count", String(fallbackOnlineCount));
-        syncHeaderOnlineStatus();
-      }
+      syncHeaderOnlineStatus();
     }, 18000);
 
     document.addEventListener("keydown", (e) => {
@@ -2494,10 +2591,15 @@
 
     window.addEventListener("hashchange", () => { closeSideMenu(); renderRoute(); });
 
-    window.addEventListener("pagehide", () => {
+    function cleanupPresenceOnLeave(){
       if (!ENABLE_FIREBASE || !presenceMeRef) return;
-      try { set(presenceMeRef, { online: false, ts: Date.now() }); } catch (e) {}
-    });
+      try {
+        if (typeof remove === "function") remove(presenceMeRef);
+        else set(presenceMeRef, { online: false, ts: Date.now() });
+      } catch (e) {}
+    }
+    window.addEventListener("pagehide", cleanupPresenceOnLeave);
+    window.addEventListener("beforeunload", cleanupPresenceOnLeave);
 
     /* ============================
        14) Init
@@ -2508,6 +2610,7 @@
       applyTheme(activeTheme);
       applyUserUI();
       await loadStories();
+      if (ENABLE_FIREBASE) startRtdbConnectionWatcher();
       refreshPresenceSession();
       initAuth();
       syncHeaderOnlineStatus();
