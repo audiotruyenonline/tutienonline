@@ -41,7 +41,9 @@
     }
 
     .topbar{
-      position:relative; z-index:50;
+      position:relative;
+      top:auto;
+      z-index:90;
       height:calc(env(safe-area-inset-top) + var(--header-h));
       padding-top:env(safe-area-inset-top);
       background:linear-gradient(180deg, rgba(6,8,16,.98), rgba(6,8,16,.92));
@@ -230,7 +232,118 @@
       width:32px;height:32px;border-width:1px;
       box-shadow:0 0 0 1px rgba(255,255,255,.04) inset;
     }
-    .caret{opacity:.7}
+    .caret{opacity:.7; transition:transform .18s ease, opacity .18s ease}
+    .avatar-wrap.open{
+      border-color:rgba(114,163,255,.26);
+      box-shadow:0 10px 20px rgba(23,38,76,.22), 0 0 0 1px rgba(114,163,255,.08) inset;
+    }
+    .avatar-wrap.open .caret{transform:rotate(180deg); opacity:1}
+
+    .account-menu{
+      position:absolute;
+      top:calc(env(safe-area-inset-top) + 56px);
+      right:12px;
+      left:auto;
+      width:min(260px, calc(100vw - 20px));
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg,#171d31,#0f1423);
+      box-shadow:0 12px 28px rgba(0,0,0,.34);
+      z-index:120;
+      padding:8px;
+      max-height:calc(100vh - env(safe-area-inset-top) - 18px);
+      overflow:auto;
+    }
+    .account-menu.hidden{display:none!important}
+    .account-menu-head{
+      display:flex; align-items:center; gap:10px;
+      padding:6px;
+      border-radius:10px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.05);
+      margin-bottom:8px;
+    }
+    .account-menu-head .avatar{width:34px;height:34px;border-width:1px}
+    .account-menu-head .name{font-weight:800; font-size:13px; color:#edf2ff; line-height:1.2}
+    .account-menu-head .sub{font-size:10px; color:#9fb0d6; margin-top:2px; line-height:1.3}
+    .account-menu-meta{
+      display:flex; flex-wrap:wrap; gap:6px;
+      margin:0 0 8px;
+    }
+    .account-chip{
+      display:inline-flex; align-items:center; gap:6px;
+      min-height:24px; padding:0 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.02);
+      color:#b9c8eb; font-size:10px; font-weight:700;
+    }
+    .account-chip b{
+      color:#eef3ff; font-size:11px; font-weight:800;
+      max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+    .account-inline-note{
+      margin-top:6px; padding:7px 8px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.02);
+      color:#cfe0ff;
+      font-size:11px; line-height:1.35;
+    }
+    .account-inline-note.hidden{display:none!important}
+    .account-inline-note strong{color:#f2f6ff}
+    .account-inline-note.muted{color:#b9c8eb}
+    .account-inline-note.info{border-color:rgba(95,150,255,.18); background:rgba(95,150,255,.06)}
+    .account-inline-note.warn{border-color:rgba(255,186,87,.18); background:rgba(255,186,87,.06)}
+    .account-menu-list{display:grid; gap:5px}
+    .account-menu-btn{
+      width:100%; height:34px;
+      border-radius:10px; border:1px solid rgba(255,255,255,.06);
+      background:rgba(255,255,255,.02); color:#dfe7ff;
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+      padding:0 9px; cursor:pointer; font-weight:700; font-size:12px;
+    }
+    .account-menu-btn:hover{background:rgba(255,255,255,.05)}
+    .account-menu-btn .left{display:flex; align-items:center; gap:7px}
+    .account-menu-btn .icon{width:16px; text-align:center; opacity:.95}
+    .account-menu-btn.primary{
+      border-color:rgba(93,145,255,.28);
+      background:linear-gradient(180deg, rgba(93,145,255,.18), rgba(93,145,255,.07));
+    }
+    .account-menu-btn.warn{
+      border-color:rgba(255,120,120,.2);
+      background:linear-gradient(180deg, rgba(255,120,120,.14), rgba(255,120,120,.05));
+    }
+    body.theme-light .account-menu{
+      background:linear-gradient(180deg,#ffffff,#f3f6ff);
+      border-color:rgba(25,41,80,.1);
+      box-shadow:0 12px 30px rgba(41,68,126,.18);
+    }
+    body.theme-light .account-menu-head{
+      background:rgba(34,70,170,.03);
+      border-color:rgba(34,70,170,.06);
+    }
+    body.theme-light .account-menu-head .name{color:#1a2340}
+    body.theme-light .account-menu-head .sub{color:#5a6d94}
+    body.theme-light .account-chip{
+      color:#5a6d94;
+      border-color:rgba(30,50,100,.08);
+      background:#fff;
+    }
+    body.theme-light .account-chip b{color:#203258}
+    body.theme-light .account-inline-note{
+      color:#31425f;
+      border-color:rgba(30,50,100,.08);
+      background:#fff;
+    }
+    body.theme-light .account-inline-note.info{background:#f4f8ff; border-color:rgba(81,126,220,.16)}
+    body.theme-light .account-inline-note.warn{background:#fff8ea; border-color:rgba(210,155,51,.16)}
+    body.theme-light .account-menu-btn{
+      color:#263354;
+      border-color:rgba(30,50,100,.08);
+      background:#fff;
+    }
+    body.theme-light .account-menu-btn:hover{background:#f6f9ff}
     @media (max-width:380px){
       .brand::after{display:none}
       .online-text{display:none}
@@ -853,16 +966,19 @@
     .notify-backdrop.show,
     .search-overlay.show{opacity:1; pointer-events:auto}
 
+    .notify-backdrop{z-index:109}
+
     .notify-panel{
-      position:fixed;
+      position:absolute;
       top:calc(env(safe-area-inset-top) + 54px);
       right:12px;
-      width:min(360px, calc(100vw - 24px));
-      border-radius:16px;
+      left:auto;
+      width:min(290px, calc(100vw - 20px));
+      border-radius:14px;
       border:1px solid rgba(255,255,255,.08);
       background:linear-gradient(180deg,#141a2c,#0f1423);
-      box-shadow:0 18px 40px rgba(0,0,0,.35);
-      z-index:80;
+      box-shadow:0 12px 28px rgba(0,0,0,.32);
+      z-index:110;
       transform:translateY(-8px) scale(.98);
       opacity:0; pointer-events:none;
       transition:opacity .18s ease, transform .18s ease;
@@ -871,23 +987,23 @@
     .notify-panel.show{opacity:1; pointer-events:auto; transform:translateY(0) scale(1)}
     .notify-head{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding:12px 12px 10px;
+      padding:9px 10px 8px;
       border-bottom:1px solid rgba(255,255,255,.06);
       background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));
     }
-    .notify-title{font-weight:900; font-size:14px}
+    .notify-title{font-weight:900; font-size:13px}
     .notify-head .close{
-      width:30px;height:30px;border-radius:10px; border:1px solid rgba(255,255,255,.08);
+      width:26px;height:26px;border-radius:8px; border:1px solid rgba(255,255,255,.08);
       background:rgba(255,255,255,.03); color:inherit; cursor:pointer;
     }
-    .notify-list{max-height:320px; overflow:auto; padding:8px}
+    .notify-list{max-height:240px; overflow:auto; padding:6px}
     .notify-item{
-      padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,.06);
-      background:rgba(255,255,255,.02); margin-bottom:8px;
+      padding:8px; border-radius:10px; border:1px solid rgba(255,255,255,.06);
+      background:rgba(255,255,255,.02); margin-bottom:6px;
     }
     .notify-item:last-child{margin-bottom:0}
-    .notify-item .title{font-weight:800; font-size:13px; margin-bottom:4px}
-    .notify-item .sub{font-size:12px; color:var(--muted)}
+    .notify-item .title{font-weight:800; font-size:12px; margin-bottom:3px}
+    .notify-item .sub{font-size:11px; color:var(--muted)}
 
     .search-panel{
       position:fixed; inset:calc(env(safe-area-inset-top) + 10px) 12px auto 12px;
@@ -1087,6 +1203,33 @@
     </div>
   </header>
 
+  <div class="account-menu hidden" id="accountMenu" aria-hidden="true">
+    <div class="account-menu-head">
+      <div class="avatar" id="profileAvatar">?</div>
+      <div style="min-width:0">
+        <div class="name" id="profileName">Khách</div>
+        <div class="sub" id="profileSub">Đăng nhập để đồng bộ theo dõi / lịch sử đọc bằng Firebase</div>
+      </div>
+    </div>
+    <div class="account-menu-meta">
+      <div class="account-chip"><span>TK</span><b id="accountAuthState">Khách</b></div>
+      <div class="account-chip"><span>VIP</span><b id="accountVipState">Thường</b></div>
+    </div>
+    <div class="account-menu-list">
+      <button class="account-menu-btn" id="btnAccountProfile" type="button">
+        <span class="left"><span class="icon">👤</span><span>Tài khoản</span></span>
+        <span>›</span>
+      </button>
+      <button class="account-menu-btn" id="btnAccountVip" type="button">
+        <span class="left"><span class="icon">👑</span><span>VIP</span></span>
+        <span>›</span>
+      </button>
+      <button class="account-menu-btn primary" id="btnLogin" type="button">Đăng nhập Google</button>
+      <button class="account-menu-btn warn hidden" id="btnLogout" type="button">Đăng xuất</button>
+    </div>
+    <div class="account-inline-note hidden muted" id="accountInlineNote"></div>
+  </div>
+
   <div class="drawer-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
   <aside class="side-drawer" id="sideMenu" aria-hidden="true" aria-label="Menu thể loại và bảng xếp hạng">
     <div class="side-drawer-head">
@@ -1142,22 +1285,6 @@
   <main class="app">
     <!-- HOME PAGE -->
     <div class="page" id="homePage">
-      <section class="section">
-        <div class="panel auth-panel">
-          <div class="auth-left">
-            <div class="avatar" id="profileAvatar">?</div>
-            <div class="auth-text">
-              <div class="name" id="profileName">Khách</div>
-              <div class="sub" id="profileSub">Đăng nhập để đồng bộ theo dõi / lịch sử đọc bằng Firebase</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
-            <button class="btn" id="btnLogin">Đăng nhập Google</button>
-            <button class="btn hidden" id="btnLogout">Đăng xuất</button>
-          </div>
-        </div>
-      </section>
-
       <section class="section">
         <div class="section-head">
           <div class="section-title">
@@ -1573,6 +1700,13 @@
     const btnNotify = $("#btnNotify");
     const notifyBadge = $("#notifyBadge");
     const btnSearch = $("#btnSearch");
+    const btnAccount = $("#btnAccount");
+    const accountMenu = $("#accountMenu");
+    const btnAccountProfile = $("#btnAccountProfile");
+    const btnAccountVip = $("#btnAccountVip");
+    const accountAuthState = $("#accountAuthState");
+    const accountVipState = $("#accountVipState");
+    const accountInlineNote = $("#accountInlineNote");
     const btnTheme = $("#btnTheme");
 
     const notifyPanel = $("#notifyPanel");
@@ -1607,6 +1741,51 @@
       sideMenuOverlay.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
     }
+
+    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+    function positionFloatingPanel(panelEl, anchorEl, opts = {}){
+      if (!panelEl || !anchorEl) return;
+      const margin = Number(opts.margin ?? 12);
+      const gap = Number(opts.gap ?? 8);
+      const align = opts.align || "right";
+      const rect = anchorEl.getBoundingClientRect();
+      const viewportW = window.innerWidth || document.documentElement.clientWidth || 360;
+      const viewportH = window.innerHeight || document.documentElement.clientHeight || 640;
+      const pageX = window.scrollX || window.pageXOffset || 0;
+      const pageY = window.scrollY || window.pageYOffset || 0;
+
+      let panelW = panelEl.offsetWidth || 0;
+      if (!panelW){
+        panelW = Math.min(Number(opts.maxWidth || 320), viewportW - margin * 2);
+      }
+      const panelH = panelEl.offsetHeight || 0;
+
+      let left = (align === "left" ? rect.left : rect.right - panelW) + pageX;
+      left = clamp(left, pageX + margin, Math.max(pageX + margin, pageX + viewportW - panelW - margin));
+
+      let top = rect.bottom + gap + pageY;
+      if (panelH){
+        const maxTop = pageY + viewportH - panelH - margin;
+        if (top > maxTop) top = Math.max(pageY + margin, maxTop);
+      } else {
+        top = clamp(top, pageY + margin, pageY + viewportH - margin - 80);
+      }
+
+      panelEl.style.left = `${Math.round(left)}px`;
+      panelEl.style.right = "auto";
+      panelEl.style.top = `${Math.round(top)}px`;
+    }
+
+    function positionFloatingPanels(){
+      if (notifyPanel && btnNotify){
+        positionFloatingPanel(notifyPanel, btnNotify, { maxWidth: 290, gap: 6, align: "right" });
+      }
+      if (accountMenu && btnAccount){
+        positionFloatingPanel(accountMenu, btnAccount, { maxWidth: 260, gap: 6, align: "right" });
+      }
+    }
+
     function toggleSideMenu(){
       if (!sideMenu) return;
       sideMenu.classList.contains("open") ? closeSideMenu() : openSideMenu();
@@ -1692,6 +1871,75 @@
 
     function getAccountNotifications(){
       return normalizeNotifications(userState?.notifications || []);
+    }
+
+    function getVipSummary(){
+      let label = "Thường";
+      let detail = "Chưa kích hoạt";
+      let active = false;
+
+      const rawVip = userState?.vipInfo ?? userState?.vip ?? null;
+      const isVipFlag = userState?.isVip === true || userState?.vipActive === true;
+
+      if (typeof rawVip === "string" && rawVip.trim()){
+        label = rawVip.trim();
+        active = !/thường|none|không/i.test(label);
+      } else if (rawVip && typeof rawVip === "object"){
+        const name = String(rawVip.tier || rawVip.name || rawVip.label || "").trim();
+        const expiresAt = Number(rawVip.expiresAt || rawVip.expiredAt || rawVip.until || 0);
+        active = rawVip.active === true || !!name;
+        if (name) label = name;
+        if (expiresAt > 0){
+          try{
+            detail = "Hết hạn: " + new Date(expiresAt).toLocaleDateString("vi-VN");
+          }catch(_){}
+        } else if (active){
+          detail = "Đang hoạt động";
+        }
+      } else if (isVipFlag){
+        label = "VIP";
+        active = true;
+        detail = "Đang hoạt động";
+      }
+
+      if (!active && (label === "Thường" || /khách/i.test(label))){
+        detail = currentUser ? "Chưa kích hoạt" : "Đăng nhập để kích hoạt";
+      } else if (active && detail === "Chưa kích hoạt"){
+        detail = "Đang hoạt động";
+      }
+
+      return { label, detail, active };
+    }
+
+    function showAccountInlineNote(html, tone = "info"){
+      if (!accountInlineNote) return;
+      if (!html){
+        accountInlineNote.innerHTML = "";
+        accountInlineNote.className = "account-inline-note hidden muted";
+        return;
+      }
+      accountInlineNote.innerHTML = html;
+      accountInlineNote.className = "account-inline-note " + (tone || "info");
+    }
+
+    function renderAccountMenuSummary(){
+      if (accountAuthState){
+        accountAuthState.textContent = currentUser ? "Đã đăng nhập" : "Khách";
+      }
+      if (accountVipState){
+        const vip = getVipSummary();
+        accountVipState.textContent = vip.label;
+      }
+
+      if (!currentUser){
+        showAccountInlineNote("Bạn đang ở chế độ <strong>Khách</strong>. Đăng nhập để đồng bộ theo dõi, lịch sử đọc và thông báo tài khoản.", "warn");
+      } else {
+        const currentNoteText = (accountInlineNote?.textContent || "").toLowerCase();
+        const needResetGuestNote = currentNoteText.includes("chế độ khách") || currentNoteText.includes("đăng nhập để đồng bộ");
+        if (!accountInlineNote || accountInlineNote.classList.contains("hidden") || needResetGuestNote){
+          showAccountInlineNote("Đã kết nối tài khoản. Bạn có thể xem nhanh thông tin <strong>Tài khoản</strong> hoặc trạng thái <strong>VIP</strong> ngay trong menu này.", "info");
+        }
+      }
     }
 
     function formatNotifyTime(ts){
@@ -1821,6 +2069,7 @@
         profileAvatar.textContent = "?";
         avatarBox.textContent = "?";
       }
+      renderAccountMenuSummary();
       updateHeaderLoginGates();
       renderNotificationList();
       renderAll();
@@ -1895,7 +2144,9 @@
       notifyBackdrop.setAttribute("aria-hidden","true");
     }
     function openNotifyPanel(){
+      closeAccountMenu();
       renderNotificationList();
+      positionFloatingPanels();
       notifyPanel?.classList.add("show");
       notifyBackdrop?.classList.add("show");
       notifyPanel?.setAttribute("aria-hidden","false");
@@ -1908,8 +2159,31 @@
     }
     function toggleNotifyPanel(){
       if (notifyPanel?.classList.contains("show")) closeNotifyPanel();
-      else openNotifyPanel();
+      else {
+        closeAccountMenu();
+        openNotifyPanel();
+      }
     }
+    function closeAccountMenu(){
+      if (!accountMenu) return;
+      accountMenu.classList.add("hidden");
+      accountMenu.setAttribute("aria-hidden", "true");
+      btnAccount?.classList.remove("open");
+    }
+
+    function toggleAccountMenu(force){
+      if (!accountMenu) return;
+      const next = typeof force === "boolean" ? force : accountMenu.classList.contains("hidden");
+      if (next) closeNotifyPanel();
+      accountMenu.classList.toggle("hidden", !next);
+      accountMenu.setAttribute("aria-hidden", next ? "false" : "true");
+      btnAccount?.classList.toggle("open", !!next);
+      if (next){
+        renderAccountMenuSummary();
+        positionFloatingPanels();
+      }
+    }
+
 
     function renderNotificationList(){
       if (!notifyList) return;
@@ -2237,6 +2511,7 @@
           notificationsUnread: countUnreadNotifications(nextNotifications),
           updatedAt: data.lastSeenAt || null
         };
+        renderAccountMenuSummary();
         renderAll();
         renderRoute();
       }, (err) => {
@@ -2259,6 +2534,7 @@
 
       if (!ENABLE_FIREBASE || !db){
         Object.assign(userState, nextPatch);
+        renderAccountMenuSummary();
         renderAll();
         renderRoute();
         return true;
@@ -2604,6 +2880,7 @@
       if (sideMenu?.classList.contains("open")) closeSideMenu();
       if (searchPanel?.classList.contains("show")) closeSearchPanel();
       if (notifyPanel?.classList.contains("show")) closeNotifyPanel();
+      if (!accountMenu?.classList.contains("hidden")) closeAccountMenu();
     });
 
     document.addEventListener("click", (e) => {
@@ -2612,7 +2889,17 @@
           closeNotifyPanel();
         }
       }
+      if (accountMenu && !accountMenu.classList.contains("hidden")){
+        const btnAccount = $("#btnAccount");
+        if (!accountMenu.contains(e.target) && !btnAccount?.contains(e.target)){
+          closeAccountMenu();
+        }
+      }
     });
+
+    window.addEventListener("resize", positionFloatingPanels, { passive:true });
+    window.addEventListener("scroll", positionFloatingPanels, { passive:true });
+    window.addEventListener("orientationchange", positionFloatingPanels);
 
 
     $$(".nav-item").forEach(el=>{
@@ -2640,9 +2927,42 @@
       else history.length > 1 ? history.back() : goToHome();
     });
 
-    $("#btnAccount").addEventListener("click", () => {
-      if (currentUser) toast(currentUser.email || "Đã đăng nhập");
-      else toast("Bạn chưa đăng nhập");
+    btnAccount?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleAccountMenu();
+    });
+
+    btnAccountProfile?.addEventListener("click", () => {
+      if (!currentUser){
+        showAccountInlineNote("Bạn chưa đăng nhập. Hãy bấm <strong>Đăng nhập Google</strong> để đồng bộ tài khoản.", "warn");
+        return;
+      }
+      const followed = Array.isArray(userState?.followedIds) ? userState.followedIds.length : 0;
+      const history = Array.isArray(userState?.historyIds) ? userState.historyIds.length : 0;
+      showAccountInlineNote(
+        `Tài khoản: <strong>${esc(currentUser.displayName || "Người dùng")}</strong><br>` +
+        `Email: ${esc(currentUser.email || "(không có)")}<br>` +
+        `Theo dõi: <strong>${followed}</strong> • Lịch sử đọc: <strong>${history}</strong>`,
+        "info"
+      );
+      const profileNav = document.querySelector('.nav-item[data-tab="profile"]');
+      if (profileNav){
+        $$(".nav-item").forEach(n=>n.classList.remove("active"));
+        profileNav.classList.add("active");
+      }
+    });
+
+    btnAccountVip?.addEventListener("click", () => {
+      const vip = getVipSummary();
+      if (!currentUser){
+        showAccountInlineNote("VIP cần tài khoản để đồng bộ. Hãy đăng nhập trước, sau đó bấm nút <strong>Nạp</strong> ở header để nâng cấp.", "warn");
+        return;
+      }
+      showAccountInlineNote(
+        `Trạng thái VIP: <strong>${esc(vip.label)}</strong><br>${esc(vip.detail)}<br>` +
+        `Bạn có thể bấm nút <strong>Nạp</strong> trên header để nâng cấp / gia hạn.`,
+        vip.active ? "info" : "warn"
+      );
     });
 
     btnLogin.addEventListener("click", async () => {
@@ -2653,9 +2973,13 @@
       try{
         const provider = new GoogleAuthProvider();
         await signInWithPopup(auth, provider);
+        showAccountInlineNote("Đăng nhập thành công. Dữ liệu theo dõi / lịch sử đọc sẽ tự đồng bộ.", "info");
+        closeAccountMenu();
         toast("Đăng nhập thành công");
       }catch(err){
         console.error(err);
+        const code = err?.code || "unknown";
+        showAccountInlineNote(`Đăng nhập lỗi: <strong>${esc(code)}</strong>`, "warn");
         toast("Đăng nhập thất bại");
       }
     });
@@ -2664,9 +2988,13 @@
       if (!ENABLE_FIREBASE || !auth) return;
       try{
         await signOut(auth);
+        showAccountInlineNote("Đã đăng xuất. Bạn đang ở chế độ khách.", "warn");
+        closeAccountMenu();
         toast("Đã đăng xuất");
       }catch(err){
         console.error(err);
+        const code = err?.code || "unknown";
+        showAccountInlineNote(`Đăng xuất lỗi: <strong>${esc(code)}</strong>`, "warn");
         toast("Đăng xuất thất bại");
       }
     });
@@ -2700,6 +3028,7 @@
       renderRoute();
     }
     init();
+    positionFloatingPanels();
   </script>
 </body>
 </html>
