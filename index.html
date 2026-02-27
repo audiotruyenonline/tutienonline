@@ -2634,7 +2634,8 @@
   <script>
   // NOTE: File mở từ content:// / file:// trên Android có thể chặn ES-module. 
   // Dùng bản compat + DOMContentLoaded để tránh lỗi "không ấn được gì".
-  window.addEventListener('DOMContentLoaded', () => {
+  /* Boot app ASAP (không chờ Firebase scripts tải xong) */
+(() => {
 
     /* ============================
        1) Firebase config
@@ -2732,7 +2733,7 @@
     function initFirebaseCompat(){
       if (!ENABLE_FIREBASE) return false;
       if (!window.firebase){
-        ENABLE_FIREBASE = false;
+        // Firebase scripts chưa sẵn sàng (hoặc offline). Không tắt vĩnh viễn để có thể retry.
         return false;
       }
       try{
@@ -2789,7 +2790,41 @@
       }
     }
 
-    const FIREBASE_OK = initFirebaseCompat();
+    let FIREBASE_OK = initFirebaseCompat();
+
+    // Khởi động Firebase nền để không chặn lần tải đầu (giảm cảm giác delay/lag)
+    let _fbBootTries = 0;
+    function bootstrapFirebaseAsync(){
+      const attempt = () => {
+        if (FIREBASE_OK) return;
+        _fbBootTries++;
+        // Tối đa ~12 giây retry (150 * 80ms)
+        if (_fbBootTries > 150) return;
+
+        // Chờ Firebase compat scripts load xong
+        if (!window.firebase){
+          setTimeout(attempt, 80);
+          return;
+        }
+
+        FIREBASE_OK = initFirebaseCompat();
+        if (!FIREBASE_OK) return;
+
+        try{ startStoryViewsSync(); }catch(_){ }
+        try{ startPresence(null); }catch(_){ }
+        try{ initAuth(); }catch(_){ }
+        try{ syncHeaderOnlineStatus(); }catch(_){ }
+        try{ renderNotificationList(); }catch(_){ }
+      };
+
+      // Nhường 1-2 frame cho UI vẽ trước, rồi mới boot Firebase
+      const raf = window.requestAnimationFrame || ((fn)=>setTimeout(fn, 0));
+      raf(() => raf(() => {
+        const ric = window.requestIdleCallback || ((fn)=>setTimeout(()=>fn({didTimeout:true, timeRemaining:()=>0}), 200));
+        ric(attempt, { timeout: 1500 });
+      }));
+    }
+
     /* ============================
        3) Seed data
        ============================ */
@@ -2873,15 +2908,7 @@
        ============================ */
     let stories = [];
     let currentUser = null;
-    let userState = {
-      followedIds: [],
-      bookmarkIds: [],
-      historyIds: [],
-      lastReading: {},
-      notifications: [],
-      notificationsUnread: 0,
-      updatedAt: null
-    };
+    let userState = loadGuestUserState(); // load cache để vào web hiển thị ngay (không phải đợi Firebase)
     let presenceUnsub = null;
     let userStateUnsub = null;
     let storyViewsUnsub = null;
@@ -3760,8 +3787,6 @@
       renderAccountMenuSummary();
       updateHeaderLoginGates();
       renderNotificationList();
-      renderAll();
-      renderRoute();
     }
 
     function setThemeButtonIcon(mode){
@@ -4351,7 +4376,6 @@ setActiveBottomNav("bookshelf");
         const btn = e.target.closest("[data-chapter]");
         if (!btn) return;
         const chapter = Number(btn.dataset.chapter || 1);
-        await markReadStory(storyId, chapter);
         goToReader(storyId, chapter);
       };
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -4618,9 +4642,9 @@ setActiveBottomNav("bookshelf");
           notificationsUnread: countUnreadNotifications(nextNotifications),
           updatedAt: data.lastSeenAt || null
         };
-        renderAccountMenuSummary();
-        renderAll();
-        renderRoute();
+        // cache local để lần sau reload vào web hiển thị ngay (không phải đợi Firestore)
+        saveGuestUserState(userState);
+        renderAfterUserStateChange();
       }, (err) => {
         console.error("onSnapshot user error:", err);
         toast("Lỗi đồng bộ dữ liệu người dùng.");
@@ -4655,6 +4679,8 @@ setActiveBottomNav("bookshelf");
       }
 
       Object.assign(userState, nextPatch);
+      // cache local để reload vào web hiển thị ngay
+      saveGuestUserState(userState);
       if (!noRender) renderAfterUserStateChange();
 
       try{
@@ -4665,6 +4691,8 @@ setActiveBottomNav("bookshelf");
         console.error(err);
         // revert
         Object.assign(userState, prev);
+        // giữ cache local đúng với trạng thái hiện tại
+        saveGuestUserState(userState);
         if (!noRender) renderAfterUserStateChange();
         toast("Không thể lưu Firebase.");
         return false;
@@ -5364,8 +5392,7 @@ setActiveBottomNav("bookshelf");
         currentUser = null;
         userState = loadGuestUserState();
         applyUserUI();
-        renderAll();
-        renderRoute();
+        renderAfterUserStateChange();
         return;
       }
       onAuthStateChanged(auth, async (user) => {
@@ -5395,8 +5422,7 @@ setActiveBottomNav("bookshelf");
           startPresence(null); // vẫn giữ realtime online cho khách
           syncHeaderOnlineStatus();
           closeNotifyPanel();
-          renderAll();
-          renderRoute();
+          renderAfterUserStateChange();
         }
       });
     }
@@ -5419,7 +5445,6 @@ setActiveBottomNav("bookshelf");
         const id = readBtn.dataset.read;
         if (id){
           const lastCh = Number((userState?.lastReading || {})[id] || 1);
-          await markReadStory(id, lastCh);
           goToReader(id, lastCh);
         }
         return;
@@ -5910,19 +5935,15 @@ setActiveBottomNav("bookshelf");
       applyTheme(activeTheme);
       applyUserUI();
       await loadStories();
-      if (ENABLE_FIREBASE){
-        startStoryViewsSync();
-        startPresence(null);
-      }
-      initAuth();
+      // Firebase init + auth sẽ chạy nền sau khi UI đã render (không chặn lần tải đầu)
+      bootstrapFirebaseAsync();
       syncHeaderOnlineStatus();
       renderNotificationList();
-      renderRoute();
     }
     init();
     positionFloatingPanels();
   
-  });
+})();
   </script>
 
 </body>
