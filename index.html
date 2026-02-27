@@ -2179,6 +2179,309 @@
     .cm-split{ display:flex; gap:8px; }
     .cm-split > *{ flex:1; }
 
+
+    /* ============================
+       VIP Home: Hero + Đang nghe + Tiến độ
+       ============================ */
+    .hero-section{ margin-top:2px; }
+    .hero-shell{
+      position:relative;
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(242,190,45,.22), transparent 55%),
+        radial-gradient(circle at 85% 10%, rgba(0,212,255,.16), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow:0 18px 44px rgba(0,0,0,.32);
+    }
+    body.theme-light .hero-shell{
+      border-color:rgba(25,41,80,.12);
+      box-shadow:0 16px 38px rgba(33,55,95,.16);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(242,190,45,.18), transparent 55%),
+        radial-gradient(circle at 85% 10%, rgba(0,212,255,.12), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,246,255,.95));
+    }
+    .hero-track{
+      display:flex;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .hero-track::-webkit-scrollbar{ display:none; }
+    .hero-slide{
+      flex:0 0 100%;
+      scroll-snap-align:start;
+      padding:14px;
+      display:flex;
+      gap:12px;
+      min-height:178px;
+      cursor:pointer;
+    }
+    .hero-left{ flex:1; min-width:0; display:flex; flex-direction:column; justify-content:space-between; }
+    .hero-kicker{
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      opacity:.9;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .hero-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.20);
+      font-weight:900;
+      font-size:11px;
+    }
+    body.theme-light .hero-pill{
+      background:rgba(255,255,255,.70);
+      border-color:rgba(25,41,80,.12);
+    }
+    .hero-title{
+      font-size:16px;
+      font-weight:950;
+      line-height:1.18;
+      margin-top:8px;
+      letter-spacing:-.01em;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .hero-desc{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:6px;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .hero-ctas{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .hero-cta{
+      border:none;
+      border-radius:14px;
+      padding:9px 10px;
+      font-weight:950;
+      font-size:12px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .hero-cta.primary{
+      background:linear-gradient(180deg,#f1c33c,#ca8c09);
+      color:#231600;
+      box-shadow:0 10px 22px rgba(202,140,9,.22);
+    }
+    .hero-cta.listen{
+      background:linear-gradient(180deg, rgba(0,212,255,.92), rgba(13,140,255,.82));
+      color:#071522;
+      box-shadow:0 10px 22px rgba(0,212,255,.16);
+    }
+    .hero-cta.ghost{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+    }
+    body.theme-light .hero-cta.ghost{
+      background:rgba(25,41,80,.06);
+      border-color:rgba(25,41,80,.12);
+      color:#1b2742;
+    }
+    .hero-cover{
+      width:98px;
+      flex:0 0 98px;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      align-self:flex-end;
+    }
+    body.theme-light .hero-cover{
+      border-color:rgba(25,41,80,.12);
+      background:rgba(25,41,80,.04);
+    }
+    .hero-cover img{ width:100%; height:132px; object-fit:cover; display:block; }
+    .hero-nav{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:34px;
+      height:34px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.28);
+      color:rgba(255,255,255,.92);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      z-index:2;
+      backdrop-filter: blur(10px);
+    }
+    body.theme-light .hero-nav{
+      background:rgba(255,255,255,.70);
+      border-color:rgba(25,41,80,.12);
+      color:#1b2742;
+    }
+    .hero-nav.prev{ left:10px; }
+    .hero-nav.next{ right:10px; }
+    .hero-dots{
+      position:absolute;
+      left:0; right:0; bottom:10px;
+      display:flex;
+      justify-content:center;
+      gap:6px;
+      z-index:2;
+      pointer-events:auto;
+    }
+    .hero-dot{
+      width:7px; height:7px;
+      border-radius:999px;
+      border:none;
+      background:rgba(255,255,255,.30);
+      cursor:pointer;
+      transition:all .18s ease;
+    }
+    .hero-dot.active{ width:18px; background:rgba(255,255,255,.86); }
+    body.theme-light .hero-dot{ background:rgba(25,41,80,.25); }
+    body.theme-light .hero-dot.active{ background:rgba(25,41,80,.75); }
+
+    .mini-listen-btn{
+      width:100%; height:26px; border:none; border-radius:8px;
+      background:linear-gradient(180deg, rgba(0,212,255,.92), rgba(13,140,255,.82));
+      color:#071522; font-size:12px; font-weight:900; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; gap:6px;
+      box-shadow:0 6px 14px rgba(0,212,255,.16);
+    }
+    .story-sub{
+      margin-top:2px;
+      font-size:11px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .mini-progress{
+      margin-top:6px;
+      height:6px;
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      overflow:hidden;
+    }
+    body.theme-light .mini-progress{ background:rgba(25,41,80,.14); }
+    .mini-progress > span{
+      display:block;
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, rgba(0,212,255,.92), rgba(242,190,45,.92));
+    }
+    /* ===== VIP Home: Box scroll (Đang nghe / Đang đọc) ===== */
+    .mini-vbox{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow:0 14px 34px rgba(0,0,0,.22);
+      padding:10px;
+      max-height:clamp(220px, 34vh, 340px);
+      overflow:auto;
+      overscroll-behavior:contain;
+      -webkit-overflow-scrolling:touch;
+    }
+    body.theme-light .mini-vbox{
+      border-color:rgba(25,41,80,.12);
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(243,246,255,.94));
+      box-shadow:0 14px 30px rgba(33,55,95,.14);
+    }
+    .mini-empty{
+      padding:12px 10px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+    }
+    .mini-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding:10px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      cursor:pointer;
+    }
+    .mini-row + .mini-row{ margin-top:8px; }
+    body.theme-light .mini-row{
+      border-color:rgba(25,41,80,.10);
+      background:rgba(25,41,80,.03);
+    }
+    .mini-cover{
+      width:44px;
+      height:58px;
+      border-radius:14px;
+      object-fit:cover;
+      flex:0 0 auto;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.2);
+    }
+    body.theme-light .mini-cover{ border-color:rgba(25,41,80,.10); background:rgba(25,41,80,.06); }
+    .mini-info{ flex:1; min-width:0; }
+    .mini-title{
+      font-weight:900;
+      font-size:13.5px;
+      line-height:1.25;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .mini-sub{
+      margin-top:2px;
+      font-size:11.5px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .mini-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex:0 0 auto;
+    }
+    .mini-act{
+      width:34px;height:34px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      font-weight:900;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.18);
+    }
+    body.theme-light .mini-act{
+      border-color:rgba(25,41,80,.12);
+      background:rgba(25,41,80,.04);
+      box-shadow:0 8px 16px rgba(33,55,95,.12);
+    }
+    .mini-act:hover{ transform:translateY(-1px); }
+    .mini-act:active{ transform:translateY(0px); }
+    .mini-act.danger{
+      border-color:rgba(255,79,90,.28);
+      background:rgba(255,79,90,.10);
+    }
+
+
   </style>
 </head>
 <body>
@@ -2331,18 +2634,29 @@
     </div>
     <!-- HOME PAGE -->
     <div class="page" id="homePage">
-      <section class="section">
-        <div class="section-head">
-          <div class="section-title">
-            <div class="bubble">🕘</div>
-            <div>Đang Đọc</div>
-          </div>
-          <button class="btn-link" id="viewAllReading">Xem tất cả →</button>
+
+      <section class="section hero-section">
+        <div class="hero-shell" id="heroShell">
+          <div class="hero-track" id="heroTrack" aria-label="Truyện nổi bật"></div>
+          <button class="hero-nav prev" id="heroPrev" type="button" aria-label="Trước">‹</button>
+          <button class="hero-nav next" id="heroNext" type="button" aria-label="Sau">›</button>
+          <div class="hero-dots" id="heroDots" aria-label="Chọn banner"></div>
         </div>
-        <div class="h-scroll" id="readingStrip"></div>
       </section>
 
-      <section class="section">
+      
+      <section class="section" id="continueSection">
+        <div class="section-head">
+          <div class="section-title">
+            <div class="bubble">🔁</div>
+            <div>Tiếp tục</div>
+          </div>
+          <button class="btn-link" id="viewAllContinue">Xem tất cả →</button>
+        </div>
+        <div class="mini-vbox" id="continueStrip"></div>
+      </section>
+
+<section class="section">
         <div class="section-title" style="margin-bottom:6px">
           <div class="bubble">🎲</div>
           <div>Khám phá ngẫu nhiên</div>
@@ -2634,8 +2948,7 @@
   <script>
   // NOTE: File mở từ content:// / file:// trên Android có thể chặn ES-module. 
   // Dùng bản compat + DOMContentLoaded để tránh lỗi "không ấn được gì".
-  /* Boot app ASAP (không chờ Firebase scripts tải xong) */
-(() => {
+  window.addEventListener('DOMContentLoaded', () => {
 
     /* ============================
        1) Firebase config
@@ -2681,13 +2994,28 @@
 
     // ===== Guest (không đăng nhập) - vẫn lưu Theo dõi / Lịch sử / Đọc tiếp ở localStorage =====
     const GUEST_STATE_KEY = "guest_user_state_v1";
-    function normalizeUserState(raw){
+    
+    function normalizeListeningRecent(list){
+      if (!Array.isArray(list)) return [];
+      return list
+        .filter(x => x && typeof x === "object" && x.storyId)
+        .map(x => ({
+          storyId: String(x.storyId || ""),
+          chapter: Math.max(1, Number(x.chapter || 1)),
+          idx: Math.max(0, Number(x.idx || 0)),
+          ts: Number(x.ts || Date.now())
+        }))
+        .sort((a,b) => Number(b.ts||0) - Number(a.ts||0))
+        .slice(0, 12);
+    }
+function normalizeUserState(raw){
       const r = raw && typeof raw === "object" ? raw : {};
       const norm = {
         followedIds: Array.isArray(r.followedIds) ? r.followedIds.filter(Boolean) : [],
         bookmarkIds: Array.isArray(r.bookmarkIds) ? r.bookmarkIds.filter(Boolean) : [],
         historyIds: Array.isArray(r.historyIds) ? r.historyIds.filter(Boolean) : [],
         lastReading: (r.lastReading && typeof r.lastReading === "object") ? r.lastReading : {},
+        listeningRecent: normalizeListeningRecent(r.listeningRecent),
         notifications: Array.isArray(r.notifications) ? r.notifications : [],
         notificationsUnread: Number(r.notificationsUnread || 0) || 0,
         updatedAt: r.updatedAt || null
@@ -2733,7 +3061,7 @@
     function initFirebaseCompat(){
       if (!ENABLE_FIREBASE) return false;
       if (!window.firebase){
-        // Firebase scripts chưa sẵn sàng (hoặc offline). Không tắt vĩnh viễn để có thể retry.
+        ENABLE_FIREBASE = false;
         return false;
       }
       try{
@@ -2790,41 +3118,7 @@
       }
     }
 
-    let FIREBASE_OK = initFirebaseCompat();
-
-    // Khởi động Firebase nền để không chặn lần tải đầu (giảm cảm giác delay/lag)
-    let _fbBootTries = 0;
-    function bootstrapFirebaseAsync(){
-      const attempt = () => {
-        if (FIREBASE_OK) return;
-        _fbBootTries++;
-        // Tối đa ~12 giây retry (150 * 80ms)
-        if (_fbBootTries > 150) return;
-
-        // Chờ Firebase compat scripts load xong
-        if (!window.firebase){
-          setTimeout(attempt, 80);
-          return;
-        }
-
-        FIREBASE_OK = initFirebaseCompat();
-        if (!FIREBASE_OK) return;
-
-        try{ startStoryViewsSync(); }catch(_){ }
-        try{ startPresence(null); }catch(_){ }
-        try{ initAuth(); }catch(_){ }
-        try{ syncHeaderOnlineStatus(); }catch(_){ }
-        try{ renderNotificationList(); }catch(_){ }
-      };
-
-      // Nhường 1-2 frame cho UI vẽ trước, rồi mới boot Firebase
-      const raf = window.requestAnimationFrame || ((fn)=>setTimeout(fn, 0));
-      raf(() => raf(() => {
-        const ric = window.requestIdleCallback || ((fn)=>setTimeout(()=>fn({didTimeout:true, timeRemaining:()=>0}), 200));
-        ric(attempt, { timeout: 1500 });
-      }));
-    }
-
+    const FIREBASE_OK = initFirebaseCompat();
     /* ============================
        3) Seed data
        ============================ */
@@ -2908,7 +3202,15 @@
        ============================ */
     let stories = [];
     let currentUser = null;
-    let userState = loadGuestUserState(); // load cache để vào web hiển thị ngay (không phải đợi Firebase)
+    let userState = {
+      followedIds: [],
+      bookmarkIds: [],
+      historyIds: [],
+      lastReading: {},
+      notifications: [],
+      notificationsUnread: 0,
+      updatedAt: null
+    };
     let presenceUnsub = null;
     let userStateUnsub = null;
     let storyViewsUnsub = null;
@@ -2939,7 +3241,14 @@
     const routeHeaderBackBtn = $("#routeHeaderBackBtn");
 
 
+    const heroTrack = $("#heroTrack");
+    const heroDots = $("#heroDots");
+    const heroPrev = $("#heroPrev");
+    const heroNext = $("#heroNext");
+    const listeningStrip = $("#listeningStrip");
     const readingStrip = $("#readingStrip");
+    const continueStrip = $("#continueStrip");
+    const viewAllContinue = $("#viewAllContinue");
     const randomGrid = $("#randomGrid");
     const updatedList = $("#updatedList");
 
@@ -3079,6 +3388,9 @@
       utter: null
     };
 
+    // Pending autoplay info for "Nghe tiếp" (giúp khác với "Đọc tiếp")
+    let __pendingListenAutoplay = null;
+
     function setReaderMode(on){
       document.body.classList.toggle("reader-mode", !!on);
       if (!on){
@@ -3175,6 +3487,8 @@
       readerState.utter = null;
       readerState.playing = false;
       try{ window.speechSynthesis?.cancel?.(); }catch(_){}
+      // lưu vị trí để nút "Nghe tiếp" quay đúng chỗ
+      try{ if (readerState?.storyId) touchListeningRecent(readerState.storyId, readerState.chapter, readerState.idx); }catch(_){ }
       if (rpPlay) rpPlay.textContent = "▶";
     }
 
@@ -3238,6 +3552,8 @@
       if (readerState.playing){
         stopTTS();
       } else {
+        // lưu để hiển thị ở Trang chủ > Đang nghe
+        touchListeningRecent(readerState.storyId, readerState.chapter, readerState.idx);
         speakCurrent();
       }
     }
@@ -3315,6 +3631,34 @@
       markReadStory(storyId, readerState.chapter, { noRender: true, silent: true }).catch(_=>{});
 
       window.scrollTo({ top: 0, behavior: "auto" });
+
+      // autoplay TTS (nếu click từ nút Nghe)
+      try{
+        const pending = (__pendingListenAutoplay && __pendingListenAutoplay.autoplay) ? __pendingListenAutoplay : null;
+        const auto = pending ? "1" : sessionStorage.getItem("autoplay_tts");
+        const sid = pending ? String(pending.storyId) : sessionStorage.getItem("autoplay_story");
+        const sch = pending ? String(pending.chapter) : sessionStorage.getItem("autoplay_ch");
+        const sidx = pending ? String(pending.idx || 0) : sessionStorage.getItem("autoplay_idx");
+        if (auto === "1" && sid === String(storyId) && sch === String(readerState.chapter)){
+          __pendingListenAutoplay = null;
+          try{
+            sessionStorage.removeItem("autoplay_tts");
+            sessionStorage.removeItem("autoplay_story");
+            sessionStorage.removeItem("autoplay_ch");
+            sessionStorage.removeItem("autoplay_idx");
+          }catch(_){ }
+          const wantIdx = Math.max(0, Number(sidx || 0));
+          if (wantIdx > 0 && Array.isArray(readerState.chunks) && readerState.chunks.length){
+            const maxIdx = Math.max(0, readerState.chunks.length - 1);
+            readerState.idx = Math.min(wantIdx, maxIdx);
+            syncReaderProgress();
+          }
+          // lưu "Đang nghe" trước khi phát
+          touchListeningRecent(storyId, readerState.chapter, readerState.idx);
+          try{ speakCurrent(); }catch(_){ }
+        }
+      }catch(_){ }
+
       _rpResetAutoHide();
     }
 
@@ -3787,6 +4131,8 @@
       renderAccountMenuSummary();
       updateHeaderLoginGates();
       renderNotificationList();
+      renderAll();
+      renderRoute();
     }
 
     function setThemeButtonIcon(mode){
@@ -4009,33 +4355,341 @@
     /* ============================
        7) Render home widgets
        ============================ */
-    function renderReadingStrip(){
-      const items = getReadingStories();
+    function getHeroStories(){
+      const arr = sortedUpdatedStories().slice(0, 6);
+      if (arr.length) return arr;
+      return (stories || []).slice(0, 6);
+    }
+
+    let heroActiveIndex = 0;
+    function setHeroActiveDot(i){
+      heroActiveIndex = Math.max(0, Number(i||0));
+      if (!heroDots) return;
+      const dots = [...heroDots.querySelectorAll(".hero-dot")];
+      dots.forEach((b, idx) => b.classList.toggle("active", idx === heroActiveIndex));
+    }
+
+    function getHeroIndexFromScroll(){
+      if (!heroTrack) return 0;
+      const w = heroTrack.clientWidth || 1;
+      const total = heroTrack.children?.length || 0;
+      const i = Math.round((heroTrack.scrollLeft || 0) / w);
+      return Math.max(0, Math.min(Math.max(0,total-1), i));
+    }
+
+    function scrollHeroTo(i){
+      if (!heroTrack) return;
+      const w = heroTrack.clientWidth || 1;
+      heroTrack.scrollTo({ left: Math.max(0, Number(i||0)) * w, behavior: "smooth" });
+      setHeroActiveDot(i);
+    }
+
+    function renderHeroBanner(){
+      if (!heroTrack || !heroDots) return;
+      const items = getHeroStories().slice(0, 5);
       if (!items.length){
-        readingStrip.innerHTML = `<div class="panel muted" style="width:100%">Chưa có truyện. Hãy thêm dữ liệu truyện/ảnh/chương trực tiếp trong file HTML.</div>`;
+        heroTrack.innerHTML = `<div class="hero-slide"><div class="hero-left"><div class="hero-title">Chưa có truyện</div><div class="hero-desc">Hãy thêm dữ liệu truyện/ảnh/chương trực tiếp trong file HTML.</div></div></div>`;
+        heroDots.innerHTML = "";
         return;
       }
-      readingStrip.innerHTML = items.map(s => {
-        const btnText = isInHistory(s.id) ? "Đọc tiếp" : "Đọc";
+
+      heroTrack.innerHTML = items.map((s, idx) => {
+        const lastCh = Number((userState?.lastReading || {})[s.id] || 1);
+        const readTxt = lastCh > 1 ? `Đọc tiếp • Ch.${lastCh}` : "Đọc ngay";
+        // Nghe tiếp ưu tiên theo "Đang nghe" (listeningRecent). Nếu chưa có thì dùng chương đang đọc.
+        const _lr = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent : [];
+        const _li = _lr.find(x => x && String(x.storyId) === String(s.id)) || null;
+        const listenCh = _li ? Math.max(1, Number(_li.chapter || lastCh || 1)) : lastCh;
+        const listenIdx = _li ? Math.max(0, Number(_li.idx || 0)) : 0;
+        const listenTxt = (listenCh > 1 || listenIdx > 0) ? `Nghe tiếp • Ch.${listenCh}` : "Nghe ngay";
+        const badge = s.status ? esc(String(s.status)) : "HOT";
         return `
-          <article class="story-card js-open" data-id="${esc(s.id)}">
-            <div class="cover-wrap">
-              <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
-              <div class="cover-overlay">
-                <button class="mini-read-btn" data-read="${esc(s.id)}">
-                  <span class="tri"></span><span>${btnText}</span>
-                </button>
+          <div class="hero-slide js-open" data-id="${esc(s.id)}" role="group" aria-label="Banner ${idx+1}">
+            <div class="hero-left">
+              <div>
+                <div class="hero-kicker">
+                  <span class="hero-pill">🔥 ${badge}</span>
+                  <span class="hero-pill">⭐ ${Number(s.rating||0).toFixed(1)}</span>
+                  <span class="hero-pill">👁 ${formatShort(s.views||0)}</span>
+                </div>
+                <div class="hero-title">${esc(s.title || "Truyện")}</div>
+                <div class="hero-desc">${esc(s.desc || "Truyện nổi bật hôm nay. Bấm để xem chi tiết hoặc đọc/nghe ngay.")}</div>
+              </div>
+              <div class="hero-ctas">
+                <button class="hero-cta primary" type="button" data-read="${esc(s.id)}">${readTxt}</button>
+                <button class="hero-cta listen" type="button" data-listen="${esc(s.id)}" data-chapter="${listenCh}" data-idx="${listenIdx}" data-autoplay="1">🔊 ${listenTxt}</button>
+                <button class="hero-cta ghost" type="button">ℹ Xem info</button>
               </div>
             </div>
-            <div class="story-meta">
-              <div class="story-title">${esc(s.title)}</div>
+            <div class="hero-cover">
+              <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
             </div>
-          </article>
+          </div>
+        `;
+      }).join("");
+
+      heroDots.innerHTML = items.map((_, i) => `<button class="hero-dot ${i===0?'active':''}" type="button" data-hero-dot="${i}" aria-label="Chọn banner ${i+1}"></button>`).join("");
+
+      if (!heroTrack.dataset.bound){
+        heroTrack.dataset.bound = "1";
+        heroTrack.addEventListener("scroll", () => {
+          try{ setHeroActiveDot(getHeroIndexFromScroll()); }catch(_){}
+        }, { passive: true });
+      }
+
+      if (!heroDots.dataset.bound){
+        heroDots.dataset.bound = "1";
+        heroDots.addEventListener("click", (e) => {
+          const b = e.target.closest("[data-hero-dot]");
+          if (!b) return;
+          e.stopPropagation();
+          scrollHeroTo(Number(b.dataset.heroDot || 0));
+        });
+      }
+
+      if (heroPrev && !heroPrev.dataset.bound){
+        heroPrev.dataset.bound = "1";
+        heroPrev.addEventListener("click", (e) => {
+          e.stopPropagation();
+          scrollHeroTo(getHeroIndexFromScroll() - 1);
+        });
+      }
+      if (heroNext && !heroNext.dataset.bound){
+        heroNext.dataset.bound = "1";
+        heroNext.addEventListener("click", (e) => {
+          e.stopPropagation();
+          scrollHeroTo(getHeroIndexFromScroll() + 1);
+        });
+      }
+
+      requestAnimationFrame(() => { try{ scrollHeroTo(0); }catch(_){ }});
+    }
+
+    function getListeningRecent(){
+      const arr = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent : [];
+      return arr
+        .map(x => ({ ...x, story: storyById(x.storyId) }))
+        .filter(x => x.story);
+    }
+
+    function renderListeningStrip(){
+      if (!listeningStrip) return;
+      const items = getListeningRecent().slice(0, 20);
+      const sec = listeningStrip.closest('section');
+      if (!items.length){
+        listeningStrip.innerHTML = "";
+        if (sec) sec.classList.add('hidden');
+        return;
+      }
+      if (sec) sec.classList.remove('hidden');
+      listeningStrip.innerHTML = items.map(x => {
+        const s = x.story;
+        if (!s) return "";
+        const ch = Math.max(1, Number(x.chapter || 1));
+        return `
+          <div class="mini-row js-open" data-id="${esc(s.id)}">
+            <img class="mini-cover" src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
+            <div class="mini-info">
+              <div class="mini-title">${esc(s.title)}</div>
+              <div class="mini-sub">Chương ${ch}</div>
+            </div>
+            <div class="mini-actions">
+              <button class="mini-act" type="button" data-listen="${esc(s.id)}" data-chapter="${ch}" data-autoplay="1" aria-label="Nghe tiếp">▶</button>
+              <button class="mini-act danger" type="button" data-remove-listen="${esc(s.id)}" aria-label="Xóa khỏi đang nghe">✕</button>
+            </div>
+          </div>
         `;
       }).join("");
     }
 
-    function renderRandomGrid(){
+    let _lastListenWriteAt = 0;
+    function touchListeningRecent(storyId, chapter, idx){
+      try{
+        const now = Date.now();
+        if (!storyId) return;
+        if (now - _lastListenWriteAt < 5000) return; // throttle
+        _lastListenWriteAt = now;
+
+        const item = {
+          storyId: String(storyId),
+          chapter: Math.max(1, Number(chapter || 1)),
+          idx: Math.max(0, Number(idx || 0)),
+          ts: now
+        };
+        const cur = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent : [];
+        const next = normalizeListeningRecent([item, ...cur.filter(x => x && x.storyId !== item.storyId)]);
+        saveUserStatePatch({ listeningRecent: next }, { noRender: true }).catch(_=>{});
+      }catch(_){}
+    }
+
+    async function removeHistoryItem(storyId){
+      try{
+        if (!storyId) return;
+        const nextHistory = userState.historyIds.filter(id => id !== storyId);
+        const nextLast = { ...(userState.lastReading || {}) };
+        try{ delete nextLast[storyId]; }catch(_){}
+        const ok = await saveUserStatePatch({ historyIds: nextHistory, lastReading: nextLast });
+        if (ok) toast("Đã xóa khỏi lịch sử đọc");
+      }catch(_){}
+    }
+
+    async function removeListeningItem(storyId){
+      try{
+        if (!storyId) return;
+        const cur = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent : [];
+        const next = normalizeListeningRecent(cur.filter(x => x && x.storyId !== String(storyId)));
+        const ok = await saveUserStatePatch({ listeningRecent: next });
+        if (ok) toast("Đã xóa khỏi đang nghe");
+      }catch(_){}
+    }
+
+
+    function renderReadingStrip(){
+      const items = getReadingStories();
+      if (!items.length){
+        readingStrip.innerHTML = `<div class="mini-empty">Chưa có truyện. Hãy thêm dữ liệu truyện/ảnh/chương trực tiếp trong file HTML.</div>`;
+        return;
+      }
+      readingStrip.innerHTML = items.map(s => {
+        const lastCh = Number((userState?.lastReading || {})[s.id] || 1);
+        const totalCh = Math.max(0, Number(s.chapters || 0));
+        const pct = totalCh > 0 ? Math.max(0, Math.min(100, (lastCh / totalCh) * 100)) : 0;
+        const btnText = lastCh > 1 ? "Đọc tiếp" : "Đọc";
+        const sub = totalCh > 0 ? `Chương ${lastCh}/${totalCh}` : `Chương ${lastCh}`;
+        return `
+          <div class="mini-row js-open" data-id="${esc(s.id)}">
+            <img class="mini-cover" src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
+            <div class="mini-info">
+              <div class="mini-title">${esc(s.title)}</div>
+              <div class="mini-sub">${sub}</div>
+              <div class="mini-progress"><span style="width:${pct.toFixed(1)}%"></span></div>
+            </div>
+            <div class="mini-actions">
+              <button class="mini-act" type="button" data-read="${esc(s.id)}" aria-label="${btnText}">▶</button>
+              <button class="mini-act danger" type="button" data-remove-history="${esc(s.id)}" aria-label="Xóa khỏi lịch sử">✕</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    
+
+    function getContinueItems(){
+      const map = new Map();
+
+      // 1) Ưu tiên truyện đang nghe (mới nhất trước)
+      const listen = getListeningRecent().slice().sort((a,b) => Number(b.ts||0) - Number(a.ts||0));
+      for (const x of listen){
+        const s = x.story;
+        if (!s) continue;
+        const sid = String(s.id);
+        map.set(sid, {
+          story: s,
+          readCh: Number((userState?.lastReading || {})[sid] || 0) || 0,
+          totalCh: Math.max(0, Number(s.chapters || 0)),
+          listenCh: Math.max(1, Number(x.chapter || 1)),
+          listenIdx: Math.max(0, Number(x.idx || 0)),
+          listenTs: Number(x.ts || 0)
+        });
+      }
+
+      // 2) Thêm lịch sử đọc (giữ thứ tự gần đây theo historyIds)
+      const hist = Array.isArray(userState?.historyIds) ? userState.historyIds : [];
+      for (const sid0 of hist){
+        const sid = String(sid0);
+        const s = storyById(sid);
+        if (!s) continue;
+        if (!map.has(sid)){
+          map.set(sid, {
+            story: s,
+            readCh: Number((userState?.lastReading || {})[sid] || 1),
+            totalCh: Math.max(0, Number(s.chapters || 0)),
+            listenCh: 0,
+            listenIdx: 0,
+            listenTs: 0
+          });
+        }else{
+          const it = map.get(sid);
+          if (it && !it.readCh){
+            it.readCh = Number((userState?.lastReading || {})[sid] || 1);
+          }
+        }
+      }
+
+      return [...map.values()]
+        .map(it => {
+          const readCh = Math.max(1, Number(it.readCh || it.listenCh || 1));
+          const listenCh = Math.max(1, Number(it.listenCh || readCh || 1));
+          return { ...it, readCh, listenCh };
+        })
+        .slice(0, 20);
+    }
+
+    function renderContinueStrip(){
+      if (!continueStrip) return;
+      const items = getContinueItems();
+      const sec = continueStrip.closest('section');
+
+      if (!items.length){
+        continueStrip.innerHTML = "";
+        if (sec) sec.classList.add('hidden');
+        return;
+      }
+      if (sec) sec.classList.remove('hidden');
+
+      continueStrip.innerHTML = items.map(it => {
+        const s = it.story;
+        if (!s) return "";
+
+        const totalCh = Math.max(0, Number(it.totalCh || s.chapters || 0));
+        const readCh = Math.max(1, Number(it.readCh || 1));
+        const listenCh = Math.max(1, Number(it.listenCh || readCh || 1));
+        const listenIdx = Math.max(0, Number(it.listenIdx || 0));
+
+        const pct = totalCh > 0 ? Math.max(0, Math.min(100, (readCh / totalCh) * 100)) : 0;
+
+        const parts = [];
+        parts.push(totalCh > 0 ? `Đọc: Chương ${readCh}/${totalCh}` : `Đọc: Chương ${readCh}`);
+        if (Number(it.listenTs || 0) > 0) parts.push(`Nghe: Chương ${listenCh}`);
+        const sub = parts.join(" • ");
+
+        return `
+          <div class="mini-row js-open" data-id="${esc(s.id)}">
+            <img class="mini-cover" src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
+            <div class="mini-info">
+              <div class="mini-title">${esc(s.title)}</div>
+              <div class="mini-sub">${sub}</div>
+              <div class="mini-progress"><span style="width:${pct.toFixed(1)}%"></span></div>
+            </div>
+            <div class="mini-actions">
+              <button class="mini-act" type="button" data-read="${esc(s.id)}" data-chapter="${readCh}" aria-label="Đọc tiếp">📖</button>
+              <button class="mini-act" type="button" data-listen="${esc(s.id)}" data-chapter="${listenCh}" data-idx="${listenIdx}" data-autoplay="1" aria-label="Nghe tiếp">🔊</button>
+              <button class="mini-act danger" type="button" data-remove-continue="${esc(s.id)}" aria-label="Xóa khỏi tiếp tục">✕</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function removeContinueItem(storyId){
+      try{
+        if (!storyId) return;
+        const sid = String(storyId);
+
+        const nextHistory = (Array.isArray(userState?.historyIds) ? userState.historyIds : []).filter(id => String(id) !== sid);
+        const nextLast = { ...(userState?.lastReading || {}) };
+        try{ delete nextLast[sid]; }catch(_){ }
+
+        const curListen = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent : [];
+        const nextListen = normalizeListeningRecent(curListen.filter(x => x && String(x.storyId) !== sid));
+
+        const ok = await saveUserStatePatch({ historyIds: nextHistory, lastReading: nextLast, listeningRecent: nextListen });
+        if (ok) toast("Đã xóa khỏi tiếp tục");
+      }catch(_){ }
+    }
+
+function renderRandomGrid(){
       const items = getRandomStories(window.innerWidth >= 420 ? 4 : 4);
       if (!items.length){
         randomGrid.innerHTML = `<div class="panel muted" style="grid-column:1/-1">Chưa có truyện.</div>`;
@@ -4091,7 +4745,8 @@
     }
 
     function renderAll(){
-      renderReadingStrip();
+      renderHeroBanner();
+      renderContinueStrip();
       renderRandomGrid();
       renderUpdatedList();
       if (searchPanel?.classList.contains("show")) renderSearchResults();
@@ -4376,6 +5031,7 @@ setActiveBottomNav("bookshelf");
         const btn = e.target.closest("[data-chapter]");
         if (!btn) return;
         const chapter = Number(btn.dataset.chapter || 1);
+        await markReadStory(storyId, chapter);
         goToReader(storyId, chapter);
       };
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -4642,9 +5298,9 @@ setActiveBottomNav("bookshelf");
           notificationsUnread: countUnreadNotifications(nextNotifications),
           updatedAt: data.lastSeenAt || null
         };
-        // cache local để lần sau reload vào web hiển thị ngay (không phải đợi Firestore)
-        saveGuestUserState(userState);
-        renderAfterUserStateChange();
+        renderAccountMenuSummary();
+        renderAll();
+        renderRoute();
       }, (err) => {
         console.error("onSnapshot user error:", err);
         toast("Lỗi đồng bộ dữ liệu người dùng.");
@@ -4679,8 +5335,6 @@ setActiveBottomNav("bookshelf");
       }
 
       Object.assign(userState, nextPatch);
-      // cache local để reload vào web hiển thị ngay
-      saveGuestUserState(userState);
       if (!noRender) renderAfterUserStateChange();
 
       try{
@@ -4691,8 +5345,6 @@ setActiveBottomNav("bookshelf");
         console.error(err);
         // revert
         Object.assign(userState, prev);
-        // giữ cache local đúng với trạng thái hiện tại
-        saveGuestUserState(userState);
         if (!noRender) renderAfterUserStateChange();
         toast("Không thể lưu Firebase.");
         return false;
@@ -5392,7 +6044,8 @@ setActiveBottomNav("bookshelf");
         currentUser = null;
         userState = loadGuestUserState();
         applyUserUI();
-        renderAfterUserStateChange();
+        renderAll();
+        renderRoute();
         return;
       }
       onAuthStateChanged(auth, async (user) => {
@@ -5422,7 +6075,8 @@ setActiveBottomNav("bookshelf");
           startPresence(null); // vẫn giữ realtime online cho khách
           syncHeaderOnlineStatus();
           closeNotifyPanel();
-          renderAfterUserStateChange();
+          renderAll();
+          renderRoute();
         }
       });
     }
@@ -5431,6 +6085,39 @@ setActiveBottomNav("bookshelf");
        13) Global events
        ============================ */
     document.addEventListener("click", async (e) => {
+
+
+      const viewAllC = e.target.closest("#viewAllContinue");
+      if (viewAllC){
+        e.stopPropagation();
+        goToBookshelf("history");
+        return;
+      }
+
+      const rmContinue = e.target.closest("[data-remove-continue]");
+      if (rmContinue){
+        e.stopPropagation();
+        const id = rmContinue.dataset.removeContinue;
+        if (id) await removeContinueItem(id);
+        return;
+      }
+
+      const rmHist = e.target.closest("[data-remove-history]");
+      if (rmHist){
+        e.stopPropagation();
+        const id = rmHist.dataset.removeHistory;
+        if (id) await removeHistoryItem(id);
+        return;
+      }
+
+      const rmListen = e.target.closest("[data-remove-listen]");
+      if (rmListen){
+        e.stopPropagation();
+        const id = rmListen.dataset.removeListen;
+        if (id) await removeListeningItem(id);
+        return;
+      }
+
       const followBtn = e.target.closest("[data-follow]");
       if (followBtn){
         e.stopPropagation();
@@ -5444,8 +6131,41 @@ setActiveBottomNav("bookshelf");
         e.stopPropagation();
         const id = readBtn.dataset.read;
         if (id){
-          const lastCh = Number((userState?.lastReading || {})[id] || 1);
+          const chFromBtn = Number(readBtn.dataset.chapter || 0);
+          const lastCh = chFromBtn > 0 ? chFromBtn : Number((userState?.lastReading || {})[id] || 1);
+          markReadStory(id, lastCh, { silent: true }).catch(_=>{});
           goToReader(id, lastCh);
+        }
+        return;
+      }
+
+
+      const listenBtn = e.target.closest("[data-listen]");
+      if (listenBtn){
+        e.stopPropagation();
+        const id = listenBtn.dataset.listen;
+        if (id){
+          const ch = Math.max(1, Number(listenBtn.dataset.chapter || (userState?.lastReading || {})[id] || 1));
+          const idx = Math.max(0, Number(listenBtn.dataset.idx || 0));
+          // autoplay TTS sau khi vào reader (nếu có)
+          try{
+            const auto = String(listenBtn.dataset.autoplay || "") === "1";
+            if (auto){
+              __pendingListenAutoplay = { autoplay: true, storyId: String(id), chapter: Number(ch), idx: Number(idx||0) };
+              sessionStorage.setItem("autoplay_tts", "1");
+              sessionStorage.setItem("autoplay_story", String(id));
+              sessionStorage.setItem("autoplay_ch", String(ch));
+              sessionStorage.setItem("autoplay_idx", String(idx||0));
+            }else{
+              __pendingListenAutoplay = null;
+              sessionStorage.removeItem("autoplay_tts");
+              sessionStorage.removeItem("autoplay_story");
+              sessionStorage.removeItem("autoplay_ch");
+              sessionStorage.removeItem("autoplay_idx");
+            }
+          }catch(_){}
+          markReadStory(id, ch, { silent: true }).catch(_=>{});
+          goToReader(id, ch);
         }
         return;
       }
@@ -5935,15 +6655,19 @@ setActiveBottomNav("bookshelf");
       applyTheme(activeTheme);
       applyUserUI();
       await loadStories();
-      // Firebase init + auth sẽ chạy nền sau khi UI đã render (không chặn lần tải đầu)
-      bootstrapFirebaseAsync();
+      if (ENABLE_FIREBASE){
+        startStoryViewsSync();
+        startPresence(null);
+      }
+      initAuth();
       syncHeaderOnlineStatus();
       renderNotificationList();
+      renderRoute();
     }
     init();
     positionFloatingPanels();
   
-})();
+  });
   </script>
 
 </body>
