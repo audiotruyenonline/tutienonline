@@ -129,14 +129,27 @@
       position:relative; flex:0 0 auto;
       box-shadow:0 6px 14px rgba(0,0,0,.18);
     }
-    .topbar-row-tools .icon-btn{width:34px;height:34px;border-radius:11px}
+
+.notify-in-header{
+  position:relative;
+}
+
+.icon-btn.notify-in-header{
+  border:1px solid rgba(255,77,109,.55);
+  box-shadow:0 8px 18px rgba(0,0,0,.18), 0 0 0 3px rgba(255,77,109,.14);
+}
+#btnNotify.has-unread{
+  border:2px solid var(--danger);
+  box-shadow:0 10px 22px rgba(255,77,109,.28), 0 0 0 4px rgba(255,77,109,.18);
+}
+.topbar-row-tools .icon-btn{width:34px;height:34px;border-radius:11px}
     .icon-btn svg{width:18px;height:18px;opacity:.95}
     .topbar-row-tools .icon-btn svg{width:17px;height:17px}
     .badge-dot{
       position:absolute; top:-4px; right:-4px;
-      min-width:18px;height:18px;padding:0 5px;border-radius:999px;
-      display:grid;place-items:center; font-size:10px; font-weight:900;
-      background:#ff3b30;color:white; border:2px solid #0b0c15;
+      min-width:20px;height:20px;padding:0 6px;border-radius:999px;
+      display:grid;place-items:center; font-size:11px; font-weight:900;
+      background:#ff3b30;color:white; border:2px solid var(--panel);
       box-shadow:0 6px 12px rgba(255,59,48,.25);
     }
     .pill{
@@ -618,7 +631,63 @@
       width:9px;height:9px;border-radius:50%; background:#f2be2d; box-shadow:0 0 10px rgba(242,190,45,.7);
     }
 
-    .grid-cards{
+
+    /* Horizontal swipe strip (Random explore) */
+    .hscroll-cards{
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      padding:2px 2px 10px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+    }
+    .hscroll-cards::-webkit-scrollbar{height:6px}
+    .hscroll-cards::-webkit-scrollbar-thumb{
+      background:rgba(255,255,255,.16);
+      border-radius:999px;
+    }
+    .hscroll-cards .grid-card{
+      flex:0 0 148px;
+      width:148px;
+      scroll-snap-align:start;
+    }
+    @media (min-width:420px){
+      .hscroll-cards .grid-card{flex-basis:160px;width:160px}
+    }
+
+    /* Vertical scroll frame (Updated list) */
+    .updated-scroll{
+      max-height:560px;
+      overflow-y:auto;
+      padding-right:4px;
+      overscroll-behavior:contain;
+    }
+    .updated-scroll::-webkit-scrollbar{width:6px}
+    .updated-scroll::-webkit-scrollbar-thumb{
+      background:rgba(255,255,255,.16);
+      border-radius:999px;
+    }
+    
+
+    /* Vertical scroll frame (Completed list) */
+    .completed-scroll{
+      max-height:560px;
+      overflow-y:auto;
+      padding-right:4px;
+      overscroll-behavior:contain;
+    }
+    .completed-scroll::-webkit-scrollbar{width:6px}
+    .completed-scroll::-webkit-scrollbar-thumb{
+      background:rgba(255,255,255,.16);
+      border-radius:999px;
+    }
+    .pill-done{
+      border-color: rgba(0, 255, 179, .18);
+      background: linear-gradient(180deg, rgba(0, 255, 179, .16), rgba(0, 255, 179, .06));
+      color:#d8fff1;
+    }
+
+.grid-cards{
       display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px;
     }
     @media (min-width:420px){
@@ -772,8 +841,15 @@
     .auth-text .sub{font-size:12px; color:var(--muted)}
 
     .toast-wrap{
-      position:fixed; left:0; right:0; bottom:calc(env(safe-area-inset-bottom) + var(--bottom-nav-h) + 94px);
-      display:flex; justify-content:center; z-index:120; pointer-events:none;
+      position:fixed;
+      top:calc(env(safe-area-inset-top) + var(--toast-top, 12px));
+      right:12px;
+      left:auto;
+      bottom:auto;
+      display:flex;
+      justify-content:flex-end;
+      z-index:260;
+      pointer-events:none;
     }
     .toast{
       pointer-events:auto;
@@ -783,7 +859,7 @@
       border:1px solid rgba(255,255,255,.1);
       color:#eef3ff; box-shadow:var(--shadow);
       font-weight:700; font-size:13px;
-      opacity:0; transform:translateY(10px);
+      opacity:0; transform:translateY(-10px);
       transition:.18s ease;
     }
     .toast.show{opacity:1; transform:translateY(0)}
@@ -2482,6 +2558,189 @@
     }
 
 
+  
+    /* ============================
+       Browse page (Xem tất cả) + phân trang (30 truyện/trang)
+       ============================ */
+    .browse-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:10px;
+    }
+    @media (min-width:520px){
+      .browse-grid{grid-template-columns:repeat(4, minmax(0, 1fr))}
+    }
+    .browse-card{
+      min-width:0;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg,#121524,#0d101b);
+      box-shadow:var(--shadow);
+      cursor:pointer;
+    }
+    .browse-card .cover{aspect-ratio:3/4; background:#0b0e1a}
+    .browse-card .cover img{width:100%;height:100%;object-fit:cover}
+    .browse-card .meta{padding:7px 7px 8px}
+    .browse-card .t{
+      font-weight:900;
+      font-size:12px;
+      line-height:1.2;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height:30px;
+    }
+    .browse-card .a{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:10.5px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .browse-card .bline{
+      margin-top:6px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      flex-wrap:wrap;
+      font-size:10.5px;
+      color:#d6ddff;
+    }
+    .browse-tag{
+      padding:2px 6px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.04);
+      color:#dfe7ff;
+      font-weight:900;
+      font-size:10px;
+      line-height:1;
+    }
+    .browse-tag.done{
+      border-color: rgba(0, 255, 179, .18);
+      background: rgba(0, 255, 179, .10);
+      color:#d8fff1;
+    }
+    .browse-tag.upd{
+      border-color: rgba(0, 212, 255, .22);
+      background: rgba(0, 212, 255, .10);
+      color:#d8f7ff;
+    }
+
+    .pager{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+    .pager .pg-btn{
+      min-width:38px;
+      height:34px;
+      padding:0 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg,#171b2f,#0f1322);
+      color:#eaefff;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(0,0,0,.18);
+    }
+    .pager .pg-btn[disabled]{opacity:.45;cursor:not-allowed}
+    .pager .pg-num{
+      min-width:34px;
+      height:34px;
+      padding:0 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:#dfe7ff;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .pager .pg-num.active{
+      background:linear-gradient(180deg, rgba(242,190,45,.22), rgba(242,190,45,.08));
+      border-color:rgba(242,190,45,.24);
+      color:#fff4c6;
+    }
+    .pager .pg-info{
+      color:var(--muted);
+      font-weight:800;
+      font-size:12px;
+      padding:0 4px;
+    }
+
+
+    /* Browse search bar (Xem tất cả) */
+    .browse-toolbar{
+      position:sticky;
+      top:0;
+      z-index:6;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 0 12px;
+      background:linear-gradient(180deg, rgba(9,11,20,.92), rgba(9,11,20,.55));
+      backdrop-filter: blur(10px);
+    }
+    .browse-search{
+      flex:1;
+      position:relative;
+      min-width:0;
+    }
+    .browse-search input{
+      width:100%;
+      height:42px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.10);
+      color:var(--text);
+      padding:0 44px 0 14px;
+      outline:none;
+      font-weight:800;
+      letter-spacing:.1px;
+    }
+    .browse-search input::placeholder{ color:var(--muted); font-weight:700; }
+    .browse-search input:focus{
+      border-color:rgba(88,135,255,.32);
+      box-shadow:0 0 0 3px rgba(88,135,255,.12);
+    }
+    .browse-clear{
+      position:absolute;
+      right:8px;
+      top:50%;
+      transform:translateY(-50%);
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.22);
+      color:var(--text);
+      cursor:pointer;
+      display:none;
+      place-items:center;
+      font-weight:900;
+      line-height:1;
+    }
+    .browse-clear.show{ display:grid; }
+    body.theme-light .browse-toolbar{
+      background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,255,.78));
+    }
+    body.theme-light .browse-search input{
+      background:#fff;
+      border-color:rgba(30,50,100,.12);
+      color:#223556;
+    }
+    body.theme-light .browse-clear{
+      background:#fff;
+      border-color:rgba(30,50,100,.12);
+      color:#223556;
+    }
+
   </style>
 </head>
 <body>
@@ -2505,14 +2764,6 @@
           <span class="online-count" id="onlineCount">0</span>
         </button>
 
-        <button class="icon-btn" id="btnNotify" title="Thông báo" aria-label="Thông báo">
-          <span class="badge-dot hidden" id="notifyBadge">0</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"/>
-            <path d="M9 17a3 3 0 0 0 6 0"/>
-          </svg>
-        </button>
-
         <div class="avatar-wrap" id="btnAccount" title="Tài khoản">
           <div class="avatar" id="avatarBox">?</div>
           <svg class="caret" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
@@ -2526,6 +2777,14 @@
             <path d="M20 20l-3.5-3.5"></path>
           </svg>
           <span class="header-search-text">Tìm truyện, tác giả, thể loại...</span>
+        </button>
+
+        <button class="icon-btn notify-in-header" id="btnNotify" title="Thông báo" aria-label="Thông báo">
+          <span class="badge-dot hidden" id="notifyBadge">0</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"/>
+            <path d="M9 17a3 3 0 0 0 6 0"/>
+          </svg>
         </button>
 
         <button class="pill gold compact" id="btnNap" title="Nạp">
@@ -2619,9 +2878,7 @@
       </section>
     </div>
   </aside>
-
-
-  <main class="app">
+<main class="app">
     <div class="route-header hidden" id="routeHeader">
       <div class="route-header-shell">
         <button class="route-header-back hidden" id="routeHeaderBackBtn" type="button" aria-label="Quay lại">←</button>
@@ -2666,7 +2923,7 @@
           <button class="btn-random" id="btnRandomPick">🎯 Thử vận may</button>
           <div class="timer-pill"><span class="timer-dot"></span><span id="randomCooldownText">55s</span></div>
         </div>
-        <div class="grid-cards" id="randomGrid"></div>
+        <div class="hscroll-cards" id="randomGrid" aria-label="Truyện ngẫu nhiên (kéo ngang)"></div>
       </section>
 
       <section class="section" style="margin-top:16px">
@@ -2681,8 +2938,21 @@
           <button class="btn-link" id="viewAllUpdated">Xem tất cả →</button>
         </div>
         <div class="section-desc">Danh sách truyện vừa cập nhật gần đây, hiển thị dạng danh sách để đọc.</div>
-        <div class="updated-list" id="updatedList"></div>
+        <div class="updated-list updated-scroll" id="updatedList" aria-label="Danh sách mới cập nhật (kéo xuống)"></div>
       </section>
+
+      <section class="section" style="margin-top:16px">
+        <div class="section-head">
+          <div class="section-title" style="margin:0">
+            <div class="bubble">✅</div>
+            <div>Truyện hoàn thành</div>
+          </div>
+          <button class="btn-link" id="viewAllCompleted">Xem tất cả →</button>
+        </div>
+        <div class="section-desc">Những bộ truyện đã hoàn thành gần đây — kéo xuống để xem thêm.</div>
+        <div class="updated-list completed-scroll" id="completedList" aria-label="Danh sách truyện hoàn thành (kéo xuống)"></div>
+      </section>
+
     </div>
 
 
@@ -2877,6 +3147,24 @@
     <div class="page hidden" id="tabPage">
       <section class="section" style="margin-top:0">
         <div class="tab-page-shell" id="tabPageContent"></div>
+      </section>
+    </div>
+
+
+    <!-- BROWSE PAGE (VIEW ALL) -->
+    <div class="page hidden" id="browsePage">
+      <section class="section" style="margin-top:0">
+        <div class="browse-shell">
+
+        <div class="browse-toolbar" id="browseToolbar" aria-label="Tìm trong danh sách">
+          <div class="browse-search">
+            <input id="browseSearchInput" type="search" placeholder="Tìm kiếm" autocomplete="off" />
+            <button class="browse-clear" id="browseClearBtn" type="button" aria-label="Xóa tìm kiếm">✕</button>
+          </div>
+        </div>
+          <div class="browse-grid" id="browseGrid" aria-label="Danh sách truyện"></div>
+          <div class="pager" id="browsePager" aria-label="Phân trang"></div>
+        </div>
       </section>
     </div>
 
@@ -3252,7 +3540,13 @@ function normalizeUserState(raw){
     const randomGrid = $("#randomGrid");
     const updatedList = $("#updatedList");
 
-    const bookshelfTabs = $("#bookshelfTabs");
+        const completedList = $("#completedList");
+    const browsePage = $("#browsePage");
+    const browseGrid = $("#browseGrid");
+    const browsePager = $("#browsePager");
+    const browseSearchInput = $("#browseSearchInput");
+    const browseClearBtn = $("#browseClearBtn");
+const bookshelfTabs = $("#bookshelfTabs");
     const bookshelfList = $("#bookshelfList");
     const bookshelfCounts = $("#bookshelfCounts");
     const bookshelfSubText = $("#bookshelfSubText");
@@ -3766,6 +4060,18 @@ function normalizeUserState(raw){
     }
 
     function toast(msg){
+      // Đưa toast lên góc phải trên cùng (tránh đè header ở trang chủ)
+      try{
+        let top = 12;
+        const tb = document.querySelector(".topbar");
+        const tbVisible = tb && getComputedStyle(tb).display !== "none";
+        if (tbVisible){
+          top = (tb.offsetHeight || 92) + 10;
+        }else{
+          top = 12;
+        }
+        document.documentElement.style.setProperty("--toast-top", top + "px");
+      }catch(e){}
       toastEl.textContent = msg;
       toastEl.classList.add("show");
       clearTimeout(toast._t);
@@ -3850,7 +4156,16 @@ function normalizeUserState(raw){
     function isBookmarked(id){ return (Array.isArray(userState.bookmarkIds) ? userState.bookmarkIds : []).includes(id); }
     function isInHistory(id){ return userState.historyIds.includes(id); }
     function sortedUpdatedStories(){ return [...stories].sort((a,b)=>(b.updatedAtMs||0)-(a.updatedAtMs||0)); }
-    function getReadingStories(){
+        function isCompletedStory(s){
+      const st = (s && s.status != null) ? String(s.status).trim().toLowerCase() : "";
+      return st.includes("hoàn thành") || st.includes("hoan thanh") || st.includes("completed") || st === "done" || st === "finished";
+    }
+    function sortedCompletedStories(){
+      return [...stories]
+        .filter(isCompletedStory)
+        .sort((a,b)=>((b.completedAtMs||b.updatedAtMs||0) - (a.completedAtMs||a.updatedAtMs||0)));
+    }
+function getReadingStories(){
       const fromHistory = userState.historyIds.map(storyById).filter(Boolean);
       return fromHistory.length ? fromHistory.slice(0, 10) : sortedUpdatedStories().slice(0, 10);
     }
@@ -4074,7 +4389,7 @@ function normalizeUserState(raw){
     }
 
     function hideAllPages(){
-      [homePage, storyPage, bookshelfPage, tabPage, readerPage].forEach(p => p?.classList.add("hidden"));
+      [homePage, storyPage, bookshelfPage, tabPage, browsePage, readerPage].forEach(p => p?.classList.add("hidden"));
     }
 
     function showRouteHeader({ title = "", sub = "", back = false, backText = "←", chips = [] } = {}){
@@ -4281,7 +4596,9 @@ function normalizeUserState(raw){
         const unread = currentUser ? Math.max(0, Number(userState?.notificationsUnread || 0)) : 0;
         notifyBadge.classList.toggle("hidden", unread <= 0);
         notifyBadge.textContent = String(unread);
-      }
+      
+        btnNotify?.classList.toggle("has-unread", unread > 0);
+}
     }
 
     function updateHeaderLoginGates(){
@@ -4690,13 +5007,17 @@ function normalizeUserState(raw){
     }
 
 function renderRandomGrid(){
-      const items = getRandomStories(window.innerWidth >= 420 ? 4 : 4);
+      if (!randomGrid) return;
+      // Giới hạn 10 truyện để kéo ngang
+      const items = getRandomStories(10);
+      // Đảm bảo class đúng (phòng trường hợp HTML cũ)
+      try{ randomGrid.classList.add("hscroll-cards"); }catch(_){}
       if (!items.length){
-        randomGrid.innerHTML = `<div class="panel muted" style="grid-column:1/-1">Chưa có truyện.</div>`;
+        randomGrid.innerHTML = `<div class="panel muted" style="min-width:100%">Chưa có truyện.</div>`;
         return;
       }
       randomGrid.innerHTML = items.map(s => `
-        <article class="grid-card js-open" data-id="${esc(s.id)}">
+        <article class="grid-card js-open" data-id="${esc(s.id)}" role="button" aria-label="${esc(s.title)}">
           <div class="cover-wrap">
             <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
           </div>
@@ -4711,14 +5032,47 @@ function renderRandomGrid(){
         </article>
       `).join("");
     }
+    // ============================
+    // Updated list: khung kéo xuống + nạp thêm khi kéo xuống
+    // - Hiển thị từ mới nhất -> cũ nhất (toàn bộ danh sách của trang)
+    // - Load theo lô để nhẹ máy (10 truyện/lô)
+    // ============================
+    let __updatedCache = [];
+    let __updatedOffset = 0;
+    let __updatedBound = false;
+    let __updatedLoading = false;
+    const __UPDATED_BATCH = 10;
 
-    function renderUpdatedList(){
-      const items = sortedUpdatedStories().slice(0, 8);
-      if (!items.length){
+    function renderUpdatedList(reset=true){
+      if (!updatedList) return;
+
+      // đảm bảo đúng class (phòng trường hợp HTML cũ)
+      try{ updatedList.classList.add("updated-scroll"); }catch(_){}
+
+      __updatedCache = sortedUpdatedStories();
+      if (!__updatedCache.length){
         updatedList.innerHTML = `<div class="panel muted">Chưa có truyện mới cập nhật.</div>`;
         return;
       }
-      updatedList.innerHTML = items.map(s => `
+
+      if (reset){
+        __updatedOffset = 0;
+        updatedList.innerHTML = "";
+        try{ updatedList.scrollTop = 0; }catch(_){}
+      }
+
+      // xóa chỉ dẫn "kéo xuống" trước khi append
+      const moreHint = updatedList.querySelector(".updated-more");
+      if (moreHint) moreHint.remove();
+
+      const chunk = __updatedCache.slice(__updatedOffset, __updatedOffset + __UPDATED_BATCH);
+      __updatedOffset += chunk.length;
+
+      if (!chunk.length){
+        return;
+      }
+
+      const html = chunk.map(s => `
         <article class="updated-item js-open" data-id="${esc(s.id)}">
           <div class="updated-thumb"><img src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy"></div>
           <div class="updated-main">
@@ -4733,22 +5087,143 @@ function renderRandomGrid(){
               <span>Cập nhật: ${esc(s.updatedAtText || "Mới nhất")}</span>
               <span>${esc(s.category || "")}</span>
             </div>
-            <div class="row-actions" onclick="event.stopPropagation()">
-              <button class="chip" data-read="${esc(s.id)}">▶ Đọc tiếp</button>
-              <button class="chip follow ${isFollowed(s.id) ? "active" : ""}" data-follow="${esc(s.id)}">
-                ${isFollowed(s.id) ? "★ Đã theo dõi" : "☆ Theo dõi"}
-              </button>
-            </div>
           </div>
         </article>
       `).join("");
+
+      if (reset) updatedList.innerHTML = html;
+      else updatedList.insertAdjacentHTML("beforeend", html);
+
+      // Footer trạng thái
+      const endEl = updatedList.querySelector(".updated-end");
+      if (endEl) endEl.remove();
+
+      if (__updatedOffset >= __updatedCache.length){
+        updatedList.insertAdjacentHTML("beforeend",
+          `<div class="updated-end" style="text-align:center;padding:10px 6px;color:var(--muted);font-weight:800">Đã tới truyện cập nhật cũ nhất</div>`
+        );
+      }else{
+        updatedList.insertAdjacentHTML("beforeend",
+          `<div class="updated-more" style="text-align:center;padding:10px 6px;color:var(--muted);opacity:.7">Kéo xuống để xem thêm…</div>`
+        );
+      }
+
+      // Bind scroll 1 lần
+      if (!__updatedBound){
+        __updatedBound = true;
+        updatedList.addEventListener("scroll", () => {
+          if (__updatedLoading) return;
+          if (__updatedOffset >= __updatedCache.length) return;
+
+          const nearBottom = (updatedList.scrollTop + updatedList.clientHeight) >= (updatedList.scrollHeight - 140);
+          if (!nearBottom) return;
+
+          __updatedLoading = true;
+          requestAnimationFrame(() => {
+            try{ renderUpdatedList(false); }catch(e){ console.warn(e); }
+            __updatedLoading = false;
+          });
+        }, { passive: true });
+      }
     }
+
+    // ============================
+    // Completed list: khung kéo xuống + nạp thêm khi kéo xuống
+    // - Chỉ lấy truyện status = "Hoàn thành" (hoặc chứa "hoàn thành")
+    // - Hiển thị từ mới hoàn thành -> cũ hơn
+    // - Load theo lô để nhẹ máy (10 truyện/lô)
+    // ============================
+    let __completedCache = [];
+    let __completedOffset = 0;
+    let __completedBound = false;
+    let __completedLoading = false;
+    const __COMPLETED_BATCH = 10;
+
+    function renderCompletedList(reset=true){
+      if (!completedList) return;
+
+      try{ completedList.classList.add("completed-scroll"); }catch(_){}
+
+      __completedCache = sortedCompletedStories();
+      if (!__completedCache.length){
+        completedList.innerHTML = `<div class="panel muted">Chưa có truyện hoàn thành.</div>`;
+        return;
+      }
+
+      if (reset){
+        __completedOffset = 0;
+        completedList.innerHTML = "";
+        try{ completedList.scrollTop = 0; }catch(_){}
+      }
+
+      const moreHint = completedList.querySelector(".completed-more");
+      if (moreHint) moreHint.remove();
+
+      const chunk = __completedCache.slice(__completedOffset, __completedOffset + __COMPLETED_BATCH);
+      __completedOffset += chunk.length;
+
+      if (!chunk.length) return;
+
+      const html = chunk.map(s => {
+        const whenText = (s.completedAtText || s.updatedAtText || "").trim();
+        return `
+        <article class="updated-item js-open" data-id="${esc(s.id)}">
+          <div class="updated-thumb"><img src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy"></div>
+          <div class="updated-main">
+            <div class="updated-title">${esc(s.title)}</div>
+            <div class="updated-sub"><span class="label">Tác giả:</span> ${esc(s.author || "Chưa rõ")}</div>
+            <div class="updated-line">
+              <span>${s.chapters || 0} chương</span>
+              <span>👁 ${formatShort(s.views || 0)}</span>
+              <span class="star">⭐ ${Number(s.rating||0).toFixed(1)}</span>
+            </div>
+            <div class="updated-meta">
+              <span class="pill pill-done">✅ Hoàn thành</span>
+              ${whenText ? '<span class="muted">• ' + esc(whenText) + '</span>' : ''}
+            </div>
+          </div>
+        </article>
+        `;
+      }).join("");
+
+      completedList.insertAdjacentHTML("beforeend", html);
+
+      if (__completedOffset >= __completedCache.length){
+        completedList.insertAdjacentHTML("beforeend",
+          `<div class="completed-more" style="text-align:center;padding:10px 6px;color:var(--muted);font-weight:800">Đã tới truyện hoàn thành cũ nhất</div>`
+        );
+      }else{
+        completedList.insertAdjacentHTML("beforeend",
+          `<div class="completed-more" style="text-align:center;padding:10px 6px;color:var(--muted);opacity:.7">Kéo xuống để xem thêm…</div>`
+        );
+      }
+
+      if (!__completedBound){
+        __completedBound = true;
+        completedList.addEventListener("scroll", () => {
+          if (__completedLoading) return;
+          if (__completedOffset >= __completedCache.length) return;
+
+          const nearBottom = (completedList.scrollTop + completedList.clientHeight) >= (completedList.scrollHeight - 140);
+          if (!nearBottom) return;
+
+          __completedLoading = true;
+          requestAnimationFrame(() => {
+            try{ renderCompletedList(false); }catch(e){ console.warn(e); }
+            __completedLoading = false;
+          });
+        }, { passive: true });
+      }
+    }
+
+
 
     function renderAll(){
       renderHeroBanner();
       renderContinueStrip();
       renderRandomGrid();
       renderUpdatedList();
+      renderCompletedList();
       if (searchPanel?.classList.contains("show")) renderSearchResults();
     }
 
@@ -5220,6 +5695,195 @@ setActiveBottomNav("bookshelf");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+
+    /* ============================
+       Browse "Xem tất cả" (Mới cập nhật / Truyện hoàn thành) + phân trang
+       ============================ */
+    const BROWSE_PAGE_SIZE = 30;
+    let __browseType = "updated";
+    let __browsePagerBound = false;
+
+
+    let __browseQuery = "";
+    let __browseSearchBound = false;
+
+    function normForSearch(str){
+      try{
+        return String(str || "")
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/đ/g, "d");
+      }catch(_){
+        return String(str || "").toLowerCase().replace(/đ/g, "d");
+      }
+    }
+
+    function filterBrowseList(list, query){
+      const q = String(query || "").trim();
+      if (!q) return list;
+      const qn = normForSearch(q);
+      return (list || []).filter(s => {
+        const hay = normForSearch([
+          s?.title, s?.author, s?.category, s?.status, s?.tags, s?.updatedAtText
+        ].filter(Boolean).join(" "));
+        return hay.includes(qn);
+      });
+    }
+
+    function bindBrowseSearchOnce(){
+      if (__browseSearchBound) return;
+      __browseSearchBound = true;
+
+      const refresh = () => {
+        // reset to page 1 when changing query
+        const nextHash = `#/all/${encodeURIComponent(__browseType)}/1`;
+        if ((location.hash || "") !== nextHash){
+          try{ history.replaceState(null, "", nextHash); }catch(_){ location.hash = nextHash; }
+        }
+        renderBrowsePage(__browseType, 1, { scroll: false });
+      };
+
+      browseSearchInput?.addEventListener("input", () => {
+        __browseQuery = browseSearchInput?.value || "";
+        browseClearBtn?.classList.toggle("show", String(__browseQuery).trim().length > 0);
+        refresh();
+      });
+
+      browseClearBtn?.addEventListener("click", () => {
+        __browseQuery = "";
+        if (browseSearchInput) browseSearchInput.value = "";
+        browseClearBtn?.classList.remove("show");
+        refresh();
+        browseSearchInput?.focus();
+      });
+    }
+
+    function parseBrowseHash(hash){
+      const h = String(hash || "");
+      const m = h.match(/^#\/all\/(updated|completed)(?:\/(\d+))?/i);
+      if (!m) return null;
+      const type = String(m[1] || "updated").toLowerCase();
+      const page = Math.max(1, parseInt(m[2] || "1", 10) || 1);
+      return { type, page };
+    }
+    function getBrowseStories(type){
+      return (type === "completed") ? sortedCompletedStories() : sortedUpdatedStories();
+    }
+    function browseCardHtml(s){
+      const done = isCompletedStory(s);
+      const cat = (s.category || "").trim();
+      const status = (s.status || "").trim();
+      const when = (s.updatedAtText || "").trim();
+
+      const tags = [];
+      if (cat) tags.push('<span class="browse-tag">' + esc(cat) + '</span>');
+      if (done) tags.push('<span class="browse-tag done">Hoàn thành</span>');
+      else if (status) tags.push('<span class="browse-tag upd">' + esc(status) + '</span>');
+      if (when) tags.push('<span class="browse-tag" style="opacity:.75">' + esc(when) + '</span>');
+      const tagHtml = tags.join("");
+
+      return `
+        <article class="browse-card js-open" data-id="${esc(s.id)}" role="button" aria-label="${esc(s.title || '')}">
+          <div class="cover"><img src="${esc(getCoverSrc(s))}" alt="${esc(s.title || '')}" loading="lazy"></div>
+          <div class="meta">
+            <div class="t">${esc(s.title || "")}</div>
+            <div class="a">${esc(s.author || "Chưa rõ")}</div>
+            <div class="bline">
+              <span>👁 ${formatShort(s.views || 0)}</span>
+              <span class="star">⭐ ${Number(s.rating || 0).toFixed(1)}</span>
+            </div>
+            <div class="bline">${tagHtml}</div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderBrowsePager(type, page, totalPages){
+      if (!browsePager) return;
+      browsePager.dataset.browseType = String(type || "updated");
+      if (totalPages <= 1){
+        browsePager.innerHTML = "";
+        return;
+      }
+      const nums = [];
+      let start = Math.max(1, page - 2);
+      let end = Math.min(totalPages, start + 4);
+      start = Math.max(1, end - 4);
+      for (let i = start; i <= end; i++) nums.push(i);
+
+      browsePager.innerHTML = `
+        <button class="pg-btn" type="button" data-pg="${page - 1}" ${page <= 1 ? "disabled" : ""}>‹</button>
+        ${nums.map(n => `<button class="pg-num ${n === page ? "active" : ""}" type="button" data-pg="${n}">${n}</button>`).join("")}
+        <button class="pg-btn" type="button" data-pg="${page + 1}" ${page >= totalPages ? "disabled" : ""}>›</button>
+        <span class="pg-info">Trang ${page}/${totalPages}</span>
+      `;
+    }
+
+    function bindBrowsePagerOnce(){
+      if (__browsePagerBound) return;
+      __browsePagerBound = true;
+      browsePager?.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-pg]");
+        if (!btn) return;
+        if (btn.hasAttribute("disabled")) return;
+        const p = Math.max(1, parseInt(btn.dataset.pg || "1", 10) || 1);
+        const type = (browsePager?.dataset.browseType || __browseType || "updated");
+        location.hash = `#/all/${encodeURIComponent(type)}/${p}`;
+      });
+    }
+
+    
+    function renderBrowsePage(type = "updated", page = 1, opts = {}){
+      const scroll = (opts && opts.scroll === false) ? false : true;
+
+      __browseType = (type === "completed") ? "completed" : "updated";
+      bindBrowsePagerOnce();
+      bindBrowseSearchOnce();
+
+      hideAllPages();
+      browsePage?.classList.remove("hidden");
+      setActiveBottomNav("home");
+
+      // Sync search UI
+      if (browseSearchInput){
+        if ((browseSearchInput.value || "") !== (__browseQuery || "")) browseSearchInput.value = __browseQuery || "";
+      }
+      browseClearBtn?.classList.toggle("show", String(__browseQuery || "").trim().length > 0);
+
+      const fullList = getBrowseStories(__browseType);
+      const filtered = filterBrowseList(fullList, __browseQuery);
+      const total = filtered.length;
+
+      const totalPages = Math.max(1, Math.ceil(total / BROWSE_PAGE_SIZE));
+      const p = Math.max(1, Math.min(totalPages, Number(page) || 1));
+
+      const title = (__browseType === "completed") ? "Truyện hoàn thành" : "Mới cập nhật";
+      const q = String(__browseQuery || "").trim();
+      const sub = q
+        ? `Lọc: “${q}” • ${total}/${fullList.length} truyện • ${BROWSE_PAGE_SIZE} truyện/trang`
+        : `Tất cả ${total} truyện • ${BROWSE_PAGE_SIZE} truyện/trang`;
+
+      showRouteHeader({ title, sub, back: true, chips: [`Trang ${p}/${totalPages}`] });
+
+      const start = (p - 1) * BROWSE_PAGE_SIZE;
+      const items = filtered.slice(start, start + BROWSE_PAGE_SIZE);
+
+      if (!browseGrid) return;
+      if (!items.length){
+        browseGrid.innerHTML = q
+          ? `<div class="panel muted" style="grid-column:1/-1">Không tìm thấy truyện phù hợp.</div>`
+          : `<div class="panel muted" style="grid-column:1/-1">Chưa có truyện.</div>`;
+      } else {
+        browseGrid.innerHTML = items.map(browseCardHtml).join("");
+      }
+
+      renderBrowsePager(__browseType, p, totalPages);
+      if (scroll) window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+
+
     function renderRoute(){
       const hash = location.hash || "#/home";
       updateHomeHeaderVisibilityByHash(hash);
@@ -5244,6 +5908,13 @@ setActiveBottomNav("bookshelf");
         const storyId = decodeURIComponent(hash.replace("#/story/", ""));
         renderStoryPage(storyId);
         return;
+      }
+      if (hash.startsWith("#/all/")){
+        const parsed = parseBrowseHash(hash);
+        if (parsed){
+          renderBrowsePage(parsed.type, parsed.page);
+          return;
+        }
       }
       if (hash.startsWith("#/bookshelf")){
         renderBookshelfPage(getBookshelfSectionFromHash());
@@ -6181,6 +6852,19 @@ setActiveBottomNav("bookshelf");
     $("#btnRandomPick").addEventListener("click", () => {
       renderRandomGrid();
       toast("Đã chọn truyện ngẫu nhiên mới");
+    });
+
+    $("#viewAllUpdated")?.addEventListener("click", () => {
+      __browseQuery = "";
+      if (browseSearchInput) browseSearchInput.value = "";
+      browseClearBtn?.classList.remove("show");
+      location.hash = "#/all/updated/1";
+    });
+    $("#viewAllCompleted")?.addEventListener("click", () => {
+      __browseQuery = "";
+      if (browseSearchInput) browseSearchInput.value = "";
+      browseClearBtn?.classList.remove("show");
+      location.hash = "#/all/completed/1";
     });
 
     btnSearch?.addEventListener("click", () => openSearchPanel());
