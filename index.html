@@ -3888,6 +3888,22 @@ const bookshelfTabs = $("#bookshelfTabs");
         return;
       }
 
+      // Nếu đang ở đúng truyện + đúng chương rồi (do re-render UI từ Firebase) thì không reset lại trang đọc
+      const __nextStoryId = String(storyId || "");
+      const __nextChapter = Math.max(1, Number(chapter || 1));
+      const __alreadyHere =
+        document.body.classList.contains("reader-mode") &&
+        readerPage && !readerPage.classList.contains("hidden") &&
+        String((readerState && readerState.storyId) || "") === __nextStoryId &&
+        Number((readerState && readerState.chapter) || 0) === __nextChapter;
+
+      if (__alreadyHere){
+        // giữ nguyên vị trí scroll, chỉ reset trạng thái auto-hide của player
+        try{ _rpResetAutoHide(); }catch(_){ }
+        return;
+      }
+
+
       hideAllPages();
       readerPage?.classList.remove("hidden");
       setActiveBottomNav(""); // no active highlight
@@ -5900,6 +5916,15 @@ setActiveBottomNav("bookshelf");
       if (hash.startsWith("#/read/")){
         const parsed = parseReadHash(hash);
         if (parsed) {
+          // Nếu đang ở đúng truyện + đúng chương rồi thì đừng render lại (tránh giật/nhảy về đầu trang)
+          const sameReader =
+            document.body.classList.contains("reader-mode") &&
+            readerPage && !readerPage.classList.contains("hidden") &&
+            String((readerState && readerState.storyId) || "") === String(parsed.storyId || "") &&
+            Number((readerState && readerState.chapter) || 0) === Number(parsed.chapter || 0);
+
+          if (sameReader) return;
+
           renderReaderPage(parsed.storyId, parsed.chapter);
           return;
         }
@@ -5969,9 +5994,10 @@ setActiveBottomNav("bookshelf");
           notificationsUnread: countUnreadNotifications(nextNotifications),
           updatedAt: data.lastSeenAt || null
         };
-        renderAccountMenuSummary();
-        renderAll();
-        renderRoute();
+        // Render nhẹ để tránh lag/giật (đặc biệt ở trang đọc chương)
+        try{ renderAfterUserStateChange(); }catch(_){}
+        try{ renderNotificationList(); }catch(_){}
+
       }, (err) => {
         console.error("onSnapshot user error:", err);
         toast("Lỗi đồng bộ dữ liệu người dùng.");
