@@ -3383,6 +3383,213 @@
     .rank-pager .btn:disabled{opacity:.5;}
     .rank-pager .info{opacity:.85;font-weight:800;}
 
+
+    /* ============================
+       PROFILE PAGE (Pro)
+       ============================ */
+    .pf-shell{padding:12px 10px 18px;}
+    .pf-hero{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(124,77,255,.14), rgba(0,212,255,.08));
+      border-radius:18px;
+      padding:12px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.16);
+      position:relative;
+      overflow:hidden;
+    }
+    .pf-hero::before{
+      content:"";
+      position:absolute; inset:-40px -60px auto auto;
+      width:180px; height:180px;
+      background: radial-gradient(circle at 30% 30%, rgba(0,212,255,.35), rgba(0,212,255,0));
+      transform: rotate(25deg);
+      pointer-events:none;
+    }
+    .pf-top{display:flex; align-items:center; gap:12px;}
+    .pf-avatar{
+      width:56px; height:56px; border-radius:18px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden; flex:0 0 auto;
+      display:grid; place-items:center;
+      font-weight:950;
+    }
+    .pf-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .pf-name{font-weight:950; font-size:15px; line-height:1.15; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .pf-sub{margin-top:3px; font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .pf-badges{margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;}
+    .pf-badge{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      font-size:11px; font-weight:900;
+    }
+    .pf-badge .dot{width:8px;height:8px;border-radius:99px;background:rgba(0,212,255,.9); box-shadow:0 0 0 3px rgba(0,212,255,.12);}
+    .pf-actions{display:flex; gap:10px; margin-top:12px;}
+    .pf-actions .btn{
+      flex:1;
+      height:44px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .pf-actions .btn.primary{
+      border:none;
+      background: linear-gradient(90deg, rgba(0,212,255,.95), rgba(124,77,255,.95));
+      color:#081018;
+    }
+    .pf-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px;}
+    .pf-stat{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius:16px;
+      padding:10px 8px;
+      text-align:center;
+      cursor:pointer;
+      user-select:none;
+    }
+    .pf-stat .k{font-size:10px; color:var(--muted); font-weight:800}
+    .pf-stat .v{margin-top:4px; font-size:16px; font-weight:950}
+    .pf-tabs{display:flex; gap:8px; margin:12px 0 10px; overflow:auto; -webkit-overflow-scrolling:touch; padding-bottom:2px;}
+    .pf-tabs::-webkit-scrollbar{height:0}
+    .pf-tab{
+      white-space:nowrap;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:12px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .pf-tab.active{
+      background: rgba(0,212,255,.16);
+      border-color: rgba(0,212,255,.35);
+      box-shadow: 0 10px 26px rgba(0,212,255,.10);
+    }
+    .pf-sec{display:none;}
+    .pf-sec.active{display:block;}
+    .pf-section-title{display:flex; align-items:center; justify-content:space-between; margin:8px 2px 8px;}
+    .pf-section-title .t{font-weight:950;}
+    .pf-section-title .s{font-size:11px; color:var(--muted); font-weight:800;}
+    .pf-mini-list{display:flex; flex-direction:column; gap:10px;}
+    .pf-row{
+      display:flex; align-items:center; gap:10px;
+      border:1px solid var(--line);
+      background: var(--card);
+      border-radius:16px;
+      padding:10px;
+    }
+    .pf-row .thumb{width:44px;height:58px;border-radius:12px;object-fit:cover;flex:0 0 auto;border:1px solid rgba(255,255,255,.08);}
+    .pf-row .meta{flex:1; min-width:0;}
+    .pf-row .meta .t{font-weight:900; line-height:1.2; max-height:2.4em; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;}
+    .pf-row .meta .s{margin-top:4px; font-size:11px; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap;}
+    .pf-row .acts{display:flex; gap:8px; flex:0 0 auto;}
+    .pf-mini-btn{
+      height:32px; padding:0 10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .pf-mini-btn.primary{
+      border:none;
+      background: linear-gradient(90deg, rgba(0,212,255,.95), rgba(124,77,255,.95));
+      color:#081018;
+    }
+    .pf-ach-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+    .pf-ach{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:10px;
+    }
+    .pf-ach .h{font-weight:950; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+    .pf-ach .p{margin-top:6px; font-size:11px; color:var(--muted); font-weight:800; line-height:1.35;}
+    .pf-bar{height:8px; border-radius:999px; background: rgba(255,255,255,.06); margin-top:10px; overflow:hidden;}
+    .pf-bar > i{display:block; height:100%; width:0%; background: linear-gradient(90deg, rgba(0,212,255,.95), rgba(124,77,255,.95));}
+    .pf-setting{
+      border:1px solid var(--line);
+      background: var(--card);
+      border-radius:18px;
+      padding:12px;
+      margin-bottom:10px;
+    }
+    .pf-setting-row{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0;}
+    .pf-setting-row + .pf-setting-row{border-top:1px solid rgba(255,255,255,.06);}
+    .pf-setting-row .t{font-weight:950;}
+    .pf-setting-row .s{font-size:11px; color:var(--muted); font-weight:800; margin-top:2px;}
+    .pf-switch{position:relative; display:inline-block; width:48px; height:28px; flex:0 0 auto;}
+    .pf-switch input{opacity:0; width:0; height:0;}
+    .pf-slider{
+      position:absolute; cursor:pointer; inset:0;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      transition:.2s; border-radius:999px;
+    }
+    .pf-slider:before{
+      content:"";
+      position:absolute; height:22px; width:22px; left:3px; top:2px;
+      background: rgba(255,255,255,.92);
+      transition:.2s; border-radius:999px;
+    }
+    .pf-switch input:checked + .pf-slider{
+      background: rgba(0,212,255,.22);
+      border-color: rgba(0,212,255,.35);
+    }
+    .pf-switch input:checked + .pf-slider:before{ transform: translateX(20px); background: rgba(0,212,255,.95); }
+    .pf-range{width:160px;}
+    .pf-overlay{
+      position:fixed; inset:0;
+      z-index: 2600;
+      background: rgba(0,0,0,.46);
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding: 14px;
+    }
+    .pf-sheet{
+      width:min(560px, 100%);
+      border:1px solid var(--line);
+      background: rgba(17,19,26,.96);
+      border-radius: 22px;
+      overflow:hidden;
+      box-shadow: 0 22px 60px rgba(0,0,0,.35);
+    }
+    .pf-sheet-head{display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.06);}
+    .pf-sheet-title{font-weight:950;}
+    .pf-sheet-close{width:36px;height:36px;border-radius:12px;border:1px solid var(--line); background: rgba(255,255,255,.04); color:var(--text); font-weight:900; cursor:pointer;}
+    .pf-sheet-body{padding:12px 14px 14px;}
+    .pf-field{margin-bottom:10px;}
+    .pf-field label{display:block; font-size:11px; color:var(--muted); font-weight:900; margin-bottom:6px;}
+    .pf-field input, .pf-field textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding:10px 12px;
+      outline:none;
+      font-weight:700;
+    }
+    .pf-field textarea{min-height:90px; resize:none; line-height:1.4;}
+    .pf-sheet-actions{display:flex; gap:10px; margin-top:12px;}
+    .pf-sheet-actions .btn{flex:1; height:46px; border-radius:14px; border:1px solid var(--line); background: rgba(255,255,255,.04); color:var(--text); font-weight:950; cursor:pointer;}
+    .pf-sheet-actions .btn.primary{border:none; background: linear-gradient(90deg, rgba(0,212,255,.95), rgba(124,77,255,.95)); color:#081018;}
+    @media (max-width:420px){
+      .pf-stats{grid-template-columns:repeat(2,1fr);}
+      .pf-ach-grid{grid-template-columns:1fr;}
+      .pf-range{width:140px;}
+    }
+
 </style>
 </head>
 <body>
@@ -4066,6 +4273,24 @@
         .sort((a,b) => Number(b.ts||0) - Number(a.ts||0))
         .slice(0, 12);
     }
+
+    function normalizeProfile(p){
+      const x = (p && typeof p === "object") ? p : {};
+      const name = String(x.name || "").trim().slice(0, 40);
+      const bio = String(x.bio || "").trim().slice(0, 160);
+      const avatar = String(x.avatar || "").trim().slice(0, 600);
+      return { name, bio, avatar };
+    }
+    function normalizeSettings(s){
+      const x = (s && typeof s === "object") ? s : {};
+      const autoRaw = (typeof x.autoNextChapter !== "undefined") ? x.autoNextChapter : safeGetLS("tts_auto_next", "1");
+      const rateRaw = (typeof x.ttsRate !== "undefined") ? x.ttsRate : safeGetLS("tts_rate", "1");
+      const autoNextChapter = String(autoRaw) === "0" ? false : !!autoRaw;
+      const rateNum = Number(rateRaw);
+      const ttsRate = (Number.isFinite(rateNum) && rateNum > 0) ? Math.max(0.5, Math.min(5.0, rateNum)) : 1.0;
+      return { autoNextChapter, ttsRate };
+    }
+
 function normalizeUserState(raw){
       const r = raw && typeof raw === "object" ? raw : {};
       const norm = {
@@ -4073,7 +4298,9 @@ function normalizeUserState(raw){
         bookmarkIds: Array.isArray(r.bookmarkIds) ? r.bookmarkIds.filter(Boolean) : [],
         historyIds: Array.isArray(r.historyIds) ? r.historyIds.filter(Boolean) : [],
         lastReading: (r.lastReading && typeof r.lastReading === "object") ? r.lastReading : {},
-        listeningRecent: normalizeListeningRecent(r.listeningRecent),
+        listeningRecent: normalizeListeningRecent(r.listeningRecent),        profile: normalizeProfile(r.profile),
+        settings: normalizeSettings(r.settings),
+
         notifications: Array.isArray(r.notifications) ? r.notifications : [],
         notificationsUnread: Number(r.notificationsUnread || 0) || 0,
         updatedAt: r.updatedAt || null
@@ -4260,15 +4487,8 @@ function normalizeUserState(raw){
        ============================ */
     let stories = [];
     let currentUser = null;
-    let userState = {
-      followedIds: [],
-      bookmarkIds: [],
-      historyIds: [],
-      lastReading: {},
-      notifications: [],
-      notificationsUnread: 0,
-      updatedAt: null
-    };
+    let userState = loadGuestUserState();
+
     let presenceUnsub = null;
     let userStateUnsub = null;
     let storyViewsUnsub = null;
@@ -4464,7 +4684,8 @@ const bookshelfTabs = $("#bookshelfTabs");
       storyId: null,
       chapter: 1,
       fontSize: 18,
-      rate: 1.0,
+      rate: (()=>{ const r=Number(safeGetLS("tts_rate","1")); return (Number.isFinite(r)&&r>0)?Math.max(0.5,Math.min(5.0,r)):1.0; })(),
+      autoNextChapter: safeGetLS("tts_auto_next","1") !== "0",
       theme: "dark", // light | sepia | dark | amoled
       chunks: [],
       idx: 0,
@@ -4512,6 +4733,7 @@ const bookshelfTabs = $("#bookshelfTabs");
     function setReaderRate(rate){
       const r = Number(rate);
       readerState.rate = (Number.isFinite(r) && r > 0) ? Math.max(0.5, Math.min(5.0, r)) : 1.0;
+      safeSetLS("tts_rate", String(readerState.rate));
       if (rpSpeedText) rpSpeedText.textContent = readerState.rate.toFixed(1) + "×";
       if (rpSpeedVal) rpSpeedVal.textContent = readerState.rate.toFixed(1) + "×";
       if (rpSpeedRange) rpSpeedRange.value = String(readerState.rate);
@@ -4671,15 +4893,19 @@ const bookshelfTabs = $("#bookshelfTabs");
           syncReaderProgress();
           speakCurrent();
         } else {
-          // Hết chương -> nếu còn chương sau thì tự chuyển chương và nghe tiếp
-          const st = storyById(readerState.storyId);
-          const totalCh = Math.max(1, Number((st && st.chapters) || 0) || 1);
-          if (readerState.storyId && Number(readerState.chapter || 1) < totalCh){
+          // Hết chương
+          if (readerState.autoNextChapter){
+            const st = storyById(readerState.storyId);
+            const totalCh = Math.max(1, Number((st && st.chapters) || 0) || 1);
+            if (readerState.storyId && Number(readerState.chapter || 1) < totalCh){
             const nextCh = Number(readerState.chapter || 1) + 1;
             const sid = readerState.storyId;
             stopTTS();
             setAutoplayTTS(sid, nextCh, 0);
             goToReader(sid, nextCh);
+            } else {
+              stopTTS();
+            }
           } else {
             stopTTS();
           }
@@ -7186,31 +7412,282 @@ function goToSearchWithGenreFromMenu(genreLabel){
         `;
 
         initCommunityTab();
-      } else if (tab === "profile"){
+            } else if (tab === "profile"){
         const vip = getVipSummary();
+        const prof = (userState && userState.profile) ? userState.profile : {};
+        const displayName = (prof && prof.name) ? prof.name : (currentUser?.displayName || "Khách");
+        const avatarUrl = (prof && prof.avatar) ? prof.avatar : (currentUser?.photoURL || "");
+        const bio = (prof && prof.bio)
+          ? prof.bio
+          : (currentUser
+              ? "Chào mừng bạn quay lại! Lưu truyện để đồng bộ theo dõi • lịch sử • đánh dấu."
+              : "Đăng nhập để đồng bộ theo dõi • lịch sử • đánh dấu bằng Firebase.");
+        const emailText = currentUser?.email || "Chưa đăng nhập";
+
         const followed = Array.isArray(userState?.followedIds) ? userState.followedIds.length : 0;
+        const bookmark = Array.isArray(userState?.bookmarkIds) ? userState.bookmarkIds.length : 0;
         const history = Array.isArray(userState?.historyIds) ? userState.historyIds.length : 0;
         const downloadCount = getDownloadedStoryIds().length;
-        showRouteHeader({ title: "Cá nhân", sub: currentUser ? (currentUser.displayName || currentUser.email || "Tài khoản") : "Khách", chips: [vip.label || "VIP"] });
+
+        const lastReading = (userState && userState.lastReading && typeof userState.lastReading === "object") ? userState.lastReading : {};
+        const readRecentIds = Array.isArray(userState?.historyIds) ? userState.historyIds.slice(0, 6) : [];
+        const listenRecent = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent.slice(0, 6) : [];
+
+        const autoNext = (userState?.settings && typeof userState.settings === "object")
+          ? !!userState.settings.autoNextChapter
+          : (safeGetLS("tts_auto_next", "1") !== "0");
+        const rate = (userState?.settings && typeof userState.settings === "object" && userState.settings.ttsRate)
+          ? Number(userState.settings.ttsRate || 1)
+          : Number(safeGetLS("tts_rate", "1") || 1);
+
+        function buildReadRows(){
+          const rows = readRecentIds.map(sid => {
+            const s = storyById(sid);
+            if (!s) return "";
+            const ch = Math.max(1, Number(lastReading[sid] || 1));
+            return `
+              <div class="pf-row" data-pf-open-story="${esc(sid)}">
+                <img class="thumb" src="${esc(getCoverSrc(s))}" alt="${esc(s.title||"")}" loading="lazy">
+                <div class="meta">
+                  <div class="t">${esc(s.title||"")}</div>
+                  <div class="s"><span>${esc(s.author||"Chưa rõ")}</span><span>•</span><span>Ch.${ch}</span></div>
+                </div>
+                <div class="acts">
+                  <button class="pf-mini-btn" type="button" data-pf-read="${esc(sid)}" data-ch="${ch}">Đọc</button>
+                  <button class="pf-mini-btn primary" type="button" data-pf-listen="${esc(sid)}" data-ch="${ch}" data-idx="0">Nghe</button>
+                </div>
+              </div>
+            `;
+          }).join("");
+          return rows || `<div class="muted" style="padding:10px 2px">Chưa có lịch sử đọc.</div>`;
+        }
+        function buildListenRows(){
+          const rows = listenRecent.map(it => {
+            const sid = String(it.storyId || "");
+            const s = storyById(sid);
+            if (!s) return "";
+            const ch = Math.max(1, Number(it.chapter || 1));
+            const idx = Math.max(0, Number(it.idx || 0));
+            return `
+              <div class="pf-row" data-pf-open-story="${esc(sid)}">
+                <img class="thumb" src="${esc(getCoverSrc(s))}" alt="${esc(s.title||"")}" loading="lazy">
+                <div class="meta">
+                  <div class="t">${esc(s.title||"")}</div>
+                  <div class="s"><span>${esc(s.author||"Chưa rõ")}</span><span>•</span><span>Ch.${ch}</span></div>
+                </div>
+                <div class="acts">
+                  <button class="pf-mini-btn primary" type="button" data-pf-listen="${esc(sid)}" data-ch="${ch}" data-idx="${idx}">Nghe tiếp</button>
+                </div>
+              </div>
+            `;
+          }).join("");
+          return rows || `<div class="muted" style="padding:10px 2px">Chưa có truyện đang nghe.</div>`;
+        }
+
+        const readStoriesCount = Object.keys(lastReading || {}).length;
+        const readChSum = Object.keys(lastReading || {}).reduce((a,k)=>a + Math.max(0, Number(lastReading[k]||0)), 0);
+        const listenedCount = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent.length : 0;
+
+        const ach = [
+          { key:"reader", title:"📖 Độc giả chăm chỉ", desc:"Đọc tích luỹ 200 chương.", cur: Math.min(readChSum, 200), max: 200 },
+          { key:"follow", title:"⭐ Theo dõi nhiệt tình", desc:"Theo dõi 20 truyện.", cur: Math.min(followed, 20), max: 20 },
+          { key:"mark", title:"🔖 Sưu tầm", desc:"Đánh dấu 20 truyện.", cur: Math.min(bookmark, 20), max: 20 },
+          { key:"listen", title:"🎧 Nghe nhiều", desc:"Nghe gần đây 10 lần.", cur: Math.min(listenedCount, 10), max: 10 },
+        ];
+
+        showRouteHeader({ title: "Cá nhân", sub: displayName, chips: [vip.label || "VIP"] });
+
         tabPageContent.innerHTML = `
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-            <div style="width:46px;height:46px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.06);display:grid;place-items:center;flex:0 0 auto">${currentUser?.photoURL ? `<img src="${esc(currentUser.photoURL)}" alt="avatar" style="width:100%;height:100%;object-fit:cover">` : esc(initials(currentUser?.displayName || "K"))}</div>
-            <div style="min-width:0">
-              <div style="font-weight:900;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(currentUser?.displayName || "Khách")}</div>
-              <div class="muted" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(currentUser?.email || "Đăng nhập để đồng bộ Firebase")}</div>
+          <div class="pf-shell">
+            <div class="pf-hero">
+              <div class="pf-top">
+                <div class="pf-avatar">
+                  ${avatarUrl ? `<img src="${esc(avatarUrl)}" alt="avatar">` : esc(initials(displayName))}
+                </div>
+                <div style="min-width:0;flex:1">
+                  <div class="pf-name">${esc(displayName)}</div>
+                  <div class="pf-sub">${esc(emailText)}</div>
+                  <div class="pf-badges">
+                    <span class="pf-badge"><span class="dot"></span><span>${esc(vip.label || "VIP Thường")}</span></span>
+                    <span class="pf-badge"><span class="dot" style="background:rgba(255,209,64,.95);box-shadow:0 0 0 3px rgba(255,209,64,.14)"></span><span>${currentUser ? "Đã đăng nhập" : "Khách"}</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pf-actions">
+                <button class="btn" type="button" id="pfEditBtn">${currentUser ? "Chỉnh sửa hồ sơ" : "Tạo hồ sơ"}</button>
+                ${currentUser
+                  ? `<button class="btn" type="button" id="pfLogoutBtn">Đăng xuất</button>`
+                  : `<button class="btn primary" type="button" id="pfLoginBtn">Đăng nhập Google</button>`}
+              </div>
+
+              <div class="pf-stats">
+                <div class="pf-stat" data-pf-open="history"><div class="k">Lịch sử</div><div class="v">${history}</div></div>
+                <div class="pf-stat" data-pf-open="followed"><div class="k">Theo dõi</div><div class="v">${followed}</div></div>
+                <div class="pf-stat" data-pf-open="bookmark"><div class="k">Đánh dấu</div><div class="v">${bookmark}</div></div>
+                <div class="pf-stat" data-pf-open="download"><div class="k">Tải xuống</div><div class="v">${downloadCount}</div></div>
+              </div>
             </div>
-          </div>
-          <div class="tab-placeholder-grid">
-            <div class="tab-placeholder-card"><div class="k">Theo dõi</div><div class="v">${followed}</div></div>
-            <div class="tab-placeholder-card"><div class="k">Lịch sử đọc</div><div class="v">${history}</div></div>
-            <div class="tab-placeholder-card"><div class="k">Tải xuống</div><div class="v">${downloadCount}</div></div>
-            <div class="tab-placeholder-card"><div class="k">VIP</div><div class="v">${esc(vip.label || "Thường")}</div></div>
-          </div>
-          <div class="tab-page-actions">
-            <button class="tab-page-btn" type="button" id="tabProfileOpenShelf">Mở Tủ truyện</button>
-            ${currentUser
-              ? `<button class="tab-page-btn" type="button" id="tabProfileLogoutBtn">Đăng xuất</button>`
-              : `<button class="tab-page-btn primary" type="button" id="tabProfileLoginBtn">Đăng nhập Google</button>`}
+
+            <div style="margin-top:10px; padding:0 2px; color:rgba(232,236,255,.92); font-weight:800; line-height:1.45">
+              ${esc(bio)}
+            </div>
+
+            <div class="pf-tabs" role="tablist" aria-label="Profile tabs">
+              <button class="pf-tab active" type="button" data-pf-tab="shelf">📚 Tủ sách</button>
+              <button class="pf-tab" type="button" data-pf-tab="activity">🕘 Hoạt động</button>
+              <button class="pf-tab" type="button" data-pf-tab="ach">🏅 Thành tích</button>
+              <button class="pf-tab" type="button" data-pf-tab="settings">⚙️ Cài đặt</button>
+            </div>
+
+            <section class="pf-sec active" id="pfSec-shelf">
+              <div class="pf-section-title">
+                <div class="t">Đọc tiếp</div>
+                <div class="s">Gần đây</div>
+              </div>
+              <div class="pf-mini-list">${buildReadRows()}</div>
+
+              <div class="pf-section-title" style="margin-top:14px">
+                <div class="t">Nghe gần đây</div>
+                <div class="s">TTS</div>
+              </div>
+              <div class="pf-mini-list">${buildListenRows()}</div>
+
+              <div class="tab-page-actions" style="margin-top:14px">
+                <button class="tab-page-btn" type="button" id="pfOpenBookshelfBtn">Mở Tủ truyện</button>
+                <button class="tab-page-btn" type="button" id="pfOpenCommunityBtn">Vào Cộng đồng</button>
+              </div>
+            </section>
+
+            <section class="pf-sec" id="pfSec-activity">
+              <div class="pf-section-title">
+                <div class="t">Tóm tắt hoạt động</div>
+                <div class="s">${readStoriesCount} truyện đã đọc</div>
+              </div>
+
+              <div class="pf-setting">
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Đọc gần đây</div>
+                    <div class="s">${history ? "Từ lịch sử đọc" : "Chưa có"}</div>
+                  </div>
+                  <div style="font-weight:950">${history}</div>
+                </div>
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Nghe gần đây</div>
+                    <div class="s">${listenedCount ? "Từ TTS" : "Chưa có"}</div>
+                  </div>
+                  <div style="font-weight:950">${listenedCount}</div>
+                </div>
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Theo dõi</div>
+                    <div class="s">Danh sách theo dõi</div>
+                  </div>
+                  <div style="font-weight:950">${followed}</div>
+                </div>
+              </div>
+
+              <div class="rank-note">Mẹo: hãy dùng “Theo dõi” để nhận thông báo khi truyện có cập nhật (khi bạn bật thông báo theo sự kiện).</div>
+            </section>
+
+            <section class="pf-sec" id="pfSec-ach">
+              <div class="pf-section-title">
+                <div class="t">Thành tích</div>
+                <div class="s">Tiến độ</div>
+              </div>
+              <div class="pf-ach-grid">
+                ${ach.map(a=>{
+                  const pct = a.max > 0 ? Math.round((a.cur / a.max) * 100) : 0;
+                  const done = a.cur >= a.max;
+                  return `
+                    <div class="pf-ach">
+                      <div class="h"><span>${esc(a.title)}</span><span style="font-weight:950;opacity:.9">${done ? "✓" : pct + "%"}</span></div>
+                      <div class="p">${esc(a.desc)} • ${a.cur}/${a.max}</div>
+                      <div class="pf-bar"><i style="width:${pct}%"></i></div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+
+              <div class="rank-note" style="margin-top:12px">Bạn đọc càng nhiều, profile càng “xịn”. Sau này có thể thêm huy hiệu VIP / Reviewer / Top bình luận.</div>
+            </section>
+
+            <section class="pf-sec" id="pfSec-settings">
+              <div class="pf-section-title">
+                <div class="t">Cài đặt nhanh</div>
+                <div class="s">Áp dụng ngay</div>
+              </div>
+
+              <div class="pf-setting">
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Chế độ sáng</div>
+                    <div class="s">Mặc định web ưu tiên tối</div>
+                  </div>
+                  <label class="pf-switch">
+                    <input type="checkbox" id="pfThemeSwitch" ${activeTheme === "light" ? "checked" : ""}>
+                    <span class="pf-slider"></span>
+                  </label>
+                </div>
+
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Tự chuyển chương khi nghe xong</div>
+                    <div class="s">Bật để nghe liên tục</div>
+                  </div>
+                  <label class="pf-switch">
+                    <input type="checkbox" id="pfAutoNextSwitch" ${autoNext ? "checked" : ""}>
+                    <span class="pf-slider"></span>
+                  </label>
+                </div>
+
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Tốc độ TTS mặc định</div>
+                    <div class="s">Tối đa 5×</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <input class="pf-range" type="range" id="pfRateRange" min="0.5" max="5" step="0.1" value="${Math.max(0.5, Math.min(5.0, rate || 1)).toFixed(1)}">
+                    <b id="pfRateText">${Math.max(0.5, Math.min(5.0, rate || 1)).toFixed(1)}×</b>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-page-actions">
+                <button class="tab-page-btn" type="button" id="pfResetSettingsBtn">Reset cài đặt</button>
+                <button class="tab-page-btn primary" type="button" id="pfOpenReaderDemoBtn">Test đọc/nghe</button>
+              </div>
+            </section>
+
+            <div class="pf-overlay hidden" id="pfEditOverlay" aria-hidden="true">
+              <div class="pf-sheet">
+                <div class="pf-sheet-head">
+                  <div class="pf-sheet-title">Chỉnh sửa hồ sơ</div>
+                  <button class="pf-sheet-close" type="button" id="pfCloseEdit">✕</button>
+                </div>
+                <div class="pf-sheet-body">
+                  <div class="pf-field">
+                    <label>Tên hiển thị</label>
+                    <input id="pfEditName" maxlength="40" placeholder="Ví dụ: Mi Su" value="${esc(displayName)}">
+                  </div>
+                  <div class="pf-field">
+                    <label>Avatar (link ảnh, tuỳ chọn)</label>
+                    <input id="pfEditAvatar" maxlength="600" placeholder="https://..." value="${esc(avatarUrl)}">
+                  </div>
+                  <div class="pf-field">
+                    <label>Giới thiệu</label>
+                    <textarea id="pfEditBio" maxlength="160" placeholder="Viết vài dòng giới thiệu...">${esc(bio)}</textarea>
+                  </div>
+                  <div class="pf-sheet-actions">
+                    <button class="btn" type="button" id="pfCancelEdit">Hủy</button>
+                    <button class="btn primary" type="button" id="pfSaveEdit">Lưu</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         `;
       } else {
@@ -7766,15 +8243,11 @@ function getBrowseStories(type){
       userStateUnsub = onSnapshot(refUser, (snap) => {
         const data = snap.data() || {};
         const nextNotifications = normalizeNotifications(data.notifications);
-        userState = {
-          followedIds: Array.isArray(data.followedIds) ? data.followedIds : [],
-          bookmarkIds: Array.isArray(data.bookmarkIds) ? data.bookmarkIds : [],
-          historyIds: Array.isArray(data.historyIds) ? data.historyIds : [],
-          lastReading: (data.lastReading && typeof data.lastReading === "object") ? data.lastReading : {},
-          notifications: nextNotifications,
-          notificationsUnread: countUnreadNotifications(nextNotifications),
-          updatedAt: data.lastSeenAt || null
-        };
+        const nextNorm = normalizeUserState(data);
+        nextNorm.notifications = nextNotifications;
+        nextNorm.notificationsUnread = countUnreadNotifications(nextNotifications);
+        nextNorm.updatedAt = data.lastSeenAt || null;
+        userState = nextNorm;
         // Render nhẹ để tránh lag/giật (đặc biệt ở trang đọc chương)
         try{ renderAfterUserStateChange(); }catch(_){}
         try{ renderNotificationList(); }catch(_){}
@@ -9486,6 +9959,39 @@ function getBrowseStories(type){
     });
 
     tabPageContent?.addEventListener("input", (e) => {
+      const rateEl = e.target.closest("#pfRateRange");
+      if (rateEl){
+        const v = Math.max(0.5, Math.min(5.0, Number(rateEl.value || 1) || 1));
+        const t = $("#pfRateText");
+        if (t) t.textContent = v.toFixed(1) + "×";
+        try{ setReaderRate(v); }catch(_){}
+        try{ readerState.rate = v; }catch(_){}
+        safeSetLS("tts_rate", String(v));
+        try{
+          const nextSettings = { ...(userState.settings && typeof userState.settings === "object" ? userState.settings : {}), ttsRate: v, autoNextChapter: !!(readerState.autoNextChapter) };
+          saveUserStatePatch({ settings: nextSettings }, { noRender: true }).catch(_=>{});
+        }catch(_){}
+        return;
+      }
+
+      const themeSw = e.target.closest("#pfThemeSwitch");
+      if (themeSw){
+        applyTheme(themeSw.checked ? "light" : "dark");
+        return;
+      }
+
+      const autoSw = e.target.closest("#pfAutoNextSwitch");
+      if (autoSw){
+        const on = !!autoSw.checked;
+        try{ readerState.autoNextChapter = on; }catch(_){}
+        safeSetLS("tts_auto_next", on ? "1" : "0");
+        try{
+          const nextSettings = { ...(userState.settings && typeof userState.settings === "object" ? userState.settings : {}), autoNextChapter: on, ttsRate: Number(safeGetLS("tts_rate","1") || 1) || 1 };
+          saveUserStatePatch({ settings: nextSettings }, { noRender: true }).catch(_=>{});
+        }catch(_){}
+        return;
+      }
+
       const input = e.target.closest("#tabSearchInput");
       if (!input) return;
       const q = (input.value || "").trim();
@@ -9514,6 +10020,123 @@ function getBrowseStories(type){
         openSearchPanel($("#tabSearchInput")?.value || "");
         return;
       }
+      // ===== Profile tab actions (pro) =====
+      const pfTabBtn = e.target.closest("[data-pf-tab]");
+      if (pfTabBtn){
+        const t = pfTabBtn.getAttribute("data-pf-tab") || "shelf";
+        tabPageContent?.querySelectorAll(".pf-tab").forEach(b=>b.classList.toggle("active", b === pfTabBtn));
+        tabPageContent?.querySelectorAll(".pf-sec").forEach(sec=>sec.classList.toggle("active", sec.id === ("pfSec-" + t)));
+        return;
+      }
+
+      const pfReadBtn = e.target.closest("[data-pf-read]");
+      if (pfReadBtn){
+        const sid = pfReadBtn.getAttribute("data-pf-read") || "";
+        const ch = Math.max(1, Number(pfReadBtn.getAttribute("data-ch") || "1") || 1);
+        if (sid) goToReader(sid, ch);
+        return;
+      }
+
+      const pfListenBtn = e.target.closest("[data-pf-listen]");
+      if (pfListenBtn){
+        const sid = pfListenBtn.getAttribute("data-pf-listen") || "";
+        const ch = Math.max(1, Number(pfListenBtn.getAttribute("data-ch") || "1") || 1);
+        const idx = Math.max(0, Number(pfListenBtn.getAttribute("data-idx") || "0") || 0);
+        if (sid){
+          try{ setAutoplayTTS(sid, ch, idx); }catch(_){}
+          goToReader(sid, ch);
+        }
+        return;
+      }
+
+      const pfOpenStat = e.target.closest("[data-pf-open]");
+      if (pfOpenStat){
+        const sec = String(pfOpenStat.getAttribute("data-pf-open") || "history");
+        goToBookshelf(sec);
+        return;
+      }
+
+      const pfOpenStoryRow = e.target.closest("[data-pf-open-story]");
+      if (pfOpenStoryRow && !e.target.closest("button")){
+        const sid = pfOpenStoryRow.getAttribute("data-pf-open-story");
+        if (sid) goToStory(sid);
+        return;
+      }
+
+      if (e.target.closest("#pfOpenBookshelfBtn")){
+        goToBookshelf("history");
+        return;
+      }
+      if (e.target.closest("#pfOpenCommunityBtn")){
+        location.hash = "#/community";
+        return;
+      }
+      if (e.target.closest("#pfLoginBtn")){
+        btnLogin?.click();
+        return;
+      }
+      if (e.target.closest("#pfLogoutBtn")){
+        btnLogout?.click();
+        return;
+      }
+
+      if (e.target.closest("#pfEditBtn")){
+        const ov = $("#pfEditOverlay");
+        if (ov){
+          // refill values from state (avoid stale)
+          const prof = (userState && userState.profile) ? userState.profile : {};
+          const displayName = (prof && prof.name) ? prof.name : (currentUser?.displayName || "Khách");
+          const avatarUrl = (prof && prof.avatar) ? prof.avatar : (currentUser?.photoURL || "");
+          const bio = (prof && prof.bio) ? prof.bio : "";
+          const inName = $("#pfEditName"); if (inName) inName.value = displayName;
+          const inAvatar = $("#pfEditAvatar"); if (inAvatar) inAvatar.value = avatarUrl;
+          const inBio = $("#pfEditBio"); if (inBio) inBio.value = bio;
+          ov.classList.remove("hidden");
+          ov.setAttribute("aria-hidden","false");
+        }
+        return;
+      }
+      if (e.target.closest("#pfCloseEdit") || e.target.closest("#pfCancelEdit") || e.target.id === "pfEditOverlay"){
+        const ov = $("#pfEditOverlay");
+        if (ov){
+          ov.classList.add("hidden");
+          ov.setAttribute("aria-hidden","true");
+        }
+        return;
+      }
+      if (e.target.closest("#pfSaveEdit")){
+        const name = ($("#pfEditName")?.value || "").trim();
+        const avatar = ($("#pfEditAvatar")?.value || "").trim();
+        const bio = ($("#pfEditBio")?.value || "").trim();
+        const nextProf = normalizeProfile({ name, avatar, bio });
+        saveUserStatePatch({ profile: nextProf }).then(() => {
+          const ov = $("#pfEditOverlay");
+          if (ov){
+            ov.classList.add("hidden");
+            ov.setAttribute("aria-hidden","true");
+          }
+          renderRoute();
+        });
+        return;
+      }
+
+      if (e.target.closest("#pfResetSettingsBtn")){
+        safeSetLS("tts_rate", "1");
+        safeSetLS("tts_auto_next", "1");
+        try{ readerState.rate = 1.0; readerState.autoNextChapter = true; }catch(_){}
+        try{ setReaderRate(1.0); }catch(_){}
+        try{ saveUserStatePatch({ settings: { autoNextChapter: true, ttsRate: 1.0 } }).catch(_=>{}); }catch(_){}
+        renderRoute();
+        return;
+      }
+
+      if (e.target.closest("#pfOpenReaderDemoBtn")){
+        const s = (Array.isArray(stories) && stories.length) ? stories[0] : null;
+        if (s && s.id) goToReader(s.id, 1);
+        else toast("Chưa có truyện để test.");
+        return;
+      }
+
       if (e.target.closest("#tabCommunityOpenNotify")){
         // Dùng khung thông báo cũ nếu đang ở trang chủ, còn ở tab khác thì chuyển về home rồi mở
         if (!location.hash.startsWith("#/home")) goToHome();
