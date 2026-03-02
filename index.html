@@ -655,6 +655,33 @@
       .hscroll-cards .grid-card{flex-basis:160px;width:160px}
     }
 
+
+    /* Home: Top views section */
+    .topviews-tabs{
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin:10px 0 12px;
+    }
+    .top-mini-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:10px;
+    }
+    .top-mini-grid .grid-card{
+      width:auto;
+      flex:unset;
+      scroll-snap-align:unset;
+    }
+    .top-mini-grid .grid-body{padding:8px 10px}
+    .top-mini-grid .grid-title{font-size:12px; line-height:1.25; max-height:2.6em; overflow:hidden}
+    .top-mini-grid .grid-author{font-size:11px; opacity:.9}
+    .top-mini-grid .stat{font-size:10px}
+
+    /* Browse: top tabs */
+    .browse-top-tabs{
+      display:flex; gap:8px; flex-wrap:wrap;
+      padding:8px 0 12px;
+    }
+
     /* Vertical scroll frame (Updated list) */
     .updated-scroll{
       max-height:560px;
@@ -1762,6 +1789,128 @@
     }
     .reader-paper-inner p{ margin:0 0 14px; }
 
+    /* Chapter end navigation (reader) */
+    .reader-endnav{
+      display:flex;
+      gap:10px;
+      margin:16px 0 140px; /* chừa chỗ cho player */
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,.10);
+    }
+    .endnav-btn{
+      flex:1;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg,#151a2c,#0f1322);
+      color:var(--text);
+      box-shadow:0 10px 22px rgba(0,0,0,.18);
+      cursor:pointer;
+    }
+    .endnav-btn.primary{
+      border-color:rgba(242,190,45,.35);
+      background:linear-gradient(180deg, rgba(242,190,45,.22), rgba(124,77,255,.14)), linear-gradient(180deg,#151a2c,#0f1322);
+    }
+    .endnav-btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    /* Reader TOC (3 gạch) */
+    .reader-toc{
+      position:fixed;
+      inset:0;
+      z-index:140;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding:12px 12px calc(env(safe-area-inset-bottom) + 12px);
+      background:rgba(0,0,0,.45);
+      backdrop-filter: blur(10px);
+    }
+    .reader-toc.hidden{ display:none; }
+    .rtoc-card{
+      width:min(560px, 100%);
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(124,77,255,.20), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(242,190,45,.16), transparent 60%),
+        linear-gradient(180deg, #0f1220, #0b0d17);
+      box-shadow:0 18px 44px rgba(0,0,0,.40);
+      padding:14px;
+    }
+    .rtoc-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .rtoc-title{ font-weight:800; letter-spacing:.2px; }
+    .rtoc-close{
+      width:40px;height:40px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg,#151a2c,#0f1322);
+      color:var(--text);
+      cursor:pointer;
+      display:grid;place-items:center;
+    }
+    .rtoc-jump{ display:flex; gap:10px; margin-top:10px; }
+    .rtoc-jump input{
+      flex:1;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      outline:none;
+    }
+    .rtoc-jump button{
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(242,190,45,.30);
+      background:linear-gradient(180deg, rgba(242,190,45,.20), rgba(124,77,255,.12)), linear-gradient(180deg,#151a2c,#0f1322);
+      color:var(--text);
+      cursor:pointer;
+      min-width:68px;
+      font-weight:700;
+    }
+    .rtoc-pager{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px; }
+    .rtoc-pager .pbtn{
+      width:40px;height:40px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg,#151a2c,#0f1322);
+      color:var(--text);
+      cursor:pointer;
+      display:grid;place-items:center;
+    }
+    .rtoc-page{ color:var(--muted); font-size:13px; }
+    .rtoc-list{
+      margin-top:10px;
+      max-height:55vh;
+      overflow:auto;
+      padding:2px;
+      display:grid;
+      grid-template-columns:repeat(6, 1fr);
+      gap:8px;
+    }
+    .rtoc-item{
+      padding:10px 0;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg,#151a2c,#0f1322);
+      color:var(--text);
+      cursor:pointer;
+      text-align:center;
+      font-weight:700;
+      user-select:none;
+    }
+    .rtoc-item.active{
+      border-color:rgba(242,190,45,.55);
+      box-shadow:0 0 0 2px rgba(242,190,45,.12) inset;
+    }
+    .rtoc-item:active{ transform:scale(.98); }
+
+    @media (max-width:420px){
+      .rtoc-list{ grid-template-columns:repeat(5, 1fr); }
+    }
+
     /* Default (dark): ink on dark paper */
     .reader-paper{
       background:
@@ -2256,7 +2405,143 @@
     .cm-split > *{ flex:1; }
 
 
-    /* ============================
+    
+    /* ---- Community Pro (Bảng tin / Thảo luận) ---- */
+    body.modal-open{ overflow:hidden; }
+    .cm-feed-head{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.06);
+      background:rgba(0,0,0,.10);
+      margin-bottom:10px;
+    }
+    .cm-feed-sub{ font-size:12px; }
+    .cm-primary{
+      height:36px; padding:0 14px; border-radius:12px; cursor:pointer;
+      border:1px solid rgba(242,190,45,.28);
+      background:linear-gradient(180deg, rgba(242,190,45,.18), rgba(242,190,45,.06));
+      color:var(--text); font-weight:950;
+      box-shadow:0 10px 18px rgba(201,138,8,.12);
+    }
+    .cm-primary:active{ transform:translateY(1px); }
+
+    .cm-feed-list, .cm-topic-list{
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .cm-post{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.06);
+      background:rgba(255,255,255,.03);
+      padding:12px;
+      box-shadow:var(--shadow);
+    }
+    .cm-post-head{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:8px;
+    }
+    .cm-post-user{
+      display:flex; align-items:center; gap:10px; min-width:0;
+    }
+    .cm-post-user .meta{ min-width:0; }
+    .cm-post-user .name{ font-weight:950; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .cm-post-user .time{ font-size:11px; color:var(--muted); margin-top:1px; }
+    .cm-post-content{
+      font-size:13px; color:var(--text); line-height:1.45;
+      white-space:pre-wrap;
+    }
+    .cm-post-actions{
+      margin-top:10px;
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+    }
+    .cm-act{
+      height:30px; padding:0 10px; border-radius:999px; cursor:pointer;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:900; font-size:12px;
+      display:inline-flex; align-items:center; gap:6px;
+    }
+    .cm-act.active{
+      border-color:rgba(242,190,45,.30);
+      background:rgba(242,190,45,.12);
+    }
+    .cm-act:active{ transform:translateY(1px); }
+    .cm-badge{
+      height:22px; padding:0 8px; border-radius:999px;
+      border:1px solid rgba(88,135,255,.26);
+      background:rgba(88,135,255,.10);
+      color:var(--text);
+      font-weight:950; font-size:11px;
+      display:inline-flex; align-items:center; gap:6px;
+      white-space:nowrap;
+    }
+
+    .cm-overlay{
+      position:fixed;
+      inset:0;
+      z-index:220;
+      background:rgba(0,0,0,.48);
+      backdrop-filter: blur(10px);
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding:12px;
+    }
+    .cm-overlay.hidden{ display:none; }
+    .cm-sheet{
+      width:min(560px, 100%);
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(19,23,39,.98), rgba(13,15,25,.98));
+      box-shadow:0 20px 60px rgba(0,0,0,.55);
+      padding:12px;
+      max-height:88vh;
+      overflow:auto;
+    }
+    .cm-sheet-head{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:10px;
+    }
+    .cm-sheet-title{ font-weight:1000; font-size:14px; }
+    .cm-x{
+      width:36px; height:36px; border-radius:12px; cursor:pointer;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      font-weight:1000;
+    }
+    .cm-sheet textarea, .cm-sheet input{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.14);
+      color:var(--text);
+      padding:10px 12px;
+      outline:none;
+      font-size:13px;
+      margin-bottom:8px;
+    }
+    .cm-sheet textarea{ min-height:120px; resize:none; }
+    .cm-sheet textarea:focus, .cm-sheet input:focus{
+      border-color:rgba(88,135,255,.32);
+      box-shadow:0 0 0 3px rgba(88,135,255,.12);
+    }
+    .cm-sheet-body{ padding-bottom:6px; }
+    .cm-comment-list{
+      border:1px solid rgba(255,255,255,.06);
+      background:rgba(0,0,0,.10);
+      border-radius:14px;
+      padding:10px;
+      max-height:48vh;
+      overflow:auto;
+    }
+    .cm-thread-meta{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+/* ============================
        VIP Home: Hero + Đang nghe + Tiến độ
        ============================ */
     .hero-section{ margin-top:2px; }
@@ -2741,7 +3026,364 @@
       color:#223556;
     }
 
-  </style>
+  
+    /* ============================
+       Search tab v2 (quick filter)
+       ============================ */
+        .search-topbar{
+      /* FIX: dùng fixed + z-index cao để tránh bị lớp khác đè (Android WebView/content:// hay bị “không ấn được”) */
+      position: fixed;
+      top: calc(env(safe-area-inset-top) + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      width: min(560px, calc(100vw - 24px));
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px 12px;
+      background: rgba(9,10,18,.96);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.22);
+      pointer-events: auto;
+      /* Tránh lỗi click trên một số WebView: không dùng backdrop-filter ở thanh nhập */
+      backdrop-filter: none;
+    }
+    .search-topbar input{
+      flex:1;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 0 14px;
+      outline: none;
+      font-size: 14px;
+    }
+    .search-topbar input::placeholder{color: rgba(232,236,255,.55)}
+    .search-topbar-spacer{height: 74px;}
+    .icon-btn{
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      display:grid;
+      place-items:center;
+      box-shadow: 0 6px 14px rgba(0,0,0,.16);
+      cursor:pointer;
+    }
+    .icon-btn:active{transform: translateY(1px)}
+    .tab-search-meta{
+      margin: 4px 0 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .tab-search-grid{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    @media (max-width: 380px){
+      .tab-search-grid{gap: 8px;}
+      .tab-search-item .t{font-size: 9.5px; line-height:1.15; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+      .tab-search-item .s{display:none;}
+      .tab-search-item .info{padding: 6px 5px 7px;}
+    }
+
+    @media (max-width: 980px){
+      .tab-search-grid{grid-template-columns: repeat(5, minmax(0, 1fr));}
+    }
+    @media (max-width: 720px){
+      .tab-search-grid{grid-template-columns: repeat(5, minmax(0, 1fr));}
+      .search-topbar{top: calc(env(safe-area-inset-top) + 10px);}
+    }
+    .tab-search-list{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    /* Search tab: lướt ngang theo thể loại */
+    .tab-search-rows{
+      display:flex;
+      flex-direction:column;
+      gap: 18px;
+      padding-bottom: 6px;
+    }
+    .search-row-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin: 6px 2px 10px;
+    }
+    .search-row-title{
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    .search-row-scroll{
+      display:flex;
+      gap: 10px;
+      overflow-x:auto;
+      padding: 2px 2px 10px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .search-row-scroll::-webkit-scrollbar{
+      height: 6px;
+    }
+    .row-card{
+      flex: 0 0 128px;
+      text-align:left;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius: 12px;
+      overflow:hidden;
+      box-shadow: 0 6px 14px rgba(0,0,0,.16);
+      cursor:pointer;
+      padding:0;
+      scroll-snap-align: start;
+    }
+    .row-card:active{transform: translateY(1px)}
+    .row-card img{
+      width:100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display:block;
+      background: rgba(255,255,255,.06);
+    }
+    .row-card .rc-info{
+      padding: 8px 8px 10px;
+      display:flex;
+      flex-direction:column;
+      gap: 4px;
+    }
+    .row-card .rc-t{
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.2;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 2.4em;
+    }
+    .row-card .rc-s{
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media (max-width: 720px){
+      .row-card{flex-basis: 140px;}
+    }
+    .tab-search-item{
+      width: 100%;
+      text-align:left;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius: 12px;
+      overflow:hidden;
+      box-shadow: 0 6px 14px rgba(0,0,0,.16);
+      cursor:pointer;
+      padding:0;
+    }
+    .tab-search-item .cover{
+      width:100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display:block;
+      background: rgba(255,255,255,.06);
+    }
+    .tab-search-item .info{
+      padding: 8px 8px 10px;
+      display:flex;
+      flex-direction:column;
+      gap: 5px;
+    }
+    .tab-search-item .t{
+      font-weight: 800;
+      font-size: 12px;
+      line-height: 1.2;
+      display:-webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+    }
+    .tab-search-item .s{
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Filter overlay / panel */
+    .filter-overlay{
+      position: fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease;
+      z-index: 1200;
+    }
+    .filter-overlay.show{opacity:1; pointer-events:auto;}
+    .filter-panel{
+      position: fixed;
+      inset: 0;
+      background: #11131a;
+      transform: translateX(8px);
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 1210;
+      display:flex;
+      flex-direction:column;
+    }
+    .filter-panel.show{opacity:1; transform: translateX(0); pointer-events:auto;}
+    .filter-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 14px 10px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(17,19,26,.95);
+      backdrop-filter: blur(12px);
+    }
+    .filter-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight: 900;
+      letter-spacing:.2px;
+    }
+    .filter-close{
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      display:grid; place-items:center;
+      cursor:pointer;
+    }
+    .filter-reset{
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      display:grid; place-items:center;
+      cursor:pointer;
+    }
+    .filter-body{
+      flex:1;
+      overflow:auto;
+      padding: 14px;
+    }
+    .filter-group{margin: 10px 0 18px;}
+    .filter-label{
+      font-size: 12px;
+      color: rgba(232,236,255,.75);
+      margin-bottom: 10px;
+    }
+    .filter-input{
+      width:100%;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding: 0 12px;
+      outline:none;
+    }
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+    }
+    .chip{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: rgba(232,236,255,.85);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .chip.active{
+      background: rgba(0,212,255,.16);
+      border-color: rgba(0,212,255,.35);
+      color: var(--text);
+      box-shadow: 0 8px 20px rgba(0,212,255,.12);
+    }
+    .select{
+      width:100%;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding: 0 12px;
+      outline:none;
+    }
+    .filter-actions{
+      padding: 12px 14px 18px;
+      border-top: 1px solid var(--line);
+      background: rgba(17,19,26,.95);
+      backdrop-filter: blur(12px);
+    }
+    .filter-apply{
+      width: 100%;
+      height: 52px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(90deg, rgba(0,212,255,.95), rgba(124,77,255,.95));
+      color: #081018;
+      font-weight: 900;
+      letter-spacing: .3px;
+      cursor:pointer;
+    }
+
+  
+    /* ============================
+       RANK PAGE (BXH)
+       ============================ */
+    .rank-shell{padding:12px 10px 18px;}
+    .rank-bars{display:flex;flex-direction:column;gap:8px;margin:8px 0 10px;}
+    .rank-bar{display:flex;gap:8px;flex-wrap:nowrap;overflow:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch;}
+    .rank-bar::-webkit-scrollbar{height:0;}
+    .rank-bar .chip{white-space:nowrap;}
+    .rank-podium{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:10px;align-items:end;margin-top:10px;}
+    .podium-card{border:1px solid var(--line);background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.12);}
+    .podium-card .cover{aspect-ratio:3/4;width:100%;object-fit:cover;display:block;}
+    .podium-card .info{padding:10px;}
+    .podium-rank{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12px;}
+    .podium-title{margin-top:6px;font-weight:800;line-height:1.15;max-height:2.3em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+    .podium-sub{margin-top:6px;opacity:.85;font-size:12px;display:flex;justify-content:space-between;gap:10px;}
+    .podium-sub .tag{opacity:.85;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .rank-list{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+    .rank-row{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);background:var(--card);border-radius:16px;}
+    .rank-no{width:28px;text-align:center;font-weight:900;}
+    .rank-row .thumb{width:44px;height:58px;border-radius:10px;object-fit:cover;flex:0 0 auto;border:1px solid rgba(255,255,255,.08);}
+    .rank-row .meta{flex:1;min-width:0;}
+    .rank-row .meta .t{font-weight:800;line-height:1.2;max-height:2.4em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+    .rank-row .meta .s{margin-top:4px;font-size:12px;opacity:.85;display:flex;gap:10px;flex-wrap:wrap;}
+    .rank-row .stat{font-weight:900;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
+    .rank-note{margin-top:10px;padding:12px;border:1px dashed var(--line);border-radius:16px;opacity:.9;}
+    .rank-pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;}
+    .rank-pager .btn{padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-weight:800;}
+    .rank-pager .btn:disabled{opacity:.5;}
+    .rank-pager .info{opacity:.85;font-weight:800;}
+
+</style>
 </head>
 <body>
   <header class="topbar">
@@ -2953,6 +3595,24 @@
         <div class="updated-list completed-scroll" id="completedList" aria-label="Danh sách truyện hoàn thành (kéo xuống)"></div>
       </section>
 
+      <section class="section" style="margin-top:16px" id="topViewsSection">
+        <div class="section-head">
+          <div class="section-title" style="margin:0">
+            <div class="bubble">🔥</div>
+            <div>Top lượt xem</div>
+          </div>
+          <button class="btn-link" id="viewAllTopViews">Xem tất cả →</button>
+        </div>
+        <div class="section-desc">Top truyện theo lượt xem ngày / tuần / tháng.</div>
+        <div class="topviews-tabs" id="topViewsTabs" role="tablist" aria-label="Chọn top lượt xem">
+          <button class="chip active" type="button" data-top-period="day">Ngày</button>
+          <button class="chip" type="button" data-top-period="week">Tuần</button>
+          <button class="chip" type="button" data-top-period="month">Tháng</button>
+        </div>
+        <div class="top-mini-grid" id="topViewsGrid" aria-label="Top lượt xem (6 truyện)"></div>
+      </section>
+
+
     </div>
 
 
@@ -3090,6 +3750,26 @@
         <button class="reader-menu" id="readerOpenTocBtn" type="button" aria-label="Mục lục">☰</button>
       </div>
 
+      <!-- Reader TOC (Danh sách chương) -->
+      <div class="reader-toc hidden" id="readerToc" aria-hidden="true">
+        <div class="rtoc-card">
+          <div class="rtoc-head">
+            <div class="rtoc-title">Mục lục</div>
+            <button class="rtoc-close" id="readerTocClose" type="button" aria-label="Đóng">✕</button>
+          </div>
+          <div class="rtoc-jump">
+            <input id="readerTocJump" type="number" min="1" inputmode="numeric" placeholder="Nhập số chương..." />
+            <button id="readerTocGo" type="button">Đi</button>
+          </div>
+          <div class="rtoc-pager">
+            <button class="pbtn" id="readerTocPrevPage" type="button" aria-label="Trang trước">‹</button>
+            <div class="rtoc-page" id="readerTocPageText">Trang</div>
+            <button class="pbtn" id="readerTocNextPage" type="button" aria-label="Trang sau">›</button>
+          </div>
+          <div class="rtoc-list" id="readerTocList"></div>
+        </div>
+      </div>
+
       <div class="reader-paper" id="readerPaper">
         <div class="reader-paper-inner" id="readerContent">
           Đang tải nội dung chương...
@@ -3162,8 +3842,46 @@
             <button class="browse-clear" id="browseClearBtn" type="button" aria-label="Xóa tìm kiếm">✕</button>
           </div>
         </div>
-          <div class="browse-grid" id="browseGrid" aria-label="Danh sách truyện"></div>
+          
+          <div class="browse-top-tabs hidden" id="browseTopTabs" aria-label="Chọn top ngày/tuần/tháng">
+            <button class="chip active" type="button" data-browse-top="topday">Ngày</button>
+            <button class="chip" type="button" data-browse-top="topweek">Tuần</button>
+            <button class="chip" type="button" data-browse-top="topmonth">Tháng</button>
+          </div>
+<div class="browse-grid" id="browseGrid" aria-label="Danh sách truyện"></div>
           <div class="pager" id="browsePager" aria-label="Phân trang"></div>
+        </div>
+      </section>
+    </div>
+
+
+    <!-- RANK PAGE (BẢNG XẾP HẠNG) -->
+    <div class="page hidden" id="rankPage">
+      <section class="section" style="margin-top:0">
+        <div class="rank-shell">
+          <div class="rank-bars">
+            <div class="rank-bar" id="rankMetrics" aria-label="Chọn loại bảng xếp hạng">
+              <button class="chip active" type="button" data-rank-mode="views">Lượt xem</button>
+              <button class="chip" type="button" data-rank-mode="updated">Mới cập nhật</button>
+              <button class="chip" type="button" data-rank-mode="rating">Đánh giá</button>
+            </div>
+            <div class="rank-bar" id="rankPeriods" aria-label="Chọn thời gian (ngày/tuần/tháng)">
+              <button class="chip active" type="button" data-rank-period="day">Ngày</button>
+              <button class="chip" type="button" data-rank-period="week">Tuần</button>
+              <button class="chip" type="button" data-rank-period="month">Tháng</button>
+            </div>
+          </div>
+
+          <div class="rank-podium" id="rankPodium"></div>
+          <div class="rank-list" id="rankList"></div>
+
+          <div class="rank-note hidden" id="rankEmptyNote"></div>
+
+          <div class="rank-pager" id="rankPager">
+            <button class="btn" id="rankPrevBtn" type="button">← Trước</button>
+            <div class="info" id="rankPageInfo">Trang 1/1</div>
+            <button class="btn" id="rankNextBtn" type="button">Sau →</button>
+          </div>
         </div>
       </section>
     </div>
@@ -3228,7 +3946,59 @@
     <div class="search-results" id="searchResults"></div>
   </div>
 
-    <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js" crossorigin="anonymous"></script>
+  <div class="filter-overlay" id="filterOverlay" aria-hidden="true"></div>
+  <div class="filter-panel" id="filterPanel" aria-hidden="true">
+    <div class="filter-head">
+      <button class="filter-close" id="btnCloseFilter" type="button" aria-label="Quay lại">←</button>
+      <div class="filter-title">Lọc truyện</div>
+      <button class="filter-reset" id="btnResetFilter" type="button" aria-label="Làm mới">⟲</button>
+    </div>
+    <div class="filter-body">
+      <div class="filter-group">
+        <div class="filter-label">Tìm trong tóm tắt</div>
+        <input class="filter-input" id="fltDesc" type="search" placeholder="..." />
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">Nguồn truyện</div>
+        <select class="select" id="fltSource">
+          <option value="all">Tất cả</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">Số chương tối thiểu</div>
+        <div class="chip-row" id="fltMinChips"></div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">Sắp xếp</div>
+        <div class="chip-row" id="fltSortChips"></div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">Thể loại</div>
+        <div class="chip-row" id="fltGenreChips"></div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">Trạng thái</div>
+        <div class="chip-row" id="fltStatusChips"></div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-label">Nhãn dán</div>
+        <div class="muted" style="font-size:12px">Sẽ bổ sung khi dữ liệu truyện có tag/nhãn.</div>
+      </div>
+    </div>
+
+    <div class="filter-actions">
+      <button class="filter-apply" id="btnApplyFilter" type="button">Lọc</button>
+    </div>
+  </div>
+
+
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js" crossorigin="anonymous"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js" crossorigin="anonymous"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js" crossorigin="anonymous"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js" crossorigin="anonymous"></script>
@@ -3542,6 +4312,17 @@ function normalizeUserState(raw){
 
         const completedList = $("#completedList");
     const browsePage = $("#browsePage");
+    const rankPage = $("#rankPage");
+    const rankMetrics = $("#rankMetrics");
+    const rankPeriods = $("#rankPeriods");
+    const rankPodium = $("#rankPodium");
+    const rankList = $("#rankList");
+    const rankEmptyNote = $("#rankEmptyNote");
+    const rankPager = $("#rankPager");
+    const rankPrevBtn = $("#rankPrevBtn");
+    const rankNextBtn = $("#rankNextBtn");
+    const rankPageInfo = $("#rankPageInfo");
+
     const browseGrid = $("#browseGrid");
     const browsePager = $("#browsePager");
     const browseSearchInput = $("#browseSearchInput");
@@ -3584,6 +4365,15 @@ const bookshelfTabs = $("#bookshelfTabs");
     const readerPage = $("#readerPage");
     const readerBackBtn = $("#readerBackBtn");
     const readerOpenTocBtn = $("#readerOpenTocBtn");
+    const readerToc = $("#readerToc");
+    const readerTocClose = $("#readerTocClose");
+    const readerTocJump = $("#readerTocJump");
+    const readerTocGo = $("#readerTocGo");
+    const readerTocPrevPage = $("#readerTocPrevPage");
+    const readerTocNextPage = $("#readerTocNextPage");
+    const readerTocPageText = $("#readerTocPageText");
+    const readerTocList = $("#readerTocList");
+
     const readerStoryTitle = $("#readerStoryTitle");
     const readerChapterTitle = $("#readerChapterTitle");
     const readerContent = $("#readerContent");
@@ -3685,10 +4475,16 @@ const bookshelfTabs = $("#bookshelfTabs");
     // Pending autoplay info for "Nghe tiếp" (giúp khác với "Đọc tiếp")
     let __pendingListenAutoplay = null;
 
+    // Reader TOC state
+    let __readerTocPage = 1;
+    const READER_TOC_PAGE_SIZE = 120;
+
+
     function setReaderMode(on){
       document.body.classList.toggle("reader-mode", !!on);
       if (!on){
         document.body.classList.remove("reader-light","reader-sepia","reader-amoled");
+        try{ closeReaderToc(); }catch(_){ }
       }
     }
 
@@ -3771,6 +4567,52 @@ const bookshelfTabs = $("#bookshelfTabs");
       return `${title}\nTác giả: ${author}\nChương ${chapter}: Xuyên qua tổng võ thế giới\n\n${sample}\n\n${sample}\n\n${sample}`;
     }
 
+    function openReaderToc(){
+      const s = storyById(readerState.storyId);
+      if (!s || !readerToc) return;
+      const totalCh = Math.max(1, Number((s && s.chapters) || 0) || 1);
+      __readerTocPage = Math.max(1, Math.ceil(Number(readerState.chapter||1) / READER_TOC_PAGE_SIZE));
+      renderReaderTocList(totalCh);
+      readerToc.classList.remove("hidden");
+      readerToc.setAttribute("aria-hidden","false");
+      try{
+        if (readerTocJump) readerTocJump.value = String(readerState.chapter || 1);
+      }catch(_){}
+    }
+
+    function closeReaderToc(){
+      if (!readerToc) return;
+      readerToc.classList.add("hidden");
+      readerToc.setAttribute("aria-hidden","true");
+    }
+
+    function renderReaderTocList(totalCh){
+      if (!readerTocList) return;
+      const total = Math.max(1, Number(totalCh || 1) || 1);
+      const totalPages = Math.max(1, Math.ceil(total / READER_TOC_PAGE_SIZE));
+      __readerTocPage = Math.max(1, Math.min(__readerTocPage, totalPages));
+      const start = (__readerTocPage - 1) * READER_TOC_PAGE_SIZE + 1;
+      const end = Math.min(total, __readerTocPage * READER_TOC_PAGE_SIZE);
+
+      if (readerTocPageText) readerTocPageText.textContent = `Chương ${start}-${end} / ${total}`;
+
+      const frag = document.createDocumentFragment();
+      for (let i = start; i <= end; i++){
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "rtoc-item" + (i === Number(readerState.chapter || 0) ? " active" : "");
+        b.dataset.chapter = String(i);
+        b.textContent = String(i);
+        frag.appendChild(b);
+      }
+      readerTocList.innerHTML = "";
+      readerTocList.appendChild(frag);
+
+      if (readerTocPrevPage) readerTocPrevPage.disabled = __readerTocPage <= 1;
+      if (readerTocNextPage) readerTocNextPage.disabled = __readerTocPage >= totalPages;
+    }
+
+
     function stopTTS(){
       try{
         if (readerState.utter){
@@ -3829,7 +4671,18 @@ const bookshelfTabs = $("#bookshelfTabs");
           syncReaderProgress();
           speakCurrent();
         } else {
-          stopTTS();
+          // Hết chương -> nếu còn chương sau thì tự chuyển chương và nghe tiếp
+          const st = storyById(readerState.storyId);
+          const totalCh = Math.max(1, Number((st && st.chapters) || 0) || 1);
+          if (readerState.storyId && Number(readerState.chapter || 1) < totalCh){
+            const nextCh = Number(readerState.chapter || 1) + 1;
+            const sid = readerState.storyId;
+            stopTTS();
+            setAutoplayTTS(sid, nextCh, 0);
+            goToReader(sid, nextCh);
+          } else {
+            stopTTS();
+          }
         }
       };
       u.onerror = () => {
@@ -3872,6 +4725,19 @@ const bookshelfTabs = $("#bookshelfTabs");
       const ch = Math.max(1, Number(chapter || 1));
       location.hash = `#/read/${encodeURIComponent(storyId)}/${ch}`;
     }
+
+    // Set autoplay TTS for next reader render (dùng cho nghe tiếp / auto chuyển chương)
+    function setAutoplayTTS(storyId, chapter, idx=0){
+      try{
+        __pendingListenAutoplay = { autoplay: true, storyId: String(storyId), chapter: Number(chapter||1), idx: Number(idx||0) };
+        sessionStorage.setItem("autoplay_tts", "1");
+        sessionStorage.setItem("autoplay_story", String(storyId));
+        sessionStorage.setItem("autoplay_ch", String(Math.max(1, Number(chapter||1))));
+        sessionStorage.setItem("autoplay_idx", String(Math.max(0, Number(idx||0))));
+      }catch(_){}
+    }
+
+
 
     function parseReadHash(hash){
       // #/read/<storyId>/<chapter>
@@ -3928,7 +4794,17 @@ const bookshelfTabs = $("#bookshelfTabs");
         // render to paragraphs
         const safe = String(text || "");
         const paras = safe.split(/\n{2,}/g).map(t=>t.trim()).filter(Boolean);
-        readerContent.innerHTML = paras.map(p=>`<p>${esc(p)}</p>`).join("") || `<p>(Chưa có nội dung chương)</p>`;
+        const html = paras.map(p=>`<p>${esc(p)}</p>`).join("");
+        const totalCh = Math.max(1, Number((s && s.chapters) || 0) || 1);
+        const canPrev = readerState.chapter > 1;
+        const canNext = readerState.chapter < totalCh;
+        const endNav = `
+          <div class="reader-endnav" id="readerEndNav">
+            <button class="endnav-btn" id="readerPrevChapterBtn" type="button" ${canPrev ? "" : "disabled"}>← Chương trước</button>
+            <button class="endnav-btn primary" id="readerNextChapterBtn" type="button" ${canNext ? "" : "disabled"}>Chương sau →</button>
+          </div>
+        `;
+        readerContent.innerHTML = (html || `<p>(Chưa có nội dung chương)</p>`) + endNav;
       }
 
       readerState.chunks = splitToChunks(text);
@@ -4004,6 +4880,20 @@ const bookshelfTabs = $("#bookshelfTabs");
     const searchResults = $("#searchResults");
     const searchMeta = $("#searchMeta");
     const btnCloseSearch = $("#btnCloseSearch");
+
+    // Filter (Search tab)
+    const filterOverlay = $("#filterOverlay");
+    const filterPanel = $("#filterPanel");
+    const btnCloseFilter = $("#btnCloseFilter");
+    const btnResetFilter = $("#btnResetFilter");
+    const btnApplyFilter = $("#btnApplyFilter");
+    const fltDesc = $("#fltDesc");
+    const fltSource = $("#fltSource");
+    const fltMinChips = $("#fltMinChips");
+    const fltSortChips = $("#fltSortChips");
+    const fltGenreChips = $("#fltGenreChips");
+    const fltStatusChips = $("#fltStatusChips");
+
 
     /* ============================
        6) Helpers
@@ -4405,7 +5295,7 @@ function getReadingStories(){
     }
 
     function hideAllPages(){
-      [homePage, storyPage, bookshelfPage, tabPage, browsePage, readerPage].forEach(p => p?.classList.add("hidden"));
+      [homePage, storyPage, bookshelfPage, tabPage, browsePage, rankPage, readerPage].forEach(p => p?.classList.add("hidden"));
     }
 
     function showRouteHeader({ title = "", sub = "", back = false, backText = "←", chips = [] } = {}){
@@ -4684,6 +5574,396 @@ function getReadingStories(){
       searchPanel.setAttribute("aria-hidden","true");
       searchOverlay.setAttribute("aria-hidden","true");
     }
+
+
+    /* ============================
+       Search tab filter state
+       ============================ */
+    const DEFAULT_SEARCH_FILTER = {
+      desc: "",
+      source: "all",
+      minCh: 0,
+      sort: "none",
+      genre: "all",
+      status: "all",
+      view: "grid",
+      q: ""
+    };
+
+    let searchTabState = { ...DEFAULT_SEARCH_FILTER };
+
+    let __searchFilterDraft = null;
+
+    function normalizeStatus(s){
+      const raw = String((s && s.status) || "").trim().toLowerCase();
+      if (!raw) return "";
+      if (raw.includes("hoàn") || raw.includes("full")) return "completed";
+      if (raw.includes("tạm") || raw.includes("dừng") || raw.includes("ngừng")) return "paused";
+      if (raw.includes("đang") || raw.includes("ra") || raw.includes("còn")) return "ongoing";
+      return raw;
+    }
+
+    function getUniqueCategories(){
+      const set = new Set();
+      (stories || []).forEach(s => { if (s && s.category) set.add(String(s.category)); });
+      return Array.from(set).sort((a,b)=>a.localeCompare(b));
+    }
+
+    function getTotalViews(s){
+      // st.views đã được cộng thêm từ Firebase nếu có
+      return Number((s && s.views) || 0) || 0;
+    }
+
+
+    /* ============================
+       Top Views (Ngày / Tuần / Tháng)
+       - Dùng "điểm xu hướng" dựa trên lượt xem tổng + độ mới cập nhật
+       ============================ */
+    function _hashStr(str){
+      str = String(str || "");
+      let h = 2166136261;
+      for (let i=0;i<str.length;i++){
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return (h >>> 0);
+    }
+    function getTrendingScore(s, period){
+      const views = getTotalViews(s);
+      const now = Date.now();
+      const updated = Number(s?.updatedAtMs || 0) || 0;
+      const ageDays = updated ? Math.max(0, (now - updated) / 86400000) : 30;
+      const t = String(period || "topday").toLowerCase();
+      const decay =
+        (t === "topday") ? (1 + ageDays * 3.0) :
+        (t === "topweek") ? (1 + ageDays * 1.2) :
+        (1 + ageDays * 0.45); // topmonth
+      const bump = ((_hashStr(s?.id || "") % 97) / 9700) * views; // nhỏ thôi, để khỏi bị "trùng điểm"
+      return (views / decay) + bump;
+    }
+    function sortedTopViewsStories(periodType){
+      const t = String(periodType || "topday").toLowerCase();
+      const list = Array.isArray(stories) ? [...stories] : [];
+      list.sort((a,b) => getTrendingScore(b, t) - getTrendingScore(a, t));
+      return list;
+    }
+
+    function applySearchTabFilters(){
+      let list = Array.isArray(stories) ? [...stories] : [];
+      const q = String(searchTabState.q || "").trim().toLowerCase();
+      const descQ = String(searchTabState.desc || "").trim().toLowerCase();
+
+      if (q){
+        list = list.filter(s => {
+          const hay = [s.title||"", s.author||"", s.category||""].join(" ").toLowerCase();
+          return hay.includes(q);
+        });
+      }
+      if (descQ){
+        list = list.filter(s => String(s.desc||"").toLowerCase().includes(descQ));
+      }
+
+      const minCh = Number(searchTabState.minCh || 0) || 0;
+      if (minCh > 0){
+        list = list.filter(s => Number(s.chapters||0) >= minCh);
+      }
+
+      const genre = String(searchTabState.genre || "all");
+      if (genre !== "all"){
+        list = list.filter(s => String(s.category||"") === genre);
+      }
+
+      const st = String(searchTabState.status || "all");
+      if (st !== "all"){
+        if (st === "ongoing") list = list.filter(s => normalizeStatus(s) === "ongoing");
+        else if (st === "paused") list = list.filter(s => normalizeStatus(s) === "paused");
+        else if (st === "completed") list = list.filter(s => normalizeStatus(s) === "completed");
+        else if (st === "not_paused") list = list.filter(s => normalizeStatus(s) !== "paused");
+      }
+
+      // source: hiện dataset demo chưa có source, nên chỉ giữ cho tương lai
+      const src = String(searchTabState.source || "all");
+      if (src !== "all"){
+        list = list.filter(s => String((s && s.source) || "all") === src);
+      }
+
+      const sort = String(searchTabState.sort || "none");
+      if (sort === "updated"){
+        list.sort((a,b)=>(Number(b.updatedAtMs||0) - Number(a.updatedAtMs||0)));
+      } else if (sort === "views_total" || sort === "views_week" || sort === "views_day"){
+        list.sort((a,b)=>getTotalViews(b) - getTotalViews(a));
+      } else if (sort === "likes"){
+        list.sort((a,b)=>Number(b.likes||0) - Number(a.likes||0));
+      } else if (sort === "follow"){
+        list.sort((a,b)=>Number(b.followCount||0) - Number(a.followCount||0));
+      } else if (sort === "bookmark"){
+        list.sort((a,b)=>Number(b.bookmarkCount||0) - Number(a.bookmarkCount||0));
+      } else if (sort === "new_in"){
+        // fallback: theo thứ tự hiện tại trong mảng stories
+      } else if (sort === "random"){
+        for (let i = list.length - 1; i > 0; i--){
+          const j = Math.floor(Math.random() * (i + 1));
+          [list[i], list[j]] = [list[j], list[i]];
+        }
+      }
+
+      return list;
+    }
+
+    function renderTabSearchResults(){
+      const meta = $("#tabSearchMeta2");
+      const wrap = $("#tabSearchResults2");
+      if (!wrap) return;
+
+      const items = applySearchTabFilters();
+      const q = String(searchTabState.q||"").trim();
+      const isDefaultBrowse =
+        !q &&
+        !String(searchTabState.desc||"").trim() &&
+        String(searchTabState.source||"all") === "all" &&
+        (Number(searchTabState.minCh||0)||0) === 0 &&
+        String(searchTabState.genre||"all") === "all" &&
+        String(searchTabState.status||"all") === "all" &&
+        String(searchTabState.sort||"none") === "none";
+
+      if (meta){
+        if (isDefaultBrowse){
+          meta.textContent = `Hiển thị ${items.length} truyện (kéo ngang để lướt theo thể loại, bấm biểu tượng lọc để lọc nhanh).`;
+        } else if (q){
+          meta.textContent = items.length
+            ? `Tìm thấy ${items.length} truyện cho "${q}".`
+            : `Không tìm thấy truyện cho "${q}".`;
+        } else {
+const parts = [];
+if (String(searchTabState.genre || "all") !== "all") parts.push(`Thể loại: ${searchTabState.genre}`);
+const _minCh = Number(searchTabState.minCh || 0) || 0;
+if (_minCh > 0) parts.push(`≥ ${_minCh} chương`);
+const _st = String(searchTabState.status || "all");
+const stLabelMap = { ongoing: "Còn tiếp", paused: "Tạm ngừng", completed: "Hoàn thành", not_paused: "Không tạm ngừng" };
+if (_st !== "all") parts.push(`Trạng thái: ${stLabelMap[_st] || _st}`);
+const _sort = String(searchTabState.sort || "none");
+const sortLabelMap = { newest: "Mới nhập kho", updated: "Mới cập nhật", views_total: "Lượt xem tổng", views_week: "Lượt xem tuần", views_day: "Lượt xem ngày", likes: "Lượt thích", follows: "Lượt theo dõi", bookmarks: "Lượt đánh dấu", random: "Đề cử ngẫu nhiên" };
+if (_sort !== "none") parts.push(`Sắp xếp: ${sortLabelMap[_sort] || _sort}`);
+const extra = parts.length ? ` (${parts.join(" • ")})` : "";
+meta.textContent = `Hiển thị ${items.length} truyện theo bộ lọc${extra} (kéo lên xuống để xem).`;
+        }
+      }
+
+      if (!items.length){
+        wrap.innerHTML = `<div class="search-empty">Không có kết quả phù hợp.</div>`;
+        return;
+      }
+
+      // Mặc định (chưa lọc): hiển thị dạng "lướt ngang theo thể loại" (tối đa 10-15 mục)
+      if (isDefaultBrowse){
+        const ORDER = ["Tiên hiệp","Huyền huyễn","Đô thị","Ngôn tình","Võng du","Khoa học viễn tưởng","Lịch sử","Đồng nhân","Dị năng","Linh dị","Light Novel"];
+        const orderIndex = (g) => {
+          const i = ORDER.indexOf(g);
+          return i < 0 ? 999 : i;
+        };
+
+        const groups = new Map();
+        const PER_ROW = 14; // số truyện tối đa mỗi hàng (kéo ngang)
+        for (const s of items){
+          const g = String(s.category || "Khác").trim() || "Khác";
+          if (!groups.has(g)) groups.set(g, []);
+          const arr = groups.get(g);
+          if (arr.length < PER_ROW) arr.push(s);
+        }
+
+        let genres = Array.from(groups.keys());
+        genres.sort((a,b) => (orderIndex(a) - orderIndex(b)) || ((groups.get(b)?.length||0) - (groups.get(a)?.length||0)) || a.localeCompare(b));
+        genres = genres.slice(0, 15);
+
+        wrap.innerHTML = `
+          <div class="tab-search-rows">
+            ${genres.map(g => {
+              const list = groups.get(g) || [];
+              return `
+                <div class="search-row">
+                  <div class="search-row-head">
+                    <div class="search-row-title">${esc(g)}</div>
+                  </div>
+                  <div class="search-row-scroll">
+                    ${list.map(s => `
+                      <button class="row-card" type="button" data-tab-open-story="${esc(s.id)}" title="${esc(s.title||"")}">
+                        <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title||"")}" loading="lazy">
+                        <div class="rc-info">
+                          <div class="rc-t">${esc(s.title||"")}</div>
+                          <div class="rc-s">${esc(s.author||"Chưa rõ")}</div>
+                        </div>
+                      </button>
+                    `).join("")}
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+        return;
+      }
+
+      // Khi có keyword hoặc đã lọc: hiển thị dạng lướt dọc (kéo lên/xuống) để tìm truyện
+      const view = String(searchTabState.view || "grid");
+      if (view === "list"){
+        wrap.innerHTML = `
+          <div class="tab-search-list">
+            ${items.map(s => `
+              <button class="tab-inline-search-item" type="button" data-tab-open-story="${esc(s.id)}">
+                <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title||"")}" loading="lazy">
+                <div class="main">
+                  <div class="t">${esc(s.title||"")}</div>
+                  <div class="s">${esc(s.author||"Chưa rõ")} • ${Number(s.chapters||0)} chương • 👁 ${getTotalViews(s)}</div>
+                </div>
+              </button>
+            `).join("")}
+          </div>
+        `;
+      } else {
+        wrap.innerHTML = `
+          <div class="tab-search-grid">
+            ${items.map(s => `
+              <button class="tab-search-item" type="button" data-tab-open-story="${esc(s.id)}">
+                <img class="cover" src="${esc(getCoverSrc(s))}" alt="${esc(s.title||"")}" loading="lazy">
+                <div class="info">
+                  <div class="t">${esc(s.title||"")}</div>
+                  <div class="s">${esc(s.author||"Chưa rõ")} • ${Number(s.chapters||0)}c • 👁 ${getTotalViews(s)}</div>
+                </div>
+              </button>
+            `).join("")}
+          </div>
+        `;
+      }
+    }
+
+    function openFilterPanelTab(){
+      if (!filterPanel || !filterOverlay) return;
+      __searchFilterDraft = { ...searchTabState };
+      filterPanel.classList.add("show");
+      filterOverlay.classList.add("show");
+      filterPanel.setAttribute("aria-hidden","false");
+      filterOverlay.setAttribute("aria-hidden","false");
+      syncFilterUI();
+    }
+    function closeFilterPanelTab(){
+      if (!filterPanel || !filterOverlay) return;
+      filterPanel.classList.remove("show");
+      filterOverlay.classList.remove("show");
+      filterPanel.setAttribute("aria-hidden","true");
+      filterOverlay.setAttribute("aria-hidden","true");
+      __searchFilterDraft = null;
+    }
+
+    function buildChipRow(container, options, getKey, getLabel, activeKey, onPick){
+      if (!container) return;
+      container.innerHTML = options.map(opt => {
+        const key = getKey(opt);
+        const label = getLabel(opt);
+        const cls = String(key) === String(activeKey) ? "chip active" : "chip";
+        return `<button class="${cls}" type="button" data-chip-key="${esc(String(key))}">${esc(String(label))}</button>`;
+      }).join("");
+      container.querySelectorAll("[data-chip-key]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.chipKey;
+          onPick(key);
+          // refresh active
+          buildChipRow(container, options, getKey, getLabel, key, onPick);
+        });
+      });
+    }
+
+    function syncFilterUI(){
+      if (!__searchFilterDraft) __searchFilterDraft = { ...searchTabState };
+
+      if (fltDesc) fltDesc.value = String(__searchFilterDraft.desc || "");
+      if (fltSource) fltSource.value = String(__searchFilterDraft.source || "all");
+
+      const minOpts = [0,50,100,150,200,300,500,1000,1500,2000];
+      buildChipRow(
+        fltMinChips,
+        minOpts,
+        (n)=>String(n),
+        (n)=>n === 0 ? "Không" : String(n),
+        String(__searchFilterDraft.minCh || 0),
+        (key)=>{ __searchFilterDraft.minCh = Number(key||0) || 0; }
+      );
+
+      const sortOpts = [
+        {k:"none", l:"Không"},
+        {k:"new_in", l:"Mới nhập kho"},
+        {k:"updated", l:"Mới cập nhật"},
+        {k:"views_total", l:"Lượt xem tổng"},
+        {k:"views_week", l:"Lượt xem tuần"},
+        {k:"views_day", l:"Lượt xem ngày"},
+        {k:"likes", l:"Lượt thích"},
+        {k:"follow", l:"Lượt theo dõi"},
+        {k:"bookmark", l:"Lượt đánh dấu"},
+        {k:"random", l:"Đề cử ngẫu nhiên"},
+      ];
+      buildChipRow(
+        fltSortChips,
+        sortOpts,
+        (o)=>o.k,
+        (o)=>o.l,
+        String(__searchFilterDraft.sort || "none"),
+        (key)=>{ __searchFilterDraft.sort = String(key||"none"); }
+      );
+
+      const cats = ["all", ...getUniqueCategories()];
+      buildChipRow(
+        fltGenreChips,
+        cats,
+        (c)=>c,
+        (c)=>c === "all" ? "Tất cả" : c,
+        String(__searchFilterDraft.genre || "all"),
+        (key)=>{ __searchFilterDraft.genre = String(key||"all"); }
+      );
+
+      const statusOpts = [
+        {k:"all", l:"Tất cả"},
+        {k:"ongoing", l:"Còn tiếp"},
+        {k:"paused", l:"Tạm ngừng"},
+        {k:"completed", l:"Hoàn thành"},
+        {k:"not_paused", l:"Không tạm ngừng"},
+      ];
+      buildChipRow(
+        fltStatusChips,
+        statusOpts,
+        (o)=>o.k,
+        (o)=>o.l,
+        String(__searchFilterDraft.status || "all"),
+        (key)=>{ __searchFilterDraft.status = String(key||"all"); }
+      );
+    }
+
+    // Filter panel events
+    filterOverlay?.addEventListener("click", closeFilterPanelTab);
+    btnCloseFilter?.addEventListener("click", closeFilterPanelTab);
+    btnResetFilter?.addEventListener("click", () => {
+      if (!__searchFilterDraft) __searchFilterDraft = { ...searchTabState };
+      const keepQ = String(searchTabState.q || "");
+      __searchFilterDraft = { ...DEFAULT_SEARCH_FILTER, q: keepQ, view: searchTabState.view || "grid" };
+      syncFilterUI();
+    });
+    fltDesc?.addEventListener("input", (e) => {
+      if (!__searchFilterDraft) __searchFilterDraft = { ...searchTabState };
+      __searchFilterDraft.desc = String(e.target.value || "");
+    });
+    fltSource?.addEventListener("change", (e) => {
+      if (!__searchFilterDraft) __searchFilterDraft = { ...searchTabState };
+      __searchFilterDraft.source = String(e.target.value || "all");
+    });
+    btnApplyFilter?.addEventListener("click", () => {
+      if (__searchFilterDraft){
+        // giữ keyword từ ô tìm kiếm trên topbar
+        __searchFilterDraft.q = String(searchTabState.q || "");
+        __searchFilterDraft.view = String(searchTabState.view || "grid");
+        searchTabState = { ...__searchFilterDraft };
+      }
+      closeFilterPanelTab();
+      renderTabSearchResults();
+    });
+
 
     /* ============================
        7) Render home widgets
@@ -5234,12 +6514,83 @@ function renderRandomGrid(){
 
 
 
-    function renderAll(){
+    
+
+    /* ============================
+       Home: Top views (6 truyện) + tabs
+       ============================ */
+    let __homeTopPeriod = "day"; // day|week|month
+
+    function _topTypeFromHomePeriod(p){
+      const x = String(p || "day").toLowerCase();
+      return (x === "week") ? "topweek" : (x === "month") ? "topmonth" : "topday";
+    }
+
+    function renderTopViewsHome(){
+      const grid = $("#topViewsGrid");
+      const tabs = $("#topViewsTabs");
+      const btnAll = $("#viewAllTopViews");
+      const section = $("#topViewsSection");
+      if (!grid || !tabs || !section) return;
+
+      const type = _topTypeFromHomePeriod(__homeTopPeriod);
+      const list = sortedTopViewsStories(type);
+      const items = list.slice(0, 6);
+
+      // cập nhật active tab
+      tabs.querySelectorAll("[data-top-period]").forEach(b=>{
+        b.classList.toggle("active", String(b.dataset.topPeriod) === String(__homeTopPeriod));
+      });
+
+      // sync nút xem tất cả theo tab hiện tại
+      if (btnAll){
+        btnAll.onclick = () => { location.hash = `#/all/${encodeURIComponent(type)}/1`; };
+      }
+
+      if (!items.length){
+        section.classList.add("hidden");
+        return;
+      } else {
+        section.classList.remove("hidden");
+      }
+
+      grid.innerHTML = items.map(s => `
+        <article class="grid-card js-open" data-id="${esc(s.id)}" role="button" aria-label="${esc(s.title)}">
+          <div class="cover-wrap">
+            <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
+          </div>
+          <div class="grid-body">
+            <div class="grid-title">${esc(s.title)}</div>
+            <div class="grid-author">${esc(s.author || "Tác giả")}</div>
+            <div class="stats">
+              <span class="stat">👁 ${formatShort(getTotalViews(s))}</span>
+              <span class="stat">📚 ${formatShort(s.chapters || 0)}</span>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function bindTopViewsHomeOnce(){
+      if (window.__topViewsHomeBound) return;
+      window.__topViewsHomeBound = true;
+      const tabs = $("#topViewsTabs");
+      if (!tabs) return;
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-top-period]");
+        if (!btn) return;
+        __homeTopPeriod = String(btn.dataset.topPeriod || "day");
+        renderTopViewsHome();
+      });
+    }
+function renderAll(){
       renderHeroBanner();
       renderContinueStrip();
       renderRandomGrid();
       renderUpdatedList();
       renderCompletedList();
+      bindTopViewsHomeOnce();
+      renderTopViewsHome();
       if (searchPanel?.classList.contains("show")) renderSearchResults();
     }
 
@@ -5418,6 +6769,53 @@ setActiveBottomNav("bookshelf");
     function goToStory(storyId){
       location.hash = `#/story/${encodeURIComponent(storyId)}`;
     }
+
+
+    // Navigation tracking (tránh loop: Chương -> Thông tin -> Chương khi bấm quay lại)
+    const __nav = {
+      currentHash: "",
+      prevHash: "",
+      lastMainHash: "#/home",
+    };
+    function __isMainHash(h){
+      return /^#\/(home|search|bookshelf|community|profile|rank)(\/|$)/.test(String(h||""));
+    }
+    function __navInit(){
+      const h = location.hash || "#/home";
+      __nav.currentHash = h;
+      __nav.prevHash = "";
+      if (__isMainHash(h)) __nav.lastMainHash = h;
+    }
+    function __navTrack(newHash){
+      const h = newHash || location.hash || "#/home";
+      if (!__nav.currentHash){
+        __nav.currentHash = h;
+        if (__isMainHash(h)) __nav.lastMainHash = h;
+        return;
+      }
+      __nav.prevHash = __nav.currentHash;
+      __nav.currentHash = h;
+      if (__isMainHash(h)) __nav.lastMainHash = h;
+    }
+function goToSearchWithGenreFromMenu(genreLabel){
+  const g = String(genreLabel || "").trim();
+  // Reset toàn bộ bộ lọc về mặc định rồi áp thể loại được chọn
+  searchTabState = { ...DEFAULT_SEARCH_FILTER };
+  if (g && g !== "Tất cả" && g !== "all") searchTabState.genre = g;
+  // Khi đã lọc thì dùng grid để kéo dọc tìm nhanh
+  searchTabState.view = "grid";
+
+  if ((location.hash || "").startsWith("#/search")){
+    // đang ở tab tìm kiếm: render lại ngay
+    try{
+      const input = $("#tabSearchBar");
+      if (input) input.value = String(searchTabState.q || "");
+    }catch(_){}
+    try{ renderTabSearchResults(); }catch(e){ console.warn(e); }
+  }else{
+    location.hash = "#/search";
+  }
+}
     function renderStoryPage(storyId){
       const s = storyById(storyId);
       if (!s){
@@ -5551,39 +6949,79 @@ setActiveBottomNav("bookshelf");
 
       if (!tabPageContent) return;
       if (tab === "search"){
-        showRouteHeader({ title: "Tìm kiếm", sub: "Tìm truyện theo tên, tác giả, thể loại", chips: ["Search"] });
-        const q = "";
-        const items = searchStories(q).slice(0, 20);
+        // Search page giống kiểu "tìm nhanh + lọc" (như app)
+        hideRouteHeader();
         tabPageContent.innerHTML = `
-          <div class="tab-inline-search">
-            <input id="tabSearchInput" type="search" placeholder="Nhập tên truyện, tác giả, thể loại..." value="${esc(q)}">
-            <button class="tab-page-btn primary" id="tabSearchOpenOverlayBtn" type="button">Mở tìm kiếm</button>
+          <div class="search-topbar">
+            <input id="tabSearchBar" type="search" placeholder="Tìm kiếm" value="${esc(searchTabState.q || "")}">
+            <button class="icon-btn" id="tabSearchFilterBtn" type="button" title="Lọc truyện" aria-label="Lọc truyện"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18l-7 8v5l-4 2v-7L3 5z"></path></svg></button>
           </div>
-          <div class="muted" style="font-size:12px;margin-bottom:8px">Kết quả nhanh (top ${items.length}). Bạn có thể dùng ô tìm hoặc bấm “Mở tìm kiếm” để dùng khung tìm kiếm đầy đủ.</div>
-          <div class="tab-inline-search-list" id="tabSearchList">
-            ${items.map(s => `
-              <button class="tab-inline-search-item" type="button" data-tab-search-open="${esc(s.id)}">
-                <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title || "")}" loading="lazy">
-                <div class="main">
-                  <div class="t">${esc(s.title || "")}</div>
-                  <div class="s">${esc(s.author || "Chưa rõ")} • ${esc(s.category || "Truyện")}</div>
-                </div>
-              </button>
-            `).join("")}
-          </div>
+          <div class="search-topbar-spacer"></div>
+          <div class="tab-search-meta" id="tabSearchMeta2"></div>
+          <div id="tabSearchResults2"></div>
         `;
-            } else if (tab === "community"){
-        showRouteHeader({ title: "Cộng đồng", sub: "Chat • Thế lực • Khu mua bán", chips: ["Community"] });
+
+        // Bind events (mỗi lần render tab sẽ bind lại vì DOM được tạo mới)
+        const input = $("#tabSearchBar");
+        const topbar = tabPageContent.querySelector('.search-topbar');
+        topbar?.addEventListener('click', (ev) => { if (ev.target === topbar) input?.focus(); });
+        const filterBtn = $("#tabSearchFilterBtn");
+        const resultsWrap = $("#tabSearchResults2");
+
+        input?.addEventListener("input", (e) => {
+          searchTabState.q = String(e.target.value || "");
+          renderTabSearchResults();
+        });
+        input?.addEventListener("keydown", (e) => {
+          if (e.key === "Enter"){
+            const first = resultsWrap?.querySelector("[data-tab-open-story]");
+            if (first) first.click();
+          }
+        });
+        filterBtn?.addEventListener("click", () => openFilterPanelTab());
+
+        resultsWrap?.addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-tab-open-story]");
+          if (!btn) return;
+          const id = btn.dataset.tabOpenStory;
+          if (id) goToStory(id);
+        });
+
+        renderTabSearchResults();
+      
+      } else if (tab === "community"){
+        showRouteHeader({ title: "Cộng đồng", sub: "Bảng tin • Thảo luận • Chat • Thế lực • Mua bán", chips: ["Community"] });
         tabPageContent.innerHTML = `
           <div class="community-tabs" id="cmTabs">
+            <button class="community-tab" type="button" data-cview="feed">📰 Bảng tin</button>
+            <button class="community-tab" type="button" data-cview="topics">🧵 Thảo luận</button>
             <button class="community-tab" type="button" data-cview="chat">💬 Chat</button>
             <button class="community-tab" type="button" data-cview="factions">🏯 Thế lực</button>
             <button class="community-tab" type="button" data-cview="market">🛒 Mua bán</button>
-            <span class="community-meta"><span class="dot"></span> Online: <b id="cmOnline">${esc(String(onlineUsersCount || 0))}</b></span>
+            <span class="community-meta"><span class="dot"></span> Online: <b id="cmOnline">${esc(String(realtimeOnlineCount || 0))}</b></span>
           </div>
 
-          <div class="community-panel" data-cpanel="chat">
-            <div id="cmAuthHint"></div>
+          <div id="cmAuthHint"></div>
+
+          <div class="community-panel" data-cpanel="feed">
+            <div class="cm-feed-head">
+              <button class="cm-primary" id="cmNewPostBtn" type="button">✍️ Đăng bài</button>
+              <div class="cm-feed-sub muted">Bài mới nhất của cộng đồng</div>
+            </div>
+            <div class="cm-feed-list" id="cmFeedList"></div>
+            <div class="cm-footnote muted">Hiển thị tối đa 80 bài gần nhất.</div>
+          </div>
+
+          <div class="community-panel hidden" data-cpanel="topics">
+            <div class="cm-feed-head">
+              <button class="cm-primary" id="cmNewTopicBtn" type="button">🧵 Tạo chủ đề</button>
+              <div class="cm-feed-sub muted">Hỏi đáp • Review • Spoil • Góp ý</div>
+            </div>
+            <div class="cm-topic-list" id="cmTopicList"></div>
+            <div class="cm-footnote muted">Hiển thị tối đa 80 chủ đề gần nhất.</div>
+          </div>
+
+          <div class="community-panel hidden" data-cpanel="chat">
             <div class="cm-chat">
               <div class="cm-chat-list" id="cmChatList" aria-label="Danh sách chat"></div>
               <div class="cm-chat-inputbar">
@@ -5667,6 +7105,77 @@ setActiveBottomNav("bookshelf");
                 </div>
               </div>
               <div class="cm-list" id="cmMarketList"></div>
+            </div>
+          </div>
+
+          <!-- Post composer -->
+          <div class="cm-overlay hidden" id="cmPostOverlay" role="dialog" aria-modal="true">
+            <div class="cm-sheet">
+              <div class="cm-sheet-head">
+                <div class="cm-sheet-title">Đăng bài</div>
+                <button class="cm-x" id="cmClosePostOverlay" type="button">✕</button>
+              </div>
+              <textarea id="cmPostText" maxlength="800" placeholder="Bạn đang nghĩ gì? (tối đa 800 ký tự)"></textarea>
+              <input id="cmPostStoryId" type="text" maxlength="60" placeholder="Gắn truyện (ID) - tuỳ chọn, ví dụ: s1">
+              <div class="cm-form-actions">
+                <button class="tab-page-btn" id="cmCancelPostBtn" type="button">Hủy</button>
+                <button class="tab-page-btn primary" id="cmSubmitPostBtn" type="button">Đăng</button>
+              </div>
+              <div class="muted" style="font-size:12px;margin-top:6px">Mẹo: nhập đúng ID truyện để hiện nút “Mở truyện”.</div>
+            </div>
+          </div>
+
+          <!-- Comments sheet -->
+          <div class="cm-overlay hidden" id="cmCommentOverlay" role="dialog" aria-modal="true">
+            <div class="cm-sheet">
+              <div class="cm-sheet-head">
+                <div class="cm-sheet-title" id="cmCommentTitle">Bình luận</div>
+                <button class="cm-x" id="cmCloseCommentOverlay" type="button">✕</button>
+              </div>
+              <div class="cm-sheet-body">
+                <div class="cm-comment-list" id="cmCommentList"></div>
+                <div class="cm-chat-inputbar" style="margin-top:10px">
+                  <input id="cmCommentInput" type="text" maxlength="300" placeholder="Viết bình luận..." autocomplete="off">
+                  <button class="cm-send" id="cmCommentSend" type="button">Gửi</button>
+                </div>
+                <div class="cm-footnote muted">Hiển thị 80 bình luận gần nhất.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Topic composer -->
+          <div class="cm-overlay hidden" id="cmTopicOverlay" role="dialog" aria-modal="true">
+            <div class="cm-sheet">
+              <div class="cm-sheet-head">
+                <div class="cm-sheet-title">Tạo chủ đề</div>
+                <button class="cm-x" id="cmCloseTopicOverlay" type="button">✕</button>
+              </div>
+              <input id="cmTopicTitle" type="text" maxlength="80" placeholder="Tiêu đề (tối đa 80 ký tự)">
+              <input id="cmTopicTag" type="text" maxlength="24" placeholder="Tag (vd: Tiên hiệp / Review / Spoil)">
+              <textarea id="cmTopicText" maxlength="1200" placeholder="Nội dung (tối đa 1200 ký tự)"></textarea>
+              <div class="cm-form-actions">
+                <button class="tab-page-btn" id="cmCancelTopicBtn" type="button">Hủy</button>
+                <button class="tab-page-btn primary" id="cmSubmitTopicBtn" type="button">Tạo</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Thread sheet -->
+          <div class="cm-overlay hidden" id="cmThreadOverlay" role="dialog" aria-modal="true">
+            <div class="cm-sheet">
+              <div class="cm-sheet-head">
+                <div class="cm-sheet-title" id="cmThreadTitle">Chủ đề</div>
+                <button class="cm-x" id="cmCloseThreadOverlay" type="button">✕</button>
+              </div>
+              <div class="cm-sheet-body">
+                <div class="cm-thread-meta" id="cmThreadMeta"></div>
+                <div class="cm-comment-list" id="cmThreadList"></div>
+                <div class="cm-chat-inputbar" style="margin-top:10px">
+                  <input id="cmThreadInput" type="text" maxlength="300" placeholder="Trả lời..." autocomplete="off">
+                  <button class="cm-send" id="cmThreadSend" type="button">Gửi</button>
+                </div>
+                <div class="cm-footnote muted">Hiển thị 120 phản hồi gần nhất.</div>
+              </div>
             </div>
           </div>
 
@@ -5777,14 +7286,247 @@ setActiveBottomNav("bookshelf");
 
     function parseBrowseHash(hash){
       const h = String(hash || "");
-      const m = h.match(/^#\/all\/(updated|completed)(?:\/(\d+))?/i);
+      const m = h.match(/^#\/all\/(updated|completed|topday|topweek|topmonth)(?:\/(\d+))?/i);
       if (!m) return null;
       const type = String(m[1] || "updated").toLowerCase();
       const page = Math.max(1, parseInt(m[2] || "1", 10) || 1);
       return { type, page };
     }
-    function getBrowseStories(type){
-      return (type === "completed") ? sortedCompletedStories() : sortedUpdatedStories();
+    
+    /* ============================
+       Rank Page (Bảng xếp hạng)
+       Route: #/rank/views/(day|week|month)/:page
+              #/rank/updated/:page
+              #/rank/rating/:page
+       ============================ */
+    let __rankBound = false;
+    let rankState = { mode: "views", period: "day", page: 1 };
+
+    function parseRankHash(hash){
+      const h = String(hash || "");
+      const m = h.match(/^#\/rank(?:\/(views|updated|rating))?(?:\/(day|week|month))?(?:\/(\d+))?$/i);
+      if (!m) return null;
+      const mode = String(m[1] || "views").toLowerCase();
+      const period = String(m[2] || "day").toLowerCase();
+      const page = Math.max(1, parseInt(m[3] || "1", 10) || 1);
+      return { mode, period, page };
+    }
+
+    function _rankTitleSub(state){
+      const mode = String(state?.mode || "views");
+      const period = String(state?.period || "day");
+      const title = "Bảng xếp hạng";
+      let sub = "";
+      if (mode === "views"){
+        sub = (period === "week") ? "Top lượt xem • Tuần" : (period === "month") ? "Top lượt xem • Tháng" : "Top lượt xem • Ngày";
+      }else if (mode === "updated"){
+        sub = "Mới cập nhật";
+      }else if (mode === "rating"){
+        sub = "Top đánh giá";
+      }
+      return { title, sub };
+    }
+
+    function _rankListFor(state){
+      const mode = String(state?.mode || "views");
+      const period = String(state?.period || "day");
+      if (mode === "updated") return sortedUpdatedStories();
+      if (mode === "rating"){
+        const list = Array.isArray(stories) ? [...stories] : [];
+        list.sort((a,b) => (Number(b.rating||0) - Number(a.rating||0)) || (Number(b.views||0) - Number(a.views||0)));
+        return list;
+      }
+      // views
+      const t = (period === "week") ? "topweek" : (period === "month") ? "topmonth" : "topday";
+      return sortedTopViewsStories(t);
+    }
+
+    function _rankStatText(s){
+      const mode = String(rankState.mode || "views");
+      if (mode === "updated"){
+        return String(s?.updatedAtText || "—");
+      }
+      if (mode === "rating"){
+        const r = Number(s?.rating || 0) || 0;
+        return "⭐ " + (Math.round(r*10)/10).toFixed(1);
+      }
+      return formatShort(Number(s?.views || 0) || 0);
+    }
+
+    function _rankPodiumHtml(items){
+      const top = (items || []).slice(0,3);
+      if (!top.length) return "";
+      const slot = [1,0,2]; // hiển thị 2-1-3 cho đẹp
+      return slot.map((i, idx) => {
+        const s = top[i];
+        if (!s) return '<div></div>';
+        const no = i+1;
+        const tag = String(s.category||"").trim();
+        return `
+          <article class="podium-card js-open" data-id="${esc(s.id)}" role="button" aria-label="${esc(s.title)}">
+            <img class="cover" src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
+            <div class="info">
+              <div class="podium-rank">#${no} <span style="opacity:.85">${modeIcon(rankState.mode)}</span></div>
+              <div class="podium-title">${esc(s.title||"")}</div>
+              <div class="podium-sub">
+                <span class="tag">${esc(tag||"")}</span>
+                <span class="stat">${esc(_rankStatText(s))}</span>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function modeIcon(mode){
+      const m = String(mode||"views");
+      if (m === "updated") return "🕒";
+      if (m === "rating") return "⭐";
+      return "👁️";
+    }
+
+    function _rankRowHtml(s, no){
+      const tag = String(s.category||"").trim();
+      const st = String(s.status||"").trim();
+      return `
+        <article class="rank-row js-open" data-id="${esc(s.id)}" role="button" aria-label="${esc(s.title)}">
+          <div class="rank-no">#${no}</div>
+          <img class="thumb" src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
+          <div class="meta">
+            <div class="t">${esc(s.title||"")}</div>
+            <div class="s">
+              ${tag ? `<span>🏷️ ${esc(tag)}</span>` : ""}
+              ${st ? `<span>• ${esc(st)}</span>` : ""}
+            </div>
+          </div>
+          <div class="stat">${esc(_rankStatText(s))}</div>
+        </article>
+      `;
+    }
+
+    function bindRankOnce(){
+      if (__rankBound) return;
+      __rankBound = true;
+
+      rankMetrics?.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-rank-mode]");
+        if (!btn) return;
+        const mode = String(btn.dataset.rankMode || "views");
+        const p = (rankState && rankState.period) ? String(rankState.period) : "day";
+        if (mode === "views"){
+          location.hash = `#/rank/views/${encodeURIComponent(p)}/1`;
+        }else{
+          location.hash = `#/rank/${encodeURIComponent(mode)}/1`;
+        }
+      });
+
+      rankPeriods?.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-rank-period]");
+        if (!btn) return;
+        const period = String(btn.dataset.rankPeriod || "day");
+        if (String(rankState.mode) !== "views") return;
+        location.hash = `#/rank/views/${encodeURIComponent(period)}/1`;
+      });
+
+      rankPrevBtn?.addEventListener("click", () => {
+        const p = Math.max(1, Number(rankState.page||1) - 1);
+        if (rankState.mode === "views"){
+          location.hash = `#/rank/views/${encodeURIComponent(rankState.period||"day")}/${p}`;
+        }else{
+          location.hash = `#/rank/${encodeURIComponent(rankState.mode||"updated")}/${p}`;
+        }
+      });
+      rankNextBtn?.addEventListener("click", () => {
+        const p = Math.max(1, Number(rankState.page||1) + 1);
+        if (rankState.mode === "views"){
+          location.hash = `#/rank/views/${encodeURIComponent(rankState.period||"day")}/${p}`;
+        }else{
+          location.hash = `#/rank/${encodeURIComponent(rankState.mode||"updated")}/${p}`;
+        }
+      });
+    }
+
+    function renderRankPage(mode="views", period="day", page=1){
+      bindRankOnce();
+      rankState = { mode: String(mode||"views"), period: String(period||"day"), page: Math.max(1, Number(page)||1) };
+
+      hideAllPages();
+      rankPage?.classList.remove("hidden");
+      setActiveBottomNav("home"); // BXH là trang riêng, không nằm bottom nav
+
+      // Tabs active
+      rankMetrics?.querySelectorAll("[data-rank-mode]").forEach(b=>{
+        b.classList.toggle("active", String(b.dataset.rankMode) === String(rankState.mode));
+      });
+
+      const isViews = String(rankState.mode) === "views";
+      rankPeriods?.classList.toggle("hidden", !isViews);
+      if (isViews){
+        rankPeriods?.querySelectorAll("[data-rank-period]").forEach(b=>{
+          b.classList.toggle("active", String(b.dataset.rankPeriod) === String(rankState.period));
+        });
+      }
+
+      const full = _rankListFor(rankState);
+      const total = full.length;
+      const pageSize = 10;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+      const p = Math.max(1, Math.min(totalPages, Number(rankState.page)||1));
+      rankState.page = p;
+
+      const { title, sub } = _rankTitleSub(rankState);
+      showRouteHeader({ title, sub, back: true, chips: [`Trang ${p}/${totalPages}`] });
+
+      // Empty
+      if (!total){
+        if (rankPodium) rankPodium.innerHTML = "";
+        if (rankList) rankList.innerHTML = "";
+        if (rankEmptyNote){
+          rankEmptyNote.textContent = "Chưa có dữ liệu để hiển thị bảng xếp hạng.";
+          rankEmptyNote.classList.remove("hidden");
+        }
+        if (rankPager) rankPager.classList.add("hidden");
+        return;
+      }else{
+        rankEmptyNote?.classList.add("hidden");
+        rankPager?.classList.remove("hidden");
+      }
+
+      // Podium (top 3)
+      if (rankPodium){
+        rankPodium.innerHTML = _rankPodiumHtml(full);
+      }
+
+      // List (page 1: #4-#10, page 2: #11-#20, ...)
+      let slice = [];
+      if (p === 1){
+        slice = full.slice(3, 10);
+      }else{
+        const start = (p - 1) * pageSize;
+        slice = full.slice(start, start + pageSize);
+      }
+      if (rankList){
+        if (!slice.length){
+          rankList.innerHTML = "";
+        }else{
+          const baseNo = (p === 1) ? 4 : ((p - 1) * pageSize + 1);
+          rankList.innerHTML = slice.map((s, i) => _rankRowHtml(s, baseNo + i)).join("");
+        }
+      }
+
+      // Pager
+      if (rankPageInfo) rankPageInfo.textContent = `Trang ${p}/${totalPages}`;
+      if (rankPrevBtn) rankPrevBtn.disabled = (p <= 1);
+      if (rankNextBtn) rankNextBtn.disabled = (p >= totalPages);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+
+function getBrowseStories(type){
+      const t = String(type || "updated").toLowerCase();
+      if (t === "completed") return sortedCompletedStories();
+      if (t === "topday" || t === "topweek" || t === "topmonth") return sortedTopViewsStories(t);
+      return sortedUpdatedStories();
     }
     function browseCardHtml(s){
       const done = isCompletedStory(s);
@@ -5849,13 +7591,29 @@ setActiveBottomNav("bookshelf");
       });
     }
 
+
+    function bindBrowseTopTabsOnce(){
+      if (window.__browseTopTabsBound) return;
+      window.__browseTopTabsBound = true;
+      const el = $("#browseTopTabs");
+      if (!el) return;
+      el.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-browse-top]");
+        if (!btn) return;
+        const t = String(btn.dataset.browseTop || "topday");
+        location.hash = `#/all/${encodeURIComponent(t)}/1`;
+      });
+    }
+
     
     function renderBrowsePage(type = "updated", page = 1, opts = {}){
       const scroll = (opts && opts.scroll === false) ? false : true;
 
-      __browseType = (type === "completed") ? "completed" : "updated";
+      __browseType = String(type || "updated").toLowerCase();
+      if (!["updated","completed","topday","topweek","topmonth"].includes(__browseType)) __browseType = "updated";
       bindBrowsePagerOnce();
       bindBrowseSearchOnce();
+      bindBrowseTopTabsOnce();
 
       hideAllPages();
       browsePage?.classList.remove("hidden");
@@ -5871,19 +7629,37 @@ setActiveBottomNav("bookshelf");
       const filtered = filterBrowseList(fullList, __browseQuery);
       const total = filtered.length;
 
-      const totalPages = Math.max(1, Math.ceil(total / BROWSE_PAGE_SIZE));
+      const pageSize = (__browseType === "topday" || __browseType === "topweek" || __browseType === "topmonth") ? 10 : BROWSE_PAGE_SIZE;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
       const p = Math.max(1, Math.min(totalPages, Number(page) || 1));
 
-      const title = (__browseType === "completed") ? "Truyện hoàn thành" : "Mới cập nhật";
+      const title = (__browseType === "completed") ? "Truyện hoàn thành"
+        : (__browseType === "topday") ? "Top lượt xem • Ngày"
+        : (__browseType === "topweek") ? "Top lượt xem • Tuần"
+        : (__browseType === "topmonth") ? "Top lượt xem • Tháng"
+        : "Mới cập nhật";
       const q = String(__browseQuery || "").trim();
       const sub = q
-        ? `Lọc: “${q}” • ${total}/${fullList.length} truyện • ${BROWSE_PAGE_SIZE} truyện/trang`
-        : `Tất cả ${total} truyện • ${BROWSE_PAGE_SIZE} truyện/trang`;
+        ? `Lọc: “${q}” • ${total}/${fullList.length} truyện • ${pageSize} truyện/trang`
+        : `Tất cả ${total} truyện • ${pageSize} truyện/trang`;
 
       showRouteHeader({ title, sub, back: true, chips: [`Trang ${p}/${totalPages}`] });
 
-      const start = (p - 1) * BROWSE_PAGE_SIZE;
-      const items = filtered.slice(start, start + BROWSE_PAGE_SIZE);
+      // Top tabs (chỉ hiện khi vào top views)
+      const topTabs = $("#browseTopTabs");
+      if (topTabs){
+        const isTop = (__browseType === "topday" || __browseType === "topweek" || __browseType === "topmonth");
+        topTabs.classList.toggle("hidden", !isTop);
+        if (isTop){
+          topTabs.querySelectorAll("[data-browse-top]").forEach(b=>{
+            b.classList.toggle("active", String(b.dataset.browseTop) === __browseType);
+          });
+        }
+      }
+
+
+      const start = (p - 1) * pageSize;
+      const items = filtered.slice(start, start + pageSize);
 
       if (!browseGrid) return;
       if (!items.length){
@@ -5932,6 +7708,11 @@ setActiveBottomNav("bookshelf");
       if (hash.startsWith("#/story/")){
         const storyId = decodeURIComponent(hash.replace("#/story/", ""));
         renderStoryPage(storyId);
+        return;
+      }
+      if (hash.startsWith("#/rank")){
+        const parsed = parseRankHash(hash) || { mode:"views", period:"day", page:1 };
+        renderRankPage(parsed.mode, parsed.period, parsed.page);
         return;
       }
       if (hash.startsWith("#/all/")){
@@ -6100,15 +7881,7 @@ setActiveBottomNav("bookshelf");
       const lastReading = { ...(userState.lastReading || {}), [storyId]: Math.max(1, Number(chapter||1)) };
       const ok = await saveUserStatePatch({ historyIds: nextHistory, lastReading }, opts);
       if (ok){
-        if (!silent) toast("Đã lưu vào lịch sử đọc");
-        if (!silent && currentUser && !wasInHistory){
-          const s = storyById(storyId);
-          pushAccountNotification({
-            type: "history_add",
-            title: "Đã lưu vào lịch sử đọc",
-            sub: s?.title || storyId
-          }).catch(err => console.warn("push history notification error", err));
-        }
+        /* không hiện toast "Đã lưu vào lịch sử đọc" */
       }
       // Đồng bộ lượt xem dùng Firebase RTDB, không ảnh hưởng dữ liệu truyện trong HTML.
       bumpStoryView(storyId).catch(err => console.warn("bumpStoryView error", err));
@@ -6122,24 +7895,53 @@ setActiveBottomNav("bookshelf");
       view: (function(){
         try{ return localStorage.getItem("community_view") || "chat"; }catch(_){ return "chat"; }
       })(),
+      feed: { unsubPosts: null, unsubLikes: null, posts: [], likedMap: {} },
+      topics: { unsubTopics: null, topics: [] , unsubThread: null, threadId: null },
       chat: { unsub: null, seen: new Set(), lastSendAt: 0 },
       factions: { unsub: null },
       market: { unsub: null }
     };
 
-    function communityCleanup(){
+    function communityStopAllStreams(){
+      // Chat
       try{ communityState.chat.unsub && communityState.chat.unsub(); }catch(_){}
+      communityState.chat.unsub = null;
+      communityState.chat.seen = new Set();
+
+      // Feed
+      try{ communityState.feed.unsubPosts && communityState.feed.unsubPosts(); }catch(_){}
+      try{ communityState.feed.unsubLikes && communityState.feed.unsubLikes(); }catch(_){}
+      communityState.feed.unsubPosts = null;
+      communityState.feed.unsubLikes = null;
+      communityState.feed.posts = [];
+      communityState.feed.likedMap = {};
+
+      // Topics
+      try{ communityState.topics.unsubTopics && communityState.topics.unsubTopics(); }catch(_){}
+      try{ communityState.topics.unsubThread && communityState.topics.unsubThread(); }catch(_){}
+      communityState.topics.unsubTopics = null;
+      communityState.topics.unsubThread = null;
+      communityState.topics.threadId = null;
+      communityState.topics.topics = [];
+
+      // Factions / Market
       try{ communityState.factions.unsub && communityState.factions.unsub(); }catch(_){}
       try{ communityState.market.unsub && communityState.market.unsub(); }catch(_){}
-      communityState.chat.unsub = null;
       communityState.factions.unsub = null;
       communityState.market.unsub = null;
-      communityState.chat.seen = new Set();
+    }
+
+    function communityCleanup(){
+      communityStopAllStreams();
     }
 
     function setCommunityView(next){
       communityState.view = next || "chat";
       try{ localStorage.setItem("community_view", communityState.view); }catch(_){}
+
+      // Chuyển tab: tắt listeners view cũ để tránh chạy song song gây lag
+      communityStopAllStreams();
+
       const tabsEl = $("#cmTabs");
       if (tabsEl){
         tabsEl.querySelectorAll(".community-tab").forEach(btn => {
@@ -6152,6 +7954,8 @@ setActiveBottomNav("bookshelf");
       });
 
       // Start the selected view
+      if (communityState.view === "feed") startCommunityFeed();
+      if (communityState.view === "topics") startCommunityTopics();
       if (communityState.view === "chat") startCommunityChat();
       if (communityState.view === "factions") startCommunityFactions();
       if (communityState.view === "market") startCommunityMarket();
@@ -6161,7 +7965,7 @@ setActiveBottomNav("bookshelf");
       communityCleanup();
 
       const onlineEl = $("#cmOnline");
-      if (onlineEl) onlineEl.textContent = String(onlineUsersCount || 0);
+      if (onlineEl) onlineEl.textContent = String(realtimeOnlineCount || 0);
 
       renderCommunityAuthHint();
 
@@ -6600,7 +8404,625 @@ setActiveBottomNav("bookshelf");
     }
 
 
+    
     /* ============================
+       Community Pro: Feed / Topics
+       ============================ */
+
+    function cmShowOverlay(el){
+      if (!el) return;
+      el.classList.remove("hidden");
+      // Prevent background scroll while sheet is open
+      document.body.classList.add("modal-open");
+    }
+    function cmHideOverlay(el){
+      if (!el) return;
+      el.classList.add("hidden");
+      document.body.classList.remove("modal-open");
+    }
+
+    function renderFeedPostCard(p, liked){
+      const name = String(p?.name || "Ẩn danh");
+      const text = String(p?.text || "");
+      const ts = Number(p?.ts || 0);
+      const timeTxt = ts ? timeAgo(ts) : "";
+      const likeCount = Math.max(0, Number(p?.likeCount || 0));
+      const commentCount = Math.max(0, Number(p?.commentCount || 0));
+      const storyId = String(p?.storyId || "").trim();
+
+      const avatarHtml = p?.photoURL
+        ? `<div class="cm-avatar"><img src="${esc(p.photoURL)}" alt="avatar"></div>`
+        : `<div class="cm-avatar">${esc((name || "A").slice(0,1).toUpperCase())}</div>`;
+
+      const storyBadge = storyId ? `<span class="cm-badge">📚 ${esc(storyId)}</span>` : "";
+
+      return `
+        <div class="cm-post" data-post-id="${esc(p.id)}">
+          <div class="cm-post-head">
+            <div class="cm-post-user">
+              ${avatarHtml}
+              <div class="meta">
+                <div class="name">${esc(name)}</div>
+                <div class="time">${esc(timeTxt)}</div>
+              </div>
+            </div>
+            ${storyBadge}
+          </div>
+          <div class="cm-post-content">${esc(text)}</div>
+          <div class="cm-post-actions">
+            <button class="cm-act ${liked ? "active" : ""}" type="button" data-act="like">👍 <span>${esc(String(likeCount))}</span></button>
+            <button class="cm-act" type="button" data-act="comment">💬 <span>${esc(String(commentCount))}</span></button>
+            ${storyId ? `<button class="cm-act" type="button" data-act="openStory" data-story-id="${esc(storyId)}">Mở truyện</button>` : ""}
+            <button class="cm-act" type="button" data-act="share">🔗 Chia sẻ</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function startCommunityFeed(){
+      renderCommunityAuthHint();
+
+      const listEl = $("#cmFeedList");
+      const newBtn = $("#cmNewPostBtn");
+      const overlay = $("#cmPostOverlay");
+      const closeBtn = $("#cmClosePostOverlay");
+      const cancelBtn = $("#cmCancelPostBtn");
+      const submitBtn = $("#cmSubmitPostBtn");
+      const textEl = $("#cmPostText");
+      const storyEl = $("#cmPostStoryId");
+
+      const commentOverlay = $("#cmCommentOverlay");
+      const commentClose = $("#cmCloseCommentOverlay");
+      const commentList = $("#cmCommentList");
+      const commentInput = $("#cmCommentInput");
+      const commentSend = $("#cmCommentSend");
+      const commentTitle = $("#cmCommentTitle");
+
+      if (!listEl || !newBtn || !overlay || !closeBtn || !cancelBtn || !submitBtn || !textEl || !storyEl
+        || !commentOverlay || !commentClose || !commentList || !commentInput || !commentSend || !commentTitle){
+        return;
+      }
+
+      // Bind overlay close
+      overlay.onclick = (e) => { if (e.target === overlay) cmHideOverlay(overlay); };
+      closeBtn.onclick = () => cmHideOverlay(overlay);
+      cancelBtn.onclick = () => cmHideOverlay(overlay);
+
+      commentOverlay.onclick = (e) => { if (e.target === commentOverlay) closeCmComments(); };
+      commentClose.onclick = () => closeCmComments();
+
+      const canUse = ENABLE_FIREBASE && rtdb;
+      if (!canUse){
+        listEl.innerHTML = `<div class="muted">Bảng tin cần Firebase Realtime Database.</div>`;
+        newBtn.disabled = true;
+        return;
+      }
+      newBtn.disabled = false;
+
+      // Open composer
+      newBtn.onclick = () => {
+        if (!currentUser){
+          toast("Đăng nhập để đăng bài.");
+          toggleAccountMenu(true);
+          return;
+        }
+        textEl.value = "";
+        storyEl.value = "";
+        cmShowOverlay(overlay);
+        setTimeout(() => { textEl.focus(); }, 50);
+      };
+
+      // Load likes map once for current user
+      if (communityState.feed.unsubLikes) { try{ communityState.feed.unsubLikes(); }catch(_){} }
+      communityState.feed.likedMap = {};
+      if (currentUser){
+        const likesRef = ref(rtdb, `community/feed/userLikes/${currentUser.uid}`);
+        communityState.feed.unsubLikes = onValue(likesRef, (snap) => {
+          communityState.feed.likedMap = snap.val() || {};
+          // re-render if we already have posts
+          if (communityState.feed.posts && communityState.feed.posts.length){
+            listEl.innerHTML = communityState.feed.posts.map(p => renderFeedPostCard(p, !!communityState.feed.likedMap[p.id])).join("");
+          }
+        });
+      }
+
+      // Subscribe posts
+      listEl.innerHTML = `<div class="muted">Đang tải bảng tin...</div>`;
+      const qRef = query(ref(rtdb, "community/feed/posts"), orderByChild("ts"), limitToLast(80));
+      communityState.feed.unsubPosts = onValue(qRef, (snap) => {
+        const data = snap.val() || {};
+        const rows = Object.entries(data)
+          .map(([id, v]) => ({ id, ...(v||{}) }))
+          .sort((a,b) => Number(b.ts||0) - Number(a.ts||0));
+
+        communityState.feed.posts = rows;
+
+        if (!rows.length){
+          listEl.innerHTML = `<div class="muted">Chưa có bài nào. Hãy là người đăng đầu tiên ✍️</div>`;
+          return;
+        }
+        listEl.innerHTML = rows.map(p => renderFeedPostCard(p, !!communityState.feed.likedMap[p.id])).join("");
+      }, (err) => {
+        console.warn("feed onValue error", err);
+        listEl.innerHTML = `<div class="muted">Không thể tải bảng tin. Kiểm tra Rules Firebase.</div>`;
+      });
+
+      // Delegated actions
+      listEl.onclick = async (e) => {
+        const postEl = e.target.closest(".cm-post");
+        if (!postEl) return;
+        const postId = postEl.getAttribute("data-post-id");
+        if (!postId) return;
+
+        const btn = e.target.closest("[data-act]");
+        if (!btn) return;
+        const act = btn.getAttribute("data-act");
+
+        if (act === "openStory"){
+          const sid = btn.getAttribute("data-story-id");
+          if (sid) goToStory(sid);
+          return;
+        }
+
+        if (act === "share"){
+          const link = `${location.origin}${location.pathname}#/community`;
+          const txt = `Bảng tin cộng đồng - Truyện Online\n${link}`;
+          try{
+            await navigator.clipboard.writeText(txt);
+            toast("Đã copy link.");
+          }catch(_){
+            try{
+              const ta = document.createElement("textarea");
+              ta.value = txt;
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand("copy");
+              ta.remove();
+              toast("Đã copy link.");
+            }catch(__){ toast("Không thể copy link."); }
+          }
+          return;
+        }
+
+        if (act === "comment"){
+          openCmComments(postId);
+          return;
+        }
+
+        if (act === "like"){
+          if (!currentUser){
+            toast("Đăng nhập để thả like.");
+            toggleAccountMenu(true);
+            return;
+          }
+          const liked = !!communityState.feed.likedMap[postId];
+          try{
+            const uid = currentUser.uid;
+            const userLikeRef = ref(rtdb, `community/feed/userLikes/${uid}/${postId}`);
+            const likeCountRef = ref(rtdb, `community/feed/posts/${postId}/likeCount`);
+
+            await set(userLikeRef, liked ? null : 1);
+            await runTransaction(likeCountRef, (current) => {
+              const n = Number(current || 0);
+              const next = (Number.isFinite(n) ? n : 0) + (liked ? -1 : 1);
+              return Math.max(0, next);
+            });
+          }catch(err){
+            console.warn("like error", err);
+            toast("Không thể thả like.");
+          }
+        }
+      };
+
+      // Submit post
+      submitBtn.onclick = async () => {
+        if (!currentUser){
+          toast("Đăng nhập để đăng bài.");
+          toggleAccountMenu(true);
+          return;
+        }
+        const raw = String(textEl.value || "").trim();
+        const storyId = String(storyEl.value || "").trim();
+
+        if (raw.length < 5){
+          toast("Nội dung tối thiểu 5 ký tự.");
+          return;
+        }
+        try{
+          const baseRef = ref(rtdb, "community/feed/posts");
+          const itemRef = push(baseRef);
+          const item = {
+            uid: currentUser.uid,
+            name: currentUser.displayName || "Người dùng",
+            photoURL: currentUser.photoURL || "",
+            text: raw.slice(0, 800),
+            storyId: storyId ? storyId.slice(0, 60) : "",
+            ts: Date.now(),
+            likeCount: 0,
+            commentCount: 0
+          };
+          await set(itemRef, item);
+          cmHideOverlay(overlay);
+          toast("Đã đăng bài.");
+        }catch(err){
+          console.warn("post feed error", err);
+          toast("Không thể đăng bài.");
+        }
+      };
+
+      // ===== Comments =====
+      let commentsUnsub = null;
+      let currentPostId = null;
+
+      function closeCmComments(){
+        try{ commentsUnsub && commentsUnsub(); }catch(_){}
+        commentsUnsub = null;
+        currentPostId = null;
+        commentList.innerHTML = "";
+        cmHideOverlay(commentOverlay);
+      }
+      window.closeCmComments = closeCmComments;
+
+      function renderCommentRow(c){
+        const name = String(c?.name || "Ẩn danh");
+        const text = String(c?.text || "");
+        const ts = Number(c?.ts || 0);
+        const timeTxt = ts ? timeAgo(ts) : "";
+        const avatarHtml = c?.photoURL
+          ? `<div class="cm-avatar"><img src="${esc(c.photoURL)}" alt="avatar"></div>`
+          : `<div class="cm-avatar">${esc((name || "A").slice(0,1).toUpperCase())}</div>`;
+        return `
+          <div class="cm-msg" style="align-items:flex-start">
+            ${avatarHtml}
+            <div class="cm-bubble" style="max-width:82%">
+              <div style="font-weight:950;font-size:12px;margin-bottom:4px;opacity:.92">${esc(name)}</div>
+              <div>${esc(text)}</div>
+              <div class="cm-meta-line"><span>${esc(timeTxt)}</span></div>
+            </div>
+          </div>
+        `;
+      }
+
+      function openCmComments(postId){
+        if (!postId) return;
+        currentPostId = postId;
+        commentTitle.textContent = "Bình luận";
+        commentList.innerHTML = `<div class="muted">Đang tải bình luận...</div>`;
+        commentInput.value = "";
+
+        cmShowOverlay(commentOverlay);
+
+        // subscribe
+        try{ commentsUnsub && commentsUnsub(); }catch(_){}
+        const qC = query(ref(rtdb, `community/feed/comments/${postId}`), orderByChild("ts"), limitToLast(80));
+        commentsUnsub = onValue(qC, (snap) => {
+          const data = snap.val() || {};
+          const rows = Object.values(data)
+            .map(v => (v||{}))
+            .sort((a,b) => Number(a.ts||0) - Number(b.ts||0));
+          if (!rows.length){
+            commentList.innerHTML = `<div class="muted">Chưa có bình luận.</div>`;
+            return;
+          }
+          commentList.innerHTML = rows.map(renderCommentRow).join("");
+          requestAnimationFrame(() => { commentList.scrollTop = commentList.scrollHeight; });
+        }, (err) => {
+          console.warn("comments onValue error", err);
+          commentList.innerHTML = `<div class="muted">Không thể tải bình luận.</div>`;
+        });
+      }
+      window.openCmComments = openCmComments;
+
+      const doSendComment = async () => {
+        const raw = String(commentInput.value || "").replace(/\s+/g," ").trim();
+        if (!raw) return;
+        if (!currentUser){
+          toast("Đăng nhập để bình luận.");
+          toggleAccountMenu(true);
+          return;
+        }
+        if (!currentPostId) return;
+        try{
+          const baseRef = ref(rtdb, `community/feed/comments/${currentPostId}`);
+          const itemRef = push(baseRef);
+          const item = {
+            uid: currentUser.uid,
+            name: currentUser.displayName || "Người dùng",
+            photoURL: currentUser.photoURL || "",
+            text: raw.slice(0, 300),
+            ts: Date.now()
+          };
+          await set(itemRef, item);
+          commentInput.value = "";
+
+          // bump commentCount
+          const ccRef = ref(rtdb, `community/feed/posts/${currentPostId}/commentCount`);
+          await runTransaction(ccRef, (current) => {
+            const n = Number(current || 0);
+            return Number.isFinite(n) ? (n + 1) : 1;
+          });
+        }catch(err){
+          console.warn("send comment error", err);
+          toast("Không thể gửi bình luận.");
+        }
+      };
+
+      commentSend.onclick = doSendComment;
+      commentInput.onkeydown = (e) => {
+        if (e.key === "Enter"){
+          e.preventDefault();
+          doSendComment();
+        }
+      };
+    }
+
+
+    function renderTopicCard(t){
+      const title = String(t?.title || "Chủ đề");
+      const tag = String(t?.tag || "Thảo luận");
+      const ts = Number(t?.ts || 0);
+      const timeTxt = ts ? timeAgo(ts) : "";
+      const replyCount = Math.max(0, Number(t?.replyCount || 0));
+      const name = String(t?.name || "Ẩn danh");
+
+      return `
+        <div class="cm-post" data-topic-id="${esc(t.id)}">
+          <div class="cm-post-head">
+            <div style="min-width:0">
+              <div style="font-weight:1000;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(title)}</div>
+              <div class="cm-meta-line" style="margin-top:6px">
+                <span class="cm-badge">🏷️ ${esc(tag)}</span>
+                <span class="cm-pill">💬 ${esc(String(replyCount))}</span>
+                <span class="cm-pill">👤 ${esc(name)}</span>
+                <span class="cm-pill">🕒 ${esc(timeTxt)}</span>
+              </div>
+            </div>
+          </div>
+          <div class="cm-post-content">${esc(String(t?.text || "").slice(0, 220))}${String(t?.text||"").length>220 ? "…" : ""}</div>
+          <div class="cm-post-actions">
+            <button class="cm-act" type="button" data-act="openThread">Mở chủ đề</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function startCommunityTopics(){
+      renderCommunityAuthHint();
+
+      const listEl = $("#cmTopicList");
+      const newBtn = $("#cmNewTopicBtn");
+
+      const overlay = $("#cmTopicOverlay");
+      const closeBtn = $("#cmCloseTopicOverlay");
+      const cancelBtn = $("#cmCancelTopicBtn");
+      const submitBtn = $("#cmSubmitTopicBtn");
+      const titleEl = $("#cmTopicTitle");
+      const tagEl = $("#cmTopicTag");
+      const textEl = $("#cmTopicText");
+
+      const threadOverlay = $("#cmThreadOverlay");
+      const threadClose = $("#cmCloseThreadOverlay");
+      const threadTitle = $("#cmThreadTitle");
+      const threadMeta = $("#cmThreadMeta");
+      const threadList = $("#cmThreadList");
+      const threadInput = $("#cmThreadInput");
+      const threadSend = $("#cmThreadSend");
+
+      if (!listEl || !newBtn || !overlay || !closeBtn || !cancelBtn || !submitBtn || !titleEl || !tagEl || !textEl
+        || !threadOverlay || !threadClose || !threadTitle || !threadMeta || !threadList || !threadInput || !threadSend){
+        return;
+      }
+
+      overlay.onclick = (e) => { if (e.target === overlay) cmHideOverlay(overlay); };
+      closeBtn.onclick = () => cmHideOverlay(overlay);
+      cancelBtn.onclick = () => cmHideOverlay(overlay);
+
+      threadOverlay.onclick = (e) => { if (e.target === threadOverlay) closeThread(); };
+      threadClose.onclick = () => closeThread();
+
+      const canUse = ENABLE_FIREBASE && rtdb;
+      if (!canUse){
+        listEl.innerHTML = `<div class="muted">Thảo luận cần Firebase Realtime Database.</div>`;
+        newBtn.disabled = true;
+        return;
+      }
+      newBtn.disabled = false;
+
+      newBtn.onclick = () => {
+        if (!currentUser){
+          toast("Đăng nhập để tạo chủ đề.");
+          toggleAccountMenu(true);
+          return;
+        }
+        titleEl.value = "";
+        tagEl.value = "";
+        textEl.value = "";
+        cmShowOverlay(overlay);
+        setTimeout(() => { titleEl.focus(); }, 50);
+      };
+
+      // Subscribe topics (sort by lastReplyAt/ts desc)
+      listEl.innerHTML = `<div class="muted">Đang tải chủ đề...</div>`;
+      const qRef = query(ref(rtdb, "community/topics/threads"), orderByChild("lastReplyAt"), limitToLast(80));
+      communityState.topics.unsubTopics = onValue(qRef, (snap) => {
+        const data = snap.val() || {};
+        const rows = Object.entries(data)
+          .map(([id, v]) => ({ id, ...(v||{}) }))
+          .sort((a,b) => Number((b.lastReplyAt||b.ts)||0) - Number((a.lastReplyAt||a.ts)||0));
+
+        communityState.topics.topics = rows;
+
+        if (!rows.length){
+          listEl.innerHTML = `<div class="muted">Chưa có chủ đề nào.</div>`;
+          return;
+        }
+        listEl.innerHTML = rows.map(renderTopicCard).join("");
+      }, (err) => {
+        console.warn("topics onValue error", err);
+        listEl.innerHTML = `<div class="muted">Không thể tải chủ đề. Kiểm tra Rules Firebase.</div>`;
+      });
+
+      listEl.onclick = (e) => {
+        const card = e.target.closest(".cm-post");
+        if (!card) return;
+        const topicId = card.getAttribute("data-topic-id");
+        if (!topicId) return;
+        const btn = e.target.closest("[data-act='openThread']");
+        if (btn) openThread(topicId);
+      };
+
+      submitBtn.onclick = async () => {
+        if (!currentUser){
+          toast("Đăng nhập để tạo chủ đề.");
+          toggleAccountMenu(true);
+          return;
+        }
+        const title = String(titleEl.value || "").trim();
+        const tag = String(tagEl.value || "").trim() || "Thảo luận";
+        const text = String(textEl.value || "").trim();
+
+        if (title.length < 5){
+          toast("Tiêu đề tối thiểu 5 ký tự.");
+          return;
+        }
+        if (text.length < 10){
+          toast("Nội dung tối thiểu 10 ký tự.");
+          return;
+        }
+        try{
+          const baseRef = ref(rtdb, "community/topics/threads");
+          const itemRef = push(baseRef);
+          const now = Date.now();
+          const item = {
+            uid: currentUser.uid,
+            name: currentUser.displayName || "Người dùng",
+            photoURL: currentUser.photoURL || "",
+            title: title.slice(0, 80),
+            tag: tag.slice(0, 24),
+            text: text.slice(0, 1200),
+            ts: now,
+            replyCount: 0,
+            lastReplyAt: now
+          };
+          await set(itemRef, item);
+          cmHideOverlay(overlay);
+          toast("Đã tạo chủ đề.");
+        }catch(err){
+          console.warn("create topic error", err);
+          toast("Không thể tạo chủ đề.");
+        }
+      };
+
+      // ===== Thread detail =====
+      let threadUnsub = null;
+      let currentThreadId = null;
+
+      function closeThread(){
+        try{ threadUnsub && threadUnsub(); }catch(_){}
+        threadUnsub = null;
+        currentThreadId = null;
+        threadList.innerHTML = "";
+        threadMeta.textContent = "";
+        cmHideOverlay(threadOverlay);
+      }
+
+      function renderThreadReply(r){
+        const name = String(r?.name || "Ẩn danh");
+        const text = String(r?.text || "");
+        const ts = Number(r?.ts || 0);
+        const timeTxt = ts ? timeAgo(ts) : "";
+        const avatarHtml = r?.photoURL
+          ? `<div class="cm-avatar"><img src="${esc(r.photoURL)}" alt="avatar"></div>`
+          : `<div class="cm-avatar">${esc((name || "A").slice(0,1).toUpperCase())}</div>`;
+        return `
+          <div class="cm-msg" style="align-items:flex-start">
+            ${avatarHtml}
+            <div class="cm-bubble" style="max-width:82%">
+              <div style="font-weight:950;font-size:12px;margin-bottom:4px;opacity:.92">${esc(name)}</div>
+              <div>${esc(text)}</div>
+              <div class="cm-meta-line"><span>${esc(timeTxt)}</span></div>
+            </div>
+          </div>
+        `;
+      }
+
+      function openThread(topicId){
+        const t = (communityState.topics.topics || []).find(x => String(x.id) === String(topicId)) || null;
+        threadTitle.textContent = t ? (t.title || "Chủ đề") : "Chủ đề";
+        threadMeta.textContent = t ? `🏷️ ${t.tag || "Thảo luận"} • 👤 ${t.name || "Ẩn danh"}` : "";
+        threadInput.value = "";
+        threadList.innerHTML = `<div class="muted">Đang tải phản hồi...</div>`;
+        cmShowOverlay(threadOverlay);
+
+        currentThreadId = topicId;
+
+        try{ threadUnsub && threadUnsub(); }catch(_){}
+        const qR = query(ref(rtdb, `community/topics/replies/${topicId}`), orderByChild("ts"), limitToLast(120));
+        threadUnsub = onValue(qR, (snap) => {
+          const data = snap.val() || {};
+          const rows = Object.values(data)
+            .map(v => (v||{}))
+            .sort((a,b) => Number(a.ts||0) - Number(b.ts||0));
+          if (!rows.length){
+            threadList.innerHTML = `<div class="muted">Chưa có phản hồi.</div>`;
+            return;
+          }
+          threadList.innerHTML = rows.map(renderThreadReply).join("");
+          requestAnimationFrame(() => { threadList.scrollTop = threadList.scrollHeight; });
+        }, (err) => {
+          console.warn("thread onValue error", err);
+          threadList.innerHTML = `<div class="muted">Không thể tải phản hồi.</div>`;
+        });
+      }
+
+      const doSendReply = async () => {
+        const raw = String(threadInput.value || "").replace(/\s+/g," ").trim();
+        if (!raw) return;
+        if (!currentUser){
+          toast("Đăng nhập để trả lời.");
+          toggleAccountMenu(true);
+          return;
+        }
+        if (!currentThreadId) return;
+        try{
+          const baseRef = ref(rtdb, `community/topics/replies/${currentThreadId}`);
+          const itemRef = push(baseRef);
+          const now = Date.now();
+          const item = {
+            uid: currentUser.uid,
+            name: currentUser.displayName || "Người dùng",
+            photoURL: currentUser.photoURL || "",
+            text: raw.slice(0, 300),
+            ts: now
+          };
+          await set(itemRef, item);
+          threadInput.value = "";
+
+          // bump replyCount + lastReplyAt
+          const cntRef = ref(rtdb, `community/topics/threads/${currentThreadId}/replyCount`);
+          const lrRef = ref(rtdb, `community/topics/threads/${currentThreadId}/lastReplyAt`);
+          await runTransaction(cntRef, (cur) => {
+            const n = Number(cur || 0);
+            return Number.isFinite(n) ? (n + 1) : 1;
+          });
+          await set(lrRef, now);
+        }catch(err){
+          console.warn("send reply error", err);
+          toast("Không thể gửi phản hồi.");
+        }
+      };
+
+      threadSend.onclick = doSendReply;
+      threadInput.onkeydown = (e) => {
+        if (e.key === "Enter"){
+          e.preventDefault();
+          doSendReply();
+        }
+      };
+    }
+
+
+/* ============================
        10) Load stories (HTML tĩnh)
        ============================ */
     async function loadStories(){
@@ -6929,18 +9351,28 @@ setActiveBottomNav("bookshelf");
       if (genreBtn){
         const genre = genreBtn.dataset.menuGenre || "Tất cả";
         closeSideMenu();
-        if (genre === "Tất cả") openSearchPanel("");
-        else openSearchPanel(genre);
-        toast("Lọc thể loại: " + genre);
+        goToSearchWithGenreFromMenu(genre);
         return;
       }
 
       const rankBtn = e.target.closest("[data-menu-rank]");
       if (rankBtn){
-        const rank = rankBtn.dataset.menuRank || "Bảng xếp hạng";
+        const rank = String(rankBtn.dataset.menuRank || "Top lượt xem");
         closeSideMenu();
-        openSearchPanel("");
-        toast("Mở " + rank);
+        if (/Top\s*lượt\s*xem/i.test(rank)){
+          location.hash = "#/rank/views/day/1";
+          return;
+        }
+        if (/Top\s*đánh\s*giá/i.test(rank)){
+          location.hash = "#/rank/rating/1";
+          return;
+        }
+        if (/Mới\s*cập\s*nhật/i.test(rank)){
+          location.hash = "#/rank/updated/1";
+          return;
+        }
+        // Chưa có dữ liệu thật cho "Theo dõi" trong bản này
+        toast("Chưa có dữ liệu BXH Theo dõi");
       }
     });
 
@@ -7128,7 +9560,13 @@ setActiveBottomNav("bookshelf");
     routeHeaderBackBtn?.addEventListener("click", () => {
       const hash = location.hash || "";
       if (hash.startsWith("#/story/")){
-        history.length > 1 ? history.back() : goToHome();
+        // Nếu vừa từ trang Đọc/Nghe (reader) quay về Thông tin truyện,
+        // thì nút quay lại ở Thông tin truyện phải về tab trước đó (Home/Search/...) chứ không quay lại Chương.
+        if (__nav.prevHash && __nav.prevHash.startsWith("#/read/")){
+          location.hash = __nav.lastMainHash || "#/home";
+        }else{
+          history.length > 1 ? history.back() : goToHome();
+        }
         return;
       }
       if (hash.startsWith("#/bookshelf/")){
@@ -7139,8 +9577,18 @@ setActiveBottomNav("bookshelf");
     });
 
     storyBackBtn.addEventListener("click", () => {
-      if (location.hash.startsWith("#/story/")) goToHome();
-      else history.length > 1 ? history.back() : goToHome();
+      const hash = location.hash || "";
+      if (hash.startsWith("#/story/")){
+        // Nếu vừa từ trang Đọc/Nghe quay về Thông tin truyện,
+        // thì quay lại phải về tab trước đó (Home/Search/...) để tránh bị loop về Chương.
+        if (__nav.prevHash && __nav.prevHash.startsWith("#/read/")){
+          location.hash = __nav.lastMainHash || "#/home";
+        }else{
+          history.length > 1 ? history.back() : goToHome();
+        }
+        return;
+      }
+      history.length > 1 ? history.back() : goToHome();
     });
 
     btnAccount?.addEventListener("click", (e) => {
@@ -7228,9 +9676,70 @@ setActiveBottomNav("bookshelf");
     });
 
     readerOpenTocBtn?.addEventListener("click", () => {
-      stopTTS();
-      if (readerState.storyId) goToStory(readerState.storyId);
+      if (!readerState.storyId) return;
+      openReaderToc();
     });
+
+    // Reader TOC events
+    readerTocClose?.addEventListener("click", () => closeReaderToc());
+    readerToc?.addEventListener("click", (e) => {
+      if (e.target === readerToc) closeReaderToc();
+    });
+    readerTocPrevPage?.addEventListener("click", () => {
+      const s = storyById(readerState.storyId);
+      const totalCh = Math.max(1, Number((s && s.chapters) || 0) || 1);
+      __readerTocPage = Math.max(1, __readerTocPage - 1);
+      renderReaderTocList(totalCh);
+    });
+    readerTocNextPage?.addEventListener("click", () => {
+      const s = storyById(readerState.storyId);
+      const totalCh = Math.max(1, Number((s && s.chapters) || 0) || 1);
+      __readerTocPage = __readerTocPage + 1;
+      renderReaderTocList(totalCh);
+    });
+    function __readerTocGoChapter(ch){
+      const s = storyById(readerState.storyId);
+      const totalCh = Math.max(1, Number((s && s.chapters) || 0) || 1);
+      const nextCh = Math.max(1, Math.min(totalCh, Number(ch || 1) || 1));
+      const keepPlay = !!readerState.playing;
+      stopTTS();
+      if (keepPlay) setAutoplayTTS(readerState.storyId, nextCh, 0);
+      closeReaderToc();
+      goToReader(readerState.storyId, nextCh);
+    }
+    readerTocGo?.addEventListener("click", () => {
+      if (!readerState.storyId) return;
+      __readerTocGoChapter(readerTocJump?.value || "");
+    });
+    readerTocJump?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter"){
+        e.preventDefault();
+        __readerTocGoChapter(readerTocJump?.value || "");
+      }
+    });
+    readerTocList?.addEventListener("click", (e) => {
+      const btn = e.target?.closest?.(".rtoc-item");
+      if (!btn) return;
+      const ch = btn.dataset.chapter;
+      __readerTocGoChapter(ch);
+    });
+
+    // End-of-chapter prev/next buttons
+    readerContent?.addEventListener("click", (e) => {
+      const b = e.target?.closest?.("button");
+      if (!b) return;
+      if (b.id !== "readerPrevChapterBtn" && b.id !== "readerNextChapterBtn") return;
+      const s = storyById(readerState.storyId);
+      const totalCh = Math.max(1, Number((s && s.chapters) || 0) || 1);
+      const cur = Math.max(1, Number(readerState.chapter || 1));
+      const nextCh = b.id === "readerPrevChapterBtn" ? (cur - 1) : (cur + 1);
+      if (nextCh < 1 || nextCh > totalCh) return;
+      const keepPlay = !!readerState.playing;
+      stopTTS();
+      if (keepPlay) setAutoplayTTS(readerState.storyId, nextCh, 0);
+      goToReader(readerState.storyId, nextCh);
+    });
+
 
     rpPlay?.addEventListener("click", () => togglePlay());
     rpPrev?.addEventListener("click", () => {
@@ -7355,13 +9864,14 @@ setActiveBottomNav("bookshelf");
       }, 1000);
     })();
 
-    window.addEventListener("hashchange", () => { closeSideMenu(); renderRoute(); });
+    window.addEventListener("hashchange", () => { __navTrack(location.hash || "#/home"); closeSideMenu(); renderRoute(); });
 
     /* ============================
        14) Init
        ============================ */
     async function init(){
       if (!location.hash) location.hash = "#/home";
+      __navInit();
       applyTheme(activeTheme);
       applyUserUI();
       await loadStories();
