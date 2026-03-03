@@ -2541,6 +2541,43 @@
       color:var(--muted);
       margin-bottom:8px;
     }
+
+    /* Community HUB (Fanpage / Group / Chat box / Bang hội / Ký gửi / YouTube) */
+    .cm-hub{ padding:10px; }
+    .cm-hub-section{
+      padding:12px; border-radius:16px;
+      border:1px solid rgba(255,255,255,.06);
+      background:rgba(255,255,255,.03);
+    }
+    .cm-hub-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-bottom:10px; }
+    .cm-hub-title{ font-weight:950; font-size:16px; letter-spacing:.2px; }
+    .cm-hub-sub{ font-size:12px; opacity:.9; }
+    .cm-hub-grid{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; }
+    .cm-hub-item{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:10px; padding:14px 10px;
+      border-radius:16px; border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.03);
+      color:inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cm-hub-item:active{ transform:scale(.98); }
+    .cm-hub-ico{
+      width:46px; height:46px; border-radius:16px;
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(255,255,255,.06);
+      font-size:22px; font-weight:900;
+    }
+    .cm-hub-label{ font-size:13px; font-weight:850; text-align:center; line-height:1.15; }
+
+    .cm-subhead{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:2px 6px 10px; }
+    .cm-subback{
+      height:34px; padding:0 12px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      color:inherit; font-weight:850;
+      -webkit-tap-highlight-color: transparent;
+    }
 /* ============================
        VIP Home: Hero + Đang nghe + Tiến độ
        ============================ */
@@ -3426,6 +3463,12 @@
       font-size:11px; font-weight:900;
     }
     .pf-badge .dot{width:8px;height:8px;border-radius:99px;background:rgba(0,212,255,.9); box-shadow:0 0 0 3px rgba(0,212,255,.12);}
+    .pf-join{margin-top:8px;font-size:11px;color:rgba(232,236,255,.86);display:flex;gap:8px;flex-wrap:wrap}
+    .pf-join b{font-weight:950;color:rgba(255,209,64,.98)}
+    .pf-core-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .pf-core-metrics .m{border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:14px;padding:10px 8px;text-align:center}
+    .pf-core-metrics .m .k{font-size:10px;color:var(--muted);font-weight:900}
+    .pf-core-metrics .m .v{margin-top:4px;font-size:15px;font-weight:950}
     .pf-actions{display:flex; gap:10px; margin-top:12px;}
     .pf-actions .btn{
       flex:1;
@@ -7215,39 +7258,38 @@ function goToSearchWithGenreFromMenu(genreLabel){
 
         renderTabSearchResults();
       
-      } else if (tab === "community"){
-        showRouteHeader({ title: "Cộng đồng", sub: "Bảng tin • Thảo luận • Chat • Thế lực • Mua bán", chips: ["Community"] });
-        tabPageContent.innerHTML = `
-          <div class="community-tabs" id="cmTabs">
-            <button class="community-tab" type="button" data-cview="feed">📰 Bảng tin</button>
-            <button class="community-tab" type="button" data-cview="topics">🧵 Thảo luận</button>
-            <button class="community-tab" type="button" data-cview="chat">💬 Chat</button>
-            <button class="community-tab" type="button" data-cview="factions">🏯 Thế lực</button>
-            <button class="community-tab" type="button" data-cview="market">🛒 Mua bán</button>
-            <span class="community-meta"><span class="dot"></span> Online: <b id="cmOnline">${esc(String(realtimeOnlineCount || 0))}</b></span>
-          </div>
+       } else if (tab === "community"){
+        // Community hub + subpages (chat / bang hội / mua bán ký gửi)
+        communityCleanup();
 
-          <div id="cmAuthHint"></div>
+        const hash = location.hash || "#/community";
+        const rest = hash.replace(/^#\/community\/?/, "");
+        const sub = (rest.split("/")[0] || "").trim();
+        const view = sub || "hub";
 
-          <div class="community-panel" data-cpanel="feed">
-            <div class="cm-feed-head">
-              <button class="cm-primary" id="cmNewPostBtn" type="button">✍️ Đăng bài</button>
-              <div class="cm-feed-sub muted">Bài mới nhất của cộng đồng</div>
+        const openExternal = (url) => {
+          if (!url){
+            toast("Chưa cấu hình liên kết.");
+            return;
+          }
+          try { window.open(url, "_blank"); }
+          catch(e){ location.href = url; }
+        };
+
+        // TODO: Thay link của bạn ở đây
+        const FANPAGE_URL = "https://facebook.com/";
+        const GROUP_URL   = "https://facebook.com/groups/";
+        const YOUTUBE_URL = "https://youtube.com/";
+
+        if (view === "chat"){
+          showRouteHeader({ title: "Cộng đồng", sub: "Chat box online", chips: ["Chat"] });
+          tabPageContent.innerHTML = `
+            <div class="cm-subhead">
+              <button class="cm-subback" id="cmBackHub" type="button">← Cộng đồng</button>
+              <span class="community-meta"><span class="dot"></span> Online: <b id="cmOnline">${esc(String(realtimeOnlineCount || 0))}</b></span>
             </div>
-            <div class="cm-feed-list" id="cmFeedList"></div>
-            <div class="cm-footnote muted">Hiển thị tối đa 80 bài gần nhất.</div>
-          </div>
-
-          <div class="community-panel hidden" data-cpanel="topics">
-            <div class="cm-feed-head">
-              <button class="cm-primary" id="cmNewTopicBtn" type="button">🧵 Tạo chủ đề</button>
-              <div class="cm-feed-sub muted">Hỏi đáp • Review • Spoil • Góp ý</div>
-            </div>
-            <div class="cm-topic-list" id="cmTopicList"></div>
-            <div class="cm-footnote muted">Hiển thị tối đa 80 chủ đề gần nhất.</div>
-          </div>
-
-          <div class="community-panel hidden" data-cpanel="chat">
+            <div id="cmAuthHint"></div>
+            <div class="community-panel" data-cpanel="chat">
             <div class="cm-chat">
               <div class="cm-chat-list" id="cmChatList" aria-label="Danh sách chat"></div>
               <div class="cm-chat-inputbar">
@@ -7258,11 +7300,26 @@ function goToSearchWithGenreFromMenu(genreLabel){
             </div>
           </div>
 
-          <div class="community-panel hidden" data-cpanel="factions">
+          
+          `;
+          $("#cmBackHub")?.addEventListener("click", () => { location.hash = "#/community"; });
+          startCommunityChat();
+          return;
+        }
+
+        if (view === "guild" || view === "banghoi" || view === "factions"){
+          showRouteHeader({ title: "Bang hội", sub: "Tham gia • Tạo mới • Quản lý", chips: ["Bang hội"] });
+          tabPageContent.innerHTML = `
+            <div class="cm-subhead">
+              <button class="cm-subback" id="cmBackHub" type="button">← Cộng đồng</button>
+              <span class="community-meta"><span class="dot"></span> Online: <b>${esc(String(realtimeOnlineCount || 0))}</b></span>
+            </div>
+            <div id="cmAuthHint"></div>
+            <div class="community-panel" data-cpanel="factions">
             <div class="cm-card">
               <div class="cm-card-head">
                 <div>
-                  <div class="cm-card-title">Thế lực của bạn</div>
+                  <div class="cm-card-title">Bang hội của bạn</div>
                   <div class="cm-card-sub" id="cmMyFactionSub">Chưa tham gia</div>
                 </div>
                 <div class="cm-card-actions">
@@ -7302,11 +7359,26 @@ function goToSearchWithGenreFromMenu(genreLabel){
             </div>
           </div>
 
-          <div class="community-panel hidden" data-cpanel="market">
+          
+          `;
+          $("#cmBackHub")?.addEventListener("click", () => { location.hash = "#/community"; });
+          startCommunityFactions();
+          return;
+        }
+
+        if (view === "market" || view === "muaban" || view === "consign"){
+          showRouteHeader({ title: "Mua bán ký gửi", sub: "Đăng bài • Liên hệ • Trao đổi", chips: ["Mua bán"] });
+          tabPageContent.innerHTML = `
+            <div class="cm-subhead">
+              <button class="cm-subback" id="cmBackHub" type="button">← Cộng đồng</button>
+              <span class="community-meta"><span class="dot"></span> Online: <b>${esc(String(realtimeOnlineCount || 0))}</b></span>
+            </div>
+            <div id="cmAuthHint"></div>
+            <div class="community-panel" data-cpanel="market">
             <div class="cm-card">
               <div class="cm-card-head">
                 <div>
-                  <div class="cm-card-title">Đăng bài mua bán</div>
+                  <div class="cm-card-title">Đăng bài mua bán ký gửi</div>
                   <div class="cm-card-sub">Đăng bài trao đổi (không có thanh toán trong web)</div>
                 </div>
               </div>
@@ -7326,7 +7398,7 @@ function goToSearchWithGenreFromMenu(genreLabel){
             <div class="cm-card" style="margin-top:10px">
               <div class="cm-card-head">
                 <div>
-                  <div class="cm-card-title">Bảng mua bán</div>
+                  <div class="cm-card-title">Bảng mua bán ký gửi</div>
                   <div class="cm-card-sub">Bài đăng mới nhất</div>
                 </div>
               </div>
@@ -7334,85 +7406,74 @@ function goToSearchWithGenreFromMenu(genreLabel){
             </div>
           </div>
 
-          <!-- Post composer -->
-          <div class="cm-overlay hidden" id="cmPostOverlay" role="dialog" aria-modal="true">
-            <div class="cm-sheet">
-              <div class="cm-sheet-head">
-                <div class="cm-sheet-title">Đăng bài</div>
-                <button class="cm-x" id="cmClosePostOverlay" type="button">✕</button>
-              </div>
-              <textarea id="cmPostText" maxlength="800" placeholder="Bạn đang nghĩ gì? (tối đa 800 ký tự)"></textarea>
-              <input id="cmPostStoryId" type="text" maxlength="60" placeholder="Gắn truyện (ID) - tuỳ chọn, ví dụ: s1">
-              <div class="cm-form-actions">
-                <button class="tab-page-btn" id="cmCancelPostBtn" type="button">Hủy</button>
-                <button class="tab-page-btn primary" id="cmSubmitPostBtn" type="button">Đăng</button>
-              </div>
-              <div class="muted" style="font-size:12px;margin-top:6px">Mẹo: nhập đúng ID truyện để hiện nút “Mở truyện”.</div>
-            </div>
-          </div>
+          
+          `;
+          $("#cmBackHub")?.addEventListener("click", () => { location.hash = "#/community"; });
+          startCommunityMarket();
+          return;
+        }
 
-          <!-- Comments sheet -->
-          <div class="cm-overlay hidden" id="cmCommentOverlay" role="dialog" aria-modal="true">
-            <div class="cm-sheet">
-              <div class="cm-sheet-head">
-                <div class="cm-sheet-title" id="cmCommentTitle">Bình luận</div>
-                <button class="cm-x" id="cmCloseCommentOverlay" type="button">✕</button>
+        // HUB
+        showRouteHeader({ title: "Cộng đồng", sub: "Fanpage • Group • Chat box", chips: ["Community"] });
+        tabPageContent.innerHTML = `
+          <div class="cm-hub">
+            <div class="cm-hub-section">
+              <div class="cm-hub-head">
+                <div class="cm-hub-title">Cộng đồng</div>
+                <div class="cm-hub-sub muted">Online: <b>${esc(String(realtimeOnlineCount || 0))}</b></div>
               </div>
-              <div class="cm-sheet-body">
-                <div class="cm-comment-list" id="cmCommentList"></div>
-                <div class="cm-chat-inputbar" style="margin-top:10px">
-                  <input id="cmCommentInput" type="text" maxlength="300" placeholder="Viết bình luận..." autocomplete="off">
-                  <button class="cm-send" id="cmCommentSend" type="button">Gửi</button>
-                </div>
-                <div class="cm-footnote muted">Hiển thị 80 bình luận gần nhất.</div>
+              <div class="cm-hub-grid">
+                <button class="cm-hub-item" type="button" data-act="chat">
+                  <div class="cm-hub-ico">💬</div>
+                  <div class="cm-hub-label">Chat box web</div>
+                </button>
+                <button class="cm-hub-item" type="button" data-act="fanpage">
+                  <div class="cm-hub-ico">f</div>
+                  <div class="cm-hub-label">Fanpage</div>
+                </button>
+                <button class="cm-hub-item" type="button" data-act="group">
+                  <div class="cm-hub-ico">👥</div>
+                  <div class="cm-hub-label">Group</div>
+                </button>
               </div>
             </div>
-          </div>
 
-          <!-- Topic composer -->
-          <div class="cm-overlay hidden" id="cmTopicOverlay" role="dialog" aria-modal="true">
-            <div class="cm-sheet">
-              <div class="cm-sheet-head">
-                <div class="cm-sheet-title">Tạo chủ đề</div>
-                <button class="cm-x" id="cmCloseTopicOverlay" type="button">✕</button>
+            <div class="cm-hub-section" style="margin-top:16px">
+              <div class="cm-hub-head">
+                <div class="cm-hub-title">Tính năng khác</div>
+                <div class="cm-hub-sub muted">Chọn để mở</div>
               </div>
-              <input id="cmTopicTitle" type="text" maxlength="80" placeholder="Tiêu đề (tối đa 80 ký tự)">
-              <input id="cmTopicTag" type="text" maxlength="24" placeholder="Tag (vd: Tiên hiệp / Review / Spoil)">
-              <textarea id="cmTopicText" maxlength="1200" placeholder="Nội dung (tối đa 1200 ký tự)"></textarea>
-              <div class="cm-form-actions">
-                <button class="tab-page-btn" id="cmCancelTopicBtn" type="button">Hủy</button>
-                <button class="tab-page-btn primary" id="cmSubmitTopicBtn" type="button">Tạo</button>
+              <div class="cm-hub-grid">
+                <button class="cm-hub-item" type="button" data-act="guild">
+                  <div class="cm-hub-ico">🏯</div>
+                  <div class="cm-hub-label">Bang hội</div>
+                </button>
+                <button class="cm-hub-item" type="button" data-act="market">
+                  <div class="cm-hub-ico">🛒</div>
+                  <div class="cm-hub-label">Mua bán ký gửi</div>
+                </button>
+                <button class="cm-hub-item" type="button" data-act="youtube">
+                  <div class="cm-hub-ico">▶</div>
+                  <div class="cm-hub-label">Kênh YouTube</div>
+                </button>
               </div>
             </div>
-          </div>
-
-          <!-- Thread sheet -->
-          <div class="cm-overlay hidden" id="cmThreadOverlay" role="dialog" aria-modal="true">
-            <div class="cm-sheet">
-              <div class="cm-sheet-head">
-                <div class="cm-sheet-title" id="cmThreadTitle">Chủ đề</div>
-                <button class="cm-x" id="cmCloseThreadOverlay" type="button">✕</button>
-              </div>
-              <div class="cm-sheet-body">
-                <div class="cm-thread-meta" id="cmThreadMeta"></div>
-                <div class="cm-comment-list" id="cmThreadList"></div>
-                <div class="cm-chat-inputbar" style="margin-top:10px">
-                  <input id="cmThreadInput" type="text" maxlength="300" placeholder="Trả lời..." autocomplete="off">
-                  <button class="cm-send" id="cmThreadSend" type="button">Gửi</button>
-                </div>
-                <div class="cm-footnote muted">Hiển thị 120 phản hồi gần nhất.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="tab-page-actions">
-            <button class="tab-page-btn" type="button" id="tabCommunityOpenNotify">Mở thông báo</button>
-            <button class="tab-page-btn" type="button" id="tabCommunityBackHome">Về trang chủ</button>
           </div>
         `;
 
-        initCommunityTab();
-            } else if (tab === "profile"){
+        tabPageContent.querySelectorAll(".cm-hub-item").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const act = btn.getAttribute("data-act") || "";
+            if (act === "chat")   return (location.hash = "#/community/chat");
+            if (act === "guild")  return (location.hash = "#/community/guild");
+            if (act === "market") return (location.hash = "#/community/market");
+            if (act === "fanpage") return openExternal(FANPAGE_URL);
+            if (act === "group")   return openExternal(GROUP_URL);
+            if (act === "youtube") return openExternal(YOUTUBE_URL);
+          });
+        });
+
+      } else if (tab === "profile"){
         const vip = getVipSummary();
         const prof = (userState && userState.profile) ? userState.profile : {};
         const displayName = (prof && prof.name) ? prof.name : (currentUser?.displayName || "Khách");
@@ -7439,6 +7500,12 @@ function goToSearchWithGenreFromMenu(genreLabel){
         const rate = (userState?.settings && typeof userState.settings === "object" && userState.settings.ttsRate)
           ? Number(userState.settings.ttsRate || 1)
           : Number(safeGetLS("tts_rate", "1") || 1);
+
+        const joinedIso = __touchJoinedAt();
+        const joinedText = __formatDMY(joinedIso);
+        const totalReadSeconds = Number(safeGetLS(__lsReadSecondsKey(), "0") || 0);
+        const minutesRead = Math.max(0, Math.floor(totalReadSeconds / 60));
+        const accountTypeLabel = currentUser ? "Google" : "Khách";
 
         function buildReadRows(){
           const rows = readRecentIds.map(sid => {
@@ -7511,6 +7578,7 @@ function goToSearchWithGenreFromMenu(genreLabel){
                     <span class="pf-badge"><span class="dot"></span><span>${esc(vip.label || "VIP Thường")}</span></span>
                     <span class="pf-badge"><span class="dot" style="background:rgba(255,209,64,.95);box-shadow:0 0 0 3px rgba(255,209,64,.14)"></span><span>${currentUser ? "Đã đăng nhập" : "Khách"}</span></span>
                   </div>
+                  <div class="pf-join">Ngày tham gia: <b>${esc(joinedText)}</b> • Tài khoản: <b>${accountTypeLabel}</b></div>
                 </div>
               </div>
 
@@ -7519,6 +7587,12 @@ function goToSearchWithGenreFromMenu(genreLabel){
                 ${currentUser
                   ? `<button class="btn" type="button" id="pfLogoutBtn">Đăng xuất</button>`
                   : `<button class="btn primary" type="button" id="pfLoginBtn">Đăng nhập Google</button>`}
+              </div>
+
+              <div class="pf-core-metrics">
+                <div class="m"><div class="k">Chương đã đọc</div><div class="v">${readChSum}</div></div>
+                <div class="m"><div class="k">Phút đã đọc</div><div class="v">${minutesRead}</div></div>
+                <div class="m"><div class="k">Truyện đã đọc</div><div class="v">${readStoriesCount}</div></div>
               </div>
 
               <div class="pf-stats">
@@ -8153,8 +8227,53 @@ function getBrowseStories(type){
 
 
 
+    // Reading time tracking (minutes read)
+    let __readSessionStart = 0;
+    let __lastHashForReadStats = location.hash || "#/home";
+    function __getStatsPrefix(){
+      try{ return currentUser ? ("u_" + currentUser.uid) : "guest"; }catch(e){ return "guest"; }
+    }
+    function __lsReadSecondsKey(){ return "read_seconds_" + __getStatsPrefix(); }
+    function __touchJoinedAt(){
+      const key = currentUser ? ("joined_at_" + currentUser.uid) : "guest_joined_at";
+      let v = safeGetLS(key, "");
+      if (!v){
+        v = new Date().toISOString();
+        safeSetLS(key, v);
+      }
+      return v;
+    }
+    function __formatDMY(iso){
+      try{
+        const d = new Date(iso);
+        if (isNaN(d.getTime())) return "—";
+        const dd = String(d.getDate()).padStart(2,'0');
+        const mm = String(d.getMonth()+1).padStart(2,'0');
+        const yy = d.getFullYear();
+        return dd + "/" + mm + "/" + yy;
+      }catch(e){ return "—"; }
+    }
+    function __trackReadTime(prevHash, nextHash){
+      const wasReader = String(prevHash||"").startsWith("#/read/");
+      const isReader = String(nextHash||"").startsWith("#/read/");
+      if (wasReader && !isReader){
+        if (__readSessionStart){
+          const delta = Math.max(0, Math.floor((Date.now() - __readSessionStart)/1000));
+          __readSessionStart = 0;
+          const key = __lsReadSecondsKey();
+          const cur = Number(safeGetLS(key, "0")||0);
+          safeSetLS(key, String(cur + delta));
+        }
+      }
+      if (!wasReader && isReader){
+        if (!__readSessionStart) __readSessionStart = Date.now();
+      }
+    }
+
     function renderRoute(){
       const hash = location.hash || "#/home";
+      try{ __trackReadTime(__lastHashForReadStats, hash); }catch(_){ }
+      __lastHashForReadStats = hash;
       updateHomeHeaderVisibilityByHash(hash);
       // Toggle reader mode UI
       const isReader = hash.startsWith("#/read/");
