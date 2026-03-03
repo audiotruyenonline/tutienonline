@@ -3517,6 +3517,17 @@
     }
     .pf-sec{display:none;}
     .pf-sec.active{display:block;}
+
+    .pf-tabcard{
+      margin-top:12px;
+      border:1px solid var(--line);
+      background: rgba(15,17,27,.55);
+      border-radius:18px;
+      padding:10px;
+      box-shadow: 0 14px 32px rgba(0,0,0,.18);
+    }
+    .pf-tabcard .pf-tabs{margin:0 0 10px;}
+
     .pf-section-title{display:flex; align-items:center; justify-content:space-between; margin:8px 2px 8px;}
     .pf-section-title .t{font-weight:950;}
     .pf-section-title .s{font-size:11px; color:var(--muted); font-weight:800;}
@@ -3633,6 +3644,85 @@
       .pf-range{width:140px;}
     }
 
+
+    /* ============================
+       HOME - Community Chat box
+       ============================ */
+    .home-chatbox{
+      margin-top:10px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(19,23,39,.86), rgba(15,17,27,.76));
+      border-radius:var(--radius-lg);
+      overflow:hidden;
+      box-shadow:0 18px 40px rgba(0,0,0,.28);
+    }
+    .home-chat-list{
+      max-height:260px;
+      overflow:auto;
+      padding:10px 12px;
+      scroll-behavior:smooth;
+      -webkit-overflow-scrolling:touch;
+    }
+    .hc-line{
+      padding:8px 10px;
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      margin-bottom:8px;
+    }
+    .hc-meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .hc-name{ color:#e9edff; font-weight:700; }
+    .hc-time{ opacity:.9; }
+    .hc-text{
+      font-size:14px;
+      line-height:1.35;
+      color:var(--text);
+      word-break:break-word;
+      white-space:pre-wrap;
+    }
+    .home-chat-compose{
+      display:flex;
+      gap:10px;
+      padding:10px 12px;
+      border-top:1px solid rgba(255,255,255,.07);
+      background:rgba(0,0,0,.12);
+    }
+    .home-chat-input{
+      flex:1;
+      height:42px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:0 14px;
+      outline:none;
+    }
+    .home-chat-input::placeholder{ color:rgba(154,163,199,.85); }
+    .home-chat-input:focus{
+      border-color:rgba(0,212,255,.45);
+      box-shadow:0 0 0 4px rgba(0,212,255,.08);
+    }
+    .home-chat-send{
+      height:42px;
+      padding:0 16px;
+      border-radius:999px;
+      border:1px solid rgba(242,190,45,.35);
+      background:linear-gradient(180deg, rgba(242,190,45,.92), rgba(200,138,7,.88));
+      color:#1b1607;
+      font-weight:900;
+      cursor:pointer;
+      user-select:none;
+    }
+    .home-chat-send:active{ transform:translateY(1px); }
+    .home-chat-note{ padding:0 12px 10px; font-size:12px; }
 </style>
 </head>
 <body>
@@ -3818,32 +3908,27 @@
         <div class="hscroll-cards" id="randomGrid" aria-label="Truyện ngẫu nhiên (kéo ngang)"></div>
       </section>
 
-      <section class="section" style="margin-top:16px">
-        <div class="section-head">
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <div class="section-title" style="margin:0">
-              <div class="bubble">✨</div>
-              <div>Mới cập nhật</div>
-            </div>
-            <div class="live-pill"><span class="live-dot"></span> LIVE</div>
-          </div>
-          <button class="btn-link" id="viewAllUpdated">Xem tất cả →</button>
-        </div>
-        <div class="section-desc">Danh sách truyện vừa cập nhật gần đây, hiển thị dạng danh sách để đọc.</div>
-        <div class="updated-list updated-scroll" id="updatedList" aria-label="Danh sách mới cập nhật (kéo xuống)"></div>
-      </section>
-
-      <section class="section" style="margin-top:16px">
+      
+      <section class="section" style="margin-top:16px" id="homeChatSection">
         <div class="section-head">
           <div class="section-title" style="margin:0">
-            <div class="bubble">✅</div>
-            <div>Truyện hoàn thành</div>
+            <div class="bubble">💬</div>
+            <div>Chat cộng đồng</div>
           </div>
-          <button class="btn-link" id="viewAllCompleted">Xem tất cả →</button>
+          <button class="btn-link" id="homeChatOpenCommunity">Mở chat box →</button>
         </div>
-        <div class="section-desc">Những bộ truyện đã hoàn thành gần đây — kéo xuống để xem thêm.</div>
-        <div class="updated-list completed-scroll" id="completedList" aria-label="Danh sách truyện hoàn thành (kéo xuống)"></div>
+        <div class="section-desc">Chat nhanh với mọi người ngay tại trang chủ.</div>
+
+        <div class="home-chatbox" aria-label="Chat cộng đồng">
+          <div class="home-chat-list" id="homeChatList" aria-label="Danh sách tin nhắn"></div>
+          <div class="home-chat-compose">
+            <input class="home-chat-input" id="homeChatInput" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Nhập tin nhắn..."/>
+            <button class="home-chat-send" id="homeChatSend" type="button">Gửi</button>
+          </div>
+          <div class="home-chat-note muted" id="homeChatNote">Đăng nhập để gửi tin nhắn (bạn vẫn xem được chat).</div>
+        </div>
       </section>
+
 
       <section class="section" style="margin-top:16px" id="topViewsSection">
         <div class="section-head">
@@ -4574,6 +4659,12 @@ function normalizeUserState(raw){
     const updatedList = $("#updatedList");
 
         const completedList = $("#completedList");
+    const homeChatList = $("#homeChatList");
+    const homeChatInput = $("#homeChatInput");
+    const homeChatSend = $("#homeChatSend");
+    const homeChatOpenCommunity = $("#homeChatOpenCommunity");
+    const homeChatNote = $("#homeChatNote");
+
     const browsePage = $("#browsePage");
     const rankPage = $("#rankPage");
     const rankMetrics = $("#rankMetrics");
@@ -5591,8 +5682,10 @@ function getReadingStories(){
       if (isHome){
         homePage?.classList.remove("hidden");
         hideRouteHeader();
+        try{ startHomeChat(); }catch(_){}
       } else {
         storyPage?.classList.remove("hidden");
+        try{ stopHomeChat(); }catch(_){}
       }
     }
 
@@ -6795,7 +6888,200 @@ function renderRandomGrid(){
       return (x === "week") ? "topweek" : (x === "month") ? "topmonth" : "topday";
     }
 
-    function renderTopViewsHome(){
+    
+    /* ============================
+       HOME - Community Chat box
+       ============================ */
+    let __homeChatUnsub = null;
+    let __homeChatStarted = false;
+    let __homeChatBound = false;
+    let __homeChatMsgRef = null;
+    let __homeChatSeen = new Set();
+
+    function stopHomeChat(){
+      try{ if (__homeChatUnsub) __homeChatUnsub(); }catch(_){}
+      __homeChatUnsub = null;
+      __homeChatStarted = false;
+      __homeChatSeen = new Set();
+      __homeChatMsgRef = null;
+    }
+
+    function appendHomeChatLine(msg){
+      if (!homeChatList) return;
+      const name = String(msg?.name || "Khách").slice(0, 40);
+      const body = String(msg?.text || "").trim().slice(0, 500);
+      if (!body) return;
+      const ts = Number(msg?.ts || Date.now());
+      let timeStr = "";
+      try{
+        const d = new Date(ts);
+        timeStr = d.toLocaleTimeString("vi-VN", { hour:"2-digit", minute:"2-digit" });
+      }catch(_){ timeStr = ""; }
+
+      const div = document.createElement("div");
+      div.className = "hc-line";
+      div.innerHTML = `
+        <div class="hc-meta">
+          <span class="hc-name">${esc(name)}</span>
+          <span class="hc-time">${esc(timeStr)}</span>
+        </div>
+        <div class="hc-text">${esc(body)}</div>
+      `;
+      homeChatList.appendChild(div);
+
+      // giữ giới hạn để nhẹ máy
+      while (homeChatList.children.length > 80){
+        homeChatList.removeChild(homeChatList.firstChild);
+      }
+      try{ homeChatList.scrollTop = homeChatList.scrollHeight; }catch(_){}
+    }
+
+    function __homeChatLocalKey(){ return "home_chat_local_v1"; }
+    function __homeChatLoadLocal(){
+      try{
+        const raw = safeGetLS(__homeChatLocalKey(), "[]");
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : [];
+      }catch(_){ return []; }
+    }
+    function __homeChatSaveLocal(arr){
+      try{ safeSetLS(__homeChatLocalKey(), JSON.stringify((arr||[]).slice(-50))); }catch(_){}
+    }
+    function renderHomeChatFromLocal(){
+      if (!homeChatList) return;
+      const arr = __homeChatLoadLocal();
+      homeChatList.innerHTML = "";
+      if (!arr.length){
+        homeChatList.innerHTML = `<div class="panel muted">Chat offline (local). Đăng nhập/online để chat realtime.</div>`;
+        return;
+      }
+      arr.slice(-30).forEach(appendHomeChatLine);
+    }
+
+    function sendHomeChat(){
+      const raw = (homeChatInput && typeof homeChatInput.value === "string") ? homeChatInput.value : "";
+      const text = raw.trim().slice(0, 300);
+      if (!text) return;
+
+      // Nếu chưa đăng nhập hoặc Firebase không sẵn sàng -> lưu local (không spam DB)
+      if (!currentUser || !FIREBASE_OK || !__homeChatMsgRef){
+        const arr = __homeChatLoadLocal();
+        arr.push({ name: "Bạn", text, ts: Date.now() });
+        __homeChatSaveLocal(arr);
+        if (homeChatInput) homeChatInput.value = "";
+        renderHomeChatFromLocal();
+        toast("Chỉ lưu local (hãy đăng nhập để chat online)");
+        return;
+      }
+
+      const name = currentUser.displayName || "Người dùng";
+      const payload = {
+        uid: currentUser.uid,
+        name: String(name).slice(0, 40),
+        text,
+        ts: Date.now()
+      };
+      try{
+        push(__homeChatMsgRef, payload);
+        if (homeChatInput) homeChatInput.value = "";
+      }catch(e){
+        console.warn("send chat fail", e);
+        const arr = __homeChatLoadLocal();
+        arr.push({ name: "Bạn", text, ts: Date.now() });
+        __homeChatSaveLocal(arr);
+        if (homeChatInput) homeChatInput.value = "";
+        renderHomeChatFromLocal();
+        toast("Gửi thất bại, đã lưu local");
+      }
+    }
+
+    function startHomeChat(){
+      if (!homeChatList) return;
+
+      // Nếu đã chạy online rồi thì chỉ cập nhật ghi chú và thoát
+      if (__homeChatStarted && __homeChatMsgRef && __homeChatUnsub){
+        if (homeChatNote){
+          homeChatNote.textContent = currentUser
+            ? "Bạn đang đăng nhập — chat realtime."
+            : "Đăng nhập để gửi tin nhắn (bạn vẫn xem được chat).";
+        }
+        return;
+      }
+
+      __homeChatStarted = true;
+      __homeChatSeen = new Set();
+
+      // bind UI events 1 lần
+      if (!__homeChatBound){
+        __homeChatBound = true;
+        homeChatSend?.addEventListener("click", sendHomeChat);
+        homeChatInput?.addEventListener("keydown", (e) => {
+          if (e.key === "Enter"){
+            e.preventDefault();
+            sendHomeChat();
+          }
+        });
+        homeChatOpenCommunity?.addEventListener("click", () => {
+          location.hash = "#/community/chat";
+        });
+      }
+
+      if (homeChatNote){
+        homeChatNote.textContent = currentUser
+          ? "Bạn đang đăng nhập — chat realtime."
+          : "Đăng nhập để gửi tin nhắn (bạn vẫn xem được chat).";
+      }
+
+      // Firebase ok? (cho phép xem chat dù chưa đăng nhập)
+      if (!ENABLE_FIREBASE || !FIREBASE_OK || !getDatabase || !ref || !query || !limitToLast || !onChildAdded || !push){
+        renderHomeChatFromLocal();
+        return;
+      }
+
+      try{
+        const dbObj = getDatabase();
+        __homeChatMsgRef = ref(dbObj, "community/chat/global/messages");
+
+        // Không orderByChild(ts) để vẫn hiện được các tin nhắn cũ (kể cả thiếu ts).
+        const q = query(__homeChatMsgRef, limitToLast(60));
+        homeChatList.innerHTML = "";
+        __homeChatSeen = new Set();
+
+        __homeChatUnsub = onChildAdded(q, (snap) => {
+          try{
+            const key = snap?.key ? String(snap.key) : "";
+            if (key && __homeChatSeen.has(key)) return;
+            if (key) __homeChatSeen.add(key);
+            const v = snap?.val ? snap.val() : null;
+            if (!v || typeof v !== "object") return;
+
+            // nếu đang có placeholder "Chưa có tin nhắn..." thì xoá trước
+            const first = homeChatList.firstElementChild;
+            if (first && first.classList && first.classList.contains("panel")){
+              homeChatList.innerHTML = "";
+            }
+            appendHomeChatLine(v);
+          }catch(_){}
+        }, (err) => {
+          console.warn("home chat listen error", err);
+          // Nếu rules chặn read -> báo rõ để bạn sửa rules
+          homeChatList.innerHTML = `<div class="panel muted">Không thể tải chat online (có thể do Rules Firebase đang chặn đọc). Hãy cho phép read tại <b>community/chat/global/messages</b>.</div>`;
+        });
+
+        setTimeout(() => {
+          if (!homeChatList) return;
+          if (homeChatList.children.length === 0){
+            homeChatList.innerHTML = `<div class="panel muted">Chưa có tin nhắn. Hãy là người đầu tiên!</div>`;
+          }
+        }, 900);
+
+      }catch(e){
+        console.warn("home chat init error", e);
+        renderHomeChatFromLocal();
+      }
+    }
+
+function renderTopViewsHome(){
       const grid = $("#topViewsGrid");
       const tabs = $("#topViewsTabs");
       const btnAll = $("#viewAllTopViews");
@@ -7491,6 +7777,11 @@ function goToSearchWithGenreFromMenu(genreLabel){
         const downloadCount = getDownloadedStoryIds().length;
 
         const lastReading = (userState && userState.lastReading && typeof userState.lastReading === "object") ? userState.lastReading : {};
+
+        const readStoriesCount = Object.keys(lastReading || {}).length;
+        const readChSum = Object.keys(lastReading || {}).reduce((a,k)=>a + Math.max(0, Number(lastReading[k]||0)), 0);
+        const listenedCount = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent.length : 0;
+
         const readRecentIds = Array.isArray(userState?.historyIds) ? userState.historyIds.slice(0, 6) : [];
         const listenRecent = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent.slice(0, 6) : [];
 
@@ -7506,6 +7797,24 @@ function goToSearchWithGenreFromMenu(genreLabel){
         const totalReadSeconds = Number(safeGetLS(__lsReadSecondsKey(), "0") || 0);
         const minutesRead = Math.max(0, Math.floor(totalReadSeconds / 60));
         const accountTypeLabel = currentUser ? "Google" : "Khách";
+
+        // --- Gamified profile tabs (Tu Vi / Vip / PVP / Boss / Trang Bị) ---
+        const tuviPoints = Math.max(0, Number(readChSum||0) + Math.floor(minutesRead/5));
+        const tuviLevel = Math.max(1, Math.floor(tuviPoints / 500) + 1);
+        const tuviPrev = (tuviLevel - 1) * 500;
+        const tuviNext = tuviLevel * 500;
+        const tuviPct = Math.min(100, Math.floor(((tuviPoints - tuviPrev) / Math.max(1,(tuviNext - tuviPrev))) * 100));
+
+        const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
+        const pvpLoss = Number(safeGetLS("pvp_loss", "0") || 0);
+        const pvpPoints = Number(safeGetLS("pvp_points", "0") || 0);
+
+        const bossKills = Number(safeGetLS("boss_kills", "0") || 0);
+        const bossPoints = Number(safeGetLS("boss_points", "0") || 0);
+
+        const gearRaw = safeGetLS("gear_slots", "");
+        const gear = (()=>{ try{ const o = JSON.parse(gearRaw||"{}"); return (o && typeof o==="object") ? o : {}; }catch(_){ return {}; }})();
+
 
         function buildReadRows(){
           const rows = readRecentIds.map(sid => {
@@ -7551,10 +7860,7 @@ function goToSearchWithGenreFromMenu(genreLabel){
           return rows || `<div class="muted" style="padding:10px 2px">Chưa có truyện đang nghe.</div>`;
         }
 
-        const readStoriesCount = Object.keys(lastReading || {}).length;
-        const readChSum = Object.keys(lastReading || {}).reduce((a,k)=>a + Math.max(0, Number(lastReading[k]||0)), 0);
-        const listenedCount = Array.isArray(userState?.listeningRecent) ? userState.listeningRecent.length : 0;
-
+        
         const ach = [
           { key:"reader", title:"📖 Độc giả chăm chỉ", desc:"Đọc tích luỹ 200 chương.", cur: Math.min(readChSum, 200), max: 200 },
           { key:"follow", title:"⭐ Theo dõi nhiệt tình", desc:"Theo dõi 20 truyện.", cur: Math.min(followed, 20), max: 20 },
@@ -7594,101 +7900,168 @@ function goToSearchWithGenreFromMenu(genreLabel){
                 <div class="m"><div class="k">Phút đã đọc</div><div class="v">${minutesRead}</div></div>
                 <div class="m"><div class="k">Truyện đã đọc</div><div class="v">${readStoriesCount}</div></div>
               </div>
-
-              <div class="pf-stats">
-                <div class="pf-stat" data-pf-open="history"><div class="k">Lịch sử</div><div class="v">${history}</div></div>
-                <div class="pf-stat" data-pf-open="followed"><div class="k">Theo dõi</div><div class="v">${followed}</div></div>
-                <div class="pf-stat" data-pf-open="bookmark"><div class="k">Đánh dấu</div><div class="v">${bookmark}</div></div>
-                <div class="pf-stat" data-pf-open="download"><div class="k">Tải xuống</div><div class="v">${downloadCount}</div></div>
-              </div>
-            </div>
+                            </div>
 
             <div style="margin-top:10px; padding:0 2px; color:rgba(232,236,255,.92); font-weight:800; line-height:1.45">
               ${esc(bio)}
             </div>
 
+            <div class="pf-tabcard">
+
             <div class="pf-tabs" role="tablist" aria-label="Profile tabs">
-              <button class="pf-tab active" type="button" data-pf-tab="shelf">📚 Tủ sách</button>
-              <button class="pf-tab" type="button" data-pf-tab="activity">🕘 Hoạt động</button>
-              <button class="pf-tab" type="button" data-pf-tab="ach">🏅 Thành tích</button>
-              <button class="pf-tab" type="button" data-pf-tab="settings">⚙️ Cài đặt</button>
+
+              <button class="pf-tab active" type="button" data-pf-tab="tuvi">⚡ Tu Vi</button>
+              <button class="pf-tab" type="button" data-pf-tab="vip">👑 Vip</button>
+              <button class="pf-tab" type="button" data-pf-tab="pvp">⚔️ PVP</button>
+              <button class="pf-tab" type="button" data-pf-tab="boss">🐉 Boss</button>
+              <button class="pf-tab" type="button" data-pf-tab="gear">🛡️ Trang Bị</button>
+              <button class="pf-tab" type="button" data-pf-tab="settings">⚙️ Cài Đặt</button>
             </div>
 
-            <section class="pf-sec active" id="pfSec-shelf">
+                        <section class="pf-sec active" id="pfSec-tuvi">
               <div class="pf-section-title">
-                <div class="t">Đọc tiếp</div>
-                <div class="s">Gần đây</div>
+                <div class="t">Tu Vi</div>
+                <div class="s">Cấp ${tuviLevel}</div>
               </div>
-              <div class="pf-mini-list">${buildReadRows()}</div>
 
-              <div class="pf-section-title" style="margin-top:14px">
-                <div class="t">Nghe gần đây</div>
-                <div class="s">TTS</div>
+              <div class="pf-ach-grid">
+                <div class="pf-ach">
+                  <div class="h"><span>⚡ Cấp Tu Vi</span><span style="font-weight:950;opacity:.95">${tuviLevel}</span></div>
+                  <div class="p">Điểm: ${tuviPoints} • Mốc kế: ${tuviNext}</div>
+                  <div class="pf-bar"><i style="width:${tuviPct}%"></i></div>
+                </div>
+                <div class="pf-ach">
+                  <div class="h"><span>📖 Công lực đọc</span><span style="font-weight:950;opacity:.95">${readChSum}</span></div>
+                  <div class="p">${readStoriesCount} truyện • ${minutesRead} phút</div>
+                  <div class="pf-bar"><i style="width:${Math.min(100, Math.floor((readChSum/2000)*100))}%"></i></div>
+                </div>
               </div>
-              <div class="pf-mini-list">${buildListenRows()}</div>
 
-              <div class="tab-page-actions" style="margin-top:14px">
-                <button class="tab-page-btn" type="button" id="pfOpenBookshelfBtn">Mở Tủ truyện</button>
-                <button class="tab-page-btn" type="button" id="pfOpenCommunityBtn">Vào Cộng đồng</button>
+              <div class="rank-note" style="margin-top:12px">
+                Điểm tu vi = Chương đã đọc + ⌊Phút/5⌋. Bạn đọc/nghe càng nhiều, cấp càng tăng.
               </div>
             </section>
 
-            <section class="pf-sec" id="pfSec-activity">
+            <section class="pf-sec" id="pfSec-vip">
               <div class="pf-section-title">
-                <div class="t">Tóm tắt hoạt động</div>
-                <div class="s">${readStoriesCount} truyện đã đọc</div>
+                <div class="t">Vip</div>
+                <div class="s">${vip.active ? "Đang hoạt động" : (currentUser ? "Chưa kích hoạt" : "Khách")}</div>
               </div>
 
               <div class="pf-setting">
                 <div class="pf-setting-row">
                   <div>
-                    <div class="t">Đọc gần đây</div>
-                    <div class="s">${history ? "Từ lịch sử đọc" : "Chưa có"}</div>
+                    <div class="t">Gói</div>
+                    <div class="s">${esc(vip.detail || "")}</div>
                   </div>
-                  <div style="font-weight:950">${history}</div>
-                </div>
-                <div class="pf-setting-row">
-                  <div>
-                    <div class="t">Nghe gần đây</div>
-                    <div class="s">${listenedCount ? "Từ TTS" : "Chưa có"}</div>
-                  </div>
-                  <div style="font-weight:950">${listenedCount}</div>
-                </div>
-                <div class="pf-setting-row">
-                  <div>
-                    <div class="t">Theo dõi</div>
-                    <div class="s">Danh sách theo dõi</div>
-                  </div>
-                  <div style="font-weight:950">${followed}</div>
+                  <div style="font-weight:950">${esc(vip.label || "Thường")}</div>
                 </div>
               </div>
 
-              <div class="rank-note">Mẹo: hãy dùng “Theo dõi” để nhận thông báo khi truyện có cập nhật (khi bạn bật thông báo theo sự kiện).</div>
+              <div class="pf-ach-grid" style="margin-top:10px">
+                <div class="pf-ach">
+                  <div class="h"><span>🚀 Ưu tiên trải nghiệm</span><span style="font-weight:950;opacity:.9">VIP</span></div>
+                  <div class="p">Gợi ý thông minh • tải nhanh • ít quảng cáo (tuỳ cấu hình).</div>
+                  <div class="pf-bar"><i style="width:${vip.active ? 100 : 35}%"></i></div>
+                </div>
+                <div class="pf-ach">
+                  <div class="h"><span>🎁 Quyền lợi</span><span style="font-weight:950;opacity:.9">${vip.active ? "Mở" : "Khoá"}</span></div>
+                  <div class="p">Huy hiệu • màu sắc • ưu tiên hỗ trợ (tuỳ bạn bật).</div>
+                  <div class="pf-bar"><i style="width:${vip.active ? 100 : 20}%"></i></div>
+                </div>
+              </div>
+
+              <div class="rank-note" style="margin-top:12px">
+                Gợi ý: bạn có thể bán VIP theo tháng/năm hoặc tặng VIP khi người dùng hoạt động nhiều.
+              </div>
             </section>
 
-            <section class="pf-sec" id="pfSec-ach">
+            <section class="pf-sec" id="pfSec-pvp">
               <div class="pf-section-title">
-                <div class="t">Thành tích</div>
-                <div class="s">Tiến độ</div>
-              </div>
-              <div class="pf-ach-grid">
-                ${ach.map(a=>{
-                  const pct = a.max > 0 ? Math.round((a.cur / a.max) * 100) : 0;
-                  const done = a.cur >= a.max;
-                  return `
-                    <div class="pf-ach">
-                      <div class="h"><span>${esc(a.title)}</span><span style="font-weight:950;opacity:.9">${done ? "✓" : pct + "%"}</span></div>
-                      <div class="p">${esc(a.desc)} • ${a.cur}/${a.max}</div>
-                      <div class="pf-bar"><i style="width:${pct}%"></i></div>
-                    </div>
-                  `;
-                }).join("")}
+                <div class="t">PVP</div>
+                <div class="s">Sổ chiến tích</div>
               </div>
 
-              <div class="rank-note" style="margin-top:12px">Bạn đọc càng nhiều, profile càng “xịn”. Sau này có thể thêm huy hiệu VIP / Reviewer / Top bình luận.</div>
+              <div class="pf-setting">
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Điểm PVP</div>
+                    <div class="s">Lưu cục bộ (demo)</div>
+                  </div>
+                  <div style="font-weight:950">${pvpPoints}</div>
+                </div>
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Thắng / Thua</div>
+                    <div class="s">Tuỳ bạn kết nối sau</div>
+                  </div>
+                  <div style="font-weight:950">${pvpWins} / ${pvpLoss}</div>
+                </div>
+              </div>
+
+              <div class="rank-note" style="margin-top:12px">
+                Mẹo: sau này bạn có thể lấy dữ liệu PVP từ Firebase (theo tài khoản) để tạo bảng xếp hạng.
+              </div>
             </section>
 
-            <section class="pf-sec" id="pfSec-settings">
+            <section class="pf-sec" id="pfSec-boss">
+              <div class="pf-section-title">
+                <div class="t">Boss</div>
+                <div class="s">Thành tựu săn boss</div>
+              </div>
+
+              <div class="pf-setting">
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Boss đã hạ</div>
+                    <div class="s">Lưu cục bộ (demo)</div>
+                  </div>
+                  <div style="font-weight:950">${bossKills}</div>
+                </div>
+                <div class="pf-setting-row">
+                  <div>
+                    <div class="t">Điểm Boss</div>
+                    <div class="s">Tổng điểm tích luỹ</div>
+                  </div>
+                  <div style="font-weight:950">${bossPoints}</div>
+                </div>
+              </div>
+
+              <div class="rank-note" style="margin-top:12px">
+                Sau này có thể thêm “Nhiệm vụ ngày/tuần” + “Boss thế giới” để tăng tương tác.
+              </div>
+            </section>
+
+            <section class="pf-sec" id="pfSec-gear">
+              <div class="pf-section-title">
+                <div class="t">Trang Bị</div>
+                <div class="s">Kho đồ (demo)</div>
+              </div>
+
+              <div class="pf-setting">
+                <div class="pf-setting-row">
+                  <div><div class="t">Vũ khí</div><div class="s">Slot 1</div></div>
+                  <div style="font-weight:950">${esc(String(gear.weapon || "—"))}</div>
+                </div>
+                <div class="pf-setting-row">
+                  <div><div class="t">Giáp</div><div class="s">Slot 2</div></div>
+                  <div style="font-weight:950">${esc(String(gear.armor || "—"))}</div>
+                </div>
+                <div class="pf-setting-row">
+                  <div><div class="t">Nhẫn</div><div class="s">Slot 3</div></div>
+                  <div style="font-weight:950">${esc(String(gear.ring || "—"))}</div>
+                </div>
+                <div class="pf-setting-row">
+                  <div><div class="t">Pháp bảo</div><div class="s">Slot 4</div></div>
+                  <div style="font-weight:950">${esc(String(gear.artifact || "—"))}</div>
+                </div>
+              </div>
+
+              <div class="rank-note" style="margin-top:12px">
+                Bạn có thể cho phép người dùng nhận trang bị khi đọc/nghe đủ chương (loot), rồi lưu vào Firebase sau.
+              </div>
+            </section>
+<section class="pf-sec" id="pfSec-settings">
               <div class="pf-section-title">
                 <div class="t">Cài đặt nhanh</div>
                 <div class="s">Áp dụng ngay</div>
@@ -7734,6 +8107,8 @@ function goToSearchWithGenreFromMenu(genreLabel){
                 <button class="tab-page-btn primary" type="button" id="pfOpenReaderDemoBtn">Test đọc/nghe</button>
               </div>
             </section>
+
+            </div>
 
             <div class="pf-overlay hidden" id="pfEditOverlay" aria-hidden="true">
               <div class="pf-sheet">
@@ -8275,6 +8650,9 @@ function getBrowseStories(type){
       try{ __trackReadTime(__lastHashForReadStats, hash); }catch(_){ }
       __lastHashForReadStats = hash;
       updateHomeHeaderVisibilityByHash(hash);
+      const __isHomeHash = (hash === "#/home" || hash === "" || hash === "#");
+      if (!__isHomeHash){ try{ stopHomeChat(); }catch(_){ } }
+
       // Toggle reader mode UI
       const isReader = hash.startsWith("#/read/");
       if (!isReader){
@@ -10142,7 +10520,7 @@ function getBrowseStories(type){
       // ===== Profile tab actions (pro) =====
       const pfTabBtn = e.target.closest("[data-pf-tab]");
       if (pfTabBtn){
-        const t = pfTabBtn.getAttribute("data-pf-tab") || "shelf";
+        const t = pfTabBtn.getAttribute("data-pf-tab") || "tuvi";
         tabPageContent?.querySelectorAll(".pf-tab").forEach(b=>b.classList.toggle("active", b === pfTabBtn));
         tabPageContent?.querySelectorAll(".pf-sec").forEach(sec=>sec.classList.toggle("active", sec.id === ("pfSec-" + t)));
         return;
