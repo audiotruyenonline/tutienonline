@@ -890,6 +890,69 @@
       transition:.18s ease;
     }
     .toast.show{opacity:1; transform:translateY(0)}
+
+    /* ===== Game-like pop for PVP ===== */
+    .gamepop-backdrop{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.55);
+      opacity:0; pointer-events:none;
+      transition:.18s ease;
+      z-index:399;
+    }
+    .gamepop-backdrop.show{opacity:1; pointer-events:auto}
+    .gamepop{
+      position:fixed;
+      left:50%; top:50%;
+      transform:translate(-50%,-50%) scale(.92);
+      width:min(92vw, 380px);
+      border-radius:18px;
+      padding:14px;
+      background:rgba(14,18,31,.98);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+      opacity:0;
+      pointer-events:none;
+      transition:.18s ease;
+      z-index:400;
+    }
+    .gamepop.show{opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto}
+    .gamepop .gp-top{display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .gamepop .gp-title{display:flex; align-items:center; gap:10px; font-weight:1000; font-size:16px}
+    .gamepop .gp-ic{filter:drop-shadow(0 6px 18px rgba(0,0,0,.25))}
+    .gamepop .gp-x{
+      height:30px; width:30px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .gamepop .gp-sub{margin-top:6px; color:var(--muted); font-size:12px; white-space:pre-line}
+    .gamepop .gp-result{
+      margin-top:10px;
+      text-align:center;
+      font-weight:1100;
+      font-size:26px;
+      letter-spacing:1px;
+      min-height:34px;
+    }
+    .gamepop .gp-delta{margin-top:6px; text-align:center; font-weight:900; min-height:18px}
+    .gamepop .gp-stats{display:flex; gap:10px; margin-top:10px}
+    .gamepop .gp-stat{
+      flex:1;
+      border-radius:14px;
+      padding:10px 10px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .gamepop .gp-stat .k{font-size:11px; color:var(--muted); font-weight:800}
+    .gamepop .gp-stat .v{margin-top:4px; font-size:16px; font-weight:1000}
+    .gamepop .gp-actions{display:flex; justify-content:flex-end; margin-top:12px}
+    .gamepop.win .gp-result{color:#3cffb8; text-shadow:0 0 18px rgba(60,255,184,.25)}
+    .gamepop.lose .gp-result{color:#ff5c7a; text-shadow:0 0 18px rgba(255,92,122,.25)}
+    .pf-mini-btn.loading{opacity:.75; pointer-events:none}
+
     .muted{color:var(--muted)}
 
     /* ===== Tủ truyện page ===== */
@@ -3469,6 +3532,15 @@
     .pf-core-metrics .m{border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:14px;padding:10px 8px;text-align:center}
     .pf-core-metrics .m .k{font-size:10px;color:var(--muted);font-weight:900}
     .pf-core-metrics .m .v{margin-top:4px;font-size:15px;font-weight:950}
+    .pf-core-metrics.m4{grid-template-columns:repeat(2,1fr)}
+    .pf-edit-card{margin-top:14px;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:18px;padding:12px}
+    .pf-edit-grid{display:grid;grid-template-columns:92px 1fr;gap:12px;align-items:start}
+    @media (max-width:380px){.pf-edit-grid{grid-template-columns:84px 1fr}}
+    .pf-ava-pick{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;background:transparent;border:0;padding:0;color:inherit}
+    .pf-ava-pick .ava{width:72px;height:72px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;overflow:hidden;font-weight:950}
+    .pf-ava-pick .ava img{width:100%;height:100%;object-fit:cover}
+    .pf-ava-pick .hint{font-size:10px;color:var(--muted);text-align:center;line-height:1.25}
+
     .pf-actions{display:flex; gap:10px; margin-top:12px;}
     .pf-actions .btn{
       flex:1;
@@ -3570,7 +3642,11 @@
     .pf-ach .p{margin-top:6px; font-size:11px; color:var(--muted); font-weight:800; line-height:1.35;}
     .pf-bar{height:8px; border-radius:999px; background: rgba(255,255,255,.06); margin-top:10px; overflow:hidden;}
     .pf-bar > i{display:block; height:100%; width:0%; background: linear-gradient(90deg, rgba(0,212,255,.95), rgba(124,77,255,.95));}
-    .pf-setting{
+    
+    .pf-exp-row{display:flex; align-items:center; gap:10px; margin-top:10px;}
+    .pf-exp-row .pf-bar{flex:1; margin-top:0;}
+    .pf-exp-txt{font-size:11px; color:var(--muted); font-weight:900; white-space:nowrap;}
+.pf-setting{
       border:1px solid var(--line);
       background: var(--card);
       border-radius:18px;
@@ -3643,6 +3719,164 @@
       .pf-ach-grid{grid-template-columns:1fr;}
       .pf-range{width:140px;}
     }
+
+
+
+    /* ============================
+       PROFILE - PVP (UI)
+       ============================ */
+    .pvp-me{
+      border:1px solid var(--line);
+      background: var(--card);
+      border-radius:18px;
+      padding:12px;
+      box-shadow: 0 14px 32px rgba(0,0,0,.14);
+    }
+    .pvp-head{display:flex;align-items:center;gap:10px;}
+    .pvp-head .pf-avatar{width:52px;height:52px;border-radius:16px;}
+    .pvp-name{font-weight:950;line-height:1.15;}
+    .pvp-sub{margin-top:3px;font-size:11px;color:var(--muted);font-weight:800;}
+    .pvp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px;}
+    .pvp-grid .m{border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:14px;padding:10px 8px;text-align:center;}
+    .pvp-grid .k{font-size:10px;color:var(--muted);font-weight:900;}
+    .pvp-grid .v{margin-top:4px;font-size:15px;font-weight:950;font-variant-numeric:tabular-nums;}
+    .pvp-enemy-wrap{margin-top:12px;}
+    .pvp-enemy-list{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+    .pvp-enemy{
+      display:flex;align-items:center;gap:10px;
+      border:1px solid var(--line);
+      background: var(--card);
+      border-radius:16px;
+      padding:10px;
+    }
+    .pvp-enemy .ava{
+      width:44px;height:44px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;flex:0 0 auto;
+      background:rgba(255,255,255,.05);
+      display:grid;place-items:center;
+      font-weight:950;
+    }
+    .pvp-enemy .ava img{width:100%;height:100%;object-fit:cover;display:block}
+    .pvp-enemy .meta{flex:1;min-width:0;}
+    .pvp-enemy .meta .t{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .pvp-enemy .meta .s{margin-top:3px;font-size:11px;color:var(--muted);font-weight:800;display:flex;gap:10px;flex-wrap:wrap;}
+
+/* ============================
+   PROFILE - BOSS RAID (UI)
+   ============================ */
+.boss-raid-card{
+  border:1px solid var(--line);
+  background: var(--card);
+  border-radius:18px;
+  padding:12px;
+  box-shadow: 0 14px 32px rgba(0,0,0,.14);
+  margin-top:10px;
+}
+.boss-raid-head{display:flex;align-items:center;gap:10px;}
+.boss-ava{
+  width:56px;height:56px;border-radius:18px;overflow:hidden;flex:0 0 auto;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+  display:grid;place-items:center;font-weight:950;
+}
+.boss-ava img{width:100%;height:100%;object-fit:cover;display:block}
+.boss-meta{flex:1;min-width:0;}
+.boss-name{font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.boss-sub{margin-top:4px;font-size:11px;color:var(--muted);font-weight:850;display:flex;gap:10px;flex-wrap:wrap;}
+.boss-hp-btn{
+  margin-top:10px;
+  position:relative;
+  height:34px;
+  border-radius:14px;
+  overflow:hidden;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.20), 0 18px 40px rgba(0,0,0,.20);
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+}
+.boss-hp-btn:active{
+  transform: translateY(2px);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.14), 0 10px 22px rgba(0,0,0,.22);
+}
+.boss-hp-fill{
+  position:absolute;left:0;top:0;bottom:0;
+  width:0%;
+  background: linear-gradient(90deg, rgba(255,76,76,.95), rgba(255,187,64,.92));
+}
+.boss-hp-text{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  font-size:12px;
+  font-weight:950;
+  color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,.55);
+  font-variant-numeric:tabular-nums;
+  padding:0 10px;
+}
+.boss-attack{
+  margin-top:10px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.03);
+  border-radius:16px;
+  padding:0 10px;
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transition:max-height .25s ease, padding .25s ease, opacity .25s ease;
+}
+.boss-attack.open{
+  max-height:240px;
+  opacity:1;
+  padding:10px;
+}
+.boss-attack-row{display:flex;gap:10px;align-items:center;}
+.boss-attack-info{flex:1;min-width:0;font-size:12px;font-weight:850;color:var(--text);}
+.boss-attack-btn{
+  height:42px;
+  padding:0 12px;
+  border-radius:14px;
+  border:none;
+  background:linear-gradient(90deg, rgba(255,209,64,.95), rgba(255,76,76,.95));
+  color:#081018;
+  font-weight:950;
+  cursor:pointer;
+  box-shadow:0 14px 28px rgba(0,0,0,.22);
+}
+.boss-attack-btn:active{transform: translateY(2px);}
+.boss-attack-note{margin-top:8px;font-size:11px;color:var(--muted);font-weight:800;}
+.boss-last-hit{
+  margin-top:10px;
+  padding:10px;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.06);
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+}
+.boss-lb{margin-top:10px;display:flex;flex-direction:column;gap:10px;}
+.boss-lb-row{
+  display:flex;align-items:center;gap:10px;
+  border:1px solid var(--line);
+  background: var(--card);
+  border-radius:16px;
+  padding:10px;
+}
+.boss-lb-row .rank{width:28px;text-align:center;font-weight:950;color:var(--muted);}
+.boss-lb-row .ava{
+  width:40px;height:40px;border-radius:14px;overflow:hidden;flex:0 0 auto;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.05);
+  display:grid;place-items:center;font-weight:950;
+}
+.boss-lb-row .ava img{width:100%;height:100%;object-fit:cover;display:block}
+.boss-lb-row .meta{flex:1;min-width:0;}
+.boss-lb-row .meta .t{font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.boss-lb-row .meta .s{margin-top:3px;font-size:11px;color:var(--muted);font-weight:800;}
+.boss-lb-row .dmg{font-weight:950;font-variant-numeric:tabular-nums;}
 
 
     /* ============================
@@ -3723,7 +3957,174 @@
     }
     .home-chat-send:active{ transform:translateY(1px); }
     .home-chat-note{ padding:0 12px 10px; font-size:12px; }
-</style>
+
+    /* ===== Story comments + recommendations ===== */
+    .story-comments{display:block}
+    .comment-list{
+      max-height:420px;
+      overflow:auto;
+      padding-right:6px;
+      scroll-behavior:smooth;
+    }
+    .comment-item{display:flex;gap:10px;margin:12px 0}
+    .comment-avatar{
+      width:34px;height:34px;border-radius:50%;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      display:flex;align-items:center;justify-content:center;
+      flex:0 0 34px;
+      overflow:hidden;
+    }
+    .comment-avatar img{width:100%;height:100%;object-fit:cover}
+    .comment-bubble{
+      flex:1;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px;
+      padding:10px 12px;
+    }
+    .comment-meta{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .comment-name{font-weight:900;font-size:12.5px;opacity:.95}
+    .comment-time{font-size:12px;opacity:.8}
+    .comment-text{white-space:pre-wrap;line-height:1.5}
+    .comment-compose{display:flex;gap:10px;align-items:flex-end;margin-top:10px}
+    .comment-compose textarea{
+      flex:1;
+      min-height:64px;
+      resize:none;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.22);
+      color:var(--text);
+      outline:none;
+    }
+    .comment-compose textarea:focus{
+      border-color:rgba(0,212,255,.35);
+      box-shadow:0 0 0 3px rgba(0,212,255,.12);
+    }
+    .comment-note{margin-top:8px;font-size:12px}
+
+    .story-reco-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .story-reco-card{
+      display:flex;
+      gap:10px;
+      padding:10px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
+      cursor:pointer;
+      user-select:none;
+    }
+    .story-reco-card:active{transform:scale(.99)}
+    .story-reco-card img{
+      width:56px;height:74px;
+      border-radius:12px;
+      object-fit:cover;
+      flex:0 0 56px;
+    }
+    .story-reco-title{font-weight:900;font-size:13px;line-height:1.2}
+    .story-reco-sub{font-size:12px;margin-top:4px}
+    .story-reco-meta{font-size:12px;opacity:.85;margin-top:6px;display:flex;gap:8px;flex-wrap:wrap}
+
+  
+    /* ============================
+       Loot + Hành trang (rơi vật phẩm khi đọc)
+       ============================ */
+    .bag-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:1200; }
+    .bag-modal{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); width:min(560px, calc(100vw - 24px)); max-height:calc(100vh - 24px); overflow:hidden; z-index:1201; background:rgba(16,18,30,.96); border:1px solid rgba(255,255,255,.10); border-radius:18px; box-shadow:0 18px 60px rgba(0,0,0,.55); display:flex; flex-direction:column; }
+    body.theme-light .bag-modal{ background:rgba(248,250,255,.98); border-color:rgba(20,30,60,.12); }
+    .bag-modal.hidden, .bag-overlay.hidden{ display:none; }
+    .bag-head{ display:flex; align-items:center; justify-content:space-between; padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.10); }
+    body.theme-light .bag-head{ border-bottom-color:rgba(20,30,60,.10); }
+    .bag-title{ font-weight:950; letter-spacing:.2px; }
+    .bag-close{ width:36px; height:36px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:inherit; }
+    body.theme-light .bag-close{ border-color:rgba(20,30,60,.12); background:rgba(20,30,60,.04); }
+    .bag-topbar{ display:flex; gap:10px; align-items:center; justify-content:space-between; padding:10px 12px; }
+    .bag-stats{ display:flex; gap:10px; flex-wrap:wrap; }
+    .bag-stat{ display:flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.05); font-size:13px; }
+    body.theme-light .bag-stat{ border-color:rgba(20,30,60,.12); background:rgba(20,30,60,.04); }
+    .bag-search{ flex:1; }
+    .bag-search input{ width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:inherit; outline:none; }
+    body.theme-light .bag-search input{ border-color:rgba(20,30,60,.14); background:rgba(20,30,60,.04); }
+    .bag-tabs{ display:flex; gap:10px; padding:0 12px 10px; }
+    .bag-tab{ flex:1; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.06); color:inherit; font-weight:900; }
+    .bag-tab.active{ outline:2px solid rgba(124,92,255,.35); border-color:rgba(124,92,255,.55); }
+    body.theme-light .bag-tab{ border-color:rgba(20,30,60,.12); background:rgba(20,30,60,.04); }
+    .bag-body{ padding:0 12px 12px; overflow:auto; }
+    .bag-pane.hidden{ display:none; }
+    .item-grid{ display:grid; grid-template-columns:repeat(1,minmax(0,1fr)); gap:10px; }
+    @media(min-width:520px){ .item-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    .item-card{ border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.04); border-radius:14px; padding:10px; display:flex; flex-direction:column; gap:8px; }
+    body.theme-light .item-card{ border-color:rgba(20,30,60,.12); background:rgba(20,30,60,.03); }
+    .item-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+    .item-name{ font-weight:950; line-height:1.2; }
+    .item-badges{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .rar{ font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); white-space:nowrap; }
+    .rar.common{ opacity:.92; }
+    .rar.uncommon{ border-color:rgba(0,255,153,.25); background:rgba(0,255,153,.08); }
+    .rar.rare{ border-color:rgba(90,167,255,.35); background:rgba(90,167,255,.10); }
+    .rar.epic{ border-color:rgba(170,90,255,.35); background:rgba(170,90,255,.10); }
+    .rar.legendary{ border-color:rgba(255,179,0,.35); background:rgba(255,179,0,.10); }
+    .rar.mythic{ border-color:rgba(255,77,77,.35); background:rgba(255,77,77,.10); }
+    .cnt{ font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.06); white-space:nowrap; }
+    .item-desc{ font-size:12px; opacity:.92; line-height:1.35; }
+    .item-actions{ display:flex; gap:8px; justify-content:flex-end; }
+    .item-use{ padding:8px 10px; border-radius:12px; border:1px solid rgba(124,92,255,.45); background:rgba(124,92,255,.14); color:inherit; font-weight:950; }
+    .item-use:disabled{ opacity:.45; filter:saturate(.6); }
+    .item-note{ font-size:11px; opacity:.75; }
+
+    .loot-fx{ position:fixed; left:50%; bottom:88px; transform:translateX(-50%); z-index:1250; pointer-events:none; }
+    .loot-fx.hidden{ display:none; }
+    .loot-fx .pill{ display:inline-flex; gap:8px; align-items:center; padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(0,0,0,.55); backdrop-filter: blur(10px); }
+    body.theme-light .loot-fx .pill{ background:rgba(255,255,255,.82); border-color:rgba(20,30,60,.14); }
+
+  
+/* Trang viên */
+.estate-summary{ margin-top:10px; }
+.estate-line{ margin-top:6px; }
+.estate-bar{
+  height:10px;
+  background: rgba(255,255,255,.08);
+  border-radius: 999px;
+  overflow:hidden;
+  margin-top:12px;
+}
+.estate-bar span{
+  display:block;
+  height:100%;
+  width:0%;
+  background: linear-gradient(90deg, rgba(242,190,45,.90), rgba(0,212,255,.85));
+}
+.estate-level-list{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+  padding:6px 2px 2px;
+}
+@media (min-width: 780px){
+  .estate-level-list{ grid-template-columns: repeat(3, 1fr); }
+}
+.estate-lv{
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  border-radius: 14px;
+  padding: 10px;
+}
+.estate-lv.cur{
+  border-color: rgba(242,190,45,.55);
+  box-shadow: 0 0 0 1px rgba(242,190,45,.25) inset;
+}
+.estate-lv.done{ opacity: .88; }
+.estate-lv-name{ font-weight: 700; }
+.estate-lv-bonus{ margin-top:6px; font-size: 12px; color: var(--gold); }
+.estate-lv-tag{ margin-top:6px; font-size: 11px; color: var(--muted); }
+  </style>
 </head>
 <body>
   <header class="topbar">
@@ -3788,7 +4189,7 @@
       <div class="avatar" id="profileAvatar">?</div>
       <div style="min-width:0">
         <div class="name" id="profileName">Khách</div>
-        <div class="sub" id="profileSub">Đăng nhập để đồng bộ theo dõi / lịch sử đọc bằng Firebase</div>
+        <div class="sub" id="profileSub"></div>
       </div>
     </div>
     <div class="account-menu-meta">
@@ -3925,7 +4326,7 @@
             <input class="home-chat-input" id="homeChatInput" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Nhập tin nhắn..."/>
             <button class="home-chat-send" id="homeChatSend" type="button">Gửi</button>
           </div>
-          <div class="home-chat-note muted" id="homeChatNote">Đăng nhập để gửi tin nhắn (bạn vẫn xem được chat).</div>
+          
         </div>
       </section>
 
@@ -4071,6 +4472,41 @@
           </div>
         </div>
       </section>
+
+
+      <section class="section" id="storyCommentsSection">
+        <div class="story-section-panel">
+          <div class="story-section-head">
+            <div class="icon">💬</div>
+            <div>Bình Luận</div>
+          </div>
+          <div class="story-section-body">
+            <div class="story-comments">
+              <div class="comment-list" id="storyCommentsList">
+                <div class="muted">Chưa có bình luận nào.</div>
+              </div>
+              <div class="comment-compose">
+                <textarea id="storyCommentInput" rows="3" placeholder="Viết bình luận... (Ctrl+Enter để gửi)"></textarea>
+                <button class="btn" id="storyCommentSend" type="button">Gửi</button>
+              </div>
+              <div class="muted comment-note" id="storyCommentNote"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="storyMoreSection">
+        <div class="story-section-panel">
+          <div class="story-section-head">
+            <div class="icon">🎲</div>
+            <div>Truyện Khác</div>
+          </div>
+          <div class="story-section-body">
+            <div class="story-reco-grid" id="storyRecoList"></div>
+          </div>
+        </div>
+      </section>
+
     </div>
   
 
@@ -4225,7 +4661,7 @@
 
   <div class="floating-stack">
     <button class="float-btn purple" id="btnBag" title="Hành trang">
-      🎒 <span class="bubble-count" id="bagCount">47</span>
+      🎒 <span class="bubble-count" id="bagCount">0</span>
     </button>
     <button class="float-btn gold" id="btnMissions" title="Nhiệm vụ">
       🎯 <span class="bubble-count" id="missionCount">2/6</span>
@@ -4261,6 +4697,31 @@
     <div class="toast" id="toast"></div>
   </div>
 
+
+  <!-- Game-like battle notification (PVP) -->
+  <div class="gamepop-backdrop" id="gamePopBackdrop" aria-hidden="true"></div>
+  <div class="gamepop" id="gamePop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="gp-top">
+      <div class="gp-title"><span class="gp-ic" id="gamePopIcon">⚔️</span><span id="gamePopTitle">PvP</span></div>
+      <button class="gp-x" id="gamePopX" type="button" aria-label="Đóng">✕</button>
+    </div>
+    <div class="gp-sub" id="gamePopSub">Đang chuẩn bị giao chiến…</div>
+    <div class="gp-result" id="gamePopResult"></div>
+    <div class="gp-delta" id="gamePopDelta"></div>
+    <div class="gp-stats" id="gamePopStats">
+      <div class="gp-stat">
+        <div class="k" id="gamePopPtsLabel">Điểm PVP</div>
+        <div class="v" id="gamePopPts">0</div>
+      </div>
+      <div class="gp-stat">
+        <div class="k" id="gamePopStreakLabel">Chuỗi thắng</div>
+        <div class="v" id="gamePopStreak">0</div>
+      </div>
+    </div>
+    <div class="gp-actions">
+      <button class="pf-mini-btn primary" id="gamePopOk" type="button">OK</button>
+    </div>
+  </div>
 
   <div class="notify-backdrop" id="notifyBackdrop" aria-hidden="true"></div>
   <div class="notify-panel" id="notifyPanel" aria-hidden="true">
@@ -4332,6 +4793,45 @@
     </div>
   </div>
 
+
+
+  <!-- BAG / LOOT -->
+  <div class="bag-overlay hidden" id="bagOverlay" aria-hidden="true"></div>
+  <div class="bag-modal hidden" id="bagModal" aria-hidden="true">
+    <div class="bag-head">
+      <div class="bag-title">🎒 Hành trang</div>
+      <button class="bag-close" id="bagCloseBtn" type="button" aria-label="Đóng">✕</button>
+    </div>
+
+    <div class="bag-topbar">
+      <div class="bag-stats">
+        <div class="bag-stat" title="Xu"><span>🪙</span><b id="bagCoins">0</b></div>
+        <div class="bag-stat" title="Ngọc"><span>💎</span><b id="bagGems">0</b></div>
+        <div class="bag-stat" title="Buff rơi vật phẩm (tăng tỉ lệ rơi / rơi hiếm)"><span>🍀</span><b id="bagLuck">0</b><span class="item-note">phút</span></div>
+        <div class="bag-stat" title="VIP"><span>👑</span><b id="bagVip">Thường</b></div>
+      </div>
+    </div>
+
+    <div class="bag-topbar" style="padding-top:0">
+      <div class="bag-search">
+        <input id="bagSearch" type="search" placeholder="Tìm vật phẩm..." autocomplete="off" />
+      </div>
+    </div>
+
+    <div class="bag-tabs">
+      <button class="bag-tab active" data-bag-tab="owned" type="button">Đang có</button>
+      <button class="bag-tab" data-bag-tab="all" type="button">Danh mục 150</button>
+    </div>
+
+    <div class="bag-body">
+      <div class="bag-pane" id="bagPaneOwned"></div>
+      <div class="bag-pane hidden" id="bagPaneAll"></div>
+    </div>
+  </div>
+
+  <div class="loot-fx hidden" id="lootFx" aria-hidden="true">
+    <div class="pill" id="lootFxText">🎁</div>
+  </div>
 
   <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js" crossorigin="anonymous"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js" crossorigin="anonymous"></script>
@@ -4409,6 +4909,41 @@
       const avatar = String(x.avatar || "").trim().slice(0, 600);
       return { name, bio, avatar };
     }
+
+    function compressImageToDataUrl(file, maxSide=256, quality=0.85){
+      return new Promise((resolve, reject) => {
+        try{
+          const fr = new FileReader();
+          fr.onerror = () => reject(new Error("read_error"));
+          fr.onload = () => {
+            const img = new Image();
+            img.onload = () => {
+              try{
+                const w0 = img.naturalWidth || img.width || 1;
+                const h0 = img.naturalHeight || img.height || 1;
+                const scale = Math.min(1, maxSide / Math.max(w0, h0));
+                const w = Math.max(1, Math.round(w0 * scale));
+                const h = Math.max(1, Math.round(h0 * scale));
+                const canvas = document.createElement("canvas");
+                canvas.width = w; canvas.height = h;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, w, h);
+                const dataUrl = canvas.toDataURL("image/jpeg", quality);
+                resolve(String(dataUrl || ""));
+              }catch(err){
+                resolve(String(fr.result || ""));
+              }
+            };
+            img.onerror = () => resolve(String(fr.result || ""));
+            img.src = String(fr.result || "");
+          };
+          fr.readAsDataURL(file);
+        }catch(err){
+          reject(err);
+        }
+      });
+    }
+
     function normalizeSettings(s){
       const x = (s && typeof s === "object") ? s : {};
       const autoRaw = (typeof x.autoNextChapter !== "undefined") ? x.autoNextChapter : safeGetLS("tts_auto_next", "1");
@@ -4419,6 +4954,574 @@
       return { autoNextChapter, ttsRate };
     }
 
+
+    
+/* ============================
+   Trang viên (Community feature)
+   - Cấp: Sơ/Trung/Cao × Hoàng/Huyền/Địa/Thiên/Tiên/Đế
+   - Tác dụng: tăng % linh khí tu luyện (bonus EXP Tu Vi)
+   ============================ */
+const ESTATE_STAGES = ["Sơ","Trung","Cao"];
+const ESTATE_TIERS  = ["Hoàng","Huyền","Địa","Thiên","Tiên","Đế"];
+// 18 cấp (3×6). Bạn có thể chỉnh % ở đây cho cân bằng.
+const ESTATE_BONUS_PCT = [2,4,6, 8,10,12, 15,18,21, 25,30,35, 42,50,60, 75,90,110];
+
+const ESTATE_LEVELS = (() => {
+  const out = [];
+  let k = 0;
+  for (let t = 0; t < ESTATE_TIERS.length; t++){
+    for (let s = 0; s < ESTATE_STAGES.length; s++){
+      const bonus = Number(ESTATE_BONUS_PCT[k] || 0) || 0;
+      const name = `${ESTATE_STAGES[s]} ${ESTATE_TIERS[t]} cấp`;
+      out.push({ tier: ESTATE_TIERS[t], stage: ESTATE_STAGES[s], bonus, name });
+      k++;
+    }
+  }
+  return out;
+})();
+
+function clampEstateLevel(lv){
+  const max = Math.max(0, (ESTATE_LEVELS?.length || 0) - 1);
+  let x = Number(lv || 0);
+  if (!Number.isFinite(x)) x = 0;
+  x = Math.floor(x);
+  if (x < 0) x = 0;
+  if (x > max) x = max;
+  return x;
+}
+
+function getEstateInfo(level){
+  const lv = clampEstateLevel(level);
+  return ESTATE_LEVELS[lv] || { tier:"Hoàng", stage:"Sơ", bonus:0, name:"Sơ Hoàng cấp" };
+}
+
+
+/* ============================
+   PVP (demo local)
+   - Hiển thị rank theo 10 đối thủ (bot) + bạn
+   - Thách đấu: mô phỏng thắng/thua, cập nhật điểm/chuỗi thắng
+   ============================ */
+const PVP_BOTS_KEY = "pvp_bots_v1";
+
+function __hash32(str){
+  let h = 2166136261 >>> 0;
+  const s = String(str || "");
+  for (let i = 0; i < s.length; i++){
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  return h >>> 0;
+}
+function __mulberry32(a){
+  let t = (a >>> 0) || 1;
+  return function(){
+    t += 0x6D2B79F5;
+    let x = Math.imul(t ^ (t >>> 15), 1 | t);
+    x ^= x + Math.imul(x ^ (x >>> 7), 61 | x);
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function __getOrCreateGuestSeed(){
+  let s = safeGetLS("guest_seed", "");
+  if (!s){
+    s = String(Math.floor(Math.random() * 1e9));
+    safeSetLS("guest_seed", s);
+  }
+  return s;
+}
+function __pvpSeedBase(currentUser){
+  try{
+    if (currentUser && currentUser.uid) return "uid:" + String(currentUser.uid);
+  }catch(_){}
+  return "guest:" + __getOrCreateGuestSeed();
+}
+function __svgAvatar(letter, hue){
+  const L = String(letter || "A").slice(0,1).toUpperCase();
+  const H = Math.max(0, Math.min(360, Math.floor(Number(hue)||0)));
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">` +
+      `<defs>` +
+        `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1">` +
+          `<stop offset="0" stop-color="hsl(${H},90%,55%)"/>` +
+          `<stop offset="1" stop-color="hsl(${(H+60)%360},90%,35%)"/>` +
+        `</linearGradient>` +
+      `</defs>` +
+      `<rect width="128" height="128" rx="28" fill="url(#g)"/>` +
+      `<text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="system-ui,Segoe UI,Arial" font-size="64" font-weight="900" fill="rgba(255,255,255,.92)">${L}</text>` +
+    `</svg>`;
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+}
+function calcBotPower(b){
+  const pts = Math.max(0, Math.floor(Number(b?.points || 0) || 0));
+  const seed = __hash32(String(b?.id || "") + "|" + String(b?.name || ""));
+  const extra = 8000 + (seed % 12000); // 8k..20k
+  return Math.max(1, Math.floor(extra + pts * 55));
+}
+
+// Lực chiến -> dame/HP (dùng chung cho PVP & Boss)
+function calcDamageFromPower(power){
+  const p = Math.max(0, Number(power || 0) || 0);
+  return Math.max(10, Math.floor(p / 45));
+}
+function calcHpFromPower(power){
+  const p = Math.max(0, Number(power || 0) || 0);
+  return 1200 + Math.floor(p / 10);
+}
+// Tính lực chiến hiện tại: thước đo sức mạnh tài khoản (Tu Vi + Trang bị). Không tăng/giảm theo PVP/Boss.
+function calcCombatPowerFromState(){
+  try{
+    const lastReading = (userState && userState.lastReading && typeof userState.lastReading === "object") ? userState.lastReading : {};
+    const readChSum = Object.keys(lastReading || {}).reduce((a,k)=>a + Math.max(0, Number(lastReading[k]||0)), 0);
+    const totalReadSeconds = Number(safeGetLS(__lsReadSecondsKey(), "0") || 0);
+    const minutesRead = Math.max(0, Math.floor(totalReadSeconds / 60));
+    const tuviPoints = Math.max(0, Number(readChSum||0) + Math.floor(minutesRead/5));
+
+    const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
+    const estateInfo = getEstateInfo(estateLv);
+    const estateBonusPct = Math.max(0, Number(estateInfo.bonus || 0) || 0);
+    const tuviExp = Math.floor(tuviPoints * (1 + (estateBonusPct / 100)));
+
+    const gearRaw = safeGetLS("gear_slots", "");
+    const gear = (()=>{ try{ const o = JSON.parse(gearRaw||"{}"); return (o && typeof o==="object") ? o : {}; }catch(_){ return {}; }})();
+    const gearSlotsCount = Object.values(gear || {}).filter(v => v && String(v).trim() && String(v).trim() !== '—').length;
+
+    // Lực chiến chỉ phản ánh Tu Vi (+ Trang bị). PVP/Boss chỉ là điểm thành tích, không làm thay đổi lực chiến.
+    const basePower = Math.floor(tuviExp * 3);
+    const gearBonus = gearSlotsCount * 5000;
+    return Math.max(0, Math.floor(basePower + gearBonus));
+}catch(_){
+    return 0;
+  }
+}
+
+// Boss list (demo) — dùng lực chiến làm dame tấn công
+const BOSS_LIST = (() => {
+  const base = [
+    ["Hắc Lang Vương","Hoàng"],
+    ["Huyết Hổ","Hoàng"],
+    ["U Minh Xà","Huyền"],
+    ["Lôi Điểu","Huyền"],
+    ["Băng Hồn Ma","Địa"],
+    ["Kim Cốt Tướng","Địa"],
+    ["Thiên Ma Chủ","Thiên"],
+    ["Thái Cổ Long","Tiên"],
+    ["Ma Đế","Đế"],
+    ["Thiên Đế Ảnh","Đế"]
+  ];
+  return base.map((it, i) => {
+    const name = it[0];
+    const tier = it[1];
+    const power = Math.max(15000, Math.floor(22000 + i * 42000)); // tăng dần
+    const reward = Math.max(40, Math.floor(60 + i * 35));
+    const hue = (40 + i * 32) % 360;
+    return {
+      id: "boss_" + (i + 1),
+      name,
+      tier,
+      avatar: __svgAvatar(name.slice(0, 1), hue),
+      power,
+      reward
+    };
+  });
+
+
+// ============================
+// Boss Raid (manual): HP bar + đánh tay + BXH dame
+// ============================
+const BOSS_RAID_PATH = "bossRaid";
+const BOSS_RAID_LOCAL_STATE_KEY = "bossRaid_state_v1";
+const BOSS_RAID_LOCAL_CONTRIB_KEY = "bossRaid_contrib_v1";
+const BOSS_RAID_DEFAULT = {
+  id: "world_001",
+  name: "Hắc Long Vương",
+  avatar: __svgAvatar("B", 18),
+  power: 520000,     // lực chiến boss (tham khảo)
+  maxHP: 2500000,
+  hp: 2500000,
+  updatedAt: Date.now()
+};
+
+let __bossRaidInitDone = false;
+let __bossRaidState = null;
+let __bossRaidContrib = {}; // uid -> {name, avatar, dmg}
+let __bossRaidUnsubState = null;
+let __bossRaidUnsubLb = null;
+let __bossRaidAttackCooldown = 0;
+
+function __bossGuestId(){
+  try{
+    const k = "guest_uid_v1";
+    let v = safeGetLS(k, "");
+    if (v) return v;
+    v = "guest_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+    safeSetLS(k, v);
+    return v;
+  }catch(_){
+    return "guest_" + Date.now();
+  }
+}
+function __bossMeIdentity(){
+  const uid = String(currentUser?.uid || __bossGuestId());
+  const prof = (userState && userState.profile) ? userState.profile : {};
+  const name = String((prof && prof.name) ? prof.name : (currentUser?.displayName || "Người chơi"));
+  const avatar = String((prof && prof.avatar) ? prof.avatar : (currentUser?.photoURL || ""));
+  return { uid, name, avatar };
+}
+
+function __bossLoadLocal(){
+  try{
+    const s = JSON.parse(safeGetLS(BOSS_RAID_LOCAL_STATE_KEY, "") || "null");
+    __bossRaidState = (s && typeof s === "object") ? s : {...BOSS_RAID_DEFAULT};
+  }catch(_){
+    __bossRaidState = {...BOSS_RAID_DEFAULT};
+  }
+  try{
+    const c = JSON.parse(safeGetLS(BOSS_RAID_LOCAL_CONTRIB_KEY, "") || "{}");
+    __bossRaidContrib = (c && typeof c === "object") ? c : {};
+  }catch(_){ __bossRaidContrib = {}; }
+}
+function __bossSaveLocal(){
+  try{ safeSetLS(BOSS_RAID_LOCAL_STATE_KEY, JSON.stringify(__bossRaidState || BOSS_RAID_DEFAULT)); }catch(_){}
+  try{ safeSetLS(BOSS_RAID_LOCAL_CONTRIB_KEY, JSON.stringify(__bossRaidContrib || {})); }catch(_){}
+}
+
+function __bossSetDefaultIfMissingFirebase(){
+  if (!FIREBASE_OK || !rtdb || !ref || !runTransaction) return;
+  try{
+    const stateRef = ref(rtdb, BOSS_RAID_PATH + "/current");
+    runTransaction(stateRef, (cur) => {
+      if (cur && typeof cur === "object" && typeof cur.maxHP !== "undefined") return cur;
+      return {...BOSS_RAID_DEFAULT, updatedAt: Date.now()};
+    });
+  }catch(e){
+    console.warn("boss init firebase failed", e);
+  }
+}
+
+function bossRaidEnsureInit(){
+  if (__bossRaidInitDone) return;
+  __bossRaidInitDone = true;
+
+  // load local first to show UI immediately
+  __bossLoadLocal();
+  __bossUpdateUI();
+  __bossRenderLeaderboard();
+
+  if (FIREBASE_OK && rtdb && ref && onValue){
+    __bossSetDefaultIfMissingFirebase();
+
+    // State listener
+    try{
+      const stateRef = ref(rtdb, BOSS_RAID_PATH + "/current");
+      __bossRaidUnsubState = onValue(stateRef, (snap) => {
+        try{
+          const val = snap?.val ? snap.val() : null;
+          if (val && typeof val === "object"){
+            __bossRaidState = {
+              ...BOSS_RAID_DEFAULT,
+              ...val,
+              hp: Math.max(0, Number(val.hp ?? val.HP ?? BOSS_RAID_DEFAULT.hp) || 0),
+              maxHP: Math.max(1, Number(val.maxHP ?? BOSS_RAID_DEFAULT.maxHP) || 1),
+              updatedAt: Number(val.updatedAt || Date.now())
+            };
+            __bossSaveLocal();
+            __bossUpdateUI();
+          }
+        }catch(_){}
+      });
+    }catch(e){ console.warn("boss state onValue fail", e); }
+
+    // Leaderboard listener (Top 10 by dmg)
+    try{
+      const contribRef = ref(rtdb, BOSS_RAID_PATH + "/contrib");
+      // orderByChild('dmg') + limitToLast(10)
+      const q = (query && orderByChild && limitToLast) ? query(contribRef, orderByChild("dmg"), limitToLast(10)) : contribRef;
+      __bossRaidUnsubLb = onValue(q, (snap) => {
+        try{
+          const obj = snap?.val ? snap.val() : null;
+          if (obj && typeof obj === "object"){
+            // Merge into local contrib (keep other keys if any)
+            Object.keys(obj).forEach(k => { __bossRaidContrib[k] = obj[k]; });
+            __bossSaveLocal();
+          }
+          __bossRenderLeaderboard();
+        }catch(_){}
+      });
+    }catch(e){ console.warn("boss lb onValue fail", e); }
+  }
+}
+
+function __bossUpdateUI(){
+  const st = __bossRaidState || BOSS_RAID_DEFAULT;
+  const maxHP = Math.max(1, Number(st.maxHP || 1) || 1);
+  const hp = Math.max(0, Math.min(maxHP, Number(st.hp || 0) || 0));
+  const pct = Math.max(0, Math.min(100, (hp / maxHP) * 100));
+
+  const fill = document.getElementById("bossHpFill");
+  const textEl = document.getElementById("bossHpText");
+  const nameEl = document.getElementById("bossRaidName");
+  const powEl = document.getElementById("bossRaidPower");
+  const avaEl = document.getElementById("bossRaidAva");
+
+  if (fill) fill.style.width = pct.toFixed(3) + "%";
+  if (textEl) textEl.textContent = `${fmtN(hp)} / ${fmtN(maxHP)} HP`;
+  if (nameEl) nameEl.textContent = st.name || "Boss";
+  if (powEl) powEl.textContent = fmtN(Number(st.power || 0) || 0);
+  if (avaEl){
+    const ava = st.avatar || "";
+    if (ava && String(ava).startsWith("data:image") || String(ava).startsWith("http")){
+      avaEl.innerHTML = `<img src="${esc(String(ava))}" alt="boss">`;
+    }else{
+      avaEl.textContent = "🐉";
+    }
+  }
+}
+
+function __bossRenderLeaderboard(){
+  const wrap = document.getElementById("bossLb");
+  if (!wrap) return;
+
+  // Build rows from contrib
+  const arr = Object.keys(__bossRaidContrib || {}).map(uid => {
+    const o = __bossRaidContrib[uid] || {};
+    const dmg = Math.max(0, Number(o.dmg || o.damage || 0) || 0);
+    return {
+      uid,
+      name: String(o.name || "Ẩn danh"),
+      avatar: String(o.avatar || o.photoURL || ""),
+      dmg
+    };
+  }).filter(x => x.dmg > 0);
+
+  // fallback: nếu chưa có dữ liệu, tạo demo ảo để nhìn "có game"
+  if (!arr.length){
+    const demo = [];
+    const names = ["Hắc Phong","Bạch Vân","Thanh Vũ","Lôi Quang","Huyết Ảnh","Ngân Hà","U Minh","Thiên Lang","Long Nha","Phượng Minh"];
+    for (let i=0;i<10;i++){
+      demo.push({ uid:"demo_"+i, name:names[i], avatar: __svgAvatar(names[i].slice(0,1), (i*34)%360), dmg: 0 });
+    }
+    wrap.innerHTML = `<div class="muted" style="padding:10px 2px">Chưa có ai gây dame. Hãy tấn công boss để lên BXH.</div>`;
+    return;
+  }
+
+  arr.sort((a,b)=>b.dmg-a.dmg);
+  const top = arr.slice(0,10);
+
+  wrap.innerHTML = top.map((it, idx) => {
+    const ava = it.avatar ? `<img src="${esc(it.avatar)}" alt="ava">` : esc(initials(it.name));
+    return `
+      <div class="boss-lb-row">
+        <div class="rank">#${idx+1}</div>
+        <div class="ava">${ava}</div>
+        <div class="meta">
+          <div class="t">${esc(it.name)}</div>
+          <div class="s">UID: ${esc(String(it.uid).slice(0,10))}</div>
+        </div>
+        <div class="dmg">${fmtN(it.dmg)}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+function bossRaidOpenAttack(){
+  const box = document.getElementById("bossAttackBox");
+  if (!box) return;
+  box.classList.add("open");
+  box.setAttribute("aria-hidden", "false");
+  try{ box.scrollIntoView({behavior:"smooth", block:"center"}); }catch(_){}
+}
+
+function bossRaidAttack(){
+  const now = Date.now();
+  if (now < __bossRaidAttackCooldown) return;
+  __bossRaidAttackCooldown = now + 220; // chống spam quá nhanh
+
+  const st = __bossRaidState || BOSS_RAID_DEFAULT;
+  const maxHP = Math.max(1, Number(st.maxHP || 1) || 1);
+  const hp = Math.max(0, Math.min(maxHP, Number(st.hp || 0) || 0));
+
+  if (hp <= 0){
+    toast("Boss đã bị hạ! Hãy chờ boss hồi sinh.");
+    const lh = document.getElementById("bossLastHit");
+    if (lh){
+      lh.style.display = "block";
+      lh.textContent = "Boss đã hết HP. Không thể tấn công lúc này.";
+    }
+    return;
+  }
+
+  // Dame theo lực chiến hiện tại
+  const myPow = calcCombatPowerFromState();
+  const base = calcDamageFromPower(myPow);
+  const dmg = Math.max(1, Math.floor(base * (0.85 + Math.random() * 0.30)));
+
+  const me = __bossMeIdentity();
+
+  // update UI quickly (optimistic) for local feel
+  const newHpLocal = Math.max(0, hp - dmg);
+  __bossRaidState = {...st, hp: newHpLocal, updatedAt: Date.now()};
+  __bossRaidContrib[me.uid] = {
+    name: me.name,
+    avatar: me.avatar,
+    dmg: Math.max(0, Number(__bossRaidContrib?.[me.uid]?.dmg || 0) || 0) + dmg
+  };
+  __bossSaveLocal();
+  __bossUpdateUI();
+  __bossRenderLeaderboard();
+
+  const lh = document.getElementById("bossLastHit");
+  if (lh){
+    lh.style.display = "block";
+    lh.textContent = `Bạn gây ${fmtN(dmg)} dame • Boss còn ${fmtN(newHpLocal)} HP`;
+  }
+  try{ if (navigator.vibrate) navigator.vibrate([20,30,20]); }catch(_){}
+
+  // sync firebase if available
+  if (FIREBASE_OK && rtdb && ref && runTransaction){
+    try{
+      const hpRef = ref(rtdb, BOSS_RAID_PATH + "/current/hp");
+      runTransaction(hpRef, (cur) => {
+        const curHp = Math.max(0, Number(cur || 0) || 0);
+        return Math.max(0, curHp - dmg);
+      });
+    }catch(e){
+      console.warn("boss hp tx fail", e);
+    }
+    try{
+      const meRef = ref(rtdb, BOSS_RAID_PATH + "/contrib/" + me.uid);
+      runTransaction(meRef, (cur) => {
+        const obj = (cur && typeof cur === "object") ? cur : {};
+        const curDmg = Math.max(0, Number(obj.dmg || 0) || 0);
+        return { name: me.name, avatar: me.avatar, dmg: curDmg + dmg, updatedAt: Date.now() };
+      });
+    }catch(e){
+      console.warn("boss contrib tx fail", e);
+    }
+  }
+}
+
+
+// ===== FIX (Android WebView/content://): Boss HP/Attack click capture (reliable) =====
+let __bossTapTs = 0;
+function __bossTapHandler(e){
+  const el = e.target && e.target.closest ? e.target.closest("[data-boss-hp],[data-boss-attack]") : null;
+  if (!el) return;
+  // only handle inside Profile/Boss section
+  const sec = document.getElementById("pfSec-boss");
+  if (!sec || !sec.contains(el)) return;
+
+  const now = Date.now();
+  if (now - __bossTapTs < 320) return; // chống double fire (pointer + click)
+  __bossTapTs = now;
+
+  try{ e.preventDefault(); }catch(_){}
+  try{ e.stopPropagation(); }catch(_){}
+
+  try{ bossRaidEnsureInit(); }catch(_){}
+
+  if (el.matches("[data-boss-hp]")){
+    try{ bossRaidOpenAttack(); }catch(_){}
+    try{ if (navigator.vibrate) navigator.vibrate(10); }catch(_){}
+    return;
+  }
+  if (el.matches("[data-boss-attack]")){
+    try{ bossRaidAttack(); }catch(_){}
+    return;
+  }
+}
+document.addEventListener("pointerup", __bossTapHandler, true);
+document.addEventListener("click", __bossTapHandler, true);
+
+
+})();
+
+function ensurePvPBots(seedStr){
+  try{
+    const raw = safeGetLS(PVP_BOTS_KEY, "");
+    if (raw){
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length === 10){
+        return arr.map(x => {
+          const points = Math.max(0, Math.floor(Number(x.points || 0) || 0));
+          const storedPow = Math.max(0, Math.floor(Number(x.power || 0) || 0));
+          const power = storedPow > 0 ? storedPow : calcBotPower({ id: x.id, name: x.name, points });
+          return {
+            id: String(x.id || ""),
+            name: String(x.name || "Đối thủ"),
+            avatar: String(x.avatar || ""),
+            points,
+            power
+          };
+        });
+      }
+    }
+  }catch(_){}
+
+  const seed = __hash32(String(seedStr || "pvp"));
+  const rng = __mulberry32(seed);
+  const namesPool = [
+    "Hắc Phong","Bạch Vân","Thanh Vũ","Hỏa Linh","Băng Ảnh","Lôi Quang","Mộc Dạ","Kim Vũ","Thủy Nguyệt","Thổ Sơn",
+    "Thiên Lang","U Minh","Dạ Vương","Ngân Hà","Huyết Ảnh","Phong Vũ","Cửu Vân","Long Nha","Hổ Khiếu","Phượng Minh",
+    "Vạn Kiếm","Thiên Cơ","Ma Tôn","Thánh Tử","Ngọc Diệp","Huyền Vũ","Chu Tước","Bạch Hổ","Thanh Long","Kỳ Lân"
+  ];
+  const pick = (arr) => arr[Math.max(0, Math.min(arr.length-1, Math.floor(rng()*arr.length)))];
+  const used = new Set();
+  const bots = [];
+  for (let i = 0; i < 10; i++){
+    let nm = pick(namesPool);
+    let guard = 0;
+    while (used.has(nm) && guard < 30){ nm = pick(namesPool); guard++; }
+    used.add(nm);
+    const hue = Math.floor(rng()*360);
+    const pts = Math.floor(600 + rng()*2400); // 600..3000
+    bots.push({
+      id: "bot_" + (i+1),
+      name: nm,
+      avatar: __svgAvatar(nm.slice(0,1), hue),
+      points: pts,
+      power: Math.max(1, Math.floor(8000 + pts * 55 + rng() * 12000))
+    });
+  }
+  try{ safeSetLS(PVP_BOTS_KEY, JSON.stringify(bots)); }catch(_){}
+  return bots;
+}
+function savePvPBots(bots){
+  try{ safeSetLS(PVP_BOTS_KEY, JSON.stringify((bots||[]).slice(0,10))); }catch(_){}
+}
+function computePvpRank(playerPoints, bots){
+  const pp = Math.max(0, Math.floor(Number(playerPoints||0)||0));
+  const better = (bots||[]).filter(b => (Number(b.points||0)||0) > pp).length;
+  return { rank: better + 1, total: (bots||[]).length + 1 };
+}
+
+
+    function normalizeWallet(w){
+      const x = (w && typeof w === "object") ? w : {};
+      const coins = Math.max(0, Math.floor(Number(x.coins || 0) || 0));
+      const gems = Math.max(0, Math.floor(Number(x.gems || 0) || 0));
+      return { coins, gems };
+    }
+    function normalizeBag(b){
+      const x = (b && typeof b === "object") ? b : {};
+      const items = (x.items && typeof x.items === "object") ? x.items : {};
+      const normItems = {};
+      try{
+        Object.keys(items).forEach(k => {
+          const c = Math.max(0, Math.floor(Number(items[k] || 0) || 0));
+          if (c > 0) normItems[String(k)] = c;
+        });
+      }catch(_){}
+      const dropBuffUntil = Math.max(0, Number(x.dropBuffUntil || 0) || 0);
+      return { items: normItems, dropBuffUntil };
+    }
+
+
+function normalizeEstate(e){
+  const x = (e && typeof e === "object") ? e : {};
+  const level = clampEstateLevel(x.level);
+  return { level };
+}
+
 function normalizeUserState(raw){
       const r = raw && typeof raw === "object" ? raw : {};
       const norm = {
@@ -4428,6 +5531,11 @@ function normalizeUserState(raw){
         lastReading: (r.lastReading && typeof r.lastReading === "object") ? r.lastReading : {},
         listeningRecent: normalizeListeningRecent(r.listeningRecent),        profile: normalizeProfile(r.profile),
         settings: normalizeSettings(r.settings),
+
+        wallet: normalizeWallet(r.wallet),
+        bag: normalizeBag(r.bag),
+        estate: normalizeEstate(r.estate),
+        vipInfo: (typeof r.vipInfo !== 'undefined' ? r.vipInfo : (typeof r.vip !== 'undefined' ? r.vip : null)),
 
         notifications: Array.isArray(r.notifications) ? r.notifications : [],
         notificationsUnread: Number(r.notificationsUnread || 0) || 0,
@@ -4457,7 +5565,11 @@ function normalizeUserState(raw){
           followedIds: s.followedIds,
           bookmarkIds: s.bookmarkIds,
           historyIds: s.historyIds,
-          lastReading: s.lastReading
+          lastReading: s.lastReading,
+          wallet: s.wallet,
+          bag: s.bag,
+          estate: s.estate,
+          vipInfo: s.vipInfo
         };
         safeSetLS(GUEST_STATE_KEY, JSON.stringify(payload));
       }catch(_){}
@@ -4468,7 +5580,8 @@ function normalizeUserState(raw){
     function hasMeaningfulGuestState(s){
       const st = normalizeUserState(s);
       return (st.followedIds.length + st.bookmarkIds.length + st.historyIds.length) > 0
-        || (st.lastReading && Object.keys(st.lastReading).length > 0);
+        || (st.lastReading && Object.keys(st.lastReading).length > 0)
+        || (st.bag && st.bag.items && Object.keys(st.bag.items).length > 0);
     }
 
     function initFirebaseCompat(){
@@ -4617,6 +5730,8 @@ function normalizeUserState(raw){
     let currentUser = null;
     let userState = loadGuestUserState();
 
+    let __profileAvatarDraft = ""; // avatar draft dataURL for inline profile editor
+
     let presenceUnsub = null;
     let userStateUnsub = null;
     let storyViewsUnsub = null;
@@ -4628,8 +5743,129 @@ function normalizeUserState(raw){
     let websiteIsOnline = (typeof navigator !== "undefined") ? navigator.onLine : true;
     let realtimeOnlineCount = 0;
     let presenceHeartbeatTimer = null;
+    let storyCommentsUnsub = null;
+    let __storyCommentsSeen = new Set();
+    let __storyCommentsStoryId = null;
 
-    /* ============================
+    
+        /* ============================
+       4.5) Cảnh giới tu tiên (EXP)
+       - EXP tu vi hiện được tính theo hoạt động đọc/nghe:
+         EXP = tổng chương đã đọc + ⌊phút đọc/nghe / 5⌋
+       - Hệ thống theo yêu cầu: mỗi cảnh giới có nhiều "cấp" (thường là 9 cấp),
+         và exp/1 cấp được khai báo sẵn theo từng cảnh giới.
+         (hiển thị cấp 1..9; khi đủ tổng EXP của cảnh giới thì đột phá lên cảnh giới kế tiếp).
+       ============================ */
+
+    const CULT_REALMS = [
+      { name: "Phàm Nhân", total: 1000, perLevel: 100 },
+      { name: "Luyện Khí", total: 3000, perLevel: 300 },
+      { name: "Trúc Cơ", total: 9000, perLevel: 900 },
+      { name: "Kim Đan", total: 25000, perLevel: 2500 },
+      { name: "Nguyên Anh", total: 70000, perLevel: 7000 },
+      { name: "Hóa Thần", total: 200000, perLevel: 20000 },
+      { name: "Linh Hải", total: 600000, perLevel: 60000 },
+      { name: "Luyện Hư", total: 1700000, perLevel: 170000 },
+      { name: "Đại Thừa", total: 5000000, perLevel: 500000 },
+      { name: "Độ Kiếp", total: 15000000, perLevel: 1500000 },
+      { name: "Hồng Trần Tiên", total: 40000000, perLevel: 4000000 },
+      { name: "Chân Tiên", total: 120000000, perLevel: 12000000 },
+      { name: "Kim Tiên", total: 350000000, perLevel: 35000000 },
+      { name: "Đại La Kim Tiên", total: 1000000000, perLevel: 100000000 },
+      { name: "Thánh Nhân", total: 3000000000, perLevel: 300000000 },
+      { name: "Thánh Quân", total: 9000000000, perLevel: 900000000 },
+      { name: "Thánh Vương", total: 25000000000, perLevel: 2500000000 },
+      { name: "Chí tôn", total: 70000000000, perLevel: 7000000000 },
+      { name: "Chuẩn Đế", total: 200000000000, perLevel: 20000000000 },
+      { name: "Đại Đế Cảnh", total: 500000000000, perLevel: 50000000000 }
+    ];
+
+    const REALM_STARTS = (() => {
+      const starts = [];
+      let acc = 0;
+      for (const r of CULT_REALMS){
+        starts.push(acc);
+        acc += Math.max(1, Number(r.total || 1));
+      }
+      return starts;
+    })();
+
+    const MAX_EXP = (() => {
+      if (!CULT_REALMS.length) return 0;
+      const lastIdx = CULT_REALMS.length - 1;
+      return (REALM_STARTS[lastIdx] || 0) + Math.max(1, Number(CULT_REALMS[lastIdx].total || 1));
+    })();
+
+    const fmtN = (n) => {
+      const x = Number(n || 0);
+      try { return x.toLocaleString("vi-VN"); } catch (_) { return String(x); }
+    };
+
+    const STAR_NAMES = ["Nhất tinh","Nhị tinh","Tam tinh","Tứ tinh","Ngũ tinh","Lục tinh","Thất tinh","Bát tinh","Cửu tinh"];
+    const STAR_MAX = 9;
+
+
+    function realmDisplayName(name){
+      const n = String(name || "").trim();
+      if (!n) return "Phàm Nhân Cảnh";
+      return (/cảnh$/i.test(n) ? n : (n + " Cảnh"));
+    }
+
+    function getRealmByExp(exp){
+  const x = Math.max(0, Number(exp || 0));
+
+  // chọn cảnh giới dựa theo tổng exp tích lũy
+  let idx = 0;
+  for (let i = 0; i < CULT_REALMS.length; i++){
+    if (x >= (REALM_STARTS[i] || 0)) idx = i;
+    else break;
+  }
+
+  const r = CULT_REALMS[idx] || CULT_REALMS[0] || { name: "Phàm Nhân", total: 1000, perLevel: 100 };
+  const start = REALM_STARTS[idx] || 0;
+
+  const total = Math.max(1, Number(r.total || 1));
+  const per = Math.max(1, Number(r.perLevel || 1));
+  const end = start + total;
+
+  const isMax = (idx === CULT_REALMS.length - 1) && (x >= end);
+
+  // exp tích lũy trong cảnh giới hiện tại (để tính sao/cấp)
+  const inRealmRaw = Math.max(0, x - start);
+
+  // "Tinh" (cấp bậc) trong cảnh giới: 1..9
+  // Lưu ý: nếu vượt quá 9 * per thì vẫn giữ ở Cửu tinh (đỉnh phong) và tiếp tục tu luyện cho tới khi đủ total để đột phá cảnh giới.
+  let star = Math.floor(inRealmRaw / per) + 1;
+  if (star < 1) star = 1;
+  if (star > STAR_MAX) star = STAR_MAX;
+
+  // exp hiện tại của "tinh" đang tu luyện (thanh exp reset mỗi tinh)
+  const inLevel = isMax ? per : (inRealmRaw % per);
+  const inLevelClamped = Math.max(0, Math.min(per, inLevel));
+  const levelPct = Math.min(100, Math.floor((inLevelClamped / per) * 100));
+
+  return {
+    index: idx,
+    realm: r.name,
+    display: realmDisplayName(r.name),
+    start,
+    end,
+    total,
+    perLevel: per,
+
+    // per-level (per tinh)
+    star,
+    starMax: STAR_MAX,
+    starName: STAR_NAMES[star - 1] || ("Cấp " + star),
+    inLevel: inLevelClamped,
+    levelPct,
+
+    isMax,
+    maxExp: MAX_EXP
+  };
+}
+
+/* ============================
        5) DOM refs
        ============================ */
     const $ = (s) => document.querySelector(s);
@@ -4714,6 +5950,11 @@ const bookshelfTabs = $("#bookshelfTabs");
     const storyPageDownloadBtn = $("#storyPageDownloadBtn");
     const storyPageTrackBtn = $("#storyPageTrackBtn");
     const storyPageFlagBtn = $("#storyPageFlagBtn");
+    const storyCommentsList = $("#storyCommentsList");
+    const storyCommentInput = $("#storyCommentInput");
+    const storyCommentSend = $("#storyCommentSend");
+    const storyCommentNote = $("#storyCommentNote");
+    const storyRecoList = $("#storyRecoList");
 
     // Reader page (chapter)
     const readerPage = $("#readerPage");
@@ -5025,9 +6266,11 @@ const bookshelfTabs = $("#bookshelfTabs");
         if (readerState.idx < readerState.chunks.length - 1){
           readerState.idx += 1;
           syncReaderProgress();
+          try{ lootMarkActivity(); }catch(_){ }
           speakCurrent();
         } else {
           // Hết chương
+          try{ lootTryChapterFinish("tts"); }catch(_){ }
           if (readerState.autoNextChapter){
             const st = storyById(readerState.storyId);
             const totalCh = Math.max(1, Number((st && st.chapters) || 0) || 1);
@@ -5061,6 +6304,7 @@ const bookshelfTabs = $("#bookshelfTabs");
       } else {
         // lưu để hiển thị ở Trang chủ > Đang nghe
         touchListeningRecent(readerState.storyId, readerState.chapter, readerState.idx);
+        try{ lootMarkActivity(); }catch(_){ }
         speakCurrent();
       }
     }
@@ -5205,6 +6449,7 @@ const bookshelfTabs = $("#bookshelfTabs");
         }
       }catch(_){ }
 
+      try{ startLootSession(storyId, readerState.chapter); }catch(_){ }
       _rpResetAutoHide();
     }
 
@@ -5343,6 +6588,153 @@ const bookshelfTabs = $("#bookshelfTabs");
       clearTimeout(toast._t);
       toast._t = setTimeout(()=>toastEl.classList.remove("show"), 1800);
     }
+
+    /* ============================
+       Game-like popup for PVP (thách đấu)
+       - Hiện popup giữa màn hình + rung nhẹ (mobile) để tạo cảm giác game
+       ============================ */
+    const gamePopBackdrop = document.getElementById("gamePopBackdrop");
+    const gamePopEl = document.getElementById("gamePop");
+    const gamePopTitle = document.getElementById("gamePopTitle");
+    const gamePopIcon = document.getElementById("gamePopIcon");
+    const gamePopPtsLabel = document.getElementById("gamePopPtsLabel");
+    const gamePopStreakLabel = document.getElementById("gamePopStreakLabel");
+    const gamePopSub = document.getElementById("gamePopSub");
+    const gamePopResult = document.getElementById("gamePopResult");
+    const gamePopDelta = document.getElementById("gamePopDelta");
+    const gamePopPts = document.getElementById("gamePopPts");
+    const gamePopStreak = document.getElementById("gamePopStreak");
+    const gamePopOk = document.getElementById("gamePopOk");
+    const gamePopX = document.getElementById("gamePopX");
+
+    function openGamePop(){
+      if (!gamePopEl || !gamePopBackdrop) return;
+      gamePopBackdrop.classList.add("show");
+      gamePopEl.classList.add("show");
+      gamePopEl.setAttribute("aria-hidden", "false");
+      try{ document.body.style.overflow = "hidden"; }catch(_){}
+    }
+    function closeGamePop(){
+      if (!gamePopEl || !gamePopBackdrop) return;
+      try{ if (typeof pvpBattleResult === "function") clearTimeout(pvpBattleResult._t); }catch(_){ }
+      try{ if (typeof bossBattleResult === "function") clearTimeout(bossBattleResult._t); }catch(_){ }
+      gamePopBackdrop.classList.remove("show");
+      gamePopEl.classList.remove("show");
+      gamePopEl.classList.remove("win","lose");
+      gamePopEl.setAttribute("aria-hidden", "true");
+      try{ document.body.style.overflow = ""; }catch(_){}
+    }
+    function setGamePopState({ mode="neutral", icon=null, title="PvP", sub="", result="", delta="", pts=null, streak=null, ptsLabel=null, streakLabel=null } = {}){
+      if (!gamePopEl) return;
+      if (icon !== null && typeof icon !== "undefined" && gamePopIcon) gamePopIcon.textContent = String(icon || "");
+      if (ptsLabel !== null && typeof ptsLabel !== "undefined" && gamePopPtsLabel) gamePopPtsLabel.textContent = String(ptsLabel || "");
+      if (streakLabel !== null && typeof streakLabel !== "undefined" && gamePopStreakLabel) gamePopStreakLabel.textContent = String(streakLabel || "");
+      gamePopTitle.textContent = title;
+      gamePopSub.textContent = sub || "";
+      gamePopResult.textContent = result || "";
+      gamePopDelta.textContent = delta || "";
+      if (pts !== null) gamePopPts.textContent = fmtN(pts);
+      if (streak !== null) gamePopStreak.textContent = fmtN(streak);
+      gamePopEl.classList.remove("win","lose");
+      if (mode === "win") gamePopEl.classList.add("win");
+      if (mode === "lose") gamePopEl.classList.add("lose");
+    }
+
+    function vibe(ms){
+      try{
+        if (navigator.vibrate) navigator.vibrate(ms);
+      }catch(_){}
+    }
+    function pvpBattleStart(enemyName="Đối thủ", info=null){
+      const lines = [`Đang giao chiến với ${enemyName}…`];
+      if (info && typeof info === "object"){
+        const myPow = Math.max(0, Number(info.myPow || 0) || 0);
+        const enemyPow = Math.max(0, Number(info.enemyPow || 0) || 0);
+        const myDmg = Math.max(0, Number(info.myDmg || 0) || 0);
+        const enemyDmg = Math.max(0, Number(info.enemyDmg || 0) || 0);
+        lines.push(`Lực chiến: ${fmtN(myPow)}  •  Dame: ${fmtN(myDmg)}`);
+        lines.push(`Đối thủ:   ${fmtN(enemyPow)}  •  Dame: ${fmtN(enemyDmg)}`);
+      }
+      setGamePopState({
+        mode:"neutral",
+        icon:"⚔️",
+        title:"PvP • Thách đấu",
+        sub: lines.join("\n"),
+        result:"⚡⚔️⚡",
+        delta:"",
+        ptsLabel:"Điểm PVP",
+        streakLabel:"Chuỗi thắng"
+      });
+      openGamePop();
+      vibe(15);
+    }
+
+    function pvpBattleResult({ win=false, enemyName="Đối thủ", deltaText="", pts=0, streak=0 } = {}){
+      setGamePopState({
+        mode: win ? "win" : "lose",
+        icon:"⚔️",
+        title:"PvP • Kết quả",
+        sub:`Đối thủ: ${enemyName}`,
+        result: win ? "THẮNG" : "THUA",
+        delta: (deltaText ? (String(deltaText) + "\n\n(Thông báo tự tắt sau 10 giây • hoặc bấm OK/✕ để đóng)") : "(Thông báo tự tắt sau 10 giây • hoặc bấm OK/✕ để đóng)"),
+        pts, streak,
+        ptsLabel:"Điểm PVP",
+        streakLabel:"Chuỗi thắng"
+      });
+      vibe(win ? [20,30,20] : [40,40]);
+      clearTimeout(pvpBattleResult._t);
+      // Tự đóng sau 10 giây (hoặc người dùng tự đóng bằng OK/✕)
+      pvpBattleResult._t = setTimeout(()=>closeGamePop(), 10000);
+    }
+
+    function bossBattleStart(bossName="Boss", info=null){
+      const lines = [`Đang giao chiến với ${bossName}…`];
+      if (info && typeof info === "object"){
+        const myPow = Math.max(0, Number(info.myPow || 0) || 0);
+        const bossPow = Math.max(0, Number(info.bossPow || info.enemyPow || 0) || 0);
+        const myDmg = Math.max(0, Number(info.myDmg || 0) || 0);
+        const bossDmg = Math.max(0, Number(info.bossDmg || info.enemyDmg || 0) || 0);
+        lines.push(`Lực chiến: ${fmtN(myPow)}  •  Dame: ${fmtN(myDmg)}`);
+        lines.push(`Boss:      ${fmtN(bossPow)}  •  Dame: ${fmtN(bossDmg)}`);
+      }
+      setGamePopState({
+        mode:"neutral",
+        icon:"🐉",
+        title:"Boss • Săn boss",
+        sub: lines.join("\n"),
+        result:"🔥🐉🔥",
+        delta:"",
+        ptsLabel:"Điểm Boss",
+        streakLabel:"Boss đã hạ"
+      });
+      openGamePop();
+      vibe(15);
+    }
+
+    function bossBattleResult({ win=false, bossName="Boss", deltaText="", pts=0, kills=0 } = {}){
+      setGamePopState({
+        mode: win ? "win" : "lose",
+        icon:"🐉",
+        title:"Boss • Kết quả",
+        sub:`Boss: ${bossName}`,
+        result: win ? "HẠ GỤC" : "THẤT BẠI",
+        delta: (deltaText ? (String(deltaText) + "\n\n(Thông báo tự tắt sau 10 giây • hoặc bấm OK/✕ để đóng)") : "(Thông báo tự tắt sau 10 giây • hoặc bấm OK/✕ để đóng)"),
+        pts,
+        streak: kills,
+        ptsLabel:"Điểm Boss",
+        streakLabel:"Boss đã hạ"
+      });
+      vibe(win ? [20,30,20] : [40,40]);
+      clearTimeout(bossBattleResult._t);
+      // Tự đóng sau 10 giây (hoặc người dùng tự đóng bằng OK/✕)
+      bossBattleResult._t = setTimeout(()=>closeGamePop(), 10000);
+    }
+
+    // Close handlers
+    if (gamePopBackdrop) gamePopBackdrop.addEventListener("click", closeGamePop);
+    if (gamePopOk) gamePopOk.addEventListener("click", closeGamePop);
+    if (gamePopX) gamePopX.addEventListener("click", closeGamePop);
+
     function esc(s=""){
       return String(s)
         .replaceAll("&","&amp;")
@@ -5350,6 +6742,749 @@ const bookshelfTabs = $("#bookshelfTabs");
         .replaceAll(">","&gt;")
         .replaceAll('"',"&quot;");
     }
+
+    /* ============================
+       Loot drop khi đọc/nghe + Hành trang
+       - Rơi vật phẩm theo thời gian đọc + khi tới cuối chương (scroll / TTS hết chương)
+       - Danh mục ~150 vật phẩm + mô tả công dụng
+       ============================ */
+
+    const LOOT_CFG = {
+      tickMs: 60000,            // mỗi 60s xét rơi thêm
+      activeWindowMs: 90000,    // coi là "đang đọc" nếu có hoạt động trong 90s gần nhất
+      perTickChance: 0.22,      // tỉ lệ rơi mỗi tick khi đang đọc
+      chapterFinishChance: 1.0, // tỉ lệ rơi khi hoàn thành chương (1.0 = chắc chắn)
+      maxExtraDropsPerChapter: 3,
+      nearBottomPx: 140
+    };
+
+    const RARITY_LABEL = {
+      common: "Thường",
+      uncommon: "Khá",
+      rare: "Hiếm",
+      epic: "Sử Thi",
+      legendary: "Huyền Thoại",
+      mythic: "Thần Thoại"
+    };
+
+    function _fmtMinutes(m){
+      m = Math.max(0, Math.floor(Number(m||0)||0));
+      if (m >= 1440) return Math.round(m/1440) + " ngày";
+      if (m >= 60) return Math.round(m/60) + " giờ";
+      return m + " phút";
+    }
+
+    function buildItemCatalog(){
+      const items = [];
+
+      const pushItem = (it) => {
+        items.push({
+          id: String(it.id),
+          name: String(it.name),
+          rarity: String(it.rarity || "common"),
+          type: String(it.type || "misc"),
+          desc: String(it.desc || ""),
+          effect: it.effect || null
+        });
+      };
+
+      // 1) Xu (20)
+      const coinAmts = [10,20,30,50,80,100,150,200,300,400,500,650,800,1000,1200,1500,2000,2500,3000,5000];
+      coinAmts.forEach((amt, i) => {
+        const rarity = amt >= 2000 ? "rare" : (amt >= 800 ? "uncommon" : "common");
+        pushItem({
+          id: `coin_${amt}`,
+          name: `Túi Xu ${amt}`,
+          rarity,
+          type: "currency",
+          desc: `Công dụng: dùng ngay để cộng ${amt} Xu vào ví. Xu dùng để đổi quà / mở tiện ích trong tương lai.`,
+          effect: { kind:"coins", amount: amt }
+        });
+      });
+
+      // 2) Ngọc (10)
+      const gemAmts = [1,2,3,5,8,10,15,20,30,50];
+      gemAmts.forEach((amt) => {
+        const rarity = amt >= 30 ? "legendary" : (amt >= 15 ? "epic" : (amt >= 8 ? "rare" : "uncommon"));
+        pushItem({
+          id: `gem_${amt}`,
+          name: `Ngọc ${amt}`,
+          rarity,
+          type: "currency",
+          desc: `Công dụng: dùng ngay để cộng ${amt} Ngọc. Ngọc là tiền hiếm để đổi các vật phẩm cao cấp.`,
+          effect: { kind:"gems", amount: amt }
+        });
+      });
+
+      // 3) Vé VIP (10)
+      const vipMins = [30,60,120,240,360,720,1440,4320,10080,43200]; // 30m .. 30 ngày
+      vipMins.forEach((mins) => {
+        const rarity = mins >= 10080 ? "legendary" : (mins >= 1440 ? "epic" : (mins >= 240 ? "rare" : "uncommon"));
+        pushItem({
+          id: `vip_${mins}`,
+          name: `Vé VIP ${_fmtMinutes(mins)}`,
+          rarity,
+          type: "buff",
+          desc: `Công dụng: kích hoạt VIP trong ${_fmtMinutes(mins)}. VIP giúp tăng nhẹ tỉ lệ rơi vật phẩm + hiển thị huy hiệu VIP trong hồ sơ.`,
+          effect: { kind:"vip", minutes: mins }
+        });
+      });
+
+      // 4) Bùa tăng rơi (15)
+      const luckMins = [5,10,15,20,30,45,60,90,120,180,240,360,480,720,1440];
+      luckMins.forEach((mins) => {
+        const rarity = mins >= 720 ? "epic" : (mins >= 240 ? "rare" : (mins >= 60 ? "uncommon" : "common"));
+        pushItem({
+          id: `luck_${mins}`,
+          name: `Bùa Tăng Rơi ${_fmtMinutes(mins)}`,
+          rarity,
+          type: "buff",
+          desc: `Công dụng: cộng dồn ${_fmtMinutes(mins)} buff 🍀 (tăng tỉ lệ rơi + ưu tiên rơi vật phẩm hiếm khi đọc/nghe).`,
+          effect: { kind:"luck", minutes: mins }
+        });
+      });
+
+      // 5) Túi quà (10)
+      const boxes = [
+        { id:"box_newbie", name:"Túi Tân Thủ", rarity:"common", tier:"newbie", note:"chứa 1–2 vật phẩm Thường/Khá + ít Xu" },
+        { id:"box_common", name:"Túi Thường", rarity:"common", tier:"common", note:"chứa 1–3 vật phẩm Thường + Xu" },
+        { id:"box_uncommon", name:"Túi Khá", rarity:"uncommon", tier:"uncommon", note:"có cơ hội rơi Hiếm + buff" },
+        { id:"box_rare", name:"Túi Hiếm", rarity:"rare", tier:"rare", note:"chứa vật phẩm Hiếm/Sử Thi" },
+        { id:"box_epic", name:"Túi Sử Thi", rarity:"epic", tier:"epic", note:"ưu tiên Sử Thi + Ngọc" },
+        { id:"box_legend", name:"Túi Huyền Thoại", rarity:"legendary", tier:"legendary", note:"cơ hội rơi Huyền Thoại" },
+        { id:"box_mythic", name:"Rương Thần Thoại", rarity:"mythic", tier:"mythic", note:"tỉ lệ nhỏ rơi Thần Thoại" },
+        { id:"box_story", name:"Túi Chủ Đề Truyện", rarity:"uncommon", tier:"story", note:"thường ra nguyên liệu + bùa" },
+        { id:"box_night", name:"Túi Đêm Khuya", rarity:"rare", tier:"night", note:"thường ra buff dài + Xu nhiều" },
+        { id:"box_lucky", name:"Túi May Mắn", rarity:"epic", tier:"lucky", note:"tăng cơ hội rơi vật phẩm hiếm khi mở" },
+      ];
+      boxes.forEach(b=>{
+        pushItem({
+          id: b.id,
+          name: b.name,
+          rarity: b.rarity,
+          type: "box",
+          desc: `Công dụng: mở túi nhận quà ngẫu nhiên (${b.note}).`,
+          effect: { kind:"box", tier: b.tier }
+        });
+      });
+
+      // 6) Nguyên liệu (60 = 20 loại x 3 cấp)
+      const mats = [
+        "Tinh Thạch","Linh Thảo","Da Yêu","Huyết Tinh","Mộc Linh","Kim Sa",
+        "Hỏa Tinh","Thủy Ngọc","Phong Vũ","Lôi Tinh","Mảnh Cổ Văn","Bột Sao",
+        "Sợi Linh Tơ","Mảnh Bùa","Tinh Hoa Truyện","Mực Huyền","Giấy Tàng Thư",
+        "Keo Bìa","Đá Thanh Âm","Phôi Huy Hiệu"
+      ];
+      const tiers = [
+        { suf:"I", rarity:"common", hint:"dùng để ghép vật phẩm cơ bản / đổi quà thường" },
+        { suf:"II", rarity:"uncommon", hint:"dùng để ghép vật phẩm nâng cao / đổi quà khá" },
+        { suf:"III", rarity:"rare", hint:"dùng để ghép vật phẩm hiếm / nâng cấp túi quà" },
+      ];
+      mats.forEach((name) => {
+        tiers.forEach(t => {
+          pushItem({
+            id: `mat_${name.replace(/\s+/g,'_').toLowerCase()}_${t.suf.toLowerCase()}`,
+            name: `${name} ${t.suf}`,
+            rarity: t.rarity,
+            type: "material",
+            desc: `Công dụng: nguyên liệu ${t.hint}. (Hệ ghép/chế tạo sẽ bổ sung sau)`,
+            effect: null
+          });
+        });
+      });
+
+      // 7) Di vật / đồ sưu tầm (25)
+      const relics = [
+        ["Bút Lông Thư Sinh","Dùng để đổi 1 lượng Xu và tăng nhẹ may mắn khi đọc 30 phút."],
+        ["Chuông Gió Bình An","Kích hoạt buff 🍀 ngắn và tặng ít Xu."],
+        ["Thẻ Thư Viện","Nhận Xu + tăng tỉ lệ rơi nguyên liệu khi đọc."],
+        ["Đèn Dầu Cổ","Tăng tỉ lệ rơi thêm 1 lần trong chương kế tiếp."],
+        ["Mặt Nạ Hí Kịch","Nhận Xu và có cơ hội rơi Túi Khá."],
+        ["Hộp Mực Đen","Nhận nguyên liệu (Mực Huyền) và ít Xu."],
+        ["Ấn Chương Đỏ","Nhận 1–2 nguyên liệu cấp II."],
+        ["Cổ Ngọc Lam","Nhận Ngọc nhỏ và buff 🍀."],
+        ["Mảnh Bản Đồ","Nhận 1 Túi Chủ Đề Truyện."],
+        ["Thẻ Tác Giả","Nhận Xu + 1 bùa tăng rơi ngẫu nhiên."],
+        ["Linh Phù May Mắn","Cộng dồn buff 🍀 60 phút."],
+        ["Huy Hiệu Người Đọc","Sưu tầm: hiển thị huy hiệu trong kho (không tiêu hao)."],
+        ["Huy Hiệu Người Nghe","Sưu tầm: hiển thị huy hiệu trong kho (không tiêu hao)."],
+        ["Huy Hiệu Đêm Khuya","Sưu tầm: phù hợp đọc ban đêm (không tiêu hao)."],
+        ["Thư Tay Bí Ẩn","Mở thư nhận quà ngẫu nhiên (Xu / vật phẩm)."],
+        ["Túi Vải Nhỏ","Mở túi nhận 1–2 nguyên liệu."],
+        ["Bình Nước Linh","Nhận 1 bùa tăng rơi 20 phút."],
+        ["Con Dấu Cộng Đồng","Nhận Xu và tăng nhẹ tỉ lệ rơi khi chat (tạm thời tính khi đọc)." ],
+        ["Thẻ Đánh Dấu","Nhận 1 bùa tăng rơi 10 phút."],
+        ["Kính Lão Học","Nhận Xu và 1–2 nguyên liệu cấp II."],
+        ["Mảnh Gương Vỡ","Có cơ hội rơi Túi Hiếm."],
+        ["Nhẫn Bạc Cũ","Nhận Xu nhiều."],
+        ["Bùa Hộ Thân","Nhận buff 🍀 120 phút."],
+        ["Hộp Nhạc Nhỏ","Nhận Xu + có cơ hội rơi Ngọc."],
+        ["Khế Ước VIP","Kích hoạt VIP 1 ngày."],
+      ];
+      relics.forEach((r, idx) => {
+        const [name, use] = r;
+        const rarity =
+          name.includes("Khế Ước") ? "epic" :
+          name.includes("Ngọc") ? "rare" :
+          name.includes("Bùa") ? "rare" :
+          name.includes("Huy Hiệu") ? "uncommon" :
+          (idx % 7 === 0 ? "rare" : "uncommon");
+        pushItem({
+          id: `relic_${String(idx+1).padStart(2,'0')}`,
+          name,
+          rarity,
+          type: "relic",
+          desc: `Công dụng: ${use}`,
+          effect: { kind:"relic", index: idx+1 }
+        });
+      });
+
+      // đảm bảo đủ 150
+      if (items.length !== 150){
+        console.warn("Item catalog length:", items.length);
+      }
+      return items;
+    }
+
+    const ITEM_CATALOG = buildItemCatalog();
+    const ITEM_BY_ID = (() => {
+      const m = {};
+      ITEM_CATALOG.forEach(it => { m[it.id] = it; });
+      return m;
+    })();
+
+    function getWallet(){ return normalizeWallet(userState?.wallet); }
+    function getBag(){ return normalizeBag(userState?.bag); }
+
+    function getVipState(){
+      try{ return getVipSummary(); }catch(_){ return { label:"Thường", detail:"", active:false }; }
+    }
+
+    function _bagTotalCount(itemsObj){
+      try{
+        return Object.values(itemsObj || {}).reduce((s, v) => s + (Number(v)||0), 0);
+      }catch(_){ return 0; }
+    }
+    function updateBagBubble(){
+      const el = document.querySelector("#bagCount");
+      if (!el) return;
+      const bag = getBag();
+      const n = _bagTotalCount(bag.items);
+      el.textContent = String(n);
+    }
+
+    function showLootFx(text){
+      const fx = document.querySelector("#lootFx");
+      const fxText = document.querySelector("#lootFxText");
+      if (!fx || !fxText) { toast(text); return; }
+      fxText.textContent = text;
+      fx.classList.remove("hidden");
+      fx.setAttribute("aria-hidden","false");
+      clearTimeout(showLootFx._t);
+      showLootFx._t = setTimeout(() => {
+        fx.classList.add("hidden");
+        fx.setAttribute("aria-hidden","true");
+      }, 1400);
+    }
+
+    async function addToBag(itemId, qty = 1, opts = {}){
+      const id = String(itemId || "");
+      const item = ITEM_BY_ID[id];
+      if (!item) return false;
+      const q = Math.max(1, Math.floor(Number(qty||1)||1));
+      const bag = getBag();
+      const items = { ...(bag.items || {}) };
+      items[id] = (Number(items[id]||0) || 0) + q;
+      const nextBag = { ...bag, items };
+      const ok = await saveUserStatePatch({ bag: nextBag }, { noRender: true });
+      if (ok){
+        updateBagBubble();
+        if (!opts.silent){
+          showLootFx(`🎁 Rơi: ${item.name} (+${q})`);
+        }
+      }
+      return ok;
+    }
+
+    function _pushCoinsGemsPatch(wallet, extra = {}){
+      const patch = { wallet, ...extra };
+      return patch;
+    }
+
+    async function addCoins(amount){
+      const add = Math.max(0, Math.floor(Number(amount||0)||0));
+      if (!add) return false;
+      const w = getWallet();
+      const next = { ...w, coins: (w.coins||0) + add };
+      const ok = await saveUserStatePatch(_pushCoinsGemsPatch(next), { noRender: true });
+      if (ok) updateBagHeaderUI();
+      return ok;
+    }
+    async function addGems(amount){
+      const add = Math.max(0, Math.floor(Number(amount||0)||0));
+      if (!add) return false;
+      const w = getWallet();
+      const next = { ...w, gems: (w.gems||0) + add };
+      const ok = await saveUserStatePatch(_pushCoinsGemsPatch(next), { noRender: true });
+      if (ok) updateBagHeaderUI();
+      return ok;
+    }
+
+    async function addLuckMinutes(mins){
+      const add = Math.max(0, Math.floor(Number(mins||0)||0));
+      if (!add) return false;
+      const bag = getBag();
+      const now = Date.now();
+      const base = Math.max(now, Number(bag.dropBuffUntil||0)||0);
+      const nextBag = { ...bag, dropBuffUntil: base + add*60*1000 };
+      const ok = await saveUserStatePatch({ bag: nextBag }, { noRender: true });
+      if (ok) updateBagHeaderUI();
+      return ok;
+    }
+
+    async function addVipMinutes(mins){
+      const add = Math.max(0, Math.floor(Number(mins||0)||0));
+      if (!add) return false;
+      const now = Date.now();
+      const cur = userState?.vipInfo;
+      let expiresAt = 0;
+      try{
+        if (cur && typeof cur === "object") expiresAt = Number(cur.expiresAt || cur.until || 0) || 0;
+      }catch(_){}
+      const base = Math.max(now, expiresAt);
+      const nextVip = { tier:"VIP", active:true, expiresAt: base + add*60*1000 };
+      const ok = await saveUserStatePatch({ vipInfo: nextVip }, { noRender: true });
+      if (ok) updateBagHeaderUI();
+      return ok;
+    }
+
+    function isLuckActive(){
+      const bag = getBag();
+      const until = Number(bag.dropBuffUntil || 0) || 0;
+      return until > Date.now();
+    }
+
+    function getLuckMinutesLeft(){
+      const bag = getBag();
+      const until = Number(bag.dropBuffUntil || 0) || 0;
+      return Math.max(0, Math.ceil((until - Date.now())/60000));
+    }
+
+    function getLootContext(){
+      const vip = getVipState();
+      const luck = isLuckActive();
+      // VIP + Luck tăng nhẹ tỉ lệ rơi và thiên về hiếm
+      const chanceMult = (vip.active ? 1.08 : 1.0) * (luck ? 1.25 : 1.0);
+      const rareBoost = (vip.active ? 1 : 0) + (luck ? 2 : 0); // 0..3
+      return { vip, luck, chanceMult, rareBoost };
+    }
+
+    function pickRarity(rareBoost = 0){
+      // base weights
+      let w = [
+        { r:"common", v: 55 },
+        { r:"uncommon", v: 25 },
+        { r:"rare", v: 12 },
+        { r:"epic", v: 6 },
+        { r:"legendary", v: 1.8 },
+        { r:"mythic", v: 0.2 }
+      ];
+      // boost: giảm common, tăng rare+
+      if (rareBoost > 0){
+        const b = Math.min(3, Math.max(1, rareBoost));
+        w = w.map(x => {
+          if (x.r === "common") return { ...x, v: x.v * (1 - 0.12*b) };
+          if (x.r === "uncommon") return { ...x, v: x.v * (1 - 0.06*b) };
+          if (x.r === "rare") return { ...x, v: x.v * (1 + 0.20*b) };
+          if (x.r === "epic") return { ...x, v: x.v * (1 + 0.25*b) };
+          if (x.r === "legendary") return { ...x, v: x.v * (1 + 0.35*b) };
+          if (x.r === "mythic") return { ...x, v: x.v * (1 + 0.50*b) };
+          return x;
+        });
+      }
+      const sum = w.reduce((s,x)=>s+x.v,0);
+      let t = Math.random()*sum;
+      for (const x of w){
+        t -= x.v;
+        if (t <= 0) return x.r;
+      }
+      return "common";
+    }
+
+    function pickItemByRarity(rarity){
+      const pool = ITEM_CATALOG.filter(it => it.rarity === rarity && it.type !== "currency"); // currency vẫn có thể rơi từ túi / di vật
+      if (!pool.length){
+        // fallback
+        return ITEM_CATALOG[Math.floor(Math.random()*ITEM_CATALOG.length)];
+      }
+      return pool[Math.floor(Math.random()*pool.length)];
+    }
+
+    function rollDropItem(){
+      const ctx = getLootContext();
+      const rar = pickRarity(ctx.rareBoost);
+      let item = pickItemByRarity(rar);
+
+      // bonus nhỏ: thỉnh thoảng rơi luôn Xu
+      if (Math.random() < 0.18){
+        const amt = [10,20,30,50,80,100,150,200][Math.floor(Math.random()*8)];
+        item = ITEM_BY_ID[`coin_${amt}`] || item;
+      }
+
+      return item;
+    }
+
+    // ===== Bag UI =====
+    const bagOverlay = document.querySelector("#bagOverlay");
+    const bagModal = document.querySelector("#bagModal");
+    const bagCloseBtn = document.querySelector("#bagCloseBtn");
+    const bagSearch = document.querySelector("#bagSearch");
+    const bagCoinsEl = document.querySelector("#bagCoins");
+    const bagGemsEl = document.querySelector("#bagGems");
+    const bagLuckEl = document.querySelector("#bagLuck");
+    const bagVipEl = document.querySelector("#bagVip");
+    const bagPaneOwned = document.querySelector("#bagPaneOwned");
+    const bagPaneAll = document.querySelector("#bagPaneAll");
+
+    let __bagTab = "owned";
+    let __bagRenderedAll = false;
+
+    function updateBagHeaderUI(){
+      if (bagCoinsEl) bagCoinsEl.textContent = String(getWallet().coins || 0);
+      if (bagGemsEl) bagGemsEl.textContent = String(getWallet().gems || 0);
+      if (bagLuckEl) bagLuckEl.textContent = String(getLuckMinutesLeft());
+      if (bagVipEl){
+        const vip = getVipState();
+        bagVipEl.textContent = vip.active ? "VIP" : "Thường";
+      }
+      updateBagBubble();
+    }
+
+    function _rarClass(r){
+      return String(r || "common").toLowerCase();
+    }
+
+    function _itemCardHTML(it, ownedCount){
+      const rar = _rarClass(it.rarity);
+      const rarText = RARITY_LABEL[rar] || "Thường";
+      const countBadge = (ownedCount && ownedCount > 0) ? `<span class="cnt">x${ownedCount}</span>` : "";
+      const canUse = (ownedCount && ownedCount > 0) && !!it.effect;
+      const useBtn = `<button class="item-use" type="button" data-use-item="${esc(it.id)}" ${canUse ? "" : "disabled"}>Dùng</button>`;
+      return `
+        <div class="item-card" data-item-id="${esc(it.id)}">
+          <div class="item-top">
+            <div class="item-name">${esc(it.name)}</div>
+            <div class="item-badges">
+              ${countBadge}
+              <span class="rar ${rar}">${esc(rarText)}</span>
+            </div>
+          </div>
+          <div class="item-desc">${esc(it.desc)}</div>
+          <div class="item-actions">${useBtn}</div>
+        </div>
+      `.trim();
+    }
+
+    function renderBagOwned(filterText = ""){
+      if (!bagPaneOwned) return;
+      const bag = getBag();
+      const itemsObj = bag.items || {};
+      const q = String(filterText || "").trim().toLowerCase();
+
+      const owned = Object.keys(itemsObj)
+        .map(id => ({ id, c: Number(itemsObj[id]||0)||0, it: ITEM_BY_ID[id] }))
+        .filter(x => x.it && x.c > 0);
+
+      const list = owned
+        .filter(x => !q || (x.it.name || "").toLowerCase().includes(q) || (x.it.desc || "").toLowerCase().includes(q))
+        .sort((a,b) => {
+          const order = { mythic:5, legendary:4, epic:3, rare:2, uncommon:1, common:0 };
+          const oa = order[_rarClass(a.it.rarity)] ?? 0;
+          const ob = order[_rarClass(b.it.rarity)] ?? 0;
+          if (oa !== ob) return ob - oa;
+          if (a.c !== b.c) return b.c - a.c;
+          return (a.it.name||"").localeCompare(b.it.name||"", "vi");
+        });
+
+      if (!list.length){
+        bagPaneOwned.innerHTML = `<div class="muted" style="padding:10px 2px">Chưa có vật phẩm. Hãy đọc/nghe truyện để rơi đồ 🎁</div>`;
+        return;
+      }
+
+      bagPaneOwned.innerHTML = `<div class="item-grid">${list.map(x => _itemCardHTML(x.it, x.c)).join("")}</div>`;
+    }
+
+    function renderBagAll(filterText = ""){
+      if (!bagPaneAll) return;
+      const bag = getBag();
+      const itemsObj = bag.items || {};
+      const q = String(filterText || "").trim().toLowerCase();
+
+      const list = ITEM_CATALOG
+        .filter(it => !q || (it.name||"").toLowerCase().includes(q) || (it.desc||"").toLowerCase().includes(q))
+        .sort((a,b)=> (a.name||"").localeCompare(b.name||"", "vi"));
+
+      bagPaneAll.innerHTML = `<div class="item-grid">${list.map(it => _itemCardHTML(it, Number(itemsObj[it.id]||0)||0)).join("")}</div>`;
+      __bagRenderedAll = true;
+    }
+
+    function setBagTab(tab){
+      __bagTab = (tab === "all") ? "all" : "owned";
+      document.querySelectorAll(".bag-tab").forEach(btn => {
+        btn.classList.toggle("active", (btn.getAttribute("data-bag-tab")||"") === __bagTab);
+      });
+      if (bagPaneOwned) bagPaneOwned.classList.toggle("hidden", __bagTab !== "owned");
+      if (bagPaneAll) bagPaneAll.classList.toggle("hidden", __bagTab !== "all");
+      const q = bagSearch ? bagSearch.value : "";
+      if (__bagTab === "owned") renderBagOwned(q);
+      else if (__bagTab === "all") renderBagAll(q);
+    }
+
+    function openBag(){
+      if (!bagModal || !bagOverlay) return;
+      updateBagHeaderUI();
+      bagOverlay.classList.remove("hidden");
+      bagModal.classList.remove("hidden");
+      bagOverlay.setAttribute("aria-hidden","false");
+      bagModal.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+      setBagTab(__bagTab);
+      try{ bagSearch && bagSearch.focus(); }catch(_){}
+    }
+
+    function closeBag(){
+      if (!bagModal || !bagOverlay) return;
+      bagOverlay.classList.add("hidden");
+      bagModal.classList.add("hidden");
+      bagOverlay.setAttribute("aria-hidden","true");
+      bagModal.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+    }
+
+    async function consumeItem(itemId){
+      const id = String(itemId||"");
+      const it = ITEM_BY_ID[id];
+      if (!it) return;
+      const bag = getBag();
+      const itemsObj = { ...(bag.items || {}) };
+      const c = Number(itemsObj[id]||0)||0;
+      if (c <= 0){
+        toast("Bạn không có vật phẩm này.");
+        return;
+      }
+
+      // giảm 1
+      if (c === 1) delete itemsObj[id];
+      else itemsObj[id] = c - 1;
+
+      // apply effect
+      const eff = it.effect;
+      let extraPatch = {};
+      let effectOk = true;
+
+      try{
+        if (!eff){
+          effectOk = false;
+        } else if (eff.kind === "coins"){
+          await addCoins(eff.amount || 0);
+        } else if (eff.kind === "gems"){
+          await addGems(eff.amount || 0);
+        } else if (eff.kind === "luck"){
+          await addLuckMinutes(eff.minutes || 0);
+        } else if (eff.kind === "vip"){
+          await addVipMinutes(eff.minutes || 0);
+        } else if (eff.kind === "box"){
+          await openLootBox(eff.tier || "common");
+        } else if (eff.kind === "relic"){
+          await applyRelic(eff.index || 0);
+        } else {
+          effectOk = false;
+        }
+      }catch(e){
+        console.warn(e);
+        effectOk = false;
+      }
+
+      // lưu lại bag sau khi dùng (ưu tiên lưu cuối để tránh mất vật phẩm khi effect lỗi)
+      const nextBag = { ...bag, items: itemsObj };
+      const ok = await saveUserStatePatch({ bag: nextBag, ...extraPatch });
+      if (ok){
+        updateBagHeaderUI();
+        const q = bagSearch ? bagSearch.value : "";
+        if (__bagTab === "owned") renderBagOwned(q);
+        else renderBagAll(q);
+        toast(effectOk ? `Đã dùng: ${it.name}` : `Không thể dùng: ${it.name}`);
+      }
+    }
+
+    async function openLootBox(tier){
+      // mở rương: nhận 2–4 vật phẩm dựa theo tier
+      const t = String(tier||"common");
+      const rolls = (t === "mythic") ? 4 : (t === "legendary" ? 4 : (t === "epic" ? 3 : 2));
+      const baseRareBoost =
+        (t === "newbie") ? 0 :
+        (t === "common") ? 0 :
+        (t === "uncommon") ? 1 :
+        (t === "rare") ? 2 :
+        (t === "epic") ? 3 :
+        (t === "legendary") ? 3 :
+        (t === "mythic") ? 3 :
+        (t === "lucky") ? 3 :
+        1;
+
+      // thêm tiền
+      const coinBonus = (t === "newbie") ? 60 : (t === "common" ? 80 : (t === "uncommon" ? 120 : (t === "rare" ? 180 : (t === "epic" ? 260 : 350))));
+      await addCoins(coinBonus);
+
+      if (t === "epic" || t === "legendary" || t === "mythic" || t === "lucky"){
+        // tặng ngọc nhỏ
+        await addGems(t === "mythic" ? 8 : (t === "legendary" ? 5 : 2));
+      }
+
+      for (let i=0;i<rolls;i++){
+        const rar = pickRarity(baseRareBoost);
+        const it = pickItemByRarity(rar);
+        await addToBag(it.id, 1, { silent: true });
+      }
+      showLootFx("🎁 Mở túi thành công!");
+    }
+
+    async function applyRelic(index){
+      // hiệu ứng di vật: tặng ngẫu nhiên (xu/buff/túi quà)
+      const n = Math.max(0, Number(index||0)||0);
+      if (n === 25){
+        await addVipMinutes(1440);
+        showLootFx("👑 Kích hoạt VIP 1 ngày!");
+        return;
+      }
+      const r = Math.random();
+      if (r < 0.45){
+        await addCoins(120 + (n%5)*40);
+        showLootFx("🪙 Nhận Xu!");
+      } else if (r < 0.75){
+        await addLuckMinutes(20 + (n%4)*10);
+        showLootFx("🍀 Nhận buff rơi!");
+      } else if (r < 0.92){
+        const b = ["box_common","box_uncommon","box_rare"][Math.floor(Math.random()*3)];
+        await addToBag(b, 1, { silent: true });
+        showLootFx("🎁 Nhận túi quà!");
+      } else {
+        await addGems(1 + (n%2));
+        showLootFx("💎 Nhận Ngọc!");
+      }
+    }
+
+    // Event listeners for bag
+    document.addEventListener("click", (e) => {
+      const tabBtn = e.target.closest(".bag-tab");
+      if (tabBtn){
+        setBagTab(tabBtn.getAttribute("data-bag-tab") || "owned");
+        return;
+      }
+      const useBtn = e.target.closest("[data-use-item]");
+      if (useBtn && bagModal && !bagModal.classList.contains("hidden")){
+        const id = useBtn.getAttribute("data-use-item") || "";
+        consumeItem(id);
+        return;
+      }
+    });
+
+    bagOverlay?.addEventListener("click", closeBag);
+    bagCloseBtn?.addEventListener("click", closeBag);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && bagModal && !bagModal.classList.contains("hidden")){
+        closeBag();
+      }
+    });
+    bagSearch?.addEventListener("input", () => {
+      const q = bagSearch.value || "";
+      if (__bagTab === "owned") renderBagOwned(q);
+      else renderBagAll(q);
+    });
+
+    // Attach open bag button
+    document.querySelector("#btnBag")?.addEventListener("click", openBag);
+
+    // ===== Loot runtime (Reader) =====
+    const lootState = {
+      active: false,
+      storyId: null,
+      chapter: null,
+      sessionKey: "",
+      droppedFinish: false,
+      extraDrops: 0,
+      activityAt: 0,
+      tickTimer: null
+    };
+
+    function lootMarkActivity(){
+      lootState.activityAt = Date.now();
+    }
+
+    function startLootSession(storyId, chapter){
+      lootState.active = true;
+      lootState.storyId = String(storyId||"");
+      lootState.chapter = Math.max(1, Number(chapter||1));
+      lootState.sessionKey = lootState.storyId + "|" + lootState.chapter;
+      lootState.droppedFinish = false;
+      lootState.extraDrops = 0;
+      lootState.activityAt = Date.now();
+
+      if (lootState.tickTimer) clearInterval(lootState.tickTimer);
+      lootState.tickTimer = setInterval(() => {
+        if (!lootState.active) return;
+        if (!document.body.classList.contains("reader-mode")) return;
+        const now = Date.now();
+        const active = (now - (lootState.activityAt||0)) <= LOOT_CFG.activeWindowMs;
+        if (!active) return;
+        if (lootState.extraDrops >= LOOT_CFG.maxExtraDropsPerChapter) return;
+
+        const ctx = getLootContext();
+        const chance = Math.min(0.75, LOOT_CFG.perTickChance * (ctx.chanceMult || 1));
+        if (Math.random() < chance){
+          lootState.extraDrops += 1;
+          const item = rollDropItem();
+          addToBag(item.id, 1).catch(_=>{});
+        }
+      }, LOOT_CFG.tickMs);
+    }
+
+    function stopLootSession(){
+      lootState.active = false;
+      lootState.storyId = null;
+      lootState.chapter = null;
+      lootState.sessionKey = "";
+      lootState.droppedFinish = false;
+      lootState.extraDrops = 0;
+      lootState.activityAt = 0;
+      if (lootState.tickTimer) clearInterval(lootState.tickTimer);
+      lootState.tickTimer = null;
+    }
+
+    function lootTryChapterFinish(source){
+      if (!lootState.active || lootState.droppedFinish) return;
+      if (!lootState.storyId || !lootState.chapter) return;
+
+      const ctx = getLootContext();
+      const chance = Math.min(1.0, LOOT_CFG.chapterFinishChance * (ctx.chanceMult || 1));
+      if (Math.random() <= chance){
+        lootState.droppedFinish = true;
+        const item = rollDropItem();
+        addToBag(item.id, 1).catch(_=>{});
+      }
+    }
+
+    // scroll: tới cuối chương
+    window.addEventListener("scroll", () => {
+      if (!document.body.classList.contains("reader-mode")) return;
+      lootMarkActivity();
+      const el = document.scrollingElement || document.documentElement;
+      if (!el) return;
+      const nearBottom = (el.scrollTop + (window.innerHeight || 0)) >= (el.scrollHeight - LOOT_CFG.nearBottomPx);
+      if (nearBottom) lootTryChapterFinish("scroll");
+    }, { passive: true });
+
+
 
     // Cover fallback: tạo bìa SVG đồng bộ theme (đỡ “đen bẩn” ở chế độ sáng)
     function _hashStr(str=""){
@@ -5544,7 +7679,7 @@ function getReadingStories(){
       }
 
       if (!currentUser){
-        showAccountInlineNote("Bạn đang ở chế độ <strong>Khách</strong>. Đăng nhập để đồng bộ theo dõi, lịch sử đọc và thông báo tài khoản.", "warn");
+        showAccountInlineNote("Bạn đang ở chế độ <strong>Khách</strong>. ", "warn");
       } else {
         const currentNoteText = (accountInlineNote?.textContent || "").toLowerCase();
         const needResetGuestNote = currentNoteText.includes("chế độ khách") || currentNoteText.includes("đăng nhập để đồng bộ");
@@ -5705,7 +7840,7 @@ function getReadingStories(){
         });
       } else {
         profileName.textContent = "Khách";
-        profileSub.textContent = "Đăng nhập để đồng bộ theo dõi / lịch sử đọc bằng Firebase";
+        profileSub.textContent = "";
         btnLogin.classList.remove("hidden");
         btnLogout.classList.add("hidden");
         profileAvatar.textContent = "?";
@@ -5714,6 +7849,7 @@ function getReadingStories(){
       renderAccountMenuSummary();
       updateHeaderLoginGates();
       renderNotificationList();
+      try{ updateBagBubble(); }catch(_){ }
       renderAll();
       renderRoute();
     }
@@ -6090,7 +8226,7 @@ function getReadingStories(){
 
       if (meta){
         if (isDefaultBrowse){
-          meta.textContent = `Hiển thị ${items.length} truyện (kéo ngang để lướt theo thể loại, bấm biểu tượng lọc để lọc nhanh).`;
+          meta.textContent = "";
         } else if (q){
           meta.textContent = items.length
             ? `Tìm thấy ${items.length} truyện cho "${q}".`
@@ -7003,7 +9139,7 @@ function renderRandomGrid(){
         if (homeChatNote){
           homeChatNote.textContent = currentUser
             ? "Bạn đang đăng nhập — chat realtime."
-            : "Đăng nhập để gửi tin nhắn (bạn vẫn xem được chat).";
+            : "";
         }
         return;
       }
@@ -7029,7 +9165,7 @@ function renderRandomGrid(){
       if (homeChatNote){
         homeChatNote.textContent = currentUser
           ? "Bạn đang đăng nhập — chat realtime."
-          : "Đăng nhập để gửi tin nhắn (bạn vẫn xem được chat).";
+          : "";
       }
 
       // Firebase ok? (cho phép xem chat dù chưa đăng nhập)
@@ -7154,6 +9290,7 @@ function renderAll(){
     // Chỉ render nặng ở trang chủ để tránh lag/đơ khi bấm nút trên trang truyện/đọc
     function renderAfterUserStateChange(){
       try{ renderAccountMenuSummary(); }catch(_){}
+      try{ updateBagBubble(); }catch(_){ }
       try{ renderRoute(); }catch(_){}
 
       const hash = location.hash || "#/home";
@@ -7468,7 +9605,7 @@ function goToSearchWithGenreFromMenu(genreLabel){
         }
         storyPageChapters.innerHTML = `
           <div class="chapter-list-wrap">${html.join("")}</div>
-          <div class="muted" style="margin-top:10px">Đang hiển thị ${showCount}/${chapterCount} chương. Hãy khai báo dữ liệu chương trực tiếp trong file HTML (không dùng Firebase để CRUD nội dung).</div>
+          
         `;
       }
       storyPageChapters.onclick = async (e) => {
@@ -7478,8 +9615,236 @@ function goToSearchWithGenreFromMenu(genreLabel){
         await markReadStory(storyId, chapter);
         goToReader(storyId, chapter);
       };
+      // Comments + recommendations
+      setupStoryCommentUI(storyId);
+      startStoryComments(storyId);
+      renderStoryRecommendations(storyId);
+
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
+    /* ============================
+       Story Comments (Realtime + Local fallback)
+       ============================ */
+    function stopStoryComments(){
+      try{ if (typeof storyCommentsUnsub === "function") storyCommentsUnsub(); }catch(_){}
+      storyCommentsUnsub = null;
+      __storyCommentsSeen = new Set();
+      __storyCommentsStoryId = null;
+    }
+
+    function renderStoryCommentItem(c){
+      const name = String(c?.name || "Ẩn danh");
+      const text = String(c?.text || "");
+      const ts = Number(c?.ts || 0);
+
+      const avatarHtml = c?.photoURL
+        ? `<div class="comment-avatar"><img src="${esc(c.photoURL)}" alt="avatar"></div>`
+        : `<div class="comment-avatar">${esc((name || "A").slice(0,1).toUpperCase())}</div>`;
+
+      const timeTxt = ts ? timeAgo(ts) : "";
+
+      return `
+        <div class="comment-item">
+          ${avatarHtml}
+          <div class="comment-bubble">
+            <div class="comment-meta">
+              <div class="comment-name">${esc(name)}</div>
+              <div class="comment-time muted">${esc(timeTxt)}</div>
+            </div>
+            <div class="comment-text">${esc(text)}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function getLocalCommentsKey(storyId){
+      return `local_story_comments::${storyId}`;
+    }
+    function loadLocalComments(storyId){
+      try{
+        const raw = safeGetLS(getLocalCommentsKey(storyId), "");
+        if (!raw) return [];
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr.filter(Boolean) : [];
+      }catch(_){ return []; }
+    }
+    function saveLocalComments(storyId, arr){
+      try{ safeSetLS(getLocalCommentsKey(storyId), JSON.stringify(arr.slice(-200))); }catch(_){}
+    }
+    function renderStoryCommentsLocal(storyId){
+      if (!storyCommentsList) return;
+      const arr = loadLocalComments(storyId);
+      if (!arr.length){
+        storyCommentsList.innerHTML = `<div class="muted">Chưa có bình luận nào.</div>`;
+        return;
+      }
+      storyCommentsList.innerHTML = arr.map(renderStoryCommentItem).join("");
+      requestAnimationFrame(() => {
+        try{ storyCommentsList.scrollTop = storyCommentsList.scrollHeight; }catch(_){}
+      });
+    }
+
+    function startStoryComments(storyId){
+      if (!storyCommentsList) return;
+      stopStoryComments();
+      __storyCommentsStoryId = storyId;
+
+      // UI placeholder
+      storyCommentsList.innerHTML = `<div class="muted">Đang tải bình luận...</div>`;
+
+      const canOnline = ENABLE_FIREBASE && FIREBASE_OK && getDatabase && ref && query && limitToLast && onChildAdded;
+      if (!canOnline){
+        renderStoryCommentsLocal(storyId);
+        if (storyCommentNote) storyCommentNote.textContent = "Bình luận đang chạy offline (local).";
+        if (storyCommentSend) storyCommentSend.disabled = false;
+        return;
+      }
+
+      // allow read without login, allow send only when logged in
+      if (storyCommentSend) storyCommentSend.disabled = !currentUser;
+      if (storyCommentNote){
+        storyCommentNote.textContent = currentUser
+          ? "Bình luận realtime (Firebase) • Không can thiệp nội dung truyện."
+          : "";
+      }
+
+      try{
+        const dbObj = getDatabase();
+        const cRef = ref(dbObj, `stories/comments/${storyId}/items`);
+        const q = query(cRef, limitToLast(80));
+
+        storyCommentsList.innerHTML = "";
+        __storyCommentsSeen = new Set();
+        let gotAny = false;
+
+        storyCommentsUnsub = onChildAdded(q, (snap) => {
+          try{
+            if (!snap || !snap.exists()) return;
+            const key = snap.key ? String(snap.key) : "";
+            if (key && __storyCommentsSeen.has(key)) return;
+            if (key) __storyCommentsSeen.add(key);
+
+            const v = snap.val ? snap.val() : null;
+            if (!v || typeof v !== "object") return;
+
+            // clear placeholder if any
+            const first = storyCommentsList.firstElementChild;
+            if (first && first.classList && first.classList.contains("muted")){
+              storyCommentsList.innerHTML = "";
+            }
+            gotAny = true;
+            storyCommentsList.insertAdjacentHTML("beforeend", renderStoryCommentItem(v));
+            requestAnimationFrame(() => {
+              try{ storyCommentsList.scrollTop = storyCommentsList.scrollHeight; }catch(_){}
+            });
+          }catch(_){}
+        });
+
+        // nếu rỗng thì hiện placeholder sau 0.5s
+        setTimeout(() => {
+          if (__storyCommentsStoryId !== storyId) return;
+          if (!gotAny && storyCommentsList && storyCommentsList.children.length === 0){
+            storyCommentsList.innerHTML = `<div class="muted">Chưa có bình luận nào.</div>`;
+          }
+        }, 500);
+
+      }catch(e){
+        console.warn("startStoryComments error", e);
+        renderStoryCommentsLocal(storyId);
+      }
+    }
+
+    async function sendStoryComment(storyId){
+      const txt = String(storyCommentInput?.value || "").trim();
+      if (!txt){ toast("Nhập bình luận trước đã"); return; }
+
+      const payload = {
+        uid: String(currentUser?.uid || ""),
+        name: String(currentUser?.displayName || "Ẩn danh"),
+        photoURL: String(currentUser?.photoURL || ""),
+        text: txt.slice(0, 800),
+        ts: Date.now()
+      };
+
+      const canOnline = currentUser && ENABLE_FIREBASE && FIREBASE_OK && getDatabase && ref && push;
+      if (canOnline){
+        try{
+          const dbObj = getDatabase();
+          const cRef = ref(dbObj, `stories/comments/${storyId}/items`);
+          await push(cRef, payload);
+          if (storyCommentInput) storyCommentInput.value = "";
+          return;
+        }catch(e){
+          console.warn("sendStoryComment online failed", e);
+          toast("Không gửi được bình luận online (có thể do Rules). Đã lưu local.");
+        }
+      }else{
+        toast("");
+      }
+
+      // local fallback để không mất nội dung
+      const arr = loadLocalComments(storyId);
+      arr.push(payload);
+      saveLocalComments(storyId, arr);
+      if (storyCommentInput) storyCommentInput.value = "";
+      renderStoryCommentsLocal(storyId);
+    }
+
+    function setupStoryCommentUI(storyId){
+      if (!storyCommentSend || !storyCommentInput) return;
+      storyCommentSend.onclick = () => sendStoryComment(storyId);
+      storyCommentInput.onkeydown = (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter"){
+          e.preventDefault();
+          sendStoryComment(storyId);
+        }
+      };
+    }
+
+    /* ============================
+       Story Recommendations (2 random)
+       ============================ */
+    function pickRandom(arr, n){
+      const a = arr.slice();
+      for (let i=a.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a.slice(0, Math.min(n, a.length));
+    }
+
+    function renderStoryRecommendations(storyId){
+      if (!storyRecoList) return;
+      const pool = (Array.isArray(stories) ? stories : []).filter(x => x && x.id && x.id !== storyId);
+      if (!pool.length){
+        storyRecoList.innerHTML = `<div class="muted">Chưa có truyện khác để gợi ý.</div>`;
+        return;
+      }
+      const picks = pickRandom(pool, 2);
+      storyRecoList.innerHTML = picks.map(st => `
+        <div class="story-reco-card" data-story="${esc(st.id)}" role="button" tabindex="0">
+          <img src="${esc(getCoverSrc(st))}" alt="">
+          <div class="story-reco-info">
+            <div class="story-reco-title">${esc(st.title || "Chưa có tên")}</div>
+            <div class="story-reco-sub muted">${esc(st.author || "Chưa rõ tác giả")}</div>
+            <div class="story-reco-meta">
+              <span>👁 ${esc(formatShort(st.views || 0))}</span>
+              <span>📖 ${esc(String(st.chapters || 0))}</span>
+              <span>⭐ ${esc(Number(st.rating || 0).toFixed(1))}</span>
+            </div>
+          </div>
+        </div>
+      `).join("");
+
+      storyRecoList.onclick = (e) => {
+        const card = e.target.closest("[data-story]");
+        if (!card) return;
+        const id = String(card.dataset.story || "");
+        if (!id) return;
+        location.hash = "#/story/" + encodeURIComponent(id);
+      };
+    }
+
 
 
     function updateHomeHeaderVisibilityByHash(hashValue){
@@ -7652,6 +10017,85 @@ function goToSearchWithGenreFromMenu(genreLabel){
           return;
         }
 
+if (view === "estate" || view === "trangvien" || view === "tv"){
+  const curLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
+  const curInfo = getEstateInfo(curLv);
+  const isMax = curLv >= (ESTATE_LEVELS.length - 1);
+  const nextInfo = getEstateInfo(isMax ? curLv : (curLv + 1));
+  const progPct = Math.min(100, Math.max(0, Math.floor(((curLv + 1) / Math.max(1, ESTATE_LEVELS.length)) * 100)));
+
+  showRouteHeader({ title: "Trang viên", sub: "Tăng % linh khí tu luyện", chips: ["Trang viên"] });
+  tabPageContent.innerHTML = `
+    <div class="cm-subhead">
+      <button class="cm-subback" id="cmBackHub" type="button">← Cộng đồng</button>
+      <span class="community-meta"><span class="dot"></span> Online: <b>${esc(String(realtimeOnlineCount || 0))}</b></span>
+    </div>
+
+    <div class="community-panel" data-cpanel="estate">
+      <div class="cm-card">
+        <div class="cm-card-head">
+          <div>
+            <div class="cm-card-title">Trang viên</div>
+            <div class="cm-card-sub">Tăng % linh khí tu luyện được (bonus EXP Tu Vi)</div>
+          </div>
+          <button class="tab-page-btn primary" id="estateUpgradeBtn" type="button" ${isMax ? "disabled" : ""}>${isMax ? "Tối đa" : "Nâng cấp"}</button>
+        </div>
+
+        <div class="estate-summary">
+          <div class="estate-line"><span class="muted">Cấp hiện tại:</span> <b>${esc(curInfo.name)}</b></div>
+          <div class="estate-line"><span class="muted">Bonus:</span> <b>+${esc(String(curInfo.bonus))}%</b> linh khí</div>
+          <div class="estate-line"><span class="muted">Cấp tiếp theo:</span> <b>${esc(isMax ? "—" : nextInfo.name)}</b> <span class="muted">${esc(isMax ? "" : ("(+" + nextInfo.bonus + "%)"))}</span></div>
+        </div>
+
+        <div class="estate-bar"><span style="width:${progPct}%"></span></div>
+        <div class="muted" style="margin-top:8px">Tiến độ: <b>${curLv + 1}</b> / <b>${ESTATE_LEVELS.length}</b></div>
+      </div>
+
+      <div class="cm-card" style="margin-top:10px">
+        <div class="cm-card-head">
+          <div>
+            <div class="cm-card-title">Các cấp Trang viên</div>
+            <div class="cm-card-sub">Sơ • Trung • Cao — Hoàng → Đế</div>
+          </div>
+        </div>
+        <div class="estate-level-list" id="estateLevelList"></div>
+      </div>
+    </div>
+  `;
+
+  $("#cmBackHub")?.addEventListener("click", () => { location.hash = "#/community"; });
+
+  const list = $("#estateLevelList");
+  if (list){
+    list.innerHTML = ESTATE_LEVELS.map((it, i) => {
+      const cls = (i === curLv) ? "estate-lv cur" : (i < curLv ? "estate-lv done" : "estate-lv");
+      const tag = (i === curLv) ? "Đang dùng" : (i < curLv ? "Đã đạt" : "Chưa đạt");
+      return `
+        <div class="${cls}">
+          <div class="estate-lv-name">${esc(it.name)}</div>
+          <div class="estate-lv-bonus">+${esc(String(it.bonus))}% linh khí</div>
+          <div class="estate-lv-tag">${esc(tag)}</div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  $("#estateUpgradeBtn")?.addEventListener("click", async () => {
+    const lv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
+    if (lv >= (ESTATE_LEVELS.length - 1)){
+      toast("Trang viên đã đạt tối đa.");
+      return;
+    }
+    const ok = await saveUserStatePatch({ estate: { level: lv + 1 } });
+    if (ok){
+      const ni = getEstateInfo(lv + 1);
+      toast("Đã nâng cấp Trang viên: " + ni.name);
+    }
+  });
+
+  return;
+}
+
         if (view === "market" || view === "muaban" || view === "consign"){
           showRouteHeader({ title: "Mua bán ký gửi", sub: "Đăng bài • Liên hệ • Trao đổi", chips: ["Mua bán"] });
           tabPageContent.innerHTML = `
@@ -7738,6 +10182,10 @@ function goToSearchWithGenreFromMenu(genreLabel){
                   <div class="cm-hub-ico">🛒</div>
                   <div class="cm-hub-label">Mua bán ký gửi</div>
                 </button>
+<button class="cm-hub-item" type="button" data-act="estate">
+  <div class="cm-hub-ico">🏡</div>
+  <div class="cm-hub-label">Trang viên</div>
+</button>
                 <button class="cm-hub-item" type="button" data-act="youtube">
                   <div class="cm-hub-ico">▶</div>
                   <div class="cm-hub-label">Kênh YouTube</div>
@@ -7753,6 +10201,7 @@ function goToSearchWithGenreFromMenu(genreLabel){
             if (act === "chat")   return (location.hash = "#/community/chat");
             if (act === "guild")  return (location.hash = "#/community/guild");
             if (act === "market") return (location.hash = "#/community/market");
+            if (act === "estate") return (location.hash = "#/community/estate");
             if (act === "fanpage") return openExternal(FANPAGE_URL);
             if (act === "group")   return openExternal(GROUP_URL);
             if (act === "youtube") return openExternal(YOUTUBE_URL);
@@ -7764,11 +10213,12 @@ function goToSearchWithGenreFromMenu(genreLabel){
         const prof = (userState && userState.profile) ? userState.profile : {};
         const displayName = (prof && prof.name) ? prof.name : (currentUser?.displayName || "Khách");
         const avatarUrl = (prof && prof.avatar) ? prof.avatar : (currentUser?.photoURL || "");
+        __profileAvatarDraft = avatarUrl || "";
         const bio = (prof && prof.bio)
           ? prof.bio
           : (currentUser
               ? "Chào mừng bạn quay lại! Lưu truyện để đồng bộ theo dõi • lịch sử • đánh dấu."
-              : "Đăng nhập để đồng bộ theo dõi • lịch sử • đánh dấu bằng Firebase.");
+              : "Chưa có giới thiệu.");
         const emailText = currentUser?.email || "Chưa đăng nhập";
 
         const followed = Array.isArray(userState?.followedIds) ? userState.followedIds.length : 0;
@@ -7794,10 +10244,12 @@ function goToSearchWithGenreFromMenu(genreLabel){
 
         const joinedIso = __touchJoinedAt();
         const joinedText = __formatDMY(joinedIso);
+        const joinedDays = (()=>{ try{ const d = new Date(joinedIso); const ms = d.getTime(); if (!isFinite(ms)) return 0; return Math.max(0, Math.floor((Date.now() - ms) / 86400000)); }catch(_){ return 0; } })();
         const totalReadSeconds = Number(safeGetLS(__lsReadSecondsKey(), "0") || 0);
         const minutesRead = Math.max(0, Math.floor(totalReadSeconds / 60));
         const accountTypeLabel = currentUser ? "Google" : "Khách";
 
+        
         // --- Gamified profile tabs (Tu Vi / Vip / PVP / Boss / Trang Bị) ---
         const tuviPoints = Math.max(0, Number(readChSum||0) + Math.floor(minutesRead/5));
         const tuviLevel = Math.max(1, Math.floor(tuviPoints / 500) + 1);
@@ -7805,15 +10257,89 @@ function goToSearchWithGenreFromMenu(genreLabel){
         const tuviNext = tuviLevel * 500;
         const tuviPct = Math.min(100, Math.floor(((tuviPoints - tuviPrev) / Math.max(1,(tuviNext - tuviPrev))) * 100));
 
-        const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
+// EXP & Cảnh giới (đồng bộ theo hoạt động đọc/nghe) — có bonus Trang viên
+const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
+const estateInfo = getEstateInfo(estateLv);
+const estateBonusPct = Math.max(0, Number(estateInfo.bonus || 0) || 0);
+const estateMult = 1 + (estateBonusPct / 100);
+// Linh khí (Tu Vi) cơ bản: +1/chương, +1/5 phút. Trang viên nhân hệ số và làm tròn xuống theo tổng.
+const lkPerChapter = estateMult;
+const lkPer5Min = estateMult;
+const tuviExp = Math.floor(tuviPoints * (1 + (estateBonusPct / 100)));
+const realmInfo = getRealmByExp(tuviExp);
+        const realmName = realmInfo.display;
+        const realmStarName = realmInfo.starName;
+
+        // Thanh EXP reset theo từng "tinh" (cấp bậc)
+        const realmPct = realmInfo.levelPct;
+        const realmCur = realmInfo.inLevel;
+        const realmNeed = realmInfo.perLevel;
+        const realmIsMax = realmInfo.isMax;
+const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
         const pvpLoss = Number(safeGetLS("pvp_loss", "0") || 0);
         const pvpPoints = Number(safeGetLS("pvp_points", "0") || 0);
+        const pvpStreak = Number(safeGetLS("pvp_streak", "0") || 0);
+        const pvpBots = ensurePvPBots(__pvpSeedBase(currentUser));
+        const pvpRankInfo = computePvpRank(pvpPoints, pvpBots);
+        const pvpRankText = `#${pvpRankInfo.rank}/${pvpRankInfo.total}`;
 
         const bossKills = Number(safeGetLS("boss_kills", "0") || 0);
         const bossPoints = Number(safeGetLS("boss_points", "0") || 0);
 
         const gearRaw = safeGetLS("gear_slots", "");
         const gear = (()=>{ try{ const o = JSON.parse(gearRaw||"{}"); return (o && typeof o==="object") ? o : {}; }catch(_){ return {}; }})();
+
+
+        // Lực chiến (demo): tự tính từ Tu Vi + PVP + Boss + số slot trang bị
+        const gearSlotsCount = Object.values(gear || {}).filter(v => v && String(v).trim() && String(v).trim() !== '—').length;
+        const combatPower = Math.max(0, Math.floor((tuviExp * 3) + (pvpPoints * 50) + (bossPoints * 30) + (gearSlotsCount * 5000)));
+
+        const pvpEnemyRows = (pvpBots || [])
+          .slice(0, 10)
+          .sort((a,b) => (Number(b?.points||0)||0) - (Number(a?.points||0)||0))
+          .map(b => {
+            const bid = String(b?.id || "");
+            const nm = String(b?.name || "Đối thủ");
+            const ava = String(b?.avatar || "");
+            const pts = Math.max(0, Math.floor(Number(b?.points || 0) || 0));
+            const pw0 = Math.max(0, Math.floor(Number(b?.power || 0) || 0));
+            const pw = pw0 > 0 ? pw0 : calcBotPower({ id: bid, name: nm, points: pts });
+            const avaHtml = ava ? `<img src="${esc(ava)}" alt="avatar">` : esc(initials(nm));
+            return `
+              <div class="pvp-enemy">
+                <div class="ava">${avaHtml}</div>
+                <div class="meta">
+                  <div class="t">${esc(nm)}</div>
+                  <div class="s"><span>Điểm: <b>${fmtN(pts)}</b></span><span>Lực chiến: <b>${fmtN(pw)}</b></span></div>
+                </div>
+                <button class="pf-mini-btn primary" type="button" data-pvp-challenge="${esc(bid)}">Thách đấu</button>
+              </div>
+            `;
+          }).join("") || `<div class="muted" style="padding:10px 2px">Chưa có đối thủ.</div>`;
+
+
+
+                const bossEnemyRows = (BOSS_LIST || [])
+          .slice(0, 10)
+          .map(b => {
+            const id = String(b?.id || "");
+            const nm = String(b?.name || "Boss");
+            const tier = String(b?.tier || "");
+            const ava = String(b?.avatar || "");
+            const pw = Math.max(1, Math.floor(Number(b?.power || 0) || 0));
+            const reward = Math.max(0, Math.floor(Number(b?.reward || 0) || 0));
+            const avaHtml = ava ? `<img src="${esc(ava)}" alt="boss">` : esc(initials(nm));
+            return `
+              <div class="pvp-enemy">
+                <div class="ava">${avaHtml}</div>
+                <div class="meta">
+                  <div class="t">${esc(nm)}</div>
+                  <div class="s"><span>${esc(tier)} cấp</span><span>Lực chiến: <b>${fmtN(pw)}</b></span><span>Thưởng: <b>+${fmtN(reward)}</b></span></div>
+                </div>
+                <button class="pf-mini-btn primary" type="button" data-boss-fight="${esc(id)}">Săn</button>
+              </div>
+            `;
+          }).join("") || `<div class="muted" style="padding:10px 2px">Chưa có boss.</div>`;
 
 
         function buildReadRows(){
@@ -7884,18 +10410,11 @@ function goToSearchWithGenreFromMenu(genreLabel){
                     <span class="pf-badge"><span class="dot"></span><span>${esc(vip.label || "VIP Thường")}</span></span>
                     <span class="pf-badge"><span class="dot" style="background:rgba(255,209,64,.95);box-shadow:0 0 0 3px rgba(255,209,64,.14)"></span><span>${currentUser ? "Đã đăng nhập" : "Khách"}</span></span>
                   </div>
-                  <div class="pf-join">Ngày tham gia: <b>${esc(joinedText)}</b> • Tài khoản: <b>${accountTypeLabel}</b></div>
                 </div>
               </div>
 
-              <div class="pf-actions">
-                <button class="btn" type="button" id="pfEditBtn">${currentUser ? "Chỉnh sửa hồ sơ" : "Tạo hồ sơ"}</button>
-                ${currentUser
-                  ? `<button class="btn" type="button" id="pfLogoutBtn">Đăng xuất</button>`
-                  : `<button class="btn primary" type="button" id="pfLoginBtn">Đăng nhập Google</button>`}
-              </div>
-
-              <div class="pf-core-metrics">
+              <div class="pf-core-metrics m4">
+                <div class="m"><div class="k">Ngày tham gia</div><div class="v">${joinedDays}</div></div>
                 <div class="m"><div class="k">Chương đã đọc</div><div class="v">${readChSum}</div></div>
                 <div class="m"><div class="k">Phút đã đọc</div><div class="v">${minutesRead}</div></div>
                 <div class="m"><div class="k">Truyện đã đọc</div><div class="v">${readStoriesCount}</div></div>
@@ -7919,26 +10438,75 @@ function goToSearchWithGenreFromMenu(genreLabel){
             </div>
 
                         <section class="pf-sec active" id="pfSec-tuvi">
-              <div class="pf-section-title">
-                <div class="t">Tu Vi</div>
-                <div class="s">Cấp ${tuviLevel}</div>
-              </div>
-
-              <div class="pf-ach-grid">
-                <div class="pf-ach">
-                  <div class="h"><span>⚡ Cấp Tu Vi</span><span style="font-weight:950;opacity:.95">${tuviLevel}</span></div>
-                  <div class="p">Điểm: ${tuviPoints} • Mốc kế: ${tuviNext}</div>
-                  <div class="pf-bar"><i style="width:${tuviPct}%"></i></div>
+              <div class="pf-ach">
+                <div class="h" style="justify-content:flex-start">
+                  <span style="font-weight:950;opacity:.95">🌌 ${esc(realmName)} - ${esc(realmStarName)}</span>
                 </div>
-                <div class="pf-ach">
-                  <div class="h"><span>📖 Công lực đọc</span><span style="font-weight:950;opacity:.95">${readChSum}</span></div>
-                  <div class="p">${readStoriesCount} truyện • ${minutesRead} phút</div>
-                  <div class="pf-bar"><i style="width:${Math.min(100, Math.floor((readChSum/2000)*100))}%"></i></div>
-                </div>
-              </div>
 
-              <div class="rank-note" style="margin-top:12px">
-                Điểm tu vi = Chương đã đọc + ⌊Phút/5⌋. Bạn đọc/nghe càng nhiều, cấp càng tăng.
+                <div class="pf-bar" style="margin-top:10px">
+                  <i style="width:${realmPct}%"></i>
+                </div>
+
+                <div class="pf-exp-txt" style="margin-top:8px; text-align:center; font-weight:950; color:rgba(232,236,255,.92)">
+                  ${realmIsMax ? "MAX" : (fmtN(realmCur) + "/" + fmtN(realmNeed))}
+                </div>
+                <div class="muted" style="margin-top:6px; text-align:center">
+                  Trang viên: <b>${esc(estateInfo.name)}</b> • +<b>${esc(String(estateBonusPct))}%</b> linh khí
+                </div>
+
+
+                <div class="pf-edit-card" style="margin-top:10px">
+                  <div class="pf-section-title" style="margin:0 0 10px">
+                    <div class="t">Linh khí có thể thu được</div>
+                    <div class="s">khi đọc truyện</div>
+                  </div>
+
+                  <div class="pf-core-metrics">
+                    <div class="m"><div class="k">Cơ bản / chương</div><div class="v">+1</div></div>
+                    <div class="m"><div class="k">Sau Trang viên</div><div class="v">+${lkPerChapter.toFixed(2)}</div></div>
+                    <div class="m"><div class="k">Hệ số</div><div class="v">x${estateMult.toFixed(2)}</div></div>
+                  </div>
+
+                  <div class="muted" style="margin-top:8px; text-align:center; font-size:11px">
+                    Gợi ý: Tu Vi cộng theo tổng và làm tròn xuống.
+                  </div>
+                </div>
+
+                <div class="pf-core-metrics" style="margin-top:10px">
+                  <div class="m"><div class="k">Lực chiến</div><div class="v">${fmtN(combatPower)}</div></div>
+                  <div class="m"><div class="k">Điểm PVP</div><div class="v">${fmtN(pvpPoints)}</div></div>
+                  <div class="m"><div class="k">Điểm săn boss</div><div class="v">${fmtN(bossPoints)}</div></div>
+                </div>
+                <div class="pf-edit-card">
+                  <div class="pf-section-title" style="margin:0 0 10px">
+                    <div class="t">Chỉnh sửa thông tin</div>
+                    <div class="s">Đổi avatar & tên hiển thị (không đổi Gmail)</div>
+                  </div>
+
+                  <div class="pf-edit-grid">
+                    <button class="pf-ava-pick" type="button" id="pfPickAvatarBtn">
+                      <div class="ava" id="pfEditAvatarBox">
+                        ${avatarUrl ? `<img src="${esc(avatarUrl)}" alt="avatar">` : esc(initials(displayName))}
+                      </div>
+                      <div class="hint">Nhấn vào ảnh để thay đổi (Max 5MB)</div>
+                    </button>
+
+                    <div>
+                      <div class="pf-field" style="margin:0">
+                        <label>Tên hiển thị</label>
+                        <input id="pfEditNameInline" maxlength="30" placeholder="Ví dụ: tieumaquan" value="${esc(displayName)}" ${currentUser ? "" : "disabled"}>
+                      </div>
+
+                      <div class="muted" style="margin-top:8px">Bạn chỉ đổi tên tài khoản, không đổi Gmail.</div>
+
+                      <input id="pfAvatarFile" type="file" accept="image/*" style="display:none">
+
+                      <button class="btn primary" type="button" id="pfSaveProfileBtn" style="margin-top:10px" ${currentUser ? "" : "disabled"}>Lưu thay đổi</button>
+                      <div class="muted" id="pfSaveMsg" style="margin-top:8px">${currentUser ? "" : "Đăng nhập để lưu thay đổi."}</div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </section>
 
@@ -7976,63 +10544,109 @@ function goToSearchWithGenreFromMenu(genreLabel){
               </div>
             </section>
 
-            <section class="pf-sec" id="pfSec-pvp">
+                        <section class="pf-sec" id="pfSec-pvp">
               <div class="pf-section-title">
                 <div class="t">PVP</div>
-                <div class="s">Sổ chiến tích</div>
+                <div class="s">Bảng xếp hạng & thách đấu</div>
               </div>
 
-              <div class="pf-setting">
-                <div class="pf-setting-row">
-                  <div>
-                    <div class="t">Điểm PVP</div>
-                    <div class="s">Lưu cục bộ (demo)</div>
+              <div class="pvp-me">
+                <div class="pvp-head">
+                  <div class="pf-avatar">
+                    ${avatarUrl ? `<img src="${esc(avatarUrl)}" alt="avatar">` : esc(initials(displayName))}
                   </div>
-                  <div style="font-weight:950">${pvpPoints}</div>
+                  <div style="min-width:0;flex:1">
+                    <div class="pvp-name">${esc(displayName)}</div>
+                    <div class="pvp-sub">Lực chiến hiện tại: <b>${fmtN(combatPower)}</b></div>
+                  </div>
                 </div>
-                <div class="pf-setting-row">
-                  <div>
-                    <div class="t">Thắng / Thua</div>
-                    <div class="s">Tuỳ bạn kết nối sau</div>
-                  </div>
-                  <div style="font-weight:950">${pvpWins} / ${pvpLoss}</div>
+
+                <div class="pvp-grid">
+                  <div class="m"><div class="k">Điểm PVP</div><div class="v">${fmtN(pvpPoints)}</div></div>
+                  <div class="m"><div class="k">Lực chiến</div><div class="v">${fmtN(combatPower)}</div></div>
+                  <div class="m"><div class="k">Thắng</div><div class="v">${fmtN(pvpWins)}</div></div>
+                  <div class="m"><div class="k">Thua</div><div class="v">${fmtN(pvpLoss)}</div></div>
+                  <div class="m" style="grid-column:1/-1"><div class="k">Chuỗi thắng</div><div class="v">${fmtN(pvpStreak)}</div></div>
+                </div>
+
+                <div class="rank-note" style="margin-top:10px">
+                  Thách đấu 10 đối thủ bên dưới để tăng điểm. (Demo lưu cục bộ; sau này có thể đồng bộ Firebase theo tài khoản.)
                 </div>
               </div>
 
-              <div class="rank-note" style="margin-top:12px">
-                Mẹo: sau này bạn có thể lấy dữ liệu PVP từ Firebase (theo tài khoản) để tạo bảng xếp hạng.
+              <div class="pvp-enemy-wrap">
+                <div class="pf-section-title" style="margin-top:12px">
+                  <div class="t">Đối thủ</div>
+                  <div class="s">10 người</div>
+                </div>
+                <div class="pvp-enemy-list">
+                  ${pvpEnemyRows}
+                </div>
               </div>
             </section>
 
-            <section class="pf-sec" id="pfSec-boss">
-              <div class="pf-section-title">
-                <div class="t">Boss</div>
-                <div class="s">Thành tựu săn boss</div>
-              </div>
+            
+<section class="pf-sec" id="pfSec-boss">
+  <div class="pf-section-title">
+    <div class="t">Boss</div>
+    <div class="s">Đánh boss thủ công</div>
+  </div>
 
-              <div class="pf-setting">
-                <div class="pf-setting-row">
-                  <div>
-                    <div class="t">Boss đã hạ</div>
-                    <div class="s">Lưu cục bộ (demo)</div>
-                  </div>
-                  <div style="font-weight:950">${bossKills}</div>
-                </div>
-                <div class="pf-setting-row">
-                  <div>
-                    <div class="t">Điểm Boss</div>
-                    <div class="s">Tổng điểm tích luỹ</div>
-                  </div>
-                  <div style="font-weight:950">${bossPoints}</div>
-                </div>
-              </div>
+  <div class="pf-setting" style="margin-top:10px">
+    <div class="pf-setting-row">
+      <div>
+        <div class="t">Boss đã hạ</div>
+        <div class="s">Lưu cục bộ (demo)</div>
+      </div>
+      <div style="font-weight:950">${bossKills}</div>
+    </div>
+    <div class="pf-setting-row">
+      <div>
+        <div class="t">Điểm Boss</div>
+        <div class="s">Tổng điểm tích luỹ</div>
+      </div>
+      <div style="font-weight:950">${bossPoints}</div>
+    </div>
+  </div>
 
-              <div class="rank-note" style="margin-top:12px">
-                Sau này có thể thêm “Nhiệm vụ ngày/tuần” + “Boss thế giới” để tăng tương tác.
-              </div>
-            </section>
+  <div class="boss-raid-card">
+    <div class="boss-raid-head">
+      <div class="boss-ava" id="bossRaidAva">🐉</div>
+      <div class="boss-meta">
+        <div class="boss-name" id="bossRaidName">Boss Thế Giới</div>
+        <div class="boss-sub">
+          <span>Lực chiến boss: <b id="bossRaidPower">—</b></span>
+          <span>Dame/đòn (bạn): <b id="bossMyDmg">${fmtN(calcDamageFromPower(combatPower))}</b></span>
+        </div>
+      </div>
+    </div>
 
-            <section class="pf-sec" id="pfSec-gear">
+    <div class="boss-hp-btn" data-boss-hp="1" title="Bấm để mở khu tấn công">
+      <div class="boss-hp-fill" id="bossHpFill"></div>
+      <div class="boss-hp-text" id="bossHpText">— / — HP</div>
+    </div>
+
+    <div class="boss-attack" id="bossAttackBox" aria-hidden="true">
+      <div class="boss-attack-row">
+        <div class="boss-attack-info">
+          Bấm nút để <b>tấn công boss</b> (đánh tay). Lực chiến càng cao → dame càng lớn.
+        </div>
+        <button class="boss-attack-btn" type="button" data-boss-attack="1">⚔️ Tấn công</button>
+      </div>
+      <div class="boss-attack-note">Dame của bạn sẽ cộng dồn và hiển thị trong bảng xếp hạng bên dưới.</div>
+      <div class="boss-last-hit" id="bossLastHit" style="display:none"></div>
+    </div>
+  </div>
+
+  <div class="pf-section-title" style="margin-top:12px">
+    <div class="t">Xếp hạng dame</div>
+    <div class="s">Top 10 người chơi</div>
+  </div>
+  <div class="boss-lb" id="bossLb">
+    <div class="muted" style="padding:10px 2px">Đang tải bảng xếp hạng…</div>
+  </div>
+</section>
+<section class="pf-sec" id="pfSec-gear">
               <div class="pf-section-title">
                 <div class="t">Trang Bị</div>
                 <div class="s">Kho đồ (demo)</div>
@@ -8652,12 +11266,14 @@ function getBrowseStories(type){
       updateHomeHeaderVisibilityByHash(hash);
       const __isHomeHash = (hash === "#/home" || hash === "" || hash === "#");
       if (!__isHomeHash){ try{ stopHomeChat(); }catch(_){ } }
+      if (!hash.startsWith("#/story/")){ try{ stopStoryComments(); }catch(_){ } }
 
       // Toggle reader mode UI
       const isReader = hash.startsWith("#/read/");
       if (!isReader){
         setReaderMode(false);
         stopTTS();
+        try{ stopLootSession(); }catch(_){ }
         hideSpeedPop();
         _rpShowPlayer();
         if (readerSheet && !readerSheet.classList.contains('hidden')) readerSheet.classList.add('hidden');
@@ -10290,7 +12906,6 @@ function getBrowseStories(type){
     btnNotify?.addEventListener("click", (e) => { e.stopPropagation(); toggleNotifyPanel(); });
     btnTheme?.addEventListener("click", () => toggleTheme());
     $("#btnMenu").addEventListener("click", (e) => { e.stopPropagation(); toggleSideMenu(); });
-    $("#btnBag").addEventListener("click", () => toast("Mở Hành trang"));
     $("#btnMissions").addEventListener("click", () => toast("Mở Nhiệm vụ"));
 
     sideMenuOverlay?.addEventListener("click", closeSideMenu);
@@ -10506,6 +13121,40 @@ function getBrowseStories(type){
       `).join("") : `<div class="muted">Không tìm thấy truyện phù hợp.</div>`;
     });
 
+    tabPageContent?.addEventListener("change", (e) => {
+      const fileEl = e.target.closest("#pfAvatarFile");
+      if (fileEl){
+        const file = (fileEl.files && fileEl.files[0]) ? fileEl.files[0] : null;
+        const msg = $("#pfSaveMsg");
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024){
+          if (msg) msg.textContent = "Ảnh quá lớn (tối đa 5MB).";
+          try{ fileEl.value = ""; }catch(_){ }
+          return;
+        }
+        if (msg) msg.textContent = "Đang xử lý ảnh...";
+        compressImageToDataUrl(file, 256, 0.85).then((dataUrl) => {
+          __profileAvatarDraft = String(dataUrl || "");
+          const box = $("#pfEditAvatarBox");
+          if (box){
+            box.innerHTML = "";
+            if (__profileAvatarDraft){
+              const im = document.createElement("img");
+              im.src = __profileAvatarDraft;
+              im.alt = "avatar";
+              box.appendChild(im);
+            } else {
+              box.textContent = initials(($("#pfEditNameInline")?.value || "").trim() || "Khách");
+            }
+          }
+          if (msg) msg.textContent = "Đã chọn ảnh. Nhấn Lưu thay đổi để lưu.";
+        }).catch(() => {
+          if (msg) msg.textContent = "Không xử lý được ảnh.";
+        });
+        return;
+      }
+    });
+
     tabPageContent?.addEventListener("click", (e) => {
       const openStory = e.target.closest("[data-tab-search-open]");
       if (openStory){
@@ -10521,8 +13170,221 @@ function getBrowseStories(type){
       const pfTabBtn = e.target.closest("[data-pf-tab]");
       if (pfTabBtn){
         const t = pfTabBtn.getAttribute("data-pf-tab") || "tuvi";
+        try{ safeSetLS("pf_active_tab", t); }catch(_){ }
         tabPageContent?.querySelectorAll(".pf-tab").forEach(b=>b.classList.toggle("active", b === pfTabBtn));
         tabPageContent?.querySelectorAll(".pf-sec").forEach(sec=>sec.classList.toggle("active", sec.id === ("pfSec-" + t)));
+        if (t === "boss"){
+          try{ setTimeout(()=>{ try{ bossRaidEnsureInit(); }catch(_){} }, 0); }catch(_){ }
+        }
+        return;
+      }
+
+      const pvpChBtn = e.target.closest("[data-pvp-challenge]");
+      if (pvpChBtn){
+        const bid = String(pvpChBtn.getAttribute("data-pvp-challenge") || "");
+        if (!bid) return;
+        const bots = ensurePvPBots(__pvpSeedBase(currentUser));
+        const ix = (bots || []).findIndex(b => String(b?.id || "") === bid);
+        if (ix < 0) return;
+        const enemy = bots[ix];
+
+        let wins = Number(safeGetLS("pvp_wins", "0") || 0);
+        let loss = Number(safeGetLS("pvp_loss", "0") || 0);
+        let pts  = Number(safeGetLS("pvp_points", "0") || 0);
+        let streak = Number(safeGetLS("pvp_streak", "0") || 0);
+
+        const ep = Math.max(0, Number(enemy?.points || 0) || 0);
+        const pp = Math.max(0, Number(pts || 0) || 0);
+
+        // Lực chiến => dame tấn công (PVP)
+        const myPow = calcCombatPowerFromState();
+        const myDmg = calcDamageFromPower(myPow);
+
+        const enemyPow0 = Math.max(0, Math.floor(Number(enemy?.power || 0) || 0));
+        const enemyPow = enemyPow0 > 0 ? enemyPow0 : calcBotPower({ id: enemy?.id, name: enemy?.name, points: ep });
+        const enemyDmg = calcDamageFromPower(enemyPow);
+        try{ enemy.power = enemyPow; }catch(_){}
+
+
+        // Điểm nhận/mất (cân theo chênh lệch lực chiến)
+        const powDiff = enemyPow - myPow; // >0 nếu đối thủ mạnh hơn
+        const gain = Math.max(12, Math.min(95, Math.floor(28 + powDiff / 6000)));
+        const lose = Math.max(10, Math.min(80, Math.floor(20 - powDiff / 9000)));
+
+        // ==== GAME FEEL: popup giữa màn hình + delay giao chiến ====
+        try{ pvpChBtn.classList.add("loading"); pvpChBtn.disabled = true; }catch(_){}
+        pvpBattleStart(enemy?.name || "đối thủ", { myPow, enemyPow, myDmg, enemyDmg });
+
+        setTimeout(()=>{
+          const hit = (base) => Math.max(1, Math.floor(base * (0.85 + Math.random() * 0.30)));
+          let myHP = calcHpFromPower(myPow);
+          let enHP = calcHpFromPower(enemyPow);
+          let dealt = 0;
+          let taken = 0;
+          let rounds = 0;
+
+          while (myHP > 0 && enHP > 0 && rounds < 25){
+            rounds++;
+            const d = hit(myDmg);
+            enHP -= d;
+            dealt += d;
+            if (enHP <= 0) break;
+            const ed = hit(enemyDmg);
+            myHP -= ed;
+            taken += ed;
+          }
+
+          const win = (enHP <= 0 && myHP > 0);
+
+          if (win){
+            wins += 1;
+            streak += 1;
+            pts = pp + gain;
+            enemy.points = Math.max(0, Math.floor(ep - gain * 0.5));
+            toast(`Thắng ${enemy.name || "đối thủ"}! +${gain} điểm PVP`);
+            pvpBattleResult({
+              win:true,
+              enemyName: enemy.name || "đối thủ",
+              deltaText: `+${gain} điểm PVP\nGây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}`,
+              pts,
+              streak
+            });
+          }else{
+            loss += 1;
+            streak = 0;
+            pts = Math.max(0, pp - lose);
+            enemy.points = Math.floor(ep + lose * 0.4);
+            toast(`Thua ${enemy.name || "đối thủ"}! -${lose} điểm PVP`);
+            pvpBattleResult({
+              win:false,
+              enemyName: enemy.name || "đối thủ",
+              deltaText: `-${lose} điểm PVP\nGây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}`,
+              pts,
+              streak
+            });
+          }
+
+          try{ safeSetLS("pvp_wins", String(Math.max(0, Math.floor(wins)))); }catch(_){}
+          try{ safeSetLS("pvp_loss", String(Math.max(0, Math.floor(loss)))); }catch(_){}
+          try{ safeSetLS("pvp_points", String(Math.max(0, Math.floor(pts)))); }catch(_){}
+          try{ safeSetLS("pvp_streak", String(Math.max(0, Math.floor(streak)))); }catch(_){}
+
+          bots[ix] = enemy;
+          savePvPBots(bots);
+
+          try{ safeSetLS("pf_active_tab", "pvp"); }catch(_){}
+          renderRoute();
+          try{
+            const btn = tabPageContent?.querySelector('[data-pf-tab="pvp"]');
+            if (btn){
+              tabPageContent?.querySelectorAll(".pf-tab").forEach(b=>b.classList.toggle("active", b === btn));
+              tabPageContent?.querySelectorAll(".pf-sec").forEach(sec=>sec.classList.toggle("active", sec.id === "pfSec-pvp"));
+            }
+          }catch(_){ }
+
+          try{ pvpChBtn.classList.remove("loading"); pvpChBtn.disabled = false; }catch(_){}
+        }, 650);
+
+        return;
+      }
+
+            
+      const bossHpBtn = e.target.closest("[data-boss-hp]");
+if (bossHpBtn){
+  bossRaidEnsureInit();
+  bossRaidOpenAttack();
+  try{ if (navigator.vibrate) navigator.vibrate(10); }catch(_){}
+  return;
+}
+const bossAtkBtn = e.target.closest("[data-boss-attack]");
+if (bossAtkBtn){
+  bossRaidEnsureInit();
+  bossRaidAttack();
+  return;
+}
+
+            const bossFightBtn = e.target.closest("[data-boss-fight]");
+      if (bossFightBtn){
+        const id = String(bossFightBtn.getAttribute("data-boss-fight") || "");
+        if (!id) return;
+        const boss = (BOSS_LIST || []).find(b => String(b?.id || "") === id);
+        if (!boss) return;
+
+        let kills = Number(safeGetLS("boss_kills", "0") || 0);
+        let bpts  = Number(safeGetLS("boss_points", "0") || 0);
+
+        const myPow = calcCombatPowerFromState();
+        const myDmg = calcDamageFromPower(myPow);
+
+        const bossPow = Math.max(1, Math.floor(Number(boss?.power || 0) || 0));
+        const bossDmg = Math.max(8, Math.floor(bossPow / 55));
+
+        // ==== GAME FEEL: popup giữa màn hình + delay giao chiến ====
+        try{ bossFightBtn.classList.add("loading"); bossFightBtn.disabled = true; }catch(_){}
+        bossBattleStart(boss?.name || "Boss", { myPow, bossPow, myDmg, bossDmg });
+
+        setTimeout(()=>{
+          const hit = (base) => Math.max(1, Math.floor(base * (0.85 + Math.random() * 0.30)));
+          let myHP = calcHpFromPower(myPow);
+          let bossHP = 1400 + Math.floor(bossPow / 9);
+          let dealt = 0;
+          let taken = 0;
+          let rounds = 0;
+
+          while (myHP > 0 && bossHP > 0 && rounds < 30){
+            rounds++;
+            const d = hit(myDmg);
+            bossHP -= d;
+            dealt += d;
+            if (bossHP <= 0) break;
+            const bd = hit(bossDmg);
+            myHP -= bd;
+            taken += bd;
+          }
+
+          const win = (bossHP <= 0 && myHP > 0);
+          const reward = Math.max(10, Math.floor(Number(boss?.reward || 50) || 50));
+
+          if (win){
+            kills += 1;
+            bpts += reward;
+            toast(`Hạ ${boss.name || "Boss"}! +${reward} điểm Boss`);
+            bossBattleResult({
+              win:true,
+              bossName: boss.name || "Boss",
+              deltaText: `+${reward} điểm Boss\nGây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}`,
+              pts: bpts,
+              kills
+            });
+          }else{
+            const penalty = Math.max(0, Math.floor(reward * 0.2));
+            bpts = Math.max(0, bpts - penalty);
+            toast(`Thất bại trước ${boss.name || "Boss"}! -${penalty} điểm Boss`);
+            bossBattleResult({
+              win:false,
+              bossName: boss.name || "Boss",
+              deltaText: `-${penalty} điểm Boss\nGây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}`,
+              pts: bpts,
+              kills
+            });
+          }
+
+          try{ safeSetLS("boss_kills", String(Math.max(0, Math.floor(kills)))); }catch(_){}
+          try{ safeSetLS("boss_points", String(Math.max(0, Math.floor(bpts)))); }catch(_){}
+
+          try{ safeSetLS("pf_active_tab", "boss"); }catch(_){}
+          renderRoute();
+          try{
+            const btn = tabPageContent?.querySelector('[data-pf-tab="boss"]');
+            if (btn){
+              tabPageContent?.querySelectorAll(".pf-tab").forEach(b=>b.classList.toggle("active", b === btn));
+              tabPageContent?.querySelectorAll(".pf-sec").forEach(sec=>sec.classList.toggle("active", sec.id === "pfSec-boss"));
+            }
+          }catch(_){}
+
+          try{ bossFightBtn.classList.remove("loading"); bossFightBtn.disabled = false; }catch(_){}
+        }, 750);
+
         return;
       }
 
@@ -10568,6 +13430,32 @@ function getBrowseStories(type){
         location.hash = "#/community";
         return;
       }
+      if (e.target.closest("#pfPickAvatarBtn")){
+        const f = $("#pfAvatarFile");
+        if (f) f.click();
+        return;
+      }
+      if (e.target.closest("#pfSaveProfileBtn")){
+        const msg = $("#pfSaveMsg");
+        if (!currentUser){
+          if (msg) msg.textContent = "Đăng nhập để lưu thay đổi.";
+          return;
+        }
+        const name = ($("#pfEditNameInline")?.value || "").trim();
+        const prof = (userState && userState.profile) ? userState.profile : {};
+        const bio = (prof && prof.bio) ? String(prof.bio || "") : "";
+        const avatar = String(__profileAvatarDraft || (prof && prof.avatar) || (currentUser?.photoURL || ""));
+        const nextProf = normalizeProfile({ name, avatar, bio });
+        if (msg) msg.textContent = "Đang lưu...";
+        saveUserStatePatch({ profile: nextProf }).then(() => {
+          if (msg) msg.textContent = "Đã lưu thay đổi.";
+          renderRoute();
+        }).catch(() => {
+          if (msg) msg.textContent = "Lỗi lưu. Thử lại.";
+        });
+        return;
+      }
+
       if (e.target.closest("#pfLoginBtn")){
         btnLogin?.click();
         return;
@@ -11002,6 +13890,7 @@ function getBrowseStories(type){
       initAuth();
       syncHeaderOnlineStatus();
       renderNotificationList();
+      bossRaidEnsureInit();
       renderRoute();
     }
     init();
