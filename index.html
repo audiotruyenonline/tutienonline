@@ -3458,9 +3458,9 @@
        ============================ */
     .rank-shell{padding:12px 10px 18px;}
     .rank-bars{display:flex;flex-direction:column;gap:8px;margin:8px 0 10px;}
-    .rank-bar{display:flex;gap:8px;flex-wrap:nowrap;overflow:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch;}
+    .rank-bar{display:flex;gap:8px;flex-wrap:wrap;overflow:visible;padding-bottom:0;}
     .rank-bar::-webkit-scrollbar{height:0;}
-    .rank-bar .chip{white-space:nowrap;}
+    .rank-bar .chip{white-space:nowrap;flex:0 0 auto;}
     .rank-podium{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:10px;align-items:end;margin-top:10px;}
     .podium-card{border:1px solid var(--line);background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.12);}
     .podium-card .cover{aspect-ratio:3/4;width:100%;object-fit:cover;display:block;}
@@ -3878,6 +3878,78 @@
 .boss-lb-row .meta .s{margin-top:3px;font-size:11px;color:var(--muted);font-weight:800;}
 .boss-lb-row .dmg{font-weight:950;font-variant-numeric:tabular-nums;}
 
+/* ===== Boss (rebuild) ===== */
+.boss-panel{
+  border:1px solid var(--line);
+  background: var(--card);
+  border-radius:18px;
+  padding:12px;
+  box-shadow: 0 14px 32px rgba(0,0,0,.14);
+  margin-top:10px;
+}
+.boss-title{font-weight:950;font-size:16px;line-height:1.15;}
+.boss-hpbar{
+  margin-top:10px;
+  position:relative;
+  height:36px;
+  border-radius:14px;
+  overflow:hidden;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.22), 0 18px 40px rgba(0,0,0,.20);
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+}
+.boss-hpbar:active{
+  transform: translateY(1px);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.18), 0 12px 26px rgba(0,0,0,.22);
+}
+.boss-hpbar-fill{
+  position:absolute;left:0;top:0;bottom:0;
+  width:0%;
+  background: linear-gradient(90deg, rgba(255,76,76,.95), rgba(255,187,64,.92));
+}
+.boss-hpbar-text{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  font-size:12px;
+  font-weight:950;
+  color:#fff;
+  text-shadow:0 2px 10px rgba(0,0,0,.55);
+  font-variant-numeric:tabular-nums;
+  padding:0 10px;
+}
+.boss-hit-btn{
+  margin-top:10px;
+  width:100%;
+  height:46px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.16);
+  background:#fff;
+  color:#0b1220;
+  font-weight:950;
+  cursor:pointer;
+  box-shadow:0 16px 34px rgba(0,0,0,.25);
+  -webkit-tap-highlight-color: transparent;
+}
+.boss-hit-btn:active,
+.boss-hit-btn.pressed{
+  transform: translateY(2px);
+  box-shadow:0 10px 20px rgba(0,0,0,.28);
+}
+.boss-hit-log{
+  margin-top:10px;
+  padding:10px;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+}
+
+
+
 
     /* ============================
        HOME - Community Chat box
@@ -4240,21 +4312,33 @@
           <div class="icon">🏆</div>
           <div>Bảng xếp hạng</div>
         </div>
-        <div class="drawer-rank-list" id="drawerRankingList">
-          <button class="drawer-rank-btn" data-menu-rank="Top lượt xem">
-            <span class="left"><span class="rank-no">1</span><span class="txt">Top lượt xem</span></span>
+                <div class="drawer-rank-list" id="drawerRankingList">
+          <button class="drawer-rank-btn" data-menu-rank="tuvi">
+            <span class="left"><span class="rank-no">1</span><span class="txt">Xếp hạng Tu Vi</span></span>
             <span class="arrow">›</span>
           </button>
-          <button class="drawer-rank-btn" data-menu-rank="Top đánh giá">
-            <span class="left"><span class="rank-no">2</span><span class="txt">Top đánh giá</span></span>
+          <button class="drawer-rank-btn" data-menu-rank="lucchien">
+            <span class="left"><span class="rank-no">2</span><span class="txt">Xếp hạng Lực Chiến</span></span>
             <span class="arrow">›</span>
           </button>
-          <button class="drawer-rank-btn" data-menu-rank="Top theo dõi">
-            <span class="left"><span class="rank-no">3</span><span class="txt">Top theo dõi</span></span>
+          <button class="drawer-rank-btn" data-menu-rank="pvp">
+            <span class="left"><span class="rank-no">3</span><span class="txt">Xếp hạng PVP</span></span>
             <span class="arrow">›</span>
           </button>
-          <button class="drawer-rank-btn" data-menu-rank="Mới cập nhật">
-            <span class="left"><span class="rank-no">4</span><span class="txt">Mới cập nhật</span></span>
+          <button class="drawer-rank-btn" data-menu-rank="motsach">
+            <span class="left"><span class="rank-no">4</span><span class="txt">Mọt Sách (Hôm nay)</span></span>
+            <span class="arrow">›</span>
+          </button>
+          <button class="drawer-rank-btn" data-menu-rank="boss">
+            <span class="left"><span class="rank-no">5</span><span class="txt">Xếp hạng Săn Boss</span></span>
+            <span class="arrow">›</span>
+          </button>
+          <button class="drawer-rank-btn" data-menu-rank="trangvien">
+            <span class="left"><span class="rank-no">6</span><span class="txt">Xếp hạng Trang Viên</span></span>
+            <span class="arrow">›</span>
+          </button>
+          <button class="drawer-rank-btn" data-menu-rank="banghoi">
+            <span class="left"><span class="rank-no">7</span><span class="txt">Xếp hạng Bang Hội</span></span>
             <span class="arrow">›</span>
           </button>
         </div>
@@ -4630,16 +4714,17 @@
     <div class="page hidden" id="rankPage">
       <section class="section" style="margin-top:0">
         <div class="rank-shell">
-          <div class="rank-bars">
+                    <div class="rank-bars">
             <div class="rank-bar" id="rankMetrics" aria-label="Chọn loại bảng xếp hạng">
-              <button class="chip active" type="button" data-rank-mode="views">Lượt xem</button>
-              <button class="chip" type="button" data-rank-mode="updated">Mới cập nhật</button>
-              <button class="chip" type="button" data-rank-mode="rating">Đánh giá</button>
+              <button class="chip active" type="button" data-rank-type="tuvi">Tu Vi</button>
+              <button class="chip" type="button" data-rank-type="lucchien">Lực Chiến</button>
+              <button class="chip" type="button" data-rank-type="pvp">PVP</button>
+              <button class="chip" type="button" data-rank-type="motsach">Mọt Sách</button>
+              <button class="chip" type="button" data-rank-type="boss">Săn Boss</button>
             </div>
-            <div class="rank-bar" id="rankPeriods" aria-label="Chọn thời gian (ngày/tuần/tháng)">
-              <button class="chip active" type="button" data-rank-period="day">Ngày</button>
-              <button class="chip" type="button" data-rank-period="week">Tuần</button>
-              <button class="chip" type="button" data-rank-period="month">Tháng</button>
+            <div class="rank-bar" id="rankMetrics2" aria-label="Bảng xếp hạng khác">
+              <button class="chip" type="button" data-rank-type="trangvien">Trang Viên</button>
+              <button class="chip" type="button" data-rank-type="banghoi">Bang Hội</button>
             </div>
           </div>
 
@@ -5133,11 +5218,11 @@ const BOSS_RAID_LOCAL_STATE_KEY = "bossRaid_state_v1";
 const BOSS_RAID_LOCAL_CONTRIB_KEY = "bossRaid_contrib_v1";
 const BOSS_RAID_DEFAULT = {
   id: "world_001",
-  name: "Hắc Long Vương",
+  name: "Boss Thế Giới",
   avatar: __svgAvatar("B", 18),
   power: 520000,     // lực chiến boss (tham khảo)
-  maxHP: 2500000,
-  hp: 2500000,
+  maxHP: 10000000,
+  hp: 10000000,
   updatedAt: Date.now()
 };
 
@@ -5175,6 +5260,22 @@ function __bossLoadLocal(){
   }catch(_){
     __bossRaidState = {...BOSS_RAID_DEFAULT};
   }
+
+  // migrate: đảm bảo boss có 10.000.000 HP theo yêu cầu
+  try{
+    const minMax = 10000000;
+    const st = (__bossRaidState && typeof __bossRaidState === "object") ? __bossRaidState : {...BOSS_RAID_DEFAULT};
+    const curMax = Math.max(0, Number(st.maxHP || 0) || 0);
+    const curHp = Math.max(0, Number(st.hp || 0) || 0);
+    if (curMax < minMax){
+      const pct = (curMax > 0) ? (curHp / curMax) : 1;
+      const newHp = Math.max(0, Math.min(minMax, Math.round(minMax * pct)));
+      __bossRaidState = { ...BOSS_RAID_DEFAULT, ...st, name: (st.name || BOSS_RAID_DEFAULT.name), maxHP: minMax, hp: newHp };
+    }else{
+      __bossRaidState = { ...BOSS_RAID_DEFAULT, ...st, hp: Math.max(0, Math.min(curMax || minMax, curHp)) };
+    }
+  }catch(_){}
+
   try{
     const c = JSON.parse(safeGetLS(BOSS_RAID_LOCAL_CONTRIB_KEY, "") || "{}");
     __bossRaidContrib = (c && typeof c === "object") ? c : {};
@@ -5257,24 +5358,13 @@ function __bossUpdateUI(){
   const hp = Math.max(0, Math.min(maxHP, Number(st.hp || 0) || 0));
   const pct = Math.max(0, Math.min(100, (hp / maxHP) * 100));
 
-  const fill = document.getElementById("bossHpFill");
-  const textEl = document.getElementById("bossHpText");
-  const nameEl = document.getElementById("bossRaidName");
-  const powEl = document.getElementById("bossRaidPower");
-  const avaEl = document.getElementById("bossRaidAva");
+  const fill = document.getElementById("bossHpBarFill");
+  const textEl = document.getElementById("bossHpBarText");
+  const nameEl = document.getElementById("bossName");
 
   if (fill) fill.style.width = pct.toFixed(3) + "%";
   if (textEl) textEl.textContent = `${fmtN(hp)} / ${fmtN(maxHP)} HP`;
   if (nameEl) nameEl.textContent = st.name || "Boss";
-  if (powEl) powEl.textContent = fmtN(Number(st.power || 0) || 0);
-  if (avaEl){
-    const ava = st.avatar || "";
-    if (ava && String(ava).startsWith("data:image") || String(ava).startsWith("http")){
-      avaEl.innerHTML = `<img src="${esc(String(ava))}" alt="boss">`;
-    }else{
-      avaEl.textContent = "🐉";
-    }
-  }
 }
 
 function __bossRenderLeaderboard(){
@@ -5315,7 +5405,7 @@ function __bossRenderLeaderboard(){
         <div class="ava">${ava}</div>
         <div class="meta">
           <div class="t">${esc(it.name)}</div>
-          <div class="s">UID: ${esc(String(it.uid).slice(0,10))}</div>
+          <div class="s">Cộng dồn dame</div>
         </div>
         <div class="dmg">${fmtN(it.dmg)}</div>
       </div>
@@ -5324,29 +5414,35 @@ function __bossRenderLeaderboard(){
 }
 
 function bossRaidOpenAttack(){
-  const box = document.getElementById("bossAttackBox");
-  if (!box) return;
-  box.classList.add("open");
-  box.setAttribute("aria-hidden", "false");
-  try{ box.scrollIntoView({behavior:"smooth", block:"center"}); }catch(_){}
+  // UI mới không có khu "mở" riêng; giữ lại để tương thích (không làm gì).
+  return;
 }
 
 function bossRaidAttack(){
   const now = Date.now();
   if (now < __bossRaidAttackCooldown) return;
-  __bossRaidAttackCooldown = now + 220; // chống spam quá nhanh
+  __bossRaidAttackCooldown = now + 180; // chống spam quá nhanh
+
+  const btn = document.querySelector('[data-boss-hit="1"]');
+  if (btn){
+    btn.classList.add("pressed");
+    setTimeout(() => { try{ btn.classList.remove("pressed"); }catch(_){ } }, 140);
+  }
 
   const st = __bossRaidState || BOSS_RAID_DEFAULT;
   const maxHP = Math.max(1, Number(st.maxHP || 1) || 1);
   const hp = Math.max(0, Math.min(maxHP, Number(st.hp || 0) || 0));
 
+  const logEl = document.getElementById("bossHitLog");
+  const showLog = (msg) => {
+    if (!logEl) return;
+    logEl.style.display = "block";
+    logEl.textContent = msg;
+  };
+
   if (hp <= 0){
-    toast("Boss đã bị hạ! Hãy chờ boss hồi sinh.");
-    const lh = document.getElementById("bossLastHit");
-    if (lh){
-      lh.style.display = "block";
-      lh.textContent = "Boss đã hết HP. Không thể tấn công lúc này.";
-    }
+    toast("Boss đã hết HP!");
+    showLog("Boss đã hết HP. Hãy chờ boss hồi sinh.");
     return;
   }
 
@@ -5369,12 +5465,12 @@ function bossRaidAttack(){
   __bossUpdateUI();
   __bossRenderLeaderboard();
 
-  const lh = document.getElementById("bossLastHit");
-  if (lh){
-    lh.style.display = "block";
-    lh.textContent = `Bạn gây ${fmtN(dmg)} dame • Boss còn ${fmtN(newHpLocal)} HP`;
+  showLog(`Bạn gây ${fmtN(dmg)} dame • Boss còn ${fmtN(newHpLocal)} HP`);
+  try{ if (navigator.vibrate) navigator.vibrate([18,22,18]); }catch(_){}
+
+  if (newHpLocal <= 0){
+    toast("🎉 Boss đã bị hạ!");
   }
-  try{ if (navigator.vibrate) navigator.vibrate([20,30,20]); }catch(_){}
 
   // sync firebase if available
   if (FIREBASE_OK && rtdb && ref && runTransaction){
@@ -5404,7 +5500,7 @@ function bossRaidAttack(){
 // ===== FIX (Android WebView/content://): Boss HP/Attack click capture (reliable) =====
 let __bossTapTs = 0;
 function __bossTapHandler(e){
-  const el = e.target && e.target.closest ? e.target.closest("[data-boss-hp],[data-boss-attack]") : null;
+  const el = e.target && e.target.closest ? e.target.closest("[data-boss-hit],[data-boss-hpbar]") : null;
   if (!el) return;
   // only handle inside Profile/Boss section
   const sec = document.getElementById("pfSec-boss");
@@ -5419,13 +5515,12 @@ function __bossTapHandler(e){
 
   try{ bossRaidEnsureInit(); }catch(_){}
 
-  if (el.matches("[data-boss-hp]")){
-    try{ bossRaidOpenAttack(); }catch(_){}
-    try{ if (navigator.vibrate) navigator.vibrate(10); }catch(_){}
+  if (el.matches("[data-boss-hit]")){
+    try{ bossRaidAttack(); }catch(_){}
     return;
   }
-  if (el.matches("[data-boss-attack]")){
-    try{ bossRaidAttack(); }catch(_){}
+  if (el.matches("[data-boss-hpbar]")){
+    try{ if (navigator.vibrate) navigator.vibrate(8); }catch(_){}
     return;
   }
 }
@@ -5904,6 +5999,7 @@ function normalizeUserState(raw){
     const browsePage = $("#browsePage");
     const rankPage = $("#rankPage");
     const rankMetrics = $("#rankMetrics");
+    const rankMetrics2 = $("#rankMetrics2");
     const rankPeriods = $("#rankPeriods");
     const rankPodium = $("#rankPodium");
     const rankList = $("#rankList");
@@ -10592,55 +10688,22 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
     <div class="s">Đánh boss thủ công</div>
   </div>
 
-  <div class="pf-setting" style="margin-top:10px">
-    <div class="pf-setting-row">
-      <div>
-        <div class="t">Boss đã hạ</div>
-        <div class="s">Lưu cục bộ (demo)</div>
-      </div>
-      <div style="font-weight:950">${bossKills}</div>
-    </div>
-    <div class="pf-setting-row">
-      <div>
-        <div class="t">Điểm Boss</div>
-        <div class="s">Tổng điểm tích luỹ</div>
-      </div>
-      <div style="font-weight:950">${bossPoints}</div>
-    </div>
-  </div>
+  <div class="boss-panel">
+    <div class="boss-title" id="bossName">Boss Thế Giới</div>
 
-  <div class="boss-raid-card">
-    <div class="boss-raid-head">
-      <div class="boss-ava" id="bossRaidAva">🐉</div>
-      <div class="boss-meta">
-        <div class="boss-name" id="bossRaidName">Boss Thế Giới</div>
-        <div class="boss-sub">
-          <span>Lực chiến boss: <b id="bossRaidPower">—</b></span>
-          <span>Dame/đòn (bạn): <b id="bossMyDmg">${fmtN(calcDamageFromPower(combatPower))}</b></span>
-        </div>
-      </div>
+    <div class="boss-hpbar" id="bossHpBar" data-boss-hpbar="1" title="HP Boss">
+      <div class="boss-hpbar-fill" id="bossHpBarFill" style="width:100%"></div>
+      <div class="boss-hpbar-text" id="bossHpBarText">10.000.000 / 10.000.000 HP</div>
     </div>
 
-    <div class="boss-hp-btn" data-boss-hp="1" title="Bấm để mở khu tấn công">
-      <div class="boss-hp-fill" id="bossHpFill"></div>
-      <div class="boss-hp-text" id="bossHpText">— / — HP</div>
-    </div>
+    <button class="boss-hit-btn" type="button" data-boss-hit="1">🤍 Đánh boss</button>
 
-    <div class="boss-attack" id="bossAttackBox" aria-hidden="true">
-      <div class="boss-attack-row">
-        <div class="boss-attack-info">
-          Bấm nút để <b>tấn công boss</b> (đánh tay). Lực chiến càng cao → dame càng lớn.
-        </div>
-        <button class="boss-attack-btn" type="button" data-boss-attack="1">⚔️ Tấn công</button>
-      </div>
-      <div class="boss-attack-note">Dame của bạn sẽ cộng dồn và hiển thị trong bảng xếp hạng bên dưới.</div>
-      <div class="boss-last-hit" id="bossLastHit" style="display:none"></div>
-    </div>
+    <div class="boss-hit-log" id="bossHitLog" style="display:none"></div>
   </div>
 
   <div class="pf-section-title" style="margin-top:12px">
     <div class="t">Xếp hạng dame</div>
-    <div class="s">Top 10 người chơi</div>
+    <div class="s">Cộng dồn theo lượt đánh</div>
   </div>
   <div class="boss-lb" id="bossLb">
     <div class="muted" style="padding:10px 2px">Đang tải bảng xếp hạng…</div>
@@ -10833,84 +10896,265 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
       return { type, page };
     }
     
+    
     /* ============================
-       Rank Page (Bảng xếp hạng)
-       Route: #/rank/views/(day|week|month)/:page
-              #/rank/updated/:page
-              #/rank/rating/:page
+       Rank Page (Bảng xếp hạng người chơi)
+       Route: #/rank/:type/:page
+              type = tuvi | lucchien | pvp | motsach | boss | trangvien | banghoi
        ============================ */
     let __rankBound = false;
-    let rankState = { mode: "views", period: "day", page: 1 };
+    let rankState = { type: "tuvi", page: 1 };
 
     function parseRankHash(hash){
       const h = String(hash || "");
-      const m = h.match(/^#\/rank(?:\/(views|updated|rating))?(?:\/(day|week|month))?(?:\/(\d+))?$/i);
+      const m = h.match(/^#\/rank(?:\/(tuvi|lucchien|pvp|motsach|boss|trangvien|banghoi))?(?:\/(\d+))?$/i);
       if (!m) return null;
-      const mode = String(m[1] || "views").toLowerCase();
-      const period = String(m[2] || "day").toLowerCase();
-      const page = Math.max(1, parseInt(m[3] || "1", 10) || 1);
-      return { mode, period, page };
+      const type = String(m[1] || "tuvi").toLowerCase();
+      const page = Math.max(1, parseInt(m[2] || "1", 10) || 1);
+      return { type, page };
     }
 
+    const RANK_TYPES = {
+      tuvi:      { label:"Tu Vi",       icon:"⚡", desc:"Tổng linh khí (Tu Vi) bạn tích lũy từ đọc/nghe." },
+      lucchien:  { label:"Lực Chiến",   icon:"💥", desc:"Thước đo sức mạnh (từ Tu Vi + Trang bị)." },
+      pvp:       { label:"PVP",         icon:"⚔️", desc:"Điểm PVP (thắng/thua không làm đổi lực chiến)." },
+      motsach:   { label:"Mọt Sách",    icon:"📚", desc:"Số chương đọc nhiều nhất trong ngày (hôm nay)." },
+      boss:      { label:"Săn Boss",    icon:"🐉", desc:"Điểm săn boss tích lũy." },
+      trangvien: { label:"Trang Viên",  icon:"🏡", desc:"Cấp Trang viên (tăng % linh khí tu luyện)." },
+      banghoi:   { label:"Bang Hội",    icon:"🏯", desc:"Xếp hạng bang hội (demo theo điểm & thành viên)." }
+    };
+
     function _rankTitleSub(state){
-      const mode = String(state?.mode || "views");
-      const period = String(state?.period || "day");
-      const title = "Bảng xếp hạng";
-      let sub = "";
-      if (mode === "views"){
-        sub = (period === "week") ? "Top lượt xem • Tuần" : (period === "month") ? "Top lượt xem • Tháng" : "Top lượt xem • Ngày";
-      }else if (mode === "updated"){
-        sub = "Mới cập nhật";
-      }else if (mode === "rating"){
-        sub = "Top đánh giá";
+      const type = String(state?.type || "tuvi").toLowerCase();
+      const cfg = RANK_TYPES[type] || RANK_TYPES.tuvi;
+      return { title: "Bảng xếp hạng", sub: `${cfg.icon} ${cfg.label} • ${cfg.desc}` };
+    }
+
+    function __todayKeyLocal(){
+      try{
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth()+1).padStart(2,'0');
+        const dd = String(d.getDate()).padStart(2,'0');
+        return `${y}-${m}-${dd}`;
+      }catch(_){
+        return "today";
       }
-      return { title, sub };
+    }
+
+    function __dailyReadEnsure(){
+      const today = __todayKeyLocal();
+      const curD = safeGetLS("daily_read_date", "");
+      if (curD !== today){
+        try{ safeSetLS("daily_read_date", today); }catch(_){}
+        try{ safeSetLS("daily_read_count", "0"); }catch(_){}
+        try{ safeSetLS("daily_read_progress", "{}"); }catch(_){}
+      }
+    }
+
+    function getDailyReadCount(){
+      __dailyReadEnsure();
+      return Math.max(0, Number(safeGetLS("daily_read_count", "0") || 0));
+    }
+
+    // Tăng "chương hôm nay" theo tiến độ (tránh spam mở lại cùng 1 chương)
+    function bumpDailyReadProgress(storyId, chapter){
+      __dailyReadEnsure();
+      const sid = String(storyId || "");
+      if (!sid) return;
+      const ch = Math.max(1, Number(chapter || 1) || 1);
+
+      let prog = {};
+      try{
+        prog = JSON.parse(safeGetLS("daily_read_progress", "{}") || "{}");
+        if (!prog || typeof prog !== "object") prog = {};
+      }catch(_){ prog = {}; }
+
+      const prev = Math.max(0, Number(prog[sid] || 0) || 0);
+      if (ch <= prev) return;
+
+      const delta = ch - prev;
+      prog[sid] = ch;
+
+      const cur = Math.max(0, Number(safeGetLS("daily_read_count", "0") || 0));
+      try{ safeSetLS("daily_read_count", String(cur + delta)); }catch(_){}
+      try{ safeSetLS("daily_read_progress", JSON.stringify(prog)); }catch(_){}
+    }
+
+    function calcTuviExpFromState(){
+      try{
+        const lastReading = (userState && userState.lastReading && typeof userState.lastReading === "object") ? userState.lastReading : {};
+        const readChSum = Object.keys(lastReading || {}).reduce((a,k)=>a + Math.max(0, Number(lastReading[k]||0)), 0);
+        const totalReadSeconds = Number(safeGetLS(__lsReadSecondsKey(), "0") || 0);
+        const minutesRead = Math.max(0, Math.floor(totalReadSeconds / 60));
+        const tuviPoints = Math.max(0, Number(readChSum||0) + Math.floor(minutesRead/5));
+
+        const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
+        const estateInfo = getEstateInfo(estateLv);
+        const estateBonusPct = Math.max(0, Number(estateInfo.bonus || 0) || 0);
+        return Math.max(0, Math.floor(tuviPoints * (1 + (estateBonusPct / 100))));
+      }catch(_){
+        return 0;
+      }
+    }
+
+    function ensureRankBots(){
+      const key = "rank_bots_v1";
+      try{
+        const raw = safeGetLS(key, "");
+        if (raw){
+          const arr = JSON.parse(raw);
+          if (Array.isArray(arr) && arr.length >= 10) return arr;
+        }
+      }catch(_){}
+
+      const names = ["Thiên Vũ","Huyền Phong","Băng Tâm","Hắc Long","Thanh Vân","Lôi Ảnh","Ma Tôn","Nguyệt Ảnh","Kim Cốt","U Minh","Thiên Kiếm","Huyết Hổ","Linh Vũ","Vạn Kiếm"];
+      const demo = [];
+      for (let i = 0; i < 14; i++){
+        const nm = names[i] + " " + (i+1);
+        const id = "rb_" + i;
+        const seed = __hash32(id + "|" + nm);
+
+        const tuvi = 5000 + (seed % 650000);              // Tu Vi exp
+        const estateLv = clampEstateLevel(seed % 18);      // 0..18
+        const pvp = seed % 8000;
+        const boss = seed % 12000;
+        const motsach = 5 + (seed % 220);
+        const gearSlots = seed % 6;
+        const power = Math.max(0, Math.floor(tuvi * 3 + gearSlots * 5000));
+        const guild = ["Thiên Kiếm","Huyền Minh","Thanh Vân","Hắc Long","Băng Tâm","Ma Tông"][(seed >> 8) % 6];
+
+        demo.push({
+          id, name: nm,
+          avatar: __svgAvatar(nm.slice(0,1), (i*37)%360),
+          tuvi, power, pvp, boss, motsach, estateLv, guild
+        });
+      }
+
+      try{ safeSetLS(key, JSON.stringify(demo)); }catch(_){}
+      return demo;
+    }
+
+    function _rankMe(){
+      const prof = (userState && userState.profile) ? userState.profile : {};
+      const name = String((prof && prof.name) ? prof.name : (currentUser?.displayName || "Khách"));
+      const avatar = String((prof && prof.avatar) ? prof.avatar : (currentUser?.photoURL || __svgAvatar(name.slice(0,1), 210)));
+
+      const tuvi = calcTuviExpFromState();
+      const power = calcCombatPowerFromState();
+      const pvp = Math.max(0, Number(safeGetLS("pvp_points", "0") || 0));
+      const boss = Math.max(0, Number(safeGetLS("boss_points", "0") || 0));
+      const motsach = getDailyReadCount();
+      const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
+
+      return {
+        id: String(currentUser?.uid || "me_guest"),
+        name, avatar,
+        tuvi, power, pvp, boss, motsach, estateLv,
+        isMe: true
+      };
+    }
+
+    function ensureGuildDemo(){
+      const key = "guild_demo_v1";
+      let arr = null;
+      try{ arr = JSON.parse(safeGetLS(key, "null") || "null"); }catch(_){ arr = null; }
+      if (!Array.isArray(arr) || arr.length < 6){
+        const names = ["Thiên Kiếm","Huyền Minh","Thanh Vân","Hắc Long","Băng Tâm","Ma Tông","Long Tộc","Vạn Kiếm","U Minh","Lôi Ảnh"];
+        arr = [];
+        for (let i = 0; i < 10; i++){
+          const nm = names[i];
+          const seed = __hash32("g|" + nm);
+          const points = 1000 + (seed % 180000);
+          const members = 10 + (seed % 380);
+          arr.push({
+            id: "g_" + i,
+            name: nm,
+            avatar: __svgAvatar(nm.slice(0,1), (i*48)%360),
+            points, members
+          });
+        }
+        try{ safeSetLS(key, JSON.stringify(arr)); }catch(_){}
+      }
+      return arr;
+    }
+
+    function _rankValueFor(entry, type){
+      const t = String(type || "tuvi");
+      if (t === "lucchien") return Number(entry?.power || 0) || 0;
+      if (t === "pvp") return Number(entry?.pvp || 0) || 0;
+      if (t === "motsach") return Number(entry?.motsach || 0) || 0;
+      if (t === "boss") return Number(entry?.boss || 0) || 0;
+      if (t === "trangvien") return Number(entry?.estateLv || 0) || 0;
+      if (t === "banghoi") return Number(entry?.points || 0) || 0;
+      return Number(entry?.tuvi || 0) || 0;
     }
 
     function _rankListFor(state){
-      const mode = String(state?.mode || "views");
-      const period = String(state?.period || "day");
-      if (mode === "updated") return sortedUpdatedStories();
-      if (mode === "rating"){
-        const list = Array.isArray(stories) ? [...stories] : [];
-        list.sort((a,b) => (Number(b.rating||0) - Number(a.rating||0)) || (Number(b.views||0) - Number(a.views||0)));
-        return list;
+      const type = String(state?.type || "tuvi").toLowerCase();
+
+      if (type === "banghoi"){
+        const guilds = ensureGuildDemo();
+        guilds.sort((a,b) => (Number(b.points||0) - Number(a.points||0)) || (Number(b.members||0) - Number(a.members||0)));
+        return guilds;
       }
-      // views
-      const t = (period === "week") ? "topweek" : (period === "month") ? "topmonth" : "topday";
-      return sortedTopViewsStories(t);
+
+      const me = _rankMe();
+      const bots = ensureRankBots();
+      const list = [me, ...(bots || []).filter(b => String(b?.id||"") !== String(me.id))];
+      list.sort((a,b) => _rankValueFor(b, type) - _rankValueFor(a, type));
+      return list;
     }
 
-    function _rankStatText(s){
-      const mode = String(rankState.mode || "views");
-      if (mode === "updated"){
-        return String(s?.updatedAtText || "—");
+    function _rankStatText(entry){
+      const type = String(rankState.type || "tuvi").toLowerCase();
+      if (type === "trangvien"){
+        const lv = clampEstateLevel(Number(entry?.estateLv || 0));
+        const info = getEstateInfo(lv);
+        return `Cấp ${lv} • +${Number(info.bonus||0)}%`;
       }
-      if (mode === "rating"){
-        const r = Number(s?.rating || 0) || 0;
-        return "⭐ " + (Math.round(r*10)/10).toFixed(1);
+      if (type === "motsach"){
+        return `${fmtN(_rankValueFor(entry, type))} chương`;
       }
-      return formatShort(Number(s?.views || 0) || 0);
+      if (type === "banghoi"){
+        return `👥 ${fmtN(Number(entry?.members||0))}`;
+      }
+      return fmtN(_rankValueFor(entry, type));
     }
 
     function _rankPodiumHtml(items){
       const top = (items || []).slice(0,3);
       if (!top.length) return "";
-      const slot = [1,0,2]; // hiển thị 2-1-3 cho đẹp
-      return slot.map((i, idx) => {
-        const s = top[i];
-        if (!s) return '<div></div>';
-        const no = i+1;
-        const tag = String(s.category||"").trim();
+      const slot = [1,0,2];
+      const type = String(rankState.type || "tuvi").toLowerCase();
+      const cfg = RANK_TYPES[type] || RANK_TYPES.tuvi;
+
+      return slot.map((i) => {
+        const it = top[i];
+        if (!it) return "<div></div>";
+        const no = i + 1;
+
+        const nm = String(it.name || "—");
+        const ava = String(it.avatar || "");
+        let tag = (type === "banghoi") ? "Bang hội" : "Người chơi";
+        if (type === "tuvi"){
+          const ri = getRealmByExp(Number(it?.tuvi || 0));
+          const acct = (it?.isMe && !currentUser) ? "Khách" : "Thường";
+          const realmTxt = String(ri?.realm || "phàm nhân").toLowerCase();
+          const starTxt = String(ri?.starName || "nhất tinh").toLowerCase();
+          tag = `${acct} - ${realmTxt} ${starTxt}`.trim();
+        }
+        const stat = (type === "banghoi") ? fmtN(Number(it.points||0)) : _rankStatText(it);
+
         return `
-          <article class="podium-card js-open" data-id="${esc(s.id)}" role="button" aria-label="${esc(s.title)}">
-            <img class="cover" src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
+          <article class="podium-card" role="group" aria-label="${esc(nm)}">
+            <img class="cover" src="${esc(ava || __svgAvatar(nm.slice(0,1), 120))}" alt="${esc(nm)}" loading="lazy">
             <div class="info">
-              <div class="podium-rank">#${no} <span style="opacity:.85">${modeIcon(rankState.mode)}</span></div>
-              <div class="podium-title">${esc(s.title||"")}</div>
+              <div class="podium-rank">#${no} <span style="opacity:.85">${esc(cfg.icon)}</span></div>
+              <div class="podium-title">${esc(nm)}</div>
               <div class="podium-sub">
-                <span class="tag">${esc(tag||"")}</span>
-                <span class="stat">${esc(_rankStatText(s))}</span>
+                <span class="tag">${esc(tag)}</span>
+                <span class="stat">${esc(stat)}</span>
               </div>
             </div>
           </article>
@@ -10918,28 +11162,47 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
       }).join("");
     }
 
-    function modeIcon(mode){
-      const m = String(mode||"views");
-      if (m === "updated") return "🕒";
-      if (m === "rating") return "⭐";
-      return "👁️";
-    }
+    function _rankRowHtml(it, no){
+      const type = String(rankState.type || "tuvi").toLowerCase();
+      const nm = String(it?.name || "—");
+      const ava = String(it?.avatar || "");
+      let sub = "";
 
-    function _rankRowHtml(s, no){
-      const tag = String(s.category||"").trim();
-      const st = String(s.status||"").trim();
+      if (type === "trangvien"){
+        const lv = clampEstateLevel(Number(it?.estateLv || 0));
+        const info = getEstateInfo(lv);
+        sub = `🏡 ${info.name || "Trang viên"} • +${Number(info.bonus||0)}%`;
+      }else if (type === "motsach"){
+        sub = "📅 Hôm nay";
+      }else if (type === "banghoi"){
+        sub = `👥 ${fmtN(Number(it?.members||0))} thành viên`;
+      }else if (type === "pvp"){
+        sub = "⚔️ Thách đấu để tăng điểm";
+      }else if (type === "boss"){
+        sub = "🐉 Đánh boss để tăng điểm";
+      }else if (type === "lucchien"){
+        sub = "💥 Sức mạnh tài khoản";
+      }else if (type === "tuvi"){
+        const ri = getRealmByExp(Number(it?.tuvi || 0));
+        const acct = (it?.isMe && !currentUser) ? "Khách" : "Thường";
+        const realmTxt = String(ri?.realm || "phàm nhân").toLowerCase();
+        const starTxt = String(ri?.starName || "nhất tinh").toLowerCase();
+        sub = `${acct} - ${realmTxt} ${starTxt}`.trim();
+      }else{
+        sub = "⚡ Linh khí tích lũy";
+      }
+
+      const stat = (type === "banghoi") ? fmtN(Number(it?.points||0)) : _rankStatText(it);
+
       return `
-        <article class="rank-row js-open" data-id="${esc(s.id)}" role="button" aria-label="${esc(s.title)}">
+        <article class="rank-row" role="group" aria-label="${esc(nm)}">
           <div class="rank-no">#${no}</div>
-          <img class="thumb" src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
+          <img class="thumb" src="${esc(ava || __svgAvatar(nm.slice(0,1), 120))}" alt="${esc(nm)}" loading="lazy">
           <div class="meta">
-            <div class="t">${esc(s.title||"")}</div>
-            <div class="s">
-              ${tag ? `<span>🏷️ ${esc(tag)}</span>` : ""}
-              ${st ? `<span>• ${esc(st)}</span>` : ""}
-            </div>
+            <div class="t">${esc(nm)}</div>
+            <div class="s">${esc(sub)}</div>
           </div>
-          <div class="stat">${esc(_rankStatText(s))}</div>
+          <div class="stat">${esc(stat)}</div>
         </article>
       `;
     }
@@ -10948,275 +11211,72 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
       if (__rankBound) return;
       __rankBound = true;
 
-      rankMetrics?.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-rank-mode]");
+      const __onRankChip = (e) => {
+        const btn = e.target.closest("[data-rank-type]");
         if (!btn) return;
-        const mode = String(btn.dataset.rankMode || "views");
-        const p = (rankState && rankState.period) ? String(rankState.period) : "day";
-        if (mode === "views"){
-          location.hash = `#/rank/views/${encodeURIComponent(p)}/1`;
-        }else{
-          location.hash = `#/rank/${encodeURIComponent(mode)}/1`;
-        }
-      });
+        const type = String(btn.dataset.rankType || "tuvi").toLowerCase();
+        location.hash = `#/rank/${encodeURIComponent(type)}/1`;
+      };
 
-      rankPeriods?.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-rank-period]");
-        if (!btn) return;
-        const period = String(btn.dataset.rankPeriod || "day");
-        if (String(rankState.mode) !== "views") return;
-        location.hash = `#/rank/views/${encodeURIComponent(period)}/1`;
-      });
-
-      rankPrevBtn?.addEventListener("click", () => {
+      rankMetrics?.addEventListener("click", __onRankChip);
+      rankMetrics2?.addEventListener("click", __onRankChip);
+rankPrevBtn?.addEventListener("click", () => {
         const p = Math.max(1, Number(rankState.page||1) - 1);
-        if (rankState.mode === "views"){
-          location.hash = `#/rank/views/${encodeURIComponent(rankState.period||"day")}/${p}`;
-        }else{
-          location.hash = `#/rank/${encodeURIComponent(rankState.mode||"updated")}/${p}`;
-        }
+        location.hash = `#/rank/${encodeURIComponent(rankState.type||"tuvi")}/${p}`;
       });
       rankNextBtn?.addEventListener("click", () => {
         const p = Math.max(1, Number(rankState.page||1) + 1);
-        if (rankState.mode === "views"){
-          location.hash = `#/rank/views/${encodeURIComponent(rankState.period||"day")}/${p}`;
-        }else{
-          location.hash = `#/rank/${encodeURIComponent(rankState.mode||"updated")}/${p}`;
-        }
+        location.hash = `#/rank/${encodeURIComponent(rankState.type||"tuvi")}/${p}`;
       });
     }
 
-    function renderRankPage(mode="views", period="day", page=1){
+    function renderRankPage(type="tuvi", page=1){
       bindRankOnce();
-      rankState = { mode: String(mode||"views"), period: String(period||"day"), page: Math.max(1, Number(page)||1) };
+      rankState = { type: String(type||"tuvi").toLowerCase(), page: Math.max(1, Number(page)||1) };
 
       hideAllPages();
       rankPage?.classList.remove("hidden");
-      setActiveBottomNav("home"); // BXH là trang riêng, không nằm bottom nav
+      setActiveBottomNav("home"); // BXH là trang riêng
 
-      // Tabs active
-      rankMetrics?.querySelectorAll("[data-rank-mode]").forEach(b=>{
-        b.classList.toggle("active", String(b.dataset.rankMode) === String(rankState.mode));
+      // Active chip
+      rankPage?.querySelectorAll("[data-rank-type]").forEach(b=>{
+        b.classList.toggle("active", String(b.dataset.rankType) === String(rankState.type));
       });
 
-      const isViews = String(rankState.mode) === "views";
-      rankPeriods?.classList.toggle("hidden", !isViews);
-      if (isViews){
-        rankPeriods?.querySelectorAll("[data-rank-period]").forEach(b=>{
-          b.classList.toggle("active", String(b.dataset.rankPeriod) === String(rankState.period));
-        });
-      }
+      const ts = _rankTitleSub(rankState);
+      showRouteHeader({ title: ts.title, sub: ts.sub, back: true });
 
       const full = _rankListFor(rankState);
-      const total = full.length;
-      const pageSize = 10;
-      const totalPages = Math.max(1, Math.ceil(total / pageSize));
-      const p = Math.max(1, Math.min(totalPages, Number(rankState.page)||1));
+      const pageSize = 30;
+      const totalPages = Math.max(1, Math.ceil((full.length || 0) / pageSize));
+      const p = Math.min(Math.max(1, rankState.page), totalPages);
       rankState.page = p;
 
-      const { title, sub } = _rankTitleSub(rankState);
-      showRouteHeader({ title, sub, back: true, chips: [`Trang ${p}/${totalPages}`] });
+      const start = (p - 1) * pageSize;
+      const items = full.slice(start, start + pageSize);
 
-      // Empty
-      if (!total){
-        if (rankPodium) rankPodium.innerHTML = "";
-        if (rankList) rankList.innerHTML = "";
-        if (rankEmptyNote){
-          rankEmptyNote.textContent = "Chưa có dữ liệu để hiển thị bảng xếp hạng.";
-          rankEmptyNote.classList.remove("hidden");
-        }
-        if (rankPager) rankPager.classList.add("hidden");
-        return;
-      }else{
-        rankEmptyNote?.classList.add("hidden");
-        rankPager?.classList.remove("hidden");
-      }
-
-      // Podium (top 3)
-      if (rankPodium){
-        rankPodium.innerHTML = _rankPodiumHtml(full);
-      }
-
-      // List (page 1: #4-#10, page 2: #11-#20, ...)
-      let slice = [];
-      if (p === 1){
-        slice = full.slice(3, 10);
-      }else{
-        const start = (p - 1) * pageSize;
-        slice = full.slice(start, start + pageSize);
-      }
+      if (rankPodium) rankPodium.innerHTML = _rankPodiumHtml(full);
       if (rankList){
-        if (!slice.length){
+        if (!items.length){
           rankList.innerHTML = "";
         }else{
-          const baseNo = (p === 1) ? 4 : ((p - 1) * pageSize + 1);
-          rankList.innerHTML = slice.map((s, i) => _rankRowHtml(s, baseNo + i)).join("");
+          rankList.innerHTML = items.map((it, idx) => _rankRowHtml(it, start + idx + 1)).join("");
         }
       }
 
-      // Pager
+      if (rankEmptyNote){
+        const empty = !full.length;
+        rankEmptyNote.classList.toggle("hidden", !empty);
+        if (empty) rankEmptyNote.textContent = "Chưa có dữ liệu để hiển thị bảng xếp hạng.";
+      }
+
       if (rankPageInfo) rankPageInfo.textContent = `Trang ${p}/${totalPages}`;
       if (rankPrevBtn) rankPrevBtn.disabled = (p <= 1);
       if (rankNextBtn) rankNextBtn.disabled = (p >= totalPages);
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
 
-function getBrowseStories(type){
-      const t = String(type || "updated").toLowerCase();
-      if (t === "completed") return sortedCompletedStories();
-      if (t === "topday" || t === "topweek" || t === "topmonth") return sortedTopViewsStories(t);
-      return sortedUpdatedStories();
-    }
-    function browseCardHtml(s){
-      const done = isCompletedStory(s);
-      const cat = (s.category || "").trim();
-      const status = (s.status || "").trim();
-      const when = (s.updatedAtText || "").trim();
-
-      const tags = [];
-      if (cat) tags.push('<span class="browse-tag">' + esc(cat) + '</span>');
-      if (done) tags.push('<span class="browse-tag done">Hoàn thành</span>');
-      else if (status) tags.push('<span class="browse-tag upd">' + esc(status) + '</span>');
-      if (when) tags.push('<span class="browse-tag" style="opacity:.75">' + esc(when) + '</span>');
-      const tagHtml = tags.join("");
-
-      return `
-        <article class="browse-card js-open" data-id="${esc(s.id)}" role="button" aria-label="${esc(s.title || '')}">
-          <div class="cover"><img src="${esc(getCoverSrc(s))}" alt="${esc(s.title || '')}" loading="lazy"></div>
-          <div class="meta">
-            <div class="t">${esc(s.title || "")}</div>
-            <div class="a">${esc(s.author || "Chưa rõ")}</div>
-            <div class="bline">
-              <span>👁 ${formatShort(s.views || 0)}</span>
-              <span class="star">⭐ ${Number(s.rating || 0).toFixed(1)}</span>
-            </div>
-            <div class="bline">${tagHtml}</div>
-          </div>
-        </article>
-      `;
-    }
-
-    function renderBrowsePager(type, page, totalPages){
-      if (!browsePager) return;
-      browsePager.dataset.browseType = String(type || "updated");
-      if (totalPages <= 1){
-        browsePager.innerHTML = "";
-        return;
-      }
-      const nums = [];
-      let start = Math.max(1, page - 2);
-      let end = Math.min(totalPages, start + 4);
-      start = Math.max(1, end - 4);
-      for (let i = start; i <= end; i++) nums.push(i);
-
-      browsePager.innerHTML = `
-        <button class="pg-btn" type="button" data-pg="${page - 1}" ${page <= 1 ? "disabled" : ""}>‹</button>
-        ${nums.map(n => `<button class="pg-num ${n === page ? "active" : ""}" type="button" data-pg="${n}">${n}</button>`).join("")}
-        <button class="pg-btn" type="button" data-pg="${page + 1}" ${page >= totalPages ? "disabled" : ""}>›</button>
-        <span class="pg-info">Trang ${page}/${totalPages}</span>
-      `;
-    }
-
-    function bindBrowsePagerOnce(){
-      if (__browsePagerBound) return;
-      __browsePagerBound = true;
-      browsePager?.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-pg]");
-        if (!btn) return;
-        if (btn.hasAttribute("disabled")) return;
-        const p = Math.max(1, parseInt(btn.dataset.pg || "1", 10) || 1);
-        const type = (browsePager?.dataset.browseType || __browseType || "updated");
-        location.hash = `#/all/${encodeURIComponent(type)}/${p}`;
-      });
-    }
-
-
-    function bindBrowseTopTabsOnce(){
-      if (window.__browseTopTabsBound) return;
-      window.__browseTopTabsBound = true;
-      const el = $("#browseTopTabs");
-      if (!el) return;
-      el.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-browse-top]");
-        if (!btn) return;
-        const t = String(btn.dataset.browseTop || "topday");
-        location.hash = `#/all/${encodeURIComponent(t)}/1`;
-      });
-    }
-
-    
-    function renderBrowsePage(type = "updated", page = 1, opts = {}){
-      const scroll = (opts && opts.scroll === false) ? false : true;
-
-      __browseType = String(type || "updated").toLowerCase();
-      if (!["updated","completed","topday","topweek","topmonth"].includes(__browseType)) __browseType = "updated";
-      bindBrowsePagerOnce();
-      bindBrowseSearchOnce();
-      bindBrowseTopTabsOnce();
-
-      hideAllPages();
-      browsePage?.classList.remove("hidden");
-      setActiveBottomNav("home");
-
-      // Sync search UI
-      if (browseSearchInput){
-        if ((browseSearchInput.value || "") !== (__browseQuery || "")) browseSearchInput.value = __browseQuery || "";
-      }
-      browseClearBtn?.classList.toggle("show", String(__browseQuery || "").trim().length > 0);
-
-      const fullList = getBrowseStories(__browseType);
-      const filtered = filterBrowseList(fullList, __browseQuery);
-      const total = filtered.length;
-
-      const pageSize = (__browseType === "topday" || __browseType === "topweek" || __browseType === "topmonth") ? 10 : BROWSE_PAGE_SIZE;
-      const totalPages = Math.max(1, Math.ceil(total / pageSize));
-      const p = Math.max(1, Math.min(totalPages, Number(page) || 1));
-
-      const title = (__browseType === "completed") ? "Truyện hoàn thành"
-        : (__browseType === "topday") ? "Top lượt xem • Ngày"
-        : (__browseType === "topweek") ? "Top lượt xem • Tuần"
-        : (__browseType === "topmonth") ? "Top lượt xem • Tháng"
-        : "Mới cập nhật";
-      const q = String(__browseQuery || "").trim();
-      const sub = q
-        ? `Lọc: “${q}” • ${total}/${fullList.length} truyện • ${pageSize} truyện/trang`
-        : `Tất cả ${total} truyện • ${pageSize} truyện/trang`;
-
-      showRouteHeader({ title, sub, back: true, chips: [`Trang ${p}/${totalPages}`] });
-
-      // Top tabs (chỉ hiện khi vào top views)
-      const topTabs = $("#browseTopTabs");
-      if (topTabs){
-        const isTop = (__browseType === "topday" || __browseType === "topweek" || __browseType === "topmonth");
-        topTabs.classList.toggle("hidden", !isTop);
-        if (isTop){
-          topTabs.querySelectorAll("[data-browse-top]").forEach(b=>{
-            b.classList.toggle("active", String(b.dataset.browseTop) === __browseType);
-          });
-        }
-      }
-
-
-      const start = (p - 1) * pageSize;
-      const items = filtered.slice(start, start + pageSize);
-
-      if (!browseGrid) return;
-      if (!items.length){
-        browseGrid.innerHTML = q
-          ? `<div class="panel muted" style="grid-column:1/-1">Không tìm thấy truyện phù hợp.</div>`
-          : `<div class="panel muted" style="grid-column:1/-1">Chưa có truyện.</div>`;
-      } else {
-        browseGrid.innerHTML = items.map(browseCardHtml).join("");
-      }
-
-      renderBrowsePager(__browseType, p, totalPages);
-      if (scroll) window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-
-
-    // Reading time tracking (minutes read)
+// Reading time tracking (minutes read)
     let __readSessionStart = 0;
     let __lastHashForReadStats = location.hash || "#/home";
     function __getStatsPrefix(){
@@ -11301,8 +11361,8 @@ function getBrowseStories(type){
         return;
       }
       if (hash.startsWith("#/rank")){
-        const parsed = parseRankHash(hash) || { mode:"views", period:"day", page:1 };
-        renderRankPage(parsed.mode, parsed.period, parsed.page);
+        const parsed = parseRankHash(hash) || { type:"tuvi", page:1 };
+        renderRankPage(parsed.type, parsed.page);
         return;
       }
       if (hash.startsWith("#/all/")){
@@ -11466,6 +11526,7 @@ function getBrowseStories(type){
       const nextHistory = [storyId, ...userState.historyIds.filter(id => id !== storyId)].slice(0, 50);
       const lastReading = { ...(userState.lastReading || {}), [storyId]: Math.max(1, Number(chapter||1)) };
       const ok = await saveUserStatePatch({ historyIds: nextHistory, lastReading }, opts);
+      try{ bumpDailyReadProgress(storyId, chapter); }catch(_){ }
       if (ok){
         /* không hiện toast "Đã lưu vào lịch sử đọc" */
       }
@@ -12942,22 +13003,10 @@ function getBrowseStories(type){
 
       const rankBtn = e.target.closest("[data-menu-rank]");
       if (rankBtn){
-        const rank = String(rankBtn.dataset.menuRank || "Top lượt xem");
+        const key = String(rankBtn.dataset.menuRank || "tuvi").toLowerCase();
         closeSideMenu();
-        if (/Top\s*lượt\s*xem/i.test(rank)){
-          location.hash = "#/rank/views/day/1";
-          return;
-        }
-        if (/Top\s*đánh\s*giá/i.test(rank)){
-          location.hash = "#/rank/rating/1";
-          return;
-        }
-        if (/Mới\s*cập\s*nhật/i.test(rank)){
-          location.hash = "#/rank/updated/1";
-          return;
-        }
-        // Chưa có dữ liệu thật cho "Theo dõi" trong bản này
-        toast("Chưa có dữ liệu BXH Theo dõi");
+        location.hash = `#/rank/${encodeURIComponent(key)}/1`;
+        return;
       }
     });
 
@@ -13289,14 +13338,13 @@ function getBrowseStories(type){
       }
 
             
-      const bossHpBtn = e.target.closest("[data-boss-hp]");
+      const bossHpBtn = e.target.closest("[data-boss-hpbar]");
 if (bossHpBtn){
   bossRaidEnsureInit();
-  bossRaidOpenAttack();
-  try{ if (navigator.vibrate) navigator.vibrate(10); }catch(_){}
+  try{ if (navigator.vibrate) navigator.vibrate(8); }catch(_){}
   return;
 }
-const bossAtkBtn = e.target.closest("[data-boss-attack]");
+const bossAtkBtn = e.target.closest("[data-boss-hit]");
 if (bossAtkBtn){
   bossRaidEnsureInit();
   bossRaidAttack();
