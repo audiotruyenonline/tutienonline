@@ -4496,6 +4496,78 @@
 }
 .shop-buy:disabled{ opacity:.5; cursor:not-allowed; }
 
+
+    /* ===== VIP Center / Admin ===== */
+    .vip-center{display:grid;gap:14px}
+    .vip-hero{background:linear-gradient(135deg, rgba(242,190,45,.18), rgba(124,77,255,.18));border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+    .vip-hero-title{font-size:22px;font-weight:1000;letter-spacing:.2px}
+    .vip-hero-sub{margin-top:6px;color:var(--muted);line-height:1.5}
+    .vip-bank{display:grid;gap:10px;margin-top:12px}
+    .vip-bank-card,.vip-card,.vip-admin-card{background:rgba(15,17,27,.88);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:14px}
+    .vip-bank-grid,.vip-plan-grid,.vip-admin-list{display:grid;gap:12px}
+    .vip-bank-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .vip-plan-grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+    .vip-plan-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900;border:1px solid rgba(255,255,255,.1);margin-bottom:10px}
+    .vip-plan-badge.bronze{background:rgba(205,127,50,.14);color:#e5b587}
+    .vip-plan-badge.silver{background:rgba(192,192,192,.14);color:#f0f3ff}
+    .vip-plan-badge.gold{background:rgba(242,190,45,.16);color:#ffd76a}
+    .vip-plan-badge.platinum{background:linear-gradient(135deg, rgba(255,255,255,.14), rgba(124,77,255,.18));color:#fff}
+    .vip-card h3{margin:0;font-size:19px}
+    .vip-price-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .vip-price-chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-weight:900;font-size:12px}
+    .vip-benefits{margin:12px 0 0;padding-left:18px;color:rgba(232,236,255,.92)}
+    .vip-benefits li{margin:6px 0}
+    .vip-purchase{display:grid;gap:12px}
+    .vip-row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .vip-field{display:grid;gap:7px}
+    .vip-field label{font-size:12px;font-weight:900;color:rgba(232,236,255,.88)}
+    .vip-field input,.vip-field select,.vip-field textarea{width:100%;background:rgba(255,255,255,.04);color:var(--text);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 13px;outline:none}
+    .vip-field textarea{min-height:92px;resize:none}
+    .vip-proof{display:grid;gap:10px}
+    .vip-proof-preview{min-height:160px;border-radius:18px;border:1px dashed rgba(255,255,255,.14);display:grid;place-items:center;background:rgba(255,255,255,.03);overflow:hidden}
+    .vip-proof-preview img{width:100%;height:100%;object-fit:contain;background:#080910}
+    .vip-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .vip-note{color:var(--muted);font-size:12px;line-height:1.5}
+    .vip-admin-item{display:grid;gap:10px}
+    .vip-admin-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .vip-admin-user{display:flex;gap:10px;align-items:center}
+    .vip-admin-avatar{width:42px;height:42px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.08);display:grid;place-items:center;font-weight:900}
+    .vip-admin-avatar img{width:100%;height:100%;object-fit:cover}
+    .vip-status{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-weight:900;font-size:12px;border:1px solid rgba(255,255,255,.08)}
+    .vip-status.pending{background:rgba(242,190,45,.12);color:#ffd76a}
+    .vip-status.approved{background:rgba(11,232,129,.12);color:#92ffd0}
+    .vip-status.rejected{background:rgba(255,77,109,.12);color:#ff9bad}
+    .vip-proof-thumb{width:100%;max-height:280px;object-fit:contain;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:#080910}
+    .vip-admin-meta{display:flex;flex-wrap:wrap;gap:8px}
+    .vip-admin-meta .cm-pill{font-size:12px}
+    .vip-empty{padding:18px;border:1px dashed rgba(255,255,255,.1);border-radius:18px;color:var(--muted);text-align:center}
+    .vip-my-requests{display:grid;gap:10px}
+    .vip-my-item{padding:12px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+    .vip-copy{cursor:pointer}
+    .name-rainbow{background:linear-gradient(90deg,#ff4d6d,#f2be2d,#0be881,#00d4ff,#7c4dff,#ff4d6d);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:vipRainbow 6s linear infinite}
+    @keyframes vipRainbow{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+    @media (max-width:720px){
+      .vip-row2{grid-template-columns:1fr}
+    }
+
+  
+    .auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:2300}
+    .auth-modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,460px);background:var(--panel,#111827);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:18px;z-index:2301;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+    .auth-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .auth-modal-title{font-size:20px;font-weight:800}
+    .auth-modal-sub{font-size:13px;opacity:.78;margin-top:4px}
+    .auth-close{border:none;background:rgba(255,255,255,.08);color:inherit;width:36px;height:36px;border-radius:12px;font-size:18px}
+    .auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 14px}
+    .auth-tab{border:none;border-radius:14px;padding:12px 14px;font-weight:700;background:rgba(255,255,255,.06);color:inherit}
+    .auth-tab.active{background:linear-gradient(135deg,#f59e0b,#fb7185);color:#fff}
+    .auth-form-grid{display:grid;gap:12px}
+    .auth-field{display:grid;gap:6px;font-size:13px}
+    .auth-field input{width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;padding:12px 14px;outline:none}
+    .auth-field input:focus{border-color:rgba(245,158,11,.7);box-shadow:0 0 0 3px rgba(245,158,11,.14)}
+    .auth-actions{margin-top:14px}
+    .auth-submit{width:100%;border:none;border-radius:16px;padding:13px 16px;font-weight:800;color:#fff;background:linear-gradient(135deg,#f59e0b,#ef4444)}
+    .auth-hint{margin-top:10px;font-size:13px;opacity:.82;line-height:1.5}
+
 </style>
 </head>
 <body>
@@ -4577,10 +4649,47 @@
         <span class="left"><span class="icon">👑</span><span>VIP</span></span>
         <span>›</span>
       </button>
-      <button class="account-menu-btn primary" id="btnLogin" type="button">Đăng nhập Google</button>
+      <button class="account-menu-btn primary" id="btnLogin" type="button">Đăng ký / Đăng nhập</button>
       <button class="account-menu-btn warn hidden" id="btnLogout" type="button">Đăng xuất</button>
     </div>
     <div class="account-inline-note hidden muted" id="accountInlineNote"></div>
+  </div>
+
+  <div class="auth-overlay hidden" id="authOverlay" aria-hidden="true"></div>
+  <div class="auth-modal hidden" id="authModal" aria-hidden="true" role="dialog" aria-label="Đăng ký hoặc đăng nhập">
+    <div class="auth-modal-head">
+      <div>
+        <div class="auth-modal-title">Tài khoản</div>
+        <div class="auth-modal-sub">Đăng ký / Đăng nhập bằng tài khoản và mật khẩu</div>
+      </div>
+      <button class="auth-close" id="btnAuthClose" type="button" aria-label="Đóng">✕</button>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="authTabRegister" data-auth-tab="register" type="button">Đăng ký</button>
+      <button class="auth-tab" id="authTabLogin" data-auth-tab="login" type="button">Đăng nhập</button>
+    </div>
+    <div class="auth-form-grid">
+      <label class="auth-field">
+        <span>Tài khoản</span>
+        <input id="authUsername" type="text" maxlength="30" placeholder="Nhập tên tài khoản">
+      </label>
+      <label class="auth-field hidden" id="authEmailWrap" aria-hidden="true">
+        <span>Email nội bộ</span>
+        <input id="authEmail" type="email" maxlength="120" placeholder="Email nội bộ tự tạo">
+      </label>
+      <label class="auth-field">
+        <span>Mật khẩu</span>
+        <input id="authPassword" type="password" maxlength="80" placeholder="Nhập mật khẩu">
+      </label>
+      <label class="auth-field" id="authConfirmWrap">
+        <span>Nhập lại mật khẩu</span>
+        <input id="authPasswordConfirm" type="password" maxlength="80" placeholder="Nhập lại mật khẩu">
+      </label>
+    </div>
+    <div class="auth-actions">
+      <button class="auth-submit" id="btnAuthSubmit" type="button">Đăng ký</button>
+    </div>
+    <div class="auth-hint" id="authHint">Tạo tài khoản mới để đồng bộ dữ liệu trên web. Không cần nhập Gmail.</div>
   </div>
 
   <div class="drawer-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
@@ -5232,15 +5341,15 @@
        1) Firebase config
        ============================ */
     const firebaseConfig = {
-      // Firebase chỉ dùng cho: đăng nhập Google, đồng bộ dữ liệu người dùng, lượt xem, lượt online.
+      // Firebase dùng cho: đăng ký/đăng nhập tài khoản, đồng bộ dữ liệu người dùng, lượt xem, lượt online.
       // KHÔNG dùng để thêm/xóa/sửa truyện/chương/ảnh (dữ liệu nội dung nằm trong HTML tĩnh).
-      apiKey: "AIzaSyDhq66ZZzNp9_-FnY7T-2gxNlrUDxeDPrU",
-      authDomain: "truyen-b3470.firebaseapp.com",
-      databaseURL: "https://truyen-b3470-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "truyen-b3470",
-      storageBucket: "truyen-b3470.firebasestorage.app",
-      messagingSenderId: "93210370757",
-      appId: "1:93210370757:web:87828b963906ac862f46ac"
+      apiKey: "AIzaSyBMJK0dbtZ_Ko_9b3nrxkaev3Tle0XAK1o",
+      authDomain: "online1-557e7.firebaseapp.com",
+      databaseURL: "https://online1-557e7-default-rtdb.firebaseio.com",
+      projectId: "online1-557e7",
+      storageBucket: "online1-557e7.firebasestorage.app",
+      messagingSenderId: "359900501760",
+      appId: "1:359900501760:web:6c324577aab3a38d6a05e5"
     };
     let ENABLE_FIREBASE = true;
     const USE_LOCAL_SEED_WHEN_EMPTY = true;
@@ -5251,7 +5360,7 @@
     let app, auth, db, rtdb;
 
     // === Modular-like wrappers (để giữ nguyên code phía dưới) ===
-    let GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, serverTimestamp;
+    let createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, serverTimestamp, updateProfileAuthUser;
     let getFirestore, doc, setDoc, onSnapshot, collection, getDocs;
     let getDatabase, ref, set, onDisconnect, onValue, runTransaction;
     let push, query, orderByChild, limitToLast, onChildAdded;
@@ -5455,21 +5564,96 @@ function calcHpFromPower(power){
   // HP tỷ lệ theo lực chiến để tránh 1-hit khi lực chiến cao
   return Math.max(1500, Math.floor(1500 + p * 4.5));
 }
-// Tính lực chiến hiện tại: thước đo sức mạnh tài khoản (Tu Vi + Trang bị). Không tăng/giảm theo PVP/Boss.
+// ===== Lực chiến theo Cảnh giới & Sao (Phương án B) =====
+// - Mỗi cảnh giới có Min–Max lực chiến.
+// - 1★ = Min, 9★ = Max.
+// - Tăng theo đường cong (p=1.6): tăng ít đầu cảnh, bứt phá mạnh 7–9★.
+// - Trang bị: +1% lực chiến / slot (tối đa 12%).
+const POWER_CURVE_P = 1.6;
+
+const REALM_POWER_RANGES = {
+  "Phàm Nhân": { min: 20, max: 50 },
+  "Luyện Khí": { min: 100, max: 500 },
+  "Trúc Cơ": { min: 1000, max: 3000 },
+  "Kim Đan": { min: 5000, max: 15000 },
+  "Nguyên Anh": { min: 20000, max: 50000 },
+
+  "Hóa Thần": { min: 60000, max: 100000 },
+  "Linh Hải": { min: 120000, max: 180000 },
+  "Luyện Hư": { min: 200000, max: 300000 },
+  "Đại Thừa": { min: 350000, max: 500000 },
+  "Độ Kiếp": { min: 550000, max: 750000 },
+
+  "Hồng Trần Tiên": { min: 800000, max: 950000 },
+  "Chân Tiên": { min: 1000000, max: 1200000 },
+  "Kim Tiên": { min: 1300000, max: 1500000 },
+  "Đại La Kim Tiên": { min: 1600000, max: 1850000 },
+
+  "Thánh Nhân Cảnh": { min: 2000000, max: 2250000 },
+  "Vĩnh Hằng": { min: 2400000, max: 2650000 },
+  "Khởi Nguyên": { min: 2800000, max: 3000000 },
+  "Hỗn Độn": { min: 3100000, max: 3300000 },
+
+  "Bất Hủ": { min: 3400000, max: 3550000 },
+  "Chúa Tể": { min: 3650000, max: 3800000 },
+  "Đạo Cảnh": { min: 3900000, max: 4000000 }
+};
+
+function __powerNiceStep(max){
+  const m = Math.max(0, Number(max || 0) || 0);
+  if (m < 1000) return 1;
+  if (m < 10000) return 10;
+  if (m < 100000) return 100;
+  return 1000;
+}
+function calcPowerByStar(min, max, star){
+  const mn = Math.max(0, Math.floor(Number(min || 0) || 0));
+  const mx = Math.max(mn, Math.floor(Number(max || mn) || mn));
+  let s = Math.floor(Number(star || 1) || 1);
+  if (s < 1) s = 1;
+  if (s > 9) s = 9;
+
+  const t = (s - 1) / 8;
+  let v = mn + Math.pow(t, POWER_CURVE_P) * (mx - mn);
+
+  const step = __powerNiceStep(mx);
+  v = Math.round(v / step) * step;
+
+  if (s === 1) v = mn;
+  if (s === 9) v = mx;
+  return Math.max(0, Math.floor(v));
+}
+function __getRealmPowerRange(realmName){
+  const key = String(realmName || "").trim();
+  const r = REALM_POWER_RANGES[key];
+  if (!r || typeof r !== "object") return null;
+  const mn = Math.max(0, Math.floor(Number(r.min || 0) || 0));
+  const mx = Math.max(mn, Math.floor(Number(r.max || mn) || mn));
+  return { min: mn, max: mx };
+}
+function calcBaseCombatPowerFromTuviExp(tuviExp){
+  const ri = getRealmByExp(Number(tuviExp || 0));
+  const range = __getRealmPowerRange(ri?.realm);
+  if (!range) return Math.max(0, Math.floor(Number(tuviExp || 0) || 0));
+  return calcPowerByStar(range.min, range.max, ri?.star || 1);
+}
+function calcCombatPowerWithGear(basePower, gearSlotsCount){
+  const base = Math.max(0, Math.floor(Number(basePower || 0) || 0));
+  const slots = Math.max(0, Math.floor(Number(gearSlotsCount || 0) || 0));
+  const pct = Math.min(0.12, slots * 0.01); // 1%/slot, tối đa 12%
+  return Math.max(0, Math.floor(base * (1 + pct)));
+}
+
+// Tính lực chiến hiện tại: dựa theo cảnh giới + sao (từ Tu Vi), cộng bonus trang bị (nhẹ).
 function calcCombatPowerFromState(){
   try{
-    // ✅ Xóa toàn bộ quy tắc "tính lực chiến" kiểu cộng theo cảnh giới/tinh/mốc cố định.
-    // Chỉ giữ lực chiến theo dữ liệu hiện có (Tu Vi + điểm PVP/Boss + trang bị).
-    // Khi tính sát thương thì CHỈ còn: dame = lực chiến / 2.
     const tuviExp = calcTuviExpFromState();
-
-    const pvpPoints = Math.max(0, Number(safeGetLS("pvp_points", "0") || 0));
-    const bossPoints = Math.max(0, Number(safeGetLS("boss_points", "0") || 0));
+    const base = calcBaseCombatPowerFromTuviExp(tuviExp);
 
     const gear = (userState && userState.gear && typeof userState.gear === "object") ? userState.gear : {};
     const gearSlotsCount = Object.values(gear || {}).filter(v => v && String(v).trim() && String(v).trim() !== "—").length;
 
-    return Math.max(0, Math.floor((tuviExp * 3) + (pvpPoints * 50) + (bossPoints * 30) + (gearSlotsCount * 5000)));
+    return calcCombatPowerWithGear(base, gearSlotsCount);
   }catch(_){
     return 0;
   }
@@ -6016,6 +6200,19 @@ function normalizeUserState(raw){
           norm.lastReading[k] = v;
         });
       }catch(_){ norm.lastReading = {}; }
+      // Tu Vi (linh khí) tích lũy - số nguyên >= 0
+      // Nếu bản cũ chưa có tuviExp thì lấy tạm theo tổng chương đã đọc (để không bị reset hoàn toàn).
+      try{
+        let tuviExp = Math.max(0, Math.floor(Number(r.tuviExp || 0) || 0));
+        if (typeof r.tuviExp === "undefined" && tuviExp === 0){
+          const lr = norm.lastReading || {};
+          const sum = Object.keys(lr).reduce((a,k)=>a + Math.max(0, Number(lr[k]||0)), 0);
+          if (sum > 0) tuviExp = sum;
+        }
+        norm.tuviExp = tuviExp;
+      }catch(_){
+        norm.tuviExp = 0;
+      }
       return norm;
     }
     function loadGuestUserState(){
@@ -6034,6 +6231,7 @@ function normalizeUserState(raw){
           bookmarkIds: s.bookmarkIds,
           historyIds: s.historyIds,
           lastReading: s.lastReading,
+          tuviExp: s.tuviExp,
           wallet: s.wallet,
           bag: s.bag,
           estate: s.estate,
@@ -6069,10 +6267,11 @@ function normalizeUserState(raw){
         rtdb = firebase.database();
 
         // Auth wrappers
-        GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
-        signInWithPopup = (authObj, provider) => authObj.signInWithPopup(provider);
+        createUserWithEmailAndPassword = (authObj, email, password) => authObj.createUserWithEmailAndPassword(email, password);
+        signInWithEmailAndPassword = (authObj, email, password) => authObj.signInWithEmailAndPassword(email, password);
         onAuthStateChanged = (authObj, cb) => authObj.onAuthStateChanged(cb);
         signOut = (authObj) => authObj.signOut();
+        updateProfileAuthUser = (user, data) => user.updateProfile(data);
 
         // Firestore wrappers
         serverTimestamp = () => firebase.firestore.FieldValue.serverTimestamp();
@@ -6218,13 +6417,12 @@ function normalizeUserState(raw){
     
         /* ============================
        4.5) Cảnh giới tu tiên (EXP)
-       - EXP tu vi hiện được tính theo hoạt động đọc/nghe:
-         EXP = tổng chương đã đọc + ⌊phút đọc/nghe / 5⌋
+       - Tu Vi (linh khí) tăng theo hoạt động đọc/nghe:
+         Mỗi 60 giây đọc/nghe liên tục sẽ +linh khí theo cảnh giới hiện tại.
        - Hệ thống theo yêu cầu: mỗi cảnh giới có nhiều "cấp" (thường là 9 cấp),
          và exp/1 cấp được khai báo sẵn theo từng cảnh giới.
          (hiển thị cấp 1..9; khi đủ tổng EXP của cảnh giới thì đột phá lên cảnh giới kế tiếp).
        ============================ */
-
     const CULT_REALMS = [
       { name: "Phàm Nhân", total: 1000, perLevel: 100 },
       { name: "Luyện Khí", total: 3000, perLevel: 300 },
@@ -6240,13 +6438,52 @@ function normalizeUserState(raw){
       { name: "Chân Tiên", total: 120000000, perLevel: 12000000 },
       { name: "Kim Tiên", total: 350000000, perLevel: 35000000 },
       { name: "Đại La Kim Tiên", total: 1000000000, perLevel: 100000000 },
-      { name: "Thánh Nhân", total: 3000000000, perLevel: 300000000 },
-      { name: "Thánh Quân", total: 9000000000, perLevel: 900000000 },
-      { name: "Thánh Vương", total: 25000000000, perLevel: 2500000000 },
-      { name: "Chí tôn", total: 70000000000, perLevel: 7000000000 },
-      { name: "Chuẩn Đế", total: 200000000000, perLevel: 20000000000 },
-      { name: "Đại Đế Cảnh", total: 500000000000, perLevel: 50000000000 }
+
+      // 4) Quy Luật & Đạo Cảnh
+      { name: "Thánh Nhân Cảnh", total: 3000000000, perLevel: 300000000 },
+      { name: "Vĩnh Hằng", total: 9000000000, perLevel: 900000000 },
+      { name: "Khởi Nguyên", total: 25000000000, perLevel: 2500000000 },
+      { name: "Hỗn Độn", total: 70000000000, perLevel: 7000000000 },
+
+      // 5) Đỉnh Phong Vô Thượng
+      { name: "Bất Hủ", total: 200000000000, perLevel: 20000000000 },
+      { name: "Chúa Tể", total: 500000000000, perLevel: 50000000000 },
+      { name: "Đạo Cảnh", total: 1500000000000, perLevel: 150000000000 }
     ];
+
+    // Tốc độ hấp thu linh khí theo cảnh giới (mỗi 1 phút đọc/nghe đủ 60 giây sẽ +linh khí)
+    // Lưu ý: nếu thoát khỏi trang đọc/nghe và sau 60s không quay lại thì tiến độ phút đang tích lũy sẽ reset về 0.
+    const REALM_ABSORB_PER_MIN = {
+      "Phàm Nhân": 1,
+      "Luyện Khí": 2,
+      "Trúc Cơ": 5,
+      "Kim Đan": 10,
+      "Nguyên Anh": 20,
+      "Hóa Thần": 50,
+      "Linh Hải": 100,
+      "Luyện Hư": 200,
+      "Đại Thừa": 500,
+      "Độ Kiếp": 1000,
+      "Hồng Trần Tiên": 2000,
+      "Chân Tiên": 5000,
+      "Kim Tiên": 10000,
+      "Đại La Kim Tiên": 20000,
+      "Thánh Nhân Cảnh": 50000,
+      "Vĩnh Hằng": 100000,
+      "Khởi Nguyên": 200000,
+      "Hỗn Độn": 500000,
+      "Bất Hủ": 1000000,
+      "Chúa Tể": 2000000,
+      "Đạo Cảnh": 5000000
+    };
+
+    function getAbsorbPerMinByRealm(realmName){
+      const k = String(realmName || "").trim();
+      const v = Number(REALM_ABSORB_PER_MIN[k] || 0) || 0;
+      return Math.max(0, Math.floor(v)) || 1;
+    }
+
+
 
     const REALM_STARTS = (() => {
       const starts = [];
@@ -6275,8 +6512,7 @@ function normalizeUserState(raw){
 
     function realmDisplayName(name){
       const n = String(name || "").trim();
-      if (!n) return "Phàm Nhân Cảnh";
-      return (/cảnh$/i.test(n) ? n : (n + " Cảnh"));
+      return n || "Phàm Nhân";
     }
 
     function getRealmByExp(exp){
@@ -6707,7 +6943,7 @@ const bookshelfTabs = $("#bookshelfTabs");
       u.pitch = 1;
       u.volume = 1;
 
-      // Chọn giọng Google Tiếng Việt (ưu tiên) để dùng ổn định (TTS của Google trên Android/Chrome)
+      // Chọn giọng Tài khoản Tiếng Việt (ưu tiên) để dùng ổn định (TTS của Google trên Android/Chrome)
       try{
         const voices = synth.getVoices ? synth.getVoices() : [];
 
@@ -7606,8 +7842,8 @@ const bookshelfTabs = $("#bookshelfTabs");
       const vip = getVipState();
       const luck = isLuckActive();
       // VIP + Luck tăng nhẹ tỉ lệ rơi và thiên về hiếm
-      const chanceMult = (vip.active ? 1.08 : 1.0) * (luck ? 1.25 : 1.0);
-      const rareBoost = (vip.active ? 1 : 0) + (luck ? 2 : 0); // 0..3
+      const chanceMult = (vip.active ? getVipDropMultiplier() : 1.0) * (luck ? 1.25 : 1.0);
+      const rareBoost = (vip.active ? Math.max(1, Math.round(getVipRareBoostPercent() / 10)) : 0) + (luck ? 2 : 0); // 0..n
       return { vip, luck, chanceMult, rareBoost };
     }
 
@@ -8179,6 +8415,244 @@ function getReadingStories(){
       return normalizeNotifications(userState?.notifications || []);
     }
 
+
+    const ADMIN_USERNAME = "Admin";
+    const VIP_ADMIN_EMAILS = [
+      "admin@gmail.com"
+    ];
+    const VIP_ADMIN_UIDS = [];
+    const VIP_BANK_INFO = {
+      bankName: "MB Bank",
+      accountNumber: "0000000000",
+      accountName: "TEN CHU TAI KHOAN",
+      transferNotePrefix: "NAPVIP"
+    };
+    const VIP_TIERS = {
+      bronze: {
+        id: "bronze",
+        label: "Vip Đồng",
+        className: "bronze",
+        color: "#cd7f32",
+        prices: { 1: 20000, 3: 54000, 6: 96000 },
+        bonusCoins: 10000,
+        bonusGems: 100,
+        bonusLk: 9000,
+        trainPct: 50,
+        dropPct: 20,
+        rarePct: 5,
+        dailyDownloads: 3,
+        badgeText: "Huy Hiệu Vip Đồng"
+      },
+      silver: {
+        id: "silver",
+        label: "Vip Bạc",
+        className: "silver",
+        color: "#c0c0c0",
+        prices: { 1: 50000, 3: 135000, 6: 240000 },
+        bonusCoins: 15000,
+        bonusGems: 250,
+        bonusLk: 25000,
+        trainPct: 60,
+        dropPct: 30,
+        rarePct: 10,
+        dailyDownloads: 6,
+        badgeText: "Huy Hiệu Vip Bạc"
+      },
+      gold: {
+        id: "gold",
+        label: "Vip Vàng",
+        className: "gold",
+        color: "#f2be2d",
+        prices: { 1: 100000, 3: 270000, 6: 480000 },
+        bonusCoins: 20000,
+        bonusGems: 500,
+        bonusLk: 70000,
+        trainPct: 70,
+        dropPct: 40,
+        rarePct: 15,
+        dailyDownloads: 10,
+        badgeText: "Huy Hiệu Vip Vàng"
+      },
+      platinum: {
+        id: "platinum",
+        label: "Vip Bạch Kim",
+        className: "platinum",
+        color: "#f5f7ff",
+        prices: { 1: 200000, 3: 540000, 6: 960000 },
+        bonusCoins: 35000,
+        bonusGems: 1000,
+        bonusLk: 200000,
+        trainPct: 100,
+        dropPct: 50,
+        rarePct: 25,
+        dailyDownloads: 20,
+        badgeText: "Huy Hiệu Bạch Kim"
+      }
+    };
+
+    function isVipAdmin(){
+      const email = String(currentUser?.email || "").trim().toLowerCase();
+      const uid = String(currentUser?.uid || "").trim();
+      const profileName = String(userState?.profile?.name || currentUser?.displayName || "").trim().toLowerCase();
+      return profileName === String(ADMIN_USERNAME || "Admin").trim().toLowerCase()
+        || VIP_ADMIN_EMAILS.map(x => String(x||"").trim().toLowerCase()).includes(email)
+        || VIP_ADMIN_UIDS.map(x => String(x||"").trim()).includes(uid);
+    }
+
+    function normalizeAccountName(name){
+      return String(name || "").replace(/\s+/g, " ").trim();
+    }
+    function usernameKey(name){
+      return normalizeAccountName(name).toLowerCase();
+    }
+    function usernameToAuthEmail(name){
+      const key = usernameKey(name);
+      const hex = Array.from(key).map(ch => ch.codePointAt(0).toString(16)).join("-");
+      return `${hex || "user"}@account.truyenonline.app`;
+    }
+    function isAdminUsername(name){
+      return usernameKey(name) === usernameKey(ADMIN_USERNAME);
+    }
+    function validateUsernameOrThrow(name){
+      const cleaned = normalizeAccountName(name);
+      if (!cleaned) throw new Error("USERNAME_EMPTY");
+      if (cleaned.length < 6 && !isAdminUsername(cleaned)) throw new Error("USERNAME_TOO_SHORT");
+      return cleaned;
+    }
+    async function claimUsername(name, uid, email){
+      const cleaned = validateUsernameOrThrow(name);
+      const key = usernameKey(cleaned);
+      if (!db || !uid) throw new Error("USERNAME_DB_NOT_READY");
+      await db.runTransaction(async (tx) => {
+        const ref = db.collection("usernames").doc(key);
+        const snap = await tx.get(ref);
+        if (snap.exists){
+          const data = snap.data() || {};
+          if (String(data.uid || "") !== String(uid || "")) throw new Error("USERNAME_TAKEN");
+        }
+        tx.set(ref, {
+          uid: String(uid || ""),
+          name: cleaned,
+          email: String(email || "").trim().toLowerCase(),
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+      });
+      return cleaned;
+    }
+    async function releaseUsernameIfOwned(name, uid){
+      const key = usernameKey(name);
+      if (!db || !uid || !key) return;
+      try{
+        const ref = db.collection("usernames").doc(key);
+        const snap = await ref.get();
+        if (snap.exists){
+          const data = snap.data() || {};
+          if (String(data.uid || "") === String(uid || "")) await ref.delete();
+        }
+      }catch(_){ }
+    }
+    async function renameCurrentUserProfile(nextName, extraProfile = null){
+      if (!currentUser || !db) throw new Error("AUTH_REQUIRED");
+      const cleaned = await claimUsername(nextName, currentUser.uid, currentUser.email || "");
+      const oldName = normalizeAccountName((userState && userState.profile && userState.profile.name) || currentUser.displayName || "");
+      const oldKey = usernameKey(oldName);
+      const newKey = usernameKey(cleaned);
+      const prof = (userState && userState.profile) ? userState.profile : {};
+      const nextProf = normalizeProfile(extraProfile ? { ...prof, ...extraProfile, name: cleaned } : { ...prof, name: cleaned });
+      await saveUserStatePatch({ profile: nextProf });
+      try{ await updateProfileAuthUser(currentUser, { displayName: cleaned }); }catch(_){ }
+      if (oldKey && oldKey !== newKey) await releaseUsernameIfOwned(oldName, currentUser.uid);
+      return cleaned;
+    }
+
+    function getVipTierById(id){
+      const key = String(id || "").trim().toLowerCase();
+      return VIP_TIERS[key] || VIP_TIERS.bronze;
+    }
+
+    function getVipNameClass(vipInfo){
+      const tierId = String(vipInfo?.tierId || "").toLowerCase();
+      if (tierId === "platinum") return "name-rainbow";
+      return "";
+    }
+
+    function formatVipPlanBenefits(tier){
+      const t = getVipTierById(tier?.id || tier);
+      return [
+        t.badgeText + " (tên theo màu VIP)",
+        "+" + fmtN(t.bonusCoins) + " Xu - " + fmtN(t.bonusGems) + " Ngọc",
+        "+" + fmtN(t.bonusLk) + " Linh Khí",
+        "+" + fmtN(t.trainPct) + "% tốc độ tu luyện",
+        "+" + fmtN(t.dropPct) + "% tỷ lệ rơi vật phẩm (hiếm +" + fmtN(t.rarePct) + "%)",
+        t.dailyDownloads + " lần tải truyện / ngày"
+      ];
+    }
+
+    function buildVipBenefitSnapshot(tierId, months){
+      const tier = getVipTierById(tierId);
+      const m = Math.max(1, Number(months || 1) || 1);
+      return {
+        tierId: tier.id,
+        tierName: tier.label,
+        months: m,
+        amount: Number((tier.prices && tier.prices[m]) || 0),
+        bonusCoins: tier.bonusCoins,
+        bonusGems: tier.bonusGems,
+        bonusLk: tier.bonusLk,
+        trainPct: tier.trainPct,
+        dropPct: tier.dropPct,
+        rarePct: tier.rarePct,
+        dailyDownloads: tier.dailyDownloads,
+        badgeText: tier.badgeText,
+        color: tier.color
+      };
+    }
+
+    function addMonthsTs(baseTs, months){
+      const base = new Date(Number(baseTs || Date.now()) || Date.now());
+      const d = new Date(base.getTime());
+      d.setMonth(d.getMonth() + Math.max(1, Number(months || 1) || 1));
+      return d.getTime();
+    }
+
+    function formatVipRequestStatus(status){
+      const s = String(status || "pending").toLowerCase();
+      if (s === "approved") return "Đã xác nhận";
+      if (s === "rejected") return "Từ chối";
+      return "Chờ xác nhận";
+    }
+
+    function getVipInfoState(){
+      const rawVip = userState?.vipInfo ?? userState?.vip ?? null;
+      if (rawVip && typeof rawVip === "object") return rawVip;
+      return {};
+    }
+
+    function getVipTrainingMultiplier(){
+      const vip = getVipInfoState();
+      const expiresAt = Number(vip.expiresAt || 0) || 0;
+      const active = !!vip.active && (!expiresAt || expiresAt > Date.now());
+      const pct = active ? Math.max(0, Number(vip.trainPct || 0) || 0) : 0;
+      return 1 + (pct / 100);
+    }
+
+    function getVipDropMultiplier(){
+      const vip = getVipInfoState();
+      const expiresAt = Number(vip.expiresAt || 0) || 0;
+      const active = !!vip.active && (!expiresAt || expiresAt > Date.now());
+      const pct = active ? Math.max(0, Number(vip.dropPct || 0) || 0) : 0;
+      return 1 + (pct / 100);
+    }
+
+    function getVipRareBoostPercent(){
+      const vip = getVipInfoState();
+      const expiresAt = Number(vip.expiresAt || 0) || 0;
+      const active = !!vip.active && (!expiresAt || expiresAt > Date.now());
+      return active ? Math.max(0, Number(vip.rarePct || 0) || 0) : 0;
+    }
+
+
+
     function getVipSummary(){
       let label = "Thường";
       let detail = "Chưa kích hoạt";
@@ -8191,14 +8665,20 @@ function getReadingStories(){
         label = rawVip.trim();
         active = !/thường|none|không/i.test(label);
       } else if (rawVip && typeof rawVip === "object"){
-        const name = String(rawVip.tier || rawVip.name || rawVip.label || "").trim();
+        const name = String(rawVip.tierName || rawVip.tier || rawVip.name || rawVip.label || "").trim();
         const expiresAt = Number(rawVip.expiresAt || rawVip.expiredAt || rawVip.until || 0);
-        active = rawVip.active === true || !!name;
+        active = (rawVip.active === true || !!name) && (!expiresAt || expiresAt > Date.now());
         if (name) label = name;
-        if (expiresAt > 0){
+        if (active && expiresAt > 0){
           try{
             detail = "Hết hạn: " + new Date(expiresAt).toLocaleDateString("vi-VN");
-          }catch(_){}
+          }catch(_){
+            detail = "Đang hoạt động";
+          }
+        } else if (expiresAt > 0 && expiresAt <= Date.now()){
+          detail = "Đã hết hạn";
+          active = false;
+          label = "Thường";
         } else if (active){
           detail = "Đang hoạt động";
         }
@@ -8387,7 +8867,7 @@ function getReadingStories(){
       if (currentUser){
         const name = currentUser.displayName || "Người dùng";
         profileName.textContent = name;
-        profileSub.textContent = currentUser.email || "Đang đồng bộ Firebase";
+        profileSub.textContent = (userState?.profile?.name || currentUser.displayName || "Đã đăng nhập") + " • Đang đồng bộ Firebase";
         btnLogin.classList.add("hidden");
         btnLogout.classList.remove("hidden");
         [profileAvatar, avatarBox].forEach(el=>{
@@ -10786,6 +11266,42 @@ if (view === "estate" || view === "trangvien" || view === "tv"){
           return;
         }
 
+
+        if (view === "vip-admin" || view === "vip"){
+          if (!isVipAdmin()){
+            showRouteHeader({ title: "VIP Admin", sub: "Quyền truy cập bị giới hạn", chips: ["Admin"] });
+            tabPageContent.innerHTML = `
+              <div class="cm-subhead">
+                <button class="cm-subback" id="cmBackHub" type="button">← Cộng đồng</button>
+              </div>
+              <div class="vip-empty">Mục này chỉ hiện cho tài khoản admin. Tài khoản có tên <b>Admin</b> sẽ được xem là admin.</div>
+            `;
+            $("#cmBackHub")?.addEventListener("click", () => { location.hash = "#/community"; });
+            return;
+          }
+          showRouteHeader({ title: "VIP Admin", sub: "Duyệt yêu cầu nạp VIP", chips: ["Admin VIP"] });
+          tabPageContent.innerHTML = `
+            <div class="cm-subhead">
+              <button class="cm-subback" id="cmBackHub" type="button">← Cộng đồng</button>
+              <span class="community-meta"><span class="dot"></span> Admin: <b>${esc(currentUser?.email || "—")}</b></span>
+            </div>
+            <div class="vip-center">
+              <div class="vip-admin-card">
+                <div class="cm-card-head">
+                  <div>
+                    <div class="cm-card-title">Yêu cầu VIP chờ xác nhận</div>
+                    <div class="cm-card-sub">Tài khoản đã chuyển khoản và bấm xác nhập sẽ hiện tại đây.</div>
+                  </div>
+                </div>
+                <div class="vip-admin-list" id="vipAdminList"></div>
+              </div>
+            </div>
+          `;
+          $("#cmBackHub")?.addEventListener("click", () => { location.hash = "#/community"; });
+          startVipAdminPanel();
+          return;
+        }
+
         // HUB
         showRouteHeader({ title: "Cộng đồng", sub: "Fanpage • Group • Chat box", chips: ["Community"] });
         tabPageContent.innerHTML = `
@@ -10833,6 +11349,7 @@ if (view === "estate" || view === "trangvien" || view === "tv"){
                   <div class="cm-hub-ico">▶</div>
                   <div class="cm-hub-label">Kênh YouTube</div>
                 </button>
+                ${isVipAdmin() ? `<button class="cm-hub-item" type="button" data-act="vip-admin"><div class="cm-hub-ico">👑</div><div class="cm-hub-label">VIP (Admin)</div></button>` : ``}
               </div>
             </div>
           </div>
@@ -10848,6 +11365,7 @@ if (view === "estate" || view === "trangvien" || view === "tv"){
             if (act === "fanpage") return openExternal(FANPAGE_URL);
             if (act === "group")   return openExternal(GROUP_URL);
             if (act === "youtube") return openExternal(YOUTUBE_URL);
+            if (act === "vip-admin") return (location.hash = "#/community/vip-admin");
           });
         });
 
@@ -10890,27 +11408,19 @@ if (view === "estate" || view === "trangvien" || view === "tv"){
         const joinedDays = (()=>{ try{ const d = new Date(joinedIso); const ms = d.getTime(); if (!isFinite(ms)) return 0; return Math.max(0, Math.floor((Date.now() - ms) / 86400000)); }catch(_){ return 0; } })();
         const totalReadSeconds = Number(safeGetLS(__lsReadSecondsKey(), "0") || 0);
         const minutesRead = Math.max(0, Math.floor(totalReadSeconds / 60));
-        const accountTypeLabel = currentUser ? "Google" : "Khách";
+        const accountTypeLabel = currentUser ? "Tài khoản" : "Khách";
+        // --- Tu Vi (linh khí) ---
+        const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
+        const estateInfo = getEstateInfo(estateLv);
+        const estateBonusPct = Math.max(0, Number(estateInfo.bonus || 0) || 0);
+        const estateMult = (1 + (estateBonusPct / 100)) * getVipTrainingMultiplier();
 
-        
-        // --- Gamified profile tabs (Tu Vi / Vip / PVP / Boss / Trang Bị) ---
-        const tuviPoints = Math.max(0, Number(readChSum||0) + Math.floor(minutesRead/5));
-        const tuviLevel = Math.max(1, Math.floor(tuviPoints / 500) + 1);
-        const tuviPrev = (tuviLevel - 1) * 500;
-        const tuviNext = tuviLevel * 500;
-        const tuviPct = Math.min(100, Math.floor(((tuviPoints - tuviPrev) / Math.max(1,(tuviNext - tuviPrev))) * 100));
+        const tuviExp = calcTuviExpFromState();
+        const realmInfo = getRealmByExp(tuviExp);
 
-// EXP & Cảnh giới (đồng bộ theo hoạt động đọc/nghe) — có bonus Trang viên
-const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
-const estateInfo = getEstateInfo(estateLv);
-const estateBonusPct = Math.max(0, Number(estateInfo.bonus || 0) || 0);
-const estateMult = 1 + (estateBonusPct / 100);
-// Linh khí (Tu Vi) cơ bản: +1/chương, +1/5 phút. Trang viên nhân hệ số và làm tròn xuống theo tổng.
-const lkPerChapter = estateMult;
-const lkPer5Min = estateMult;
-const tuviExp = Math.floor(tuviPoints * (1 + (estateBonusPct / 100)));
-const realmInfo = getRealmByExp(tuviExp);
-        const realmName = realmInfo.display;
+        // Tốc độ hấp thu hiện tại (mỗi 60s đọc/nghe đủ -> +linh khí)
+        const lkPerMinBase = getAbsorbPerMinByRealm(realmInfo.realm);
+        const lkPerMinFinal = Math.max(0, Math.floor(lkPerMinBase * estateMult));        const realmName = realmInfo.display;
         const realmStarName = realmInfo.starName;
 
         // Thanh EXP reset theo từng "tinh" (cấp bậc)
@@ -11046,7 +11556,7 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
                   ${avatarUrl ? `<img src="${esc(avatarUrl)}" alt="avatar">` : esc(initials(displayName))}
                 </div>
                 <div style="min-width:0;flex:1">
-                  <div class="pf-name">${esc(displayName)}</div>
+                  <div class="pf-name ${esc(getVipNameClass(userState?.vipInfo || {}))}">${esc(displayName)}</div>
                   <div class="pf-sub">${esc(emailText)}</div>
                   <div class="pf-badges">
                     <span class="pf-badge"><span class="dot"></span><span>${esc(vip.label || "VIP Thường")}</span></span>
@@ -11102,15 +11612,14 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
                     <div class="t">Linh khí có thể thu được</div>
                     <div class="s">khi đọc truyện</div>
                   </div>
-
                   <div class="pf-core-metrics">
-                    <div class="m"><div class="k">Cơ bản / chương</div><div class="v">+1</div></div>
-                    <div class="m"><div class="k">Sau Trang viên</div><div class="v">+${lkPerChapter.toFixed(2)}</div></div>
+                    <div class="m"><div class="k">Cơ bản / phút</div><div class="v">+${fmtN(lkPerMinBase)}</div></div>
+                    <div class="m"><div class="k">Hiện tại / phút</div><div class="v">+${fmtN(lkPerMinFinal)}</div></div>
                     <div class="m"><div class="k">Hệ số</div><div class="v">x${estateMult.toFixed(2)}</div></div>
                   </div>
 
                   <div class="muted" style="margin-top:8px; text-align:center; font-size:11px">
-                    Gợi ý: Tu Vi cộng theo tổng và làm tròn xuống.
+                    Quy tắc: đủ <b>60 giây</b> đọc/nghe liên tục → +linh khí. Thoát khỏi trang đọc/nghe quá <b>60 giây</b> sẽ reset tiến độ phút đang tích lũy.
                   </div>
                 </div>
 
@@ -11181,9 +11690,8 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
                 </div>
               </div>
 
-              <div class="rank-note" style="margin-top:12px">
-                Gợi ý: bạn có thể bán VIP theo tháng/năm hoặc tặng VIP khi người dùng hoạt động nhiều.
-              </div>
+              <div class="rank-note" style="margin-top:12px">Nạp VIP bằng chuyển khoản, tải ảnh biên lai lên và gửi admin xác nhận.</div>
+              <button class="btn primary" type="button" id="pfOpenVipCenterBtn" style="margin-top:12px">Mở trung tâm nạp VIP</button>
             </section>
 
                         <section class="pf-sec" id="pfSec-pvp">
@@ -11552,19 +12060,9 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
       try{ safeSetLS("daily_read_count", String(cur + delta)); }catch(_){}
       try{ safeSetLS("daily_read_progress", JSON.stringify(prog)); }catch(_){}
     }
-
     function calcTuviExpFromState(){
       try{
-        const lastReading = (userState && userState.lastReading && typeof userState.lastReading === "object") ? userState.lastReading : {};
-        const readChSum = Object.keys(lastReading || {}).reduce((a,k)=>a + Math.max(0, Number(lastReading[k]||0)), 0);
-        const totalReadSeconds = Number(safeGetLS(__lsReadSecondsKey(), "0") || 0);
-        const minutesRead = Math.max(0, Math.floor(totalReadSeconds / 60));
-        const tuviPoints = Math.max(0, Number(readChSum||0) + Math.floor(minutesRead/5));
-
-        const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
-        const estateInfo = getEstateInfo(estateLv);
-        const estateBonusPct = Math.max(0, Number(estateInfo.bonus || 0) || 0);
-        return Math.max(0, Math.floor(tuviPoints * (1 + (estateBonusPct / 100))));
+        return Math.max(0, Math.floor(Number((userState && userState.tuviExp) ? userState.tuviExp : 0) || 0));
       }catch(_){
         return 0;
       }
@@ -11593,7 +12091,10 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
         const boss = seed % 12000;
         const motsach = 5 + (seed % 220);
         const gearSlots = seed % 6;
-        const power = Math.max(0, Math.floor(tuvi * 3 + gearSlots * 5000));
+        const ri = getRealmByExp(tuvi);
+        const range = __getRealmPowerRange(ri?.realm);
+        const basePow = range ? calcPowerByStar(range.min, range.max, ri?.star || 1) : Math.max(0, Math.floor(tuvi));
+        const power = calcCombatPowerWithGear(basePow, gearSlots);
         const guild = ["Thiên Kiếm","Huyền Minh","Thanh Vân","Hắc Long","Băng Tâm","Ma Tông"][(seed >> 8) % 6];
 
         demo.push({
@@ -11848,13 +12349,26 @@ rankPrevBtn?.addEventListener("click", () => {
     }
 
 
-// Reading time tracking (minutes read)
-    let __readSessionStart = 0;
-    let __lastHashForReadStats = location.hash || "#/home";
+// Tu luyện khi đọc/nghe (tính theo phút, 60s = 1 phút)
+// - Đang ở trang #/read/ => tính giây.
+// - Đủ 60s => +linh khí theo cảnh giới hiện tại (có nhân % Trang viên).
+// - Thoát khỏi trang đọc/nghe: tạm dừng và giữ lại số giây (0..59).
+//   Nếu quá 60s không quay lại thì reset về 0 và không tính giây đó.
+    let __cultTickTimer = null;
+    let __cultActive = false;
+    let __cultProgressSec = 0; // 0..59
+    let __cultLastTickAt = 0;
+    let __cultResetTimer = null;
+    let __lastHashForCult = location.hash || "#/home";
+    let __cultQueue = Promise.resolve();
+
     function __getStatsPrefix(){
       try{ return currentUser ? ("u_" + currentUser.uid) : "guest"; }catch(e){ return "guest"; }
     }
     function __lsReadSecondsKey(){ return "read_seconds_" + __getStatsPrefix(); }
+    function __lsCultProgressKey(){ return "cult_prog_sec_" + __getStatsPrefix(); }
+    function __lsCultPauseAtKey(){ return "cult_pause_at_" + __getStatsPrefix(); }
+
     function __touchJoinedAt(){
       const key = currentUser ? ("joined_at_" + currentUser.uid) : "guest_joined_at";
       let v = safeGetLS(key, "");
@@ -11874,27 +12388,585 @@ rankPrevBtn?.addEventListener("click", () => {
         return dd + "/" + mm + "/" + yy;
       }catch(e){ return "—"; }
     }
-    function __trackReadTime(prevHash, nextHash){
-      const wasReader = String(prevHash||"").startsWith("#/read/");
-      const isReader = String(nextHash||"").startsWith("#/read/");
-      if (wasReader && !isReader){
-        if (__readSessionStart){
-          const delta = Math.max(0, Math.floor((Date.now() - __readSessionStart)/1000));
-          __readSessionStart = 0;
-          const key = __lsReadSecondsKey();
-          const cur = Number(safeGetLS(key, "0")||0);
-          safeSetLS(key, String(cur + delta));
+
+    function __isReaderHash(h){ return String(h||"").startsWith("#/read/"); }
+
+    function __cultResetIfExpired(force=false){
+      try{
+        const pauseAt = Math.max(0, Number(safeGetLS(__lsCultPauseAtKey(), "0") || 0) || 0);
+        const expired = pauseAt && ((Date.now() - pauseAt) > 60000);
+        if (force || expired){
+          __cultProgressSec = 0;
+          try{ safeSetLS(__lsCultProgressKey(), "0"); }catch(_){}
+          try{ safeSetLS(__lsCultPauseAtKey(), "0"); }catch(_){}
+          return true;
         }
+      }catch(_){}
+      return false;
+    }
+
+    function __cultLoadProgress(){
+      try{
+        let sec = Math.max(0, Math.floor(Number(safeGetLS(__lsCultProgressKey(), "0") || 0) || 0));
+        if (sec > 59) sec = sec % 60;
+        __cultProgressSec = sec;
+      }catch(_){
+        __cultProgressSec = 0;
       }
-      if (!wasReader && isReader){
-        if (!__readSessionStart) __readSessionStart = Date.now();
+      // nếu đã rời trang đọc quá 60s thì reset luôn
+      __cultResetIfExpired(false);
+    }
+
+    function __cultSaveProgress(pauseAt){
+      try{ safeSetLS(__lsCultProgressKey(), String(Math.max(0, Math.floor(__cultProgressSec || 0)))); }catch(_){}
+      if (typeof pauseAt !== "undefined"){
+        try{ safeSetLS(__lsCultPauseAtKey(), String(Math.max(0, Math.floor(Number(pauseAt) || 0)))); }catch(_){}
       }
     }
 
+    function __cultStop(){
+      if (__cultTickTimer) clearInterval(__cultTickTimer);
+      __cultTickTimer = null;
+      __cultActive = false;
+      __cultLastTickAt = 0;
+    }
+
+    function __cultPause(){
+      if (!__cultActive) return;
+      __cultStop();
+
+      const now = Date.now();
+      __cultSaveProgress(now);
+
+      if (__cultResetTimer) clearTimeout(__cultResetTimer);
+      __cultResetTimer = setTimeout(() => {
+        try{
+          if (__cultActive) return;
+          __cultResetIfExpired(false);
+        }catch(_){}
+      }, 60000 + 50);
+    }
+
+    function __cultStartOrResume(){
+      __cultLoadProgress();
+
+      // vào lại trang đọc/nghe => xóa pauseAt (không reset)
+      try{ safeSetLS(__lsCultPauseAtKey(), "0"); }catch(_){}
+
+      if (__cultResetTimer) clearTimeout(__cultResetTimer);
+      __cultResetTimer = null;
+
+      __cultActive = true;
+      __cultLastTickAt = Date.now();
+      if (__cultTickTimer) clearInterval(__cultTickTimer);
+      __cultTickTimer = setInterval(__cultTick, 1000);
+    }
+
+    function __cultOnHashChange(prevHash, nextHash){
+      const isReader = __isReaderHash(nextHash);
+      if (isReader){
+        if (!__cultActive) __cultStartOrResume();
+      }else{
+        if (__cultActive) __cultPause();
+      }
+    }
+
+    async function __awardCultivationMinute(){
+      try{
+        const curTuvi = Math.max(0, Math.floor(Number((userState && userState.tuviExp) ? userState.tuviExp : 0) || 0));
+        const ri = getRealmByExp(curTuvi);
+        const base = getAbsorbPerMinByRealm(ri?.realm);
+
+        const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
+        const estateInfo = getEstateInfo(estateLv);
+        const estateBonusPct = Math.max(0, Number(estateInfo.bonus || 0) || 0);
+        const mult = 1 + (estateBonusPct / 100);
+
+        const gain = Math.max(0, Math.floor(base * mult));
+        if (gain <= 0) return false;
+
+        const ok = await saveUserStatePatch({ tuviExp: curTuvi + gain }, { noRender: true });
+        if (ok){
+          // chỉ tính "phút đã đọc" khi đủ 60s (các giây lẻ chưa đủ phút sẽ không tính)
+          const key = __lsReadSecondsKey();
+          const curSec = Math.max(0, Math.floor(Number(safeGetLS(key, "0") || 0) || 0));
+          try{ safeSetLS(key, String(curSec + 60)); }catch(_){}
+        }
+        return ok;
+      }catch(err){
+        console.warn("award cultivation minute error:", err);
+        return false;
+      }
+    }
+
+    function __cultTick(){
+      if (!__cultActive) return;
+
+      // chỉ chạy khi đang ở reader mode
+      if (!document.body.classList.contains("reader-mode")){
+        __cultLastTickAt = Date.now();
+        return;
+      }
+
+      const now = Date.now();
+
+      // nếu tab ẩn thì không tính thời gian
+      if (document.hidden){
+        __cultLastTickAt = now;
+        return;
+      }
+
+      const last = (__cultLastTickAt || now);
+      let delta = Math.floor((now - last) / 1000);
+      if (delta < 1) delta = 1;
+      if (delta > 10) delta = 10; // chống nhảy số nếu browser throttle mạnh
+
+      __cultLastTickAt = now;
+      __cultProgressSec += delta;
+
+      const mins = Math.floor(__cultProgressSec / 60);
+      __cultProgressSec = __cultProgressSec % 60;
+
+      if (mins > 0){
+        for (let i = 0; i < mins; i++){
+          __cultQueue = __cultQueue
+            .then(() => __awardCultivationMinute())
+            .catch(err => console.warn("cultivation queue error:", err));
+        }
+      }
+
+      __cultSaveProgress();
+    }
+
+    // Nếu tab bị ẩn/hiện khi đang đọc: tạm dừng (grace 60s) rồi resume khi quay lại
+    document.addEventListener("visibilitychange", () => {
+      try{
+        const hash = location.hash || "#/home";
+        if (!__isReaderHash(hash)) return;
+        if (document.hidden){
+          if (__cultActive) __cultPause();
+        }else{
+          if (!__cultActive) __cultStartOrResume();
+        }
+      }catch(_){}
+    });
+
+
+    function renderVipCenterPage(){
+      hideAllPages();
+      tabPage?.classList.remove("hidden");
+      setActiveBottomNav("profile");
+      const vipSummary = getVipSummary();
+      showRouteHeader({ title: "Nạp VIP", sub: vipSummary.active ? vipSummary.label : "Chuyển khoản + tải ảnh xác nhận", chips: [vipSummary.label || "VIP"] });
+
+      const cards = Object.values(VIP_TIERS).map(t => `
+        <div class="vip-card">
+          <div class="vip-plan-badge ${esc(t.className)}">${esc(t.label)}</div>
+          <h3>${esc(t.label)}</h3>
+          <div class="vip-price-row">
+            <span class="vip-price-chip">1 tháng • ${fmtN(t.prices[1])}đ</span>
+            <span class="vip-price-chip">3 tháng • ${fmtN(t.prices[3])}đ</span>
+            <span class="vip-price-chip">6 tháng • ${fmtN(t.prices[6])}đ</span>
+          </div>
+          <ul class="vip-benefits">
+            ${formatVipPlanBenefits(t).map(x => `<li>${esc(x)}</li>`).join("")}
+          </ul>
+        </div>
+      `).join("");
+
+      const currentCode = currentUser ? `${VIP_BANK_INFO.transferNotePrefix}_${currentUser.uid.slice(0,8)}` : `${VIP_BANK_INFO.transferNotePrefix}_UID`;
+      tabPageContent.innerHTML = `
+        <div class="vip-center">
+          <div class="vip-hero">
+            <div class="vip-hero-title">Trung tâm nạp VIP</div>
+            <div class="vip-hero-sub">Người dùng chuyển khoản xong sẽ tải ảnh chụp màn hình lên rồi bấm <b>Xác nhập</b>. Sau đó yêu cầu sẽ được gửi tới mục <b>VIP (Admin)</b> trong Cộng đồng để admin duyệt và nâng VIP cho tài khoản.</div>
+            <div class="vip-bank">
+              <div class="vip-bank-grid">
+                <div class="vip-bank-card">
+                  <div class="muted">Ngân hàng</div>
+                  <div style="font-weight:1000;font-size:18px;margin-top:4px">${esc(VIP_BANK_INFO.bankName)}</div>
+                </div>
+                <div class="vip-bank-card vip-copy" data-copy-vip="${esc(VIP_BANK_INFO.accountNumber)}">
+                  <div class="muted">Số tài khoản</div>
+                  <div style="font-weight:1000;font-size:18px;margin-top:4px">${esc(VIP_BANK_INFO.accountNumber)}</div>
+                </div>
+                <div class="vip-bank-card vip-copy" data-copy-vip="${esc(VIP_BANK_INFO.accountName)}">
+                  <div class="muted">Chủ tài khoản</div>
+                  <div style="font-weight:1000;font-size:18px;margin-top:4px">${esc(VIP_BANK_INFO.accountName)}</div>
+                </div>
+                <div class="vip-bank-card vip-copy" data-copy-vip="${esc(currentCode)}">
+                  <div class="muted">Nội dung chuyển khoản</div>
+                  <div style="font-weight:1000;font-size:18px;margin-top:4px">${esc(currentCode)}</div>
+                </div>
+              </div>
+              <div class="vip-note">Bạn nên sửa lại <b>VIP_BANK_INFO</b> trong file HTML thành thông tin ngân hàng thật của admin.</div>
+            </div>
+          </div>
+
+          <div class="vip-plan-grid">${cards}</div>
+
+          <div class="vip-admin-card">
+            <div class="cm-card-head">
+              <div>
+                <div class="cm-card-title">Gửi yêu cầu nạp VIP</div>
+                <div class="cm-card-sub">Đăng nhập → chọn gói → tải ảnh chuyển khoản → bấm xác nhập</div>
+              </div>
+              <button class="tab-page-btn" type="button" id="vipBackProfileBtn">Cá nhân</button>
+            </div>
+
+            <div id="vipAuthWarn"></div>
+
+            <div class="vip-purchase">
+              <div class="vip-row2">
+                <div class="vip-field">
+                  <label>Gói VIP</label>
+                  <select id="vipTierSelect">
+                    ${Object.values(VIP_TIERS).map(t => `<option value="${esc(t.id)}">${esc(t.label)}</option>`).join("")}
+                  </select>
+                </div>
+                <div class="vip-field">
+                  <label>Thời hạn</label>
+                  <select id="vipMonthsSelect">
+                    <option value="1">1 tháng</option>
+                    <option value="3">3 tháng</option>
+                    <option value="6">6 tháng</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="vip-row2">
+                <div class="vip-field">
+                  <label>Số tiền cần chuyển</label>
+                  <input id="vipAmountView" type="text" value="" readonly>
+                </div>
+                <div class="vip-field">
+                  <label>Nội dung chuyển khoản đã dùng</label>
+                  <input id="vipTransferCodeInput" type="text" maxlength="80" value="${esc(currentCode)}">
+                </div>
+              </div>
+
+              <div class="vip-field">
+                <label>Ghi chú</label>
+                <textarea id="vipNoteInput" maxlength="200" placeholder="Ví dụ: Đã chuyển lúc 08:30, tên ngân hàng..."></textarea>
+              </div>
+
+              <div class="vip-proof">
+                <div class="vip-field">
+                  <label>Ảnh chụp màn hình chuyển khoản</label>
+                  <input id="vipProofFile" type="file" accept="image/*">
+                </div>
+                <div class="vip-proof-preview" id="vipProofPreview">Chưa có ảnh xác nhận</div>
+              </div>
+
+              <div class="vip-actions">
+                <button class="tab-page-btn primary" type="button" id="vipSubmitBtn">Xác nhập</button>
+                <button class="tab-page-btn" type="button" id="vipOpenAdminBtn" ${isVipAdmin() ? "" : "style=\"display:none\""}>Mở VIP Admin</button>
+              </div>
+              <div class="vip-note">Khi admin bấm xác nhận, tài khoản sẽ được cộng quà, cộng linh khí và kích hoạt đúng gói VIP đã chọn.</div>
+            </div>
+          </div>
+
+          <div class="vip-admin-card">
+            <div class="cm-card-head">
+              <div>
+                <div class="cm-card-title">Yêu cầu của tôi</div>
+                <div class="cm-card-sub">Theo dõi trạng thái duyệt VIP gần nhất</div>
+              </div>
+            </div>
+            <div class="vip-my-requests" id="vipMyRequests"></div>
+          </div>
+        </div>
+      `;
+
+      $("#vipBackProfileBtn")?.addEventListener("click", () => { location.hash = "#/profile"; });
+      $("#vipOpenAdminBtn")?.addEventListener("click", () => { location.hash = "#/community/vip-admin"; });
+
+      if (!currentUser){
+        const box = $("#vipAuthWarn");
+        if (box){
+          box.innerHTML = `<div class="rank-note">Bạn cần đăng nhập trước khi gửi yêu cầu nạp VIP.</div>`;
+        }
+      }
+
+      let vipProofDataUrl = "";
+
+      function refreshVipAmount(){
+        const tier = getVipTierById($("#vipTierSelect")?.value || "bronze");
+        const months = Math.max(1, Number($("#vipMonthsSelect")?.value || 1) || 1);
+        const amount = Number((tier.prices && tier.prices[months]) || 0);
+        const benefits = buildVipBenefitSnapshot(tier.id, months);
+        const out = [
+          `${tier.label} • ${months} tháng`,
+          `${fmtN(amount)}đ`,
+          `+${fmtN(benefits.bonusCoins)} Xu • +${fmtN(benefits.bonusGems)} Ngọc • +${fmtN(benefits.bonusLk)} Linh Khí`
+        ].join(" | ");
+        const el = $("#vipAmountView");
+        if (el) el.value = out;
+      }
+
+      $("#vipTierSelect")?.addEventListener("change", refreshVipAmount);
+      $("#vipMonthsSelect")?.addEventListener("change", refreshVipAmount);
+      refreshVipAmount();
+
+      tabPageContent.querySelectorAll("[data-copy-vip]").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const txt = btn.getAttribute("data-copy-vip") || "";
+          try{
+            await navigator.clipboard.writeText(txt);
+            toast("Đã sao chép: " + txt);
+          }catch(_){
+            toast("Không sao chép được. Hãy bôi đen để copy.");
+          }
+        });
+      });
+
+      $("#vipProofFile")?.addEventListener("change", async (e) => {
+        const file = e?.target?.files?.[0];
+        if (!file) return;
+        try{
+          vipProofDataUrl = await compressImageToDataUrl(file, 1280, 0.82);
+          const pv = $("#vipProofPreview");
+          if (pv){
+            pv.innerHTML = vipProofDataUrl ? `<img src="${esc(vipProofDataUrl)}" alt="proof">` : `Không đọc được ảnh`;
+          }
+        }catch(err){
+          console.warn("vip proof error", err);
+          toast("Không thể đọc ảnh.");
+        }
+      });
+
+      $("#vipSubmitBtn")?.addEventListener("click", async () => {
+        if (!currentUser){
+          toast("Đăng nhập trước khi nạp VIP.");
+          toggleAccountMenu(true);
+          return;
+        }
+        if (!ENABLE_FIREBASE || !rtdb || !push || !set){
+          toast("Cần Firebase Realtime Database để gửi yêu cầu VIP.");
+          return;
+        }
+        const tier = getVipTierById($("#vipTierSelect")?.value || "bronze");
+        const months = Math.max(1, Number($("#vipMonthsSelect")?.value || 1) || 1);
+        const transferCode = String($("#vipTransferCodeInput")?.value || "").trim().slice(0, 80);
+        const note = String($("#vipNoteInput")?.value || "").trim().slice(0, 200);
+        if (!transferCode){
+          toast("Hãy nhập nội dung chuyển khoản đã dùng.");
+          return;
+        }
+        if (!vipProofDataUrl){
+          toast("Bạn phải tải ảnh chụp màn hình chuyển khoản lên trước.");
+          return;
+        }
+        const benefit = buildVipBenefitSnapshot(tier.id, months);
+        try{
+          const reqRef = push(ref(rtdb, "community/vipRequests"));
+          const prof = normalizeProfile(userState?.profile || {});
+          const payload = {
+            uid: currentUser.uid,
+            email: currentUser.email || "",
+            name: prof.name || currentUser.displayName || "Người dùng",
+            photoURL: prof.avatar || currentUser.photoURL || "",
+            transferCode,
+            note,
+            proofImage: vipProofDataUrl,
+            status: "pending",
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+            benefit,
+            amount: benefit.amount,
+            tierId: benefit.tierId,
+            tierName: benefit.tierName,
+            months: benefit.months
+          };
+          await set(reqRef, payload);
+          toast("Đã gửi yêu cầu VIP tới admin.");
+          $("#vipNoteInput").value = "";
+          $("#vipProofFile").value = "";
+          vipProofDataUrl = "";
+          const pv = $("#vipProofPreview");
+          if (pv) pv.textContent = "Chưa có ảnh xác nhận";
+          loadMyVipRequests();
+        }catch(err){
+          console.warn("vip request error", err);
+          toast("Không thể gửi yêu cầu VIP.");
+        }
+      });
+
+      function renderMyVipRequests(rows){
+        const box = $("#vipMyRequests");
+        if (!box) return;
+        if (!rows.length){
+          box.innerHTML = `<div class="vip-empty">Bạn chưa gửi yêu cầu VIP nào.</div>`;
+          return;
+        }
+        box.innerHTML = rows.map(r => `
+          <div class="vip-my-item">
+            <div class="vip-admin-top">
+              <div><b>${esc(r.tierName || r?.benefit?.tierName || "VIP")}</b> • ${esc(String(r.months || r?.benefit?.months || 1))} tháng</div>
+              <span class="vip-status ${esc(String(r.status||"pending").toLowerCase())}">${esc(formatVipRequestStatus(r.status))}</span>
+            </div>
+            <div class="vip-admin-meta" style="margin-top:8px">
+              <span class="cm-pill">💸 ${esc(fmtN(Number(r.amount || r?.benefit?.amount || 0)))}đ</span>
+              <span class="cm-pill">🕒 ${esc(timeAgo(Number(r.createdAt || 0)))}</span>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      function loadMyVipRequests(){
+        const box = $("#vipMyRequests");
+        if (!box) return;
+        if (!ENABLE_FIREBASE || !rtdb || !onValue || !query || !orderByChild || !limitToLast || !currentUser){
+          renderMyVipRequests([]);
+          return;
+        }
+        if (window.__vipMyReqUnsub) try{ window.__vipMyReqUnsub(); }catch(_){}
+        const qRef = query(ref(rtdb, "community/vipRequests"), orderByChild("createdAt"), limitToLast(80));
+        window.__vipMyReqUnsub = onValue(qRef, (snap) => {
+          const data = snap?.val ? snap.val() : {};
+          const rows = Object.entries(data || {}).map(([id, v]) => ({ id, ...(v||{}) }))
+            .filter(x => String(x.uid || "") === String(currentUser.uid || ""))
+            .sort((a,b) => Number(b.createdAt || 0) - Number(a.createdAt || 0))
+            .slice(0, 10);
+          renderMyVipRequests(rows);
+        }, () => renderMyVipRequests([]));
+      }
+
+      loadMyVipRequests();
+    }
+
+    function startVipAdminPanel(){
+      const listEl = $("#vipAdminList");
+      if (!listEl) return;
+      if (!ENABLE_FIREBASE || !rtdb || !onValue || !query || !orderByChild || !limitToLast || !set){
+        listEl.innerHTML = `<div class="vip-empty">Cần Firebase Realtime Database để duyệt VIP.</div>`;
+        return;
+      }
+
+      async function approveVipRequest(row){
+        try{
+          const benefit = row?.benefit || buildVipBenefitSnapshot(row?.tierId || "bronze", row?.months || 1);
+          const userRef = doc(db, "users", row.uid);
+          let currentData = {};
+          try{
+            const snap = await userRef.get();
+            currentData = (snap && snap.data && snap.data()) || {};
+          }catch(_){}
+          const prevVip = (currentData && typeof currentData.vipInfo === "object") ? currentData.vipInfo : {};
+          const baseExpiry = Math.max(Date.now(), Number(prevVip.expiresAt || 0) || 0);
+          const nextExpiry = addMonthsTs(baseExpiry, Number(benefit.months || 1));
+          const prevWallet = normalizeWallet(currentData.wallet || {});
+          const nextWallet = {
+            coins: (prevWallet.coins || 0) + Math.max(0, Number(benefit.bonusCoins || 0) || 0),
+            gems: (prevWallet.gems || 0) + Math.max(0, Number(benefit.bonusGems || 0) || 0)
+          };
+          const nextTuvi = Math.max(0, Math.floor(Number(currentData.tuviExp || 0) || 0)) + Math.max(0, Number(benefit.bonusLk || 0) || 0);
+          const nextVip = {
+            active: true,
+            tierId: benefit.tierId,
+            tierName: benefit.tierName,
+            label: benefit.tierName,
+            badgeText: benefit.badgeText,
+            trainPct: benefit.trainPct,
+            dropPct: benefit.dropPct,
+            rarePct: benefit.rarePct,
+            dailyDownloads: benefit.dailyDownloads,
+            color: benefit.color || "",
+            expiresAt: nextExpiry,
+            approvedAt: Date.now()
+          };
+          await setDoc(userRef, {
+            wallet: nextWallet,
+            tuviExp: nextTuvi,
+            vipInfo: nextVip,
+            lastSeenAt: serverTimestamp()
+          }, { merge: true });
+
+          const basePath = `community/vipRequests/${row.id}`;
+          await Promise.all([
+            set(ref(rtdb, `${basePath}/status`), "approved"),
+            set(ref(rtdb, `${basePath}/approvedAt`), Date.now()),
+            set(ref(rtdb, `${basePath}/updatedAt`), Date.now()),
+            set(ref(rtdb, `${basePath}/approvedByUid`), currentUser?.uid || ""),
+            set(ref(rtdb, `${basePath}/approvedByEmail`), currentUser?.email || "")
+          ]);
+          toast("Đã xác nhận VIP cho tài khoản.");
+        }catch(err){
+          console.warn("approve vip error", err);
+          toast("Không thể xác nhận VIP.");
+        }
+      }
+
+      function renderRows(rows){
+        if (!rows.length){
+          listEl.innerHTML = `<div class="vip-empty">Chưa có yêu cầu nạp VIP nào.</div>`;
+          return;
+        }
+        listEl.innerHTML = rows.map(r => {
+          const nm = String(r.name || "Người dùng");
+          const ava = String(r.photoURL || "");
+          const benefit = r.benefit || {};
+          const status = String(r.status || "pending").toLowerCase();
+          const avaHtml = ava ? `<img src="${esc(ava)}" alt="avatar">` : esc(initials(nm));
+          return `
+            <div class="vip-admin-card vip-admin-item" data-vip-req="${esc(r.id)}">
+              <div class="vip-admin-top">
+                <div class="vip-admin-user">
+                  <div class="vip-admin-avatar">${avaHtml}</div>
+                  <div>
+                    <div style="font-weight:1000">${esc(nm)}</div>
+                    <div class="muted">${esc(r.email || "")}</div>
+                  </div>
+                </div>
+                <span class="vip-status ${esc(status)}">${esc(formatVipRequestStatus(status))}</span>
+              </div>
+
+              <div class="vip-admin-meta">
+                <span class="cm-pill">👑 ${esc(r.tierName || benefit.tierName || "VIP")}</span>
+                <span class="cm-pill">⏳ ${esc(String(r.months || benefit.months || 1))} tháng</span>
+                <span class="cm-pill">💸 ${esc(fmtN(Number(r.amount || benefit.amount || 0)))}đ</span>
+                <span class="cm-pill">🕒 ${esc(timeAgo(Number(r.createdAt || 0)))}</span>
+                <span class="cm-pill">🧾 ${esc(r.transferCode || "")}</span>
+              </div>
+
+              ${r.note ? `<div class="vip-note">${esc(r.note)}</div>` : ``}
+              ${r.proofImage ? `<img class="vip-proof-thumb" src="${esc(r.proofImage)}" alt="proof">` : `<div class="vip-empty">Không có ảnh biên lai.</div>`}
+
+              <div class="vip-actions">
+                <button class="tab-page-btn primary" type="button" data-vip-approve="${esc(r.id)}" ${status === "pending" ? "" : "disabled"}>Xác nhận nạp VIP</button>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        listEl.querySelectorAll("[data-vip-approve]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-vip-approve") || "";
+            const row = rows.find(x => String(x.id) === String(id));
+            if (!row) return;
+            approveVipRequest(row);
+          });
+        });
+      }
+
+      if (window.__vipAdminUnsub) try{ window.__vipAdminUnsub(); }catch(_){}
+      const qRef = query(ref(rtdb, "community/vipRequests"), orderByChild("createdAt"), limitToLast(120));
+      window.__vipAdminUnsub = onValue(qRef, (snap) => {
+        const data = snap?.val ? snap.val() : {};
+        const rows = Object.entries(data || {}).map(([id, v]) => ({ id, ...(v||{}) }))
+          .sort((a,b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+        renderRows(rows);
+      }, (err) => {
+        console.warn("vip admin read error", err);
+        listEl.innerHTML = `<div class="vip-empty">Không thể tải danh sách VIP. Kiểm tra Rules Firebase.</div>`;
+      });
+    }
+
+
     function renderRoute(){
       const hash = location.hash || "#/home";
-      try{ __trackReadTime(__lastHashForReadStats, hash); }catch(_){ }
-      __lastHashForReadStats = hash;
+      try{ __cultOnHashChange(__lastHashForCult, hash); }catch(_){ }
+      __lastHashForCult = hash;
       updateHomeHeaderVisibilityByHash(hash);
       const __isHomeHash = (hash === "#/home" || hash === "" || hash === "#");
       if (!__isHomeHash){ try{ stopHomeChat(); }catch(_){ } }
@@ -11954,6 +13026,10 @@ rankPrevBtn?.addEventListener("click", () => {
       }
       if (hash.startsWith("#/community")){
         renderTabPage("community");
+        return;
+      }
+      if (hash.startsWith("#/vip")){
+        renderVipCenterPage();
         return;
       }
       if (hash.startsWith("#/profile")){
@@ -12212,7 +13288,7 @@ rankPrevBtn?.addEventListener("click", () => {
         hint.innerHTML = `
           <div class="cm-auth-box">
             Bạn đang ở <b>chế độ khách</b>. 
-            <button class="cm-link" id="cmHintLogin" type="button">Đăng nhập Google</button>
+            <button class="cm-link" id="cmHintLogin" type="button">Đăng ký / Đăng nhập</button>
             để gửi chat / tạo thế lực / đăng bài.
           </div>
         `;
@@ -12224,7 +13300,7 @@ rankPrevBtn?.addEventListener("click", () => {
         hint.innerHTML = `
           <div class="cm-auth-box">
             Xin chào <b>${esc(currentUser.displayName || "bạn")}</b> 👋 
-            <span class="muted">(${esc(currentUser.email || "Đã đăng nhập")})</span>
+            <span class="muted">(${esc(userState?.profile?.name || currentUser.displayName || "Đã đăng nhập")})</span>
           </div>
         `;
       }
@@ -13745,7 +14821,7 @@ if (searchEl){
     });
 
     btnSearch?.addEventListener("click", () => openSearchPanel());
-    $("#btnNap").addEventListener("click", () => toast("Nút nạp - nối cổng thanh toán sau (không dùng Firebase để quản lý nội dung truyện)"));
+    $("#btnNap").addEventListener("click", () => { location.hash = "#/vip"; });
     btnNotify?.addEventListener("click", (e) => { e.stopPropagation(); toggleNotifyPanel(); });
     btnTheme?.addEventListener("click", () => toggleTheme());
     $("#btnMenu").addEventListener("click", (e) => { e.stopPropagation(); toggleSideMenu(); });
@@ -14271,17 +15347,23 @@ if (bossAtkBtn){
           if (msg) msg.textContent = "Đăng nhập để lưu thay đổi.";
           return;
         }
-        const name = ($("#pfEditNameInline")?.value || "").trim();
+        const name = normalizeAccountName(($("#pfEditNameInline")?.value || "").trim());
         const prof = (userState && userState.profile) ? userState.profile : {};
         const bio = (prof && prof.bio) ? String(prof.bio || "") : "";
         const avatar = String(__profileAvatarDraft || (prof && prof.avatar) || (currentUser?.photoURL || ""));
-        const nextProf = normalizeProfile({ name, avatar, bio });
+        if (!name){ if (msg) msg.textContent = "Hãy nhập tên tài khoản."; return; }
+        if (name.length < 6 && !isAdminUsername(name)){ if (msg) msg.textContent = "Tên tài khoản phải trên 5 ký tự. Riêng tài khoản admin dùng tên Admin."; return; }
         if (msg) msg.textContent = "Đang lưu...";
-        saveUserStatePatch({ profile: nextProf }).then(() => {
+        renameCurrentUserProfile(name, { avatar, bio }).then(() => {
           if (msg) msg.textContent = "Đã lưu thay đổi.";
           renderRoute();
-        }).catch(() => {
-          if (msg) msg.textContent = "Lỗi lưu. Thử lại.";
+        }).catch((err) => {
+          const code = String(err?.code || err?.message || "");
+          if (msg) msg.textContent = code === "USERNAME_TAKEN"
+            ? "Tên tài khoản này đã có người dùng."
+            : code === "USERNAME_TOO_SHORT"
+              ? "Tên tài khoản phải trên 5 ký tự. Riêng tài khoản admin dùng tên Admin."
+              : "Lỗi lưu. Thử lại.";
         });
         return;
       }
@@ -14320,17 +15402,22 @@ if (bossAtkBtn){
         return;
       }
       if (e.target.closest("#pfSaveEdit")){
-        const name = ($("#pfEditName")?.value || "").trim();
+        const name = normalizeAccountName(($("#pfEditName")?.value || "").trim());
         const avatar = ($("#pfEditAvatar")?.value || "").trim();
         const bio = ($("#pfEditBio")?.value || "").trim();
-        const nextProf = normalizeProfile({ name, avatar, bio });
-        saveUserStatePatch({ profile: nextProf }).then(() => {
+        if (!name){ toast("Hãy nhập tên tài khoản"); return; }
+        if (name.length < 6 && !isAdminUsername(name)){ toast("Tên tài khoản phải trên 5 ký tự"); return; }
+        renameCurrentUserProfile(name, { avatar, bio }).then(() => {
           const ov = $("#pfEditOverlay");
           if (ov){
             ov.classList.add("hidden");
             ov.setAttribute("aria-hidden","true");
           }
+          toast("Đã cập nhật hồ sơ");
           renderRoute();
+        }).catch((err) => {
+          const code = String(err?.code || err?.message || "");
+          toast(code === "USERNAME_TAKEN" ? "Tên tài khoản đã tồn tại" : "Cập nhật hồ sơ thất bại");
         });
         return;
       }
@@ -14436,14 +15523,14 @@ if (bossAtkBtn){
 
     btnAccountProfile?.addEventListener("click", () => {
       if (!currentUser){
-        showAccountInlineNote("Bạn chưa đăng nhập. Hãy bấm <strong>Đăng nhập Google</strong> để đồng bộ tài khoản.", "warn");
+        showAccountInlineNote("Bạn chưa đăng nhập. Hãy bấm <strong>Đăng ký / Đăng nhập</strong> để đồng bộ tài khoản.", "warn");
         return;
       }
       const followed = Array.isArray(userState?.followedIds) ? userState.followedIds.length : 0;
       const history = Array.isArray(userState?.historyIds) ? userState.historyIds.length : 0;
       showAccountInlineNote(
         `Tài khoản: <strong>${esc(currentUser.displayName || "Người dùng")}</strong><br>` +
-        `Email: ${esc(currentUser.email || "(không có)")}<br>` +
+        `Tài khoản: ${esc(userState?.profile?.name || currentUser.displayName || "(không có)")}<br>` +
         `Theo dõi: <strong>${followed}</strong> • Lịch sử đọc: <strong>${history}</strong>`,
         "info"
       );
@@ -14468,24 +15555,134 @@ if (bossAtkBtn){
       );
     });
 
-    btnLogin.addEventListener("click", async () => {
-      if (!ENABLE_FIREBASE){
-        toast("Hãy bật ENABLE_FIREBASE = true (Firebase chỉ dùng cho user sync / lượt xem / online)");
+    const authOverlay = $("#authOverlay");
+    const authModal = $("#authModal");
+    const btnAuthClose = $("#btnAuthClose");
+    const authTabRegister = $("#authTabRegister");
+    const authTabLogin = $("#authTabLogin");
+    const authUsername = $("#authUsername");
+    const authEmail = $("#authEmail");
+    const authEmailWrap = $("#authEmailWrap");
+    const authPassword = $("#authPassword");
+    const authPasswordConfirm = $("#authPasswordConfirm");
+    const authConfirmWrap = $("#authConfirmWrap");
+    const btnAuthSubmit = $("#btnAuthSubmit");
+    const authHint = $("#authHint");
+    let authMode = "register";
+
+    function setAuthMode(mode){
+      authMode = mode === "login" ? "login" : "register";
+      authTabRegister?.classList.toggle("active", authMode === "register");
+      authTabLogin?.classList.toggle("active", authMode === "login");
+      authConfirmWrap?.classList.toggle("hidden", authMode === "login");
+      authEmailWrap?.classList.add("hidden");
+      if (btnAuthSubmit) btnAuthSubmit.textContent = authMode === "login" ? "Đăng nhập" : "Đăng ký";
+      if (authHint) authHint.textContent = authMode === "login"
+        ? "Nhập tên tài khoản và mật khẩu để đăng nhập. Không cần Gmail."
+        : "Tên tài khoản phải trên 5 ký tự, không được trùng nhau. Không cần Gmail. Tài khoản admin dùng tên Admin.";
+    }
+    function openAuthModal(mode){
+      setAuthMode(mode || "register");
+      authOverlay?.classList.remove("hidden");
+      authModal?.classList.remove("hidden");
+      authOverlay?.setAttribute("aria-hidden", "false");
+      authModal?.setAttribute("aria-hidden", "false");
+      closeAccountMenu();
+      setTimeout(() => { try{ authUsername?.focus(); }catch(_){} }, 30);
+    }
+    function closeAuthModal(){
+      authOverlay?.classList.add("hidden");
+      authModal?.classList.add("hidden");
+      authOverlay?.setAttribute("aria-hidden", "true");
+      authModal?.setAttribute("aria-hidden", "true");
+    }
+    async function handleAuthSubmit(){
+      if (!ENABLE_FIREBASE || !auth){
+        toast("Firebase chưa sẵn sàng.");
         return;
       }
+      const username = String(authUsername?.value || "").trim();
+      const password = String(authPassword?.value || "");
+      const password2 = String(authPasswordConfirm?.value || "");
+      const cleanName = normalizeAccountName(username);
+      const authEmailValue = usernameToAuthEmail(cleanName);
+      if (authEmail) authEmail.value = authEmailValue;
+      if (authMode === "register"){
+        if (!cleanName){ authHint.textContent = "Hãy nhập tên tài khoản."; return; }
+        if (cleanName.length < 6 && !isAdminUsername(cleanName)){ authHint.textContent = "Tên tài khoản phải trên 5 ký tự. Riêng tài khoản admin dùng tên Admin."; return; }
+        if (password.length < 6){ authHint.textContent = "Mật khẩu phải từ 6 ký tự."; return; }
+        if (password !== password2){ authHint.textContent = "Mật khẩu nhập lại không khớp."; return; }
+      }else{
+        if (!cleanName || !password){ authHint.textContent = "Hãy nhập tên tài khoản và mật khẩu."; return; }
+      }
+      btnAuthSubmit.disabled = true;
+      const oldTxt = btnAuthSubmit.textContent;
+      btnAuthSubmit.textContent = authMode === "login" ? "Đang đăng nhập..." : "Đang đăng ký...";
       try{
-        const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider);
-        showAccountInlineNote("Đăng nhập thành công. Dữ liệu theo dõi / lịch sử đọc sẽ tự đồng bộ.", "info");
-        closeAccountMenu();
-        toast("Đăng nhập thành công");
+        if (authMode === "register"){
+          const cred = await createUserWithEmailAndPassword(auth, authEmailValue, password);
+          try{
+            await claimUsername(cleanName, cred.user.uid, authEmailValue);
+          }catch(nameErr){
+            try{ await cred.user.delete(); }catch(_){ }
+            throw nameErr;
+          }
+          try{ await updateProfileAuthUser(cred.user, { displayName: cleanName }); }catch(_){ }
+          try{
+            await setDoc(doc(db, "users", cred.user.uid), {
+              profile: { name: cleanName, bio: "", avatar: "" },
+              authMeta: { username: cleanName, email: authEmailValue, provider: "password", loginType: "username" },
+              updatedAt: serverTimestamp()
+            }, { merge: true });
+          }catch(_){ }
+          showAccountInlineNote("Đăng ký thành công. Tài khoản đã được đồng bộ.", "info");
+          toast("Đăng ký thành công");
+        }else{
+          await signInWithEmailAndPassword(auth, authEmailValue, password);
+          showAccountInlineNote("Đăng nhập thành công. Dữ liệu theo dõi / lịch sử đọc sẽ tự đồng bộ.", "info");
+          toast("Đăng nhập thành công");
+        }
+        closeAuthModal();
       }catch(err){
         console.error(err);
-        const code = err?.code || "unknown";
-        showAccountInlineNote(`Đăng nhập lỗi: <strong>${esc(code)}</strong>`, "warn");
-        toast("Đăng nhập thất bại");
+        const code = String(err?.code || "unknown");
+        const map = {
+          "auth/email-already-in-use": "Tên tài khoản này đã được đăng ký.",
+          "auth/invalid-email": "Không thể tạo định danh đăng nhập cho tài khoản này.",
+          "auth/weak-password": "Mật khẩu quá yếu, hãy dùng từ 6 ký tự trở lên.",
+          "auth/operation-not-allowed": "Firebase chưa bật Email/Password trong Authentication.",
+          "auth/user-not-found": "Không tìm thấy tài khoản này.",
+          "auth/wrong-password": "Sai mật khẩu.",
+          "auth/invalid-credential": "Sai tài khoản hoặc mật khẩu.",
+          "auth/too-many-requests": "Thao tác quá nhiều lần, hãy thử lại sau."
+        };
+        const extraMap = {
+          "USERNAME_EMPTY": "Hãy nhập tên tài khoản.",
+          "USERNAME_TOO_SHORT": "Tên tài khoản phải trên 5 ký tự. Riêng tài khoản admin dùng tên Admin.",
+          "USERNAME_TAKEN": "Tên tài khoản này đã có người dùng. Hãy chọn tên khác.",
+          "USERNAME_DB_NOT_READY": "Firebase chưa sẵn sàng để kiểm tra tên tài khoản."
+        };
+        const msg = extraMap[code] || map[code] || ("Lỗi: " + code);
+        if (authHint) authHint.textContent = msg;
+        showAccountInlineNote(msg, "warn");
+        toast(authMode === "login" ? "Đăng nhập thất bại" : "Đăng ký thất bại");
+      }finally{
+        btnAuthSubmit.disabled = false;
+        btnAuthSubmit.textContent = oldTxt;
       }
+    }
+
+    btnLogin.addEventListener("click", async () => {
+      openAuthModal("register");
     });
+    btnAuthClose?.addEventListener("click", closeAuthModal);
+    authOverlay?.addEventListener("click", closeAuthModal);
+    authTabRegister?.addEventListener("click", () => setAuthMode("register"));
+    authTabLogin?.addEventListener("click", () => setAuthMode("login"));
+    btnAuthSubmit?.addEventListener("click", handleAuthSubmit);
+    [authUsername, authEmail, authPassword, authPasswordConfirm].forEach(el => el?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") handleAuthSubmit();
+    }));
 
     btnLogout.addEventListener("click", async () => {
       if (!ENABLE_FIREBASE || !auth) return;
