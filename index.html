@@ -4498,36 +4498,92 @@
 
 
     /* ===== VIP Center / Admin ===== */
-    .vip-center{display:grid;gap:14px}
-    .vip-hero{background:linear-gradient(135deg, rgba(242,190,45,.18), rgba(124,77,255,.18));border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
-    .vip-hero-title{font-size:22px;font-weight:1000;letter-spacing:.2px}
-    .vip-hero-sub{margin-top:6px;color:var(--muted);line-height:1.5}
-    .vip-bank{display:grid;gap:10px;margin-top:12px}
-    .vip-bank-card,.vip-card,.vip-admin-card{background:rgba(15,17,27,.88);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:14px}
-    .vip-bank-grid,.vip-plan-grid,.vip-admin-list{display:grid;gap:12px}
-    .vip-bank-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-    .vip-plan-grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
-    .vip-plan-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900;border:1px solid rgba(255,255,255,.1);margin-bottom:10px}
-    .vip-plan-badge.bronze{background:rgba(205,127,50,.14);color:#e5b587}
-    .vip-plan-badge.silver{background:rgba(192,192,192,.14);color:#f0f3ff}
-    .vip-plan-badge.gold{background:rgba(242,190,45,.16);color:#ffd76a}
-    .vip-plan-badge.platinum{background:linear-gradient(135deg, rgba(255,255,255,.14), rgba(124,77,255,.18));color:#fff}
-    .vip-card h3{margin:0;font-size:19px}
-    .vip-price-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .vip-price-chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-weight:900;font-size:12px}
-    .vip-benefits{margin:12px 0 0;padding-left:18px;color:rgba(232,236,255,.92)}
-    .vip-benefits li{margin:6px 0}
-    .vip-purchase{display:grid;gap:12px}
-    .vip-row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .vip-field{display:grid;gap:7px}
-    .vip-field label{font-size:12px;font-weight:900;color:rgba(232,236,255,.88)}
-    .vip-field input,.vip-field select,.vip-field textarea{width:100%;background:rgba(255,255,255,.04);color:var(--text);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 13px;outline:none}
-    .vip-field textarea{min-height:92px;resize:none}
-    .vip-proof{display:grid;gap:10px}
-    .vip-proof-preview{min-height:160px;border-radius:18px;border:1px dashed rgba(255,255,255,.14);display:grid;place-items:center;background:rgba(255,255,255,.03);overflow:hidden}
-    .vip-proof-preview img{width:100%;height:100%;object-fit:contain;background:#080910}
-    .vip-actions{display:flex;gap:10px;flex-wrap:wrap}
-    .vip-note{color:var(--muted);font-size:12px;line-height:1.5}
+    .vip-center{display:grid;gap:18px}
+    .vip-hero{position:relative;overflow:hidden;padding:18px;border-radius:26px;border:1px solid rgba(255,255,255,.08);background:radial-gradient(circle at top right, rgba(242,190,45,.24), transparent 40%),radial-gradient(circle at left center, rgba(0,212,255,.12), transparent 38%),linear-gradient(180deg,#101521,#07090f);box-shadow:0 20px 44px rgba(0,0,0,.26)}
+    .vip-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.05),transparent);pointer-events:none}
+    .vip-hero-title{font-size:24px;font-weight:1000;letter-spacing:.5px}
+    .vip-hero-sub{margin-top:6px;color:rgba(232,236,255,.78);line-height:1.6}
+    .vip-status-strip{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .vip-status-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-weight:900;font-size:12px;color:#f5f7ff}
+    .vip-status-pill b{color:#ffd76a}
+    .vip-bank{display:grid;gap:10px;margin-top:14px}
+    .vip-bank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+    .vip-bank-card,.vip-admin-card{background:rgba(10,12,20,.9);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:14px;box-shadow:0 16px 32px rgba(0,0,0,.22)}
+    .vip-bank-card{min-height:92px}
+    .vip-bank-card .muted{font-size:12px;letter-spacing:.2px}
+    .vip-bank-card.qr-card{grid-column:1/-1;display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:14px;align-items:center}
+    .vip-bank-qr-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:#fff;display:block}
+    .vip-bank-qr-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .vip-bank-qr-link{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 14px;border-radius:14px;border:1px solid rgba(255,215,106,.3);background:rgba(242,190,45,.12);color:#ffd76a;font-weight:1000;text-decoration:none}
+    .vip-bank-qr-note{font-size:12px;color:rgba(232,236,255,.68);line-height:1.5;margin-top:8px}
+    .vip-bank-value{font-weight:1000;font-size:18px;margin-top:6px;line-height:1.25;word-break:break-word}
+    .vip-copy{cursor:pointer}
+    .vip-copy:hover{transform:translateY(-1px);transition:transform .16s ease}
+    .vip-tier-stack{display:grid;gap:18px}
+    .vip-tier-section{display:grid;gap:12px}
+    .vip-tier-heading{display:flex;align-items:center;justify-content:center;gap:10px;font-weight:1000;font-size:16px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;text-align:center}
+    .vip-tier-heading::before,.vip-tier-heading::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent)}
+    .vip-tier-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .vip-plan-card{position:relative;display:grid;gap:12px;align-content:start;min-height:348px;height:100%;padding:16px 14px;border-radius:24px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015)),linear-gradient(180deg,#0c0f18,#05070d);box-shadow:0 16px 30px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05);cursor:default;overflow:hidden;transform:translateY(0) scale(1);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,filter .22s ease}
+    .vip-plan-card:hover{transform:translateY(-4px);box-shadow:0 22px 38px rgba(0,0,0,.38);filter:brightness(1.03)}
+    .vip-plan-card::before{content:"";position:absolute;inset:0 0 auto 0;height:82px;background:linear-gradient(180deg,var(--vip-glow,rgba(242,190,45,.22)),transparent);opacity:.95;pointer-events:none}
+    .vip-plan-card.bronze{--vip-glow:rgba(205,127,50,.30);border-color:rgba(205,127,50,.34)}
+    .vip-plan-card.silver{--vip-glow:rgba(220,225,235,.20);border-color:rgba(220,225,235,.26)}
+    .vip-plan-card.gold{--vip-glow:rgba(242,190,45,.28);border-color:rgba(242,190,45,.34)}
+    .vip-plan-card.platinum{--vip-glow:rgba(220,230,255,.24);border-color:rgba(210,220,255,.30)}
+    .vip-plan-card.featured,.vip-plan-card.discount{box-shadow:0 16px 30px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.05)}
+    .vip-plan-card.is-selected{transform:translateY(-10px) scale(1.015);border-color:rgba(242,190,45,.78);box-shadow:0 0 0 1px rgba(242,190,45,.58),0 22px 42px rgba(0,0,0,.42),0 0 34px rgba(242,190,45,.22);filter:brightness(1.05)}
+    .vip-plan-card.is-selected::after{content:"Đã chọn";position:absolute;top:12px;left:12px;padding:5px 10px;border-radius:999px;background:linear-gradient(180deg,#ffd76a,#d69a06);color:#2b1800;font-size:11px;font-weight:1000;letter-spacing:.2px;box-shadow:0 8px 18px rgba(214,154,6,.22);z-index:2}
+    .vip-plan-card.is-selected .vip-card-cta{box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 14px 24px rgba(185,119,24,.30);filter:brightness(1.04)}
+    .vip-plan-card.is-selected .vip-card-tier{color:#ffe8a8}
+    .vip-plan-card.is-selected{animation:vipCardPulse .28s ease}
+    .vip-card-cta:active{transform:translateY(1px) scale(.992)}
+    @keyframes vipCardPulse{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.02)}100%{transform:translateY(-10px) scale(1.015)}}
+    .vip-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;position:relative;z-index:1}
+    .vip-card-tier{font-size:12px;font-weight:1000;letter-spacing:.6px;text-transform:uppercase;color:#f6d38a}
+    .vip-card-badge{padding:5px 9px;border-radius:999px;background:rgba(11,232,129,.18);color:#9dffd8;border:1px solid rgba(11,232,129,.24);font-size:11px;font-weight:1000;white-space:nowrap}
+    .vip-card-badge.recommend{background:rgba(242,190,45,.20);border-color:rgba(242,190,45,.26);color:#ffe28d}
+    .vip-card-price{position:relative;z-index:1}
+    .vip-card-price-main{font-size:20px;font-weight:1000;line-height:1.1;color:#fff}
+    .vip-card-price-main small{font-size:12px;font-weight:800;opacity:.72}
+    .vip-card-old{margin-top:4px;font-size:12px;color:rgba(255,255,255,.38);text-decoration:line-through;min-height:16px}
+    .vip-card-list{position:relative;z-index:1;display:grid;gap:7px;margin:0;padding:0;list-style:none;color:rgba(238,242,255,.88);font-size:11.5px}
+    .vip-card-list li{display:flex;gap:7px;align-items:flex-start;line-height:1.45}
+    .vip-card-list li::before{content:"✓";color:#9dffd8;font-weight:1000;flex:0 0 auto}
+    .vip-card-cta{position:relative;z-index:1;margin-top:auto;width:100%;min-height:48px;border:none;border-radius:14px;font-weight:1000;letter-spacing:.15px;color:#fef3cf;background:linear-gradient(180deg,#dca447,#b97718);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 10px 20px rgba(185,119,24,.18);display:flex;align-items:center;justify-content:center;padding:0 10px;font-size:13px;line-height:1.05;text-align:center;white-space:nowrap;cursor:pointer;transition:transform .12s ease,filter .16s ease,box-shadow .18s ease}
+    .vip-plan-card.silver .vip-card-cta,.vip-plan-card.platinum .vip-card-cta{background:linear-gradient(180deg,#4b5563,#2d3440);color:#f5f7ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 10px 20px rgba(0,0,0,.22)}
+    .vip-plan-card.featured .vip-card-cta,.vip-plan-card.discount .vip-card-cta{background:linear-gradient(180deg,#f2be2d,#d69a06);color:#2c1b00}
+    .vip-plan-card .vip-card-cta span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .vip-plan-tip{font-size:12px;color:rgba(255,255,255,.72)}
+    .vip-modal-overlay{position:fixed;inset:0;z-index:2400;background:rgba(0,0,0,.72);backdrop-filter:blur(5px)}
+    .vip-modal-shell{position:fixed;inset:0;z-index:2401;display:grid;place-items:center;padding:16px}
+    .vip-modal{width:min(92vw,560px);max-height:min(88vh,820px);overflow:auto;border-radius:28px;border:1px solid rgba(255,255,255,.10);background:radial-gradient(circle at top right, rgba(242,190,45,.22), transparent 34%),linear-gradient(180deg,#101521,#080a10);box-shadow:0 28px 60px rgba(0,0,0,.42);padding:18px}
+    .vip-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .vip-modal-title{font-size:22px;font-weight:1000;line-height:1.2}
+    .vip-modal-sub{margin-top:5px;color:rgba(232,236,255,.74);font-size:13px;line-height:1.5}
+    .vip-modal-close{width:40px;height:40px;border:none;border-radius:14px;background:rgba(255,255,255,.08);color:#fff;font-size:20px}
+    .vip-modal-grid{display:grid;gap:14px;margin-top:16px}
+    .vip-modal-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:14px}
+    .vip-modal-card h4{margin:0 0 10px;font-size:15px}
+    .vip-modal-summary{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .vip-modal-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px;font-weight:900}
+    .vip-modal-benefits{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+    .vip-modal-benefits li{display:flex;gap:8px;align-items:flex-start;color:rgba(238,242,255,.92);font-size:13px;line-height:1.45}
+    .vip-modal-benefits li::before{content:"✦";color:#ffd76a;font-weight:1000;flex:0 0 auto}
+    .vip-modal-bank{display:grid;gap:10px}
+    .vip-modal-copyline{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .vip-modal-copyline .label{font-size:11px;color:rgba(232,236,255,.62);text-transform:uppercase;letter-spacing:.5px}
+    .vip-modal-copyline .value{font-size:14px;font-weight:1000;word-break:break-word}
+    .vip-copy-btn{border:none;border-radius:12px;padding:10px 12px;background:rgba(242,190,45,.16);color:#ffd76a;font-weight:1000;white-space:nowrap}
+    .vip-modal-qr{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .vip-modal-qr-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+    .vip-modal-qr-title{font-size:11px;color:rgba(232,236,255,.62);text-transform:uppercase;letter-spacing:.5px}
+    .vip-modal-qr-body{display:grid;grid-template-columns:minmax(130px,180px) 1fr;gap:14px;align-items:center}
+    .vip-modal-qr img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:#fff;display:block}
+    .vip-modal-qr-note{font-size:12px;color:rgba(232,236,255,.72);line-height:1.55}
+    .vip-modal-note{margin-top:10px;font-size:12px;color:rgba(232,236,255,.72);line-height:1.5}
+    .vip-modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .vip-modal-actions .tab-page-btn{min-height:48px;border-radius:16px}
     .vip-admin-item{display:grid;gap:10px}
     .vip-admin-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
     .vip-admin-user{display:flex;gap:10px;align-items:center}
@@ -4543,11 +4599,18 @@
     .vip-empty{padding:18px;border:1px dashed rgba(255,255,255,.1);border-radius:18px;color:var(--muted);text-align:center}
     .vip-my-requests{display:grid;gap:10px}
     .vip-my-item{padding:12px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
-    .vip-copy{cursor:pointer}
+    .vip-request-code{margin-top:7px;font-size:12px;color:rgba(255,255,255,.7)}
+    .vip-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .vip-note{color:var(--muted);font-size:12px;line-height:1.5}
     .name-rainbow{background:linear-gradient(90deg,#ff4d6d,#f2be2d,#0be881,#00d4ff,#7c4dff,#ff4d6d);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:vipRainbow 6s linear infinite}
     @keyframes vipRainbow{0%{background-position:0% 50%}100%{background-position:300% 50%}}
     @media (max-width:720px){
-      .vip-row2{grid-template-columns:1fr}
+      .vip-tier-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+      .vip-plan-card{min-height:366px;padding:14px 10px}
+      .vip-card-price-main{font-size:18px}
+      .vip-card-cta{min-height:46px;font-size:12px;padding:0 8px}
+      .vip-modal-actions{grid-template-columns:1fr}
+      .vip-bank-grid{grid-template-columns:1fr}
     }
 
   
@@ -4649,47 +4712,33 @@
         <span class="left"><span class="icon">👑</span><span>VIP</span></span>
         <span>›</span>
       </button>
-      <button class="account-menu-btn primary" id="btnLogin" type="button">Đăng ký / Đăng nhập</button>
+      <button class="account-menu-btn primary" id="btnLogin" type="button">Đăng nhập Google</button>
       <button class="account-menu-btn warn hidden" id="btnLogout" type="button">Đăng xuất</button>
     </div>
     <div class="account-inline-note hidden muted" id="accountInlineNote"></div>
   </div>
 
   <div class="auth-overlay hidden" id="authOverlay" aria-hidden="true"></div>
-  <div class="auth-modal hidden" id="authModal" aria-hidden="true" role="dialog" aria-label="Đăng ký hoặc đăng nhập">
+  <div class="auth-modal hidden" id="authModal" aria-hidden="true" role="dialog" aria-label="Đăng nhập Google">
     <div class="auth-modal-head">
       <div>
-        <div class="auth-modal-title">Tài khoản</div>
-        <div class="auth-modal-sub">Đăng ký / Đăng nhập bằng tài khoản và mật khẩu</div>
+        <div class="auth-modal-title">Đăng nhập Google</div>
+        <div class="auth-modal-sub">Dùng tài khoản Google để đồng bộ dữ liệu người dùng trên web</div>
       </div>
       <button class="auth-close" id="btnAuthClose" type="button" aria-label="Đóng">✕</button>
     </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="authTabRegister" data-auth-tab="register" type="button">Đăng ký</button>
-      <button class="auth-tab" id="authTabLogin" data-auth-tab="login" type="button">Đăng nhập</button>
-    </div>
     <div class="auth-form-grid">
-      <label class="auth-field">
+      <div class="auth-field" style="grid-column:1/-1">
         <span>Tài khoản</span>
-        <input id="authUsername" type="text" maxlength="30" placeholder="Nhập tên tài khoản">
-      </label>
-      <label class="auth-field hidden" id="authEmailWrap" aria-hidden="true">
-        <span>Email nội bộ</span>
-        <input id="authEmail" type="email" maxlength="120" placeholder="Email nội bộ tự tạo">
-      </label>
-      <label class="auth-field">
-        <span>Mật khẩu</span>
-        <input id="authPassword" type="password" maxlength="80" placeholder="Nhập mật khẩu">
-      </label>
-      <label class="auth-field" id="authConfirmWrap">
-        <span>Nhập lại mật khẩu</span>
-        <input id="authPasswordConfirm" type="password" maxlength="80" placeholder="Nhập lại mật khẩu">
-      </label>
+        <div style="padding:12px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:var(--muted)">
+          Đăng nhập bằng Google. Ảnh đại diện sẽ lấy từ tài khoản Google của bạn.
+        </div>
+      </div>
     </div>
     <div class="auth-actions">
-      <button class="auth-submit" id="btnAuthSubmit" type="button">Đăng ký</button>
+      <button class="auth-submit" id="btnAuthSubmit" type="button">Tiếp tục với Google</button>
     </div>
-    <div class="auth-hint" id="authHint">Tạo tài khoản mới để đồng bộ dữ liệu trên web. Không cần nhập Gmail.</div>
+    <div class="auth-hint" id="authHint">Admin VIP: <b>sumi22122005@gmail.com</b>. Nếu muốn đổi avatar, hãy đổi ảnh ở chính tài khoản Google.</div>
   </div>
 
   <div class="drawer-overlay" id="sideMenuOverlay" aria-hidden="true"></div>
@@ -5360,7 +5409,7 @@
     let app, auth, db, rtdb;
 
     // === Modular-like wrappers (để giữ nguyên code phía dưới) ===
-    let createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, serverTimestamp, updateProfileAuthUser;
+    let signInWithPopupAuth, signInWithRedirectAuth, getRedirectResultAuth, onAuthStateChanged, signOut, serverTimestamp, updateProfileAuthUser, googleAuthProvider;
     let getFirestore, doc, setDoc, onSnapshot, collection, getDocs;
     let getDatabase, ref, set, onDisconnect, onValue, runTransaction;
     let push, query, orderByChild, limitToLast, onChildAdded;
@@ -6267,8 +6316,11 @@ function normalizeUserState(raw){
         rtdb = firebase.database();
 
         // Auth wrappers
-        createUserWithEmailAndPassword = (authObj, email, password) => authObj.createUserWithEmailAndPassword(email, password);
-        signInWithEmailAndPassword = (authObj, email, password) => authObj.signInWithEmailAndPassword(email, password);
+        googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+        googleAuthProvider.setCustomParameters({ prompt: "select_account" });
+        signInWithPopupAuth = (authObj, provider) => authObj.signInWithPopup(provider);
+        signInWithRedirectAuth = (authObj, provider) => authObj.signInWithRedirect(provider);
+        getRedirectResultAuth = (authObj) => authObj.getRedirectResult();
         onAuthStateChanged = (authObj, cb) => authObj.onAuthStateChanged(cb);
         signOut = (authObj) => authObj.signOut();
         updateProfileAuthUser = (user, data) => user.updateProfile(data);
@@ -8418,13 +8470,15 @@ function getReadingStories(){
 
     const ADMIN_USERNAME = "Admin";
     const VIP_ADMIN_EMAILS = [
-      "admin@gmail.com"
+      "sumi22122005@gmail.com"
     ];
     const VIP_ADMIN_UIDS = [];
     const VIP_BANK_INFO = {
-      bankName: "MB Bank",
-      accountNumber: "0000000000",
-      accountName: "TEN CHU TAI KHOAN",
+      bankName: "TP Bank",
+      accountNumber: "",
+      accountName: "DANG VAN QUYET",
+      qrImage: "https://www.dropbox.com/scl/fi/nms050dr9r746it740wzy/IMG_20260306_174102.png?rlkey=jm34j8os8m6uug8kd9t8ulvy7&st=y6jr1tyu&raw=1",
+      qrDownload: "https://www.dropbox.com/scl/fi/nms050dr9r746it740wzy/IMG_20260306_174102.png?rlkey=jm34j8os8m6uug8kd9t8ulvy7&st=y6jr1tyu&dl=1",
       transferNotePrefix: "NAPVIP"
     };
     const VIP_TIERS = {
@@ -8494,8 +8548,7 @@ function getReadingStories(){
       const email = String(currentUser?.email || "").trim().toLowerCase();
       const uid = String(currentUser?.uid || "").trim();
       const profileName = String(userState?.profile?.name || currentUser?.displayName || "").trim().toLowerCase();
-      return profileName === String(ADMIN_USERNAME || "Admin").trim().toLowerCase()
-        || VIP_ADMIN_EMAILS.map(x => String(x||"").trim().toLowerCase()).includes(email)
+      return VIP_ADMIN_EMAILS.map(x => String(x||"").trim().toLowerCase()).includes(email)
         || VIP_ADMIN_UIDS.map(x => String(x||"").trim()).includes(uid);
     }
 
@@ -8578,13 +8631,19 @@ function getReadingStories(){
 
     function formatVipPlanBenefits(tier){
       const t = getVipTierById(tier?.id || tier);
+      const badgeLine = {
+        bronze: "Huy Hiệu Vip Đồng (Tên sẽ có màu đồng)",
+        silver: "Huy Hiệu Vip Bạc (Tên sẽ có màu bạc)",
+        gold: "Huy Hiệu Vip Vàng (Tên sẽ có màu vàng)",
+        platinum: "Huy Hiệu Bạch Kim (Tên màu cầu vồng chuyển động đặc quyền)"
+      }[t.id] || (t.badgeText + " (Tên sẽ có màu VIP)");
       return [
-        t.badgeText + " (tên theo màu VIP)",
+        "+" + badgeLine,
         "+" + fmtN(t.bonusCoins) + " Xu - " + fmtN(t.bonusGems) + " Ngọc",
         "+" + fmtN(t.bonusLk) + " Linh Khí",
         "+" + fmtN(t.trainPct) + "% tốc độ tu luyện",
-        "+" + fmtN(t.dropPct) + "% tỷ lệ rơi vật phẩm (hiếm +" + fmtN(t.rarePct) + "%)",
-        t.dailyDownloads + " lần tải truyện / ngày"
+        "+" + fmtN(t.dropPct) + "% tỷ lệ rơi vật phẩm (Tỷ lệ vật phẩm hiếm tăng " + fmtN(t.rarePct) + "%)",
+        t.dailyDownloads + " lần tải truyện / 1 ngày"
       ];
     }
 
@@ -8613,6 +8672,41 @@ function getReadingStories(){
       const d = new Date(base.getTime());
       d.setMonth(d.getMonth() + Math.max(1, Number(months || 1) || 1));
       return d.getTime();
+    }
+
+    function getVipDayKey(ts = Date.now()){
+      try{
+        return new Intl.DateTimeFormat("en-CA", {
+          timeZone: "Asia/Ho_Chi_Minh",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        }).format(new Date(Number(ts || Date.now()) || Date.now()));
+      }catch(_){
+        const d = new Date(Number(ts || Date.now()) || Date.now());
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${day}`;
+      }
+    }
+
+    function hashString32(input){
+      const str = String(input || "");
+      let h = 2166136261;
+      for (let i = 0; i < str.length; i++){
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+
+    function getVipTransferCode(uid = ""){
+      const cleanUid = String(uid || currentUser?.uid || "guest").trim() || "guest";
+      const dayKey = getVipDayKey();
+      const seed = `${VIP_BANK_INFO.transferNotePrefix}|${cleanUid}|${dayKey}`;
+      const digest = hashString32(seed).toString(16).toUpperCase().padStart(8, "0");
+      return `${VIP_BANK_INFO.transferNotePrefix}-${dayKey.replace(/-/g, "")}-${digest.slice(0, 6)}`;
     }
 
     function formatVipRequestStatus(status){
@@ -11373,7 +11467,7 @@ if (view === "estate" || view === "trangvien" || view === "tv"){
         const vip = getVipSummary();
         const prof = (userState && userState.profile) ? userState.profile : {};
         const displayName = (prof && prof.name) ? prof.name : (currentUser?.displayName || "Khách");
-        const avatarUrl = (prof && prof.avatar) ? prof.avatar : (currentUser?.photoURL || "");
+        const avatarUrl = currentUser?.photoURL || ((prof && prof.avatar) ? prof.avatar : "");
         __profileAvatarDraft = avatarUrl || "";
         const bio = (prof && prof.bio)
           ? prof.bio
@@ -11880,7 +11974,7 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
                   </div>
                   <div class="pf-field">
                     <label>Avatar (link ảnh, tuỳ chọn)</label>
-                    <input id="pfEditAvatar" maxlength="600" placeholder="https://..." value="${esc(avatarUrl)}">
+                    <input id="pfEditAvatar" maxlength="600" placeholder="Avatar đồng bộ từ Google" value="${esc(avatarUrl)}" readonly disabled>
                   </div>
                   <div class="pf-field">
                     <label>Giới thiệu</label>
@@ -12557,123 +12651,182 @@ rankPrevBtn?.addEventListener("click", () => {
       tabPage?.classList.remove("hidden");
       setActiveBottomNav("profile");
       const vipSummary = getVipSummary();
-      showRouteHeader({ title: "Nạp VIP", sub: vipSummary.active ? vipSummary.label : "Chuyển khoản + tải ảnh xác nhận", chips: [vipSummary.label || "VIP"] });
+      showRouteHeader({ title: "Nạp VIP", sub: vipSummary.active ? vipSummary.label : "Chọn gói phù hợp và nhận mã nạp trong ngày", chips: [vipSummary.label || "VIP"] });
 
-      const cards = Object.values(VIP_TIERS).map(t => `
-        <div class="vip-card">
-          <div class="vip-plan-badge ${esc(t.className)}">${esc(t.label)}</div>
-          <h3>${esc(t.label)}</h3>
-          <div class="vip-price-row">
-            <span class="vip-price-chip">1 tháng • ${fmtN(t.prices[1])}đ</span>
-            <span class="vip-price-chip">3 tháng • ${fmtN(t.prices[3])}đ</span>
-            <span class="vip-price-chip">6 tháng • ${fmtN(t.prices[6])}đ</span>
+      const todayCode = currentUser ? getVipTransferCode(currentUser.uid) : "Đăng nhập để tạo mã";
+      const bankCards = `
+        <div class="vip-bank-grid">
+          <div class="vip-bank-card">
+            <div class="muted">Ngân hàng</div>
+            <div class="vip-bank-value">${esc(VIP_BANK_INFO.bankName)}</div>
           </div>
-          <ul class="vip-benefits">
-            ${formatVipPlanBenefits(t).map(x => `<li>${esc(x)}</li>`).join("")}
-          </ul>
+          <div class="vip-bank-card vip-copy" data-copy-vip="${esc(VIP_BANK_INFO.accountName)}">
+            <div class="muted">Chủ tài khoản</div>
+            <div class="vip-bank-value">${esc(VIP_BANK_INFO.accountName)}</div>
+          </div>
+          <div class="vip-bank-card ${currentUser ? "vip-copy" : ""}" ${currentUser ? `data-copy-vip="${esc(todayCode)}"` : ""}>
+            <div class="muted">Code nạp hôm nay</div>
+            <div class="vip-bank-value">${esc(todayCode)}</div>
+          </div>
+          <div class="vip-bank-card qr-card">
+            <img class="vip-bank-qr-img" src="${esc(VIP_BANK_INFO.qrImage)}" alt="Mã QR nạp VIP">
+            <div>
+              <div class="muted">Mã QR chuyển khoản</div>
+              <div class="vip-bank-value">Quét QR để chuyển khoản nhanh</div>
+              <div class="vip-bank-qr-note">Bạn có thể quét QR trực tiếp hoặc mở ảnh QR để tải về máy trước khi chuyển khoản.</div>
+              <div class="vip-bank-qr-actions">
+                <a class="vip-bank-qr-link" href="${esc(VIP_BANK_INFO.qrImage)}" target="_blank" rel="noopener noreferrer">Mở ảnh QR</a>
+                <a class="vip-bank-qr-link" href="${esc(VIP_BANK_INFO.qrDownload)}" target="_blank" rel="noopener noreferrer">Tải mã QR</a>
+              </div>
+            </div>
+          </div>
         </div>
-      `).join("");
+      `;
 
-      const currentCode = currentUser ? `${VIP_BANK_INFO.transferNotePrefix}_${currentUser.uid.slice(0,8)}` : `${VIP_BANK_INFO.transferNotePrefix}_UID`;
+      function getVipCardHighlights(tier){
+        const nameColorText = {
+          bronze: "Tên màu đồng",
+          silver: "Tên màu bạc",
+          gold: "Tên màu vàng",
+          platinum: "Tên cầu vồng"
+        }[tier.id] || "Tên màu VIP";
+        return [
+          `${tier.badgeText} • ${nameColorText}`,
+          `+${fmtN(tier.bonusCoins)} Xu - ${fmtN(tier.bonusGems)} Ngọc`,
+          `+${fmtN(tier.bonusLk)} Linh Khí`,
+          `+${fmtN(tier.trainPct)}% tốc độ tu luyện`,
+          `+${fmtN(tier.dropPct)}% rơi vật phẩm • hiếm +${fmtN(tier.rarePct)}%`,
+          `${fmtN(tier.dailyDownloads)} lần tải/ngày`
+        ];
+      }
+
+      function getVipModalBenefits(tier){
+        return [...formatVipPlanBenefits(tier)];
+      }
+
+      function renderVipTierSection(tier){
+        const durations = [1, 3, 6].map(months => {
+          const price = Number((tier.prices && tier.prices[months]) || 0);
+          const oldPrice = Number((tier.prices && tier.prices[1]) || 0) * months;
+          const discountPct = months === 3 ? 10 : (months === 6 ? 20 : 0);
+          const badge = months === 3
+            ? `<span class="vip-card-badge">-${discountPct}%</span>`
+            : (months === 6 ? `<span class="vip-card-badge">-${discountPct}%</span>` : "");
+          const cta = months === 1 ? "Đăng ký ngay" : `Tiết kiệm ${discountPct}%`;
+          return `
+            <div class="vip-plan-card ${esc(tier.className)}" data-vip-card="${esc(tier.id)}" data-vip-months="${months}">
+              <div class="vip-card-top">
+                <div class="vip-card-tier">${esc(tier.label)}</div>
+                ${badge}
+              </div>
+              <div class="vip-card-price">
+                <div class="vip-card-price-main">${esc(fmtN(price))}đ<small>/${months} tháng</small></div>
+                <div class="vip-card-old">${discountPct ? `${esc(fmtN(oldPrice))}đ` : ""}</div>
+              </div>
+              <ul class="vip-card-list">
+                ${getVipCardHighlights(tier).map(item => `<li>${esc(item)}</li>`).join("")}
+              </ul>
+              <button class="vip-card-cta" type="button" data-vip-trigger="${esc(tier.id)}" data-vip-months="${months}"><span>${esc(cta)}</span></button>
+            </div>
+          `;
+        }).join("");
+        return `
+          <section class="vip-tier-section">
+            <div class="vip-tier-heading">${esc(tier.label)}</div>
+            <div class="vip-tier-grid">${durations}</div>
+          </section>
+        `;
+      }
+
       tabPageContent.innerHTML = `
         <div class="vip-center">
-          <div class="vip-hero">
-            <div class="vip-hero-title">Trung tâm nạp VIP</div>
-            <div class="vip-hero-sub">Người dùng chuyển khoản xong sẽ tải ảnh chụp màn hình lên rồi bấm <b>Xác nhập</b>. Sau đó yêu cầu sẽ được gửi tới mục <b>VIP (Admin)</b> trong Cộng đồng để admin duyệt và nâng VIP cho tài khoản.</div>
-            <div class="vip-bank">
-              <div class="vip-bank-grid">
-                <div class="vip-bank-card">
-                  <div class="muted">Ngân hàng</div>
-                  <div style="font-weight:1000;font-size:18px;margin-top:4px">${esc(VIP_BANK_INFO.bankName)}</div>
-                </div>
-                <div class="vip-bank-card vip-copy" data-copy-vip="${esc(VIP_BANK_INFO.accountNumber)}">
-                  <div class="muted">Số tài khoản</div>
-                  <div style="font-weight:1000;font-size:18px;margin-top:4px">${esc(VIP_BANK_INFO.accountNumber)}</div>
-                </div>
-                <div class="vip-bank-card vip-copy" data-copy-vip="${esc(VIP_BANK_INFO.accountName)}">
-                  <div class="muted">Chủ tài khoản</div>
-                  <div style="font-weight:1000;font-size:18px;margin-top:4px">${esc(VIP_BANK_INFO.accountName)}</div>
-                </div>
-                <div class="vip-bank-card vip-copy" data-copy-vip="${esc(currentCode)}">
-                  <div class="muted">Nội dung chuyển khoản</div>
-                  <div style="font-weight:1000;font-size:18px;margin-top:4px">${esc(currentCode)}</div>
-                </div>
-              </div>
-              <div class="vip-note">Bạn nên sửa lại <b>VIP_BANK_INFO</b> trong file HTML thành thông tin ngân hàng thật của admin.</div>
-            </div>
-          </div>
+          <div id="vipAuthWarn"></div>
 
-          <div class="vip-plan-grid">${cards}</div>
-
-          <div class="vip-admin-card">
-            <div class="cm-card-head">
-              <div>
-                <div class="cm-card-title">Gửi yêu cầu nạp VIP</div>
-                <div class="cm-card-sub">Đăng nhập → chọn gói → tải ảnh chuyển khoản → bấm xác nhập</div>
-              </div>
-              <button class="tab-page-btn" type="button" id="vipBackProfileBtn">Cá nhân</button>
-            </div>
-
-            <div id="vipAuthWarn"></div>
-
-            <div class="vip-purchase">
-              <div class="vip-row2">
-                <div class="vip-field">
-                  <label>Gói VIP</label>
-                  <select id="vipTierSelect">
-                    ${Object.values(VIP_TIERS).map(t => `<option value="${esc(t.id)}">${esc(t.label)}</option>`).join("")}
-                  </select>
-                </div>
-                <div class="vip-field">
-                  <label>Thời hạn</label>
-                  <select id="vipMonthsSelect">
-                    <option value="1">1 tháng</option>
-                    <option value="3">3 tháng</option>
-                    <option value="6">6 tháng</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="vip-row2">
-                <div class="vip-field">
-                  <label>Số tiền cần chuyển</label>
-                  <input id="vipAmountView" type="text" value="" readonly>
-                </div>
-                <div class="vip-field">
-                  <label>Nội dung chuyển khoản đã dùng</label>
-                  <input id="vipTransferCodeInput" type="text" maxlength="80" value="${esc(currentCode)}">
-                </div>
-              </div>
-
-              <div class="vip-field">
-                <label>Ghi chú</label>
-                <textarea id="vipNoteInput" maxlength="200" placeholder="Ví dụ: Đã chuyển lúc 08:30, tên ngân hàng..."></textarea>
-              </div>
-
-              <div class="vip-proof">
-                <div class="vip-field">
-                  <label>Ảnh chụp màn hình chuyển khoản</label>
-                  <input id="vipProofFile" type="file" accept="image/*">
-                </div>
-                <div class="vip-proof-preview" id="vipProofPreview">Chưa có ảnh xác nhận</div>
-              </div>
-
-              <div class="vip-actions">
-                <button class="tab-page-btn primary" type="button" id="vipSubmitBtn">Xác nhập</button>
-                <button class="tab-page-btn" type="button" id="vipOpenAdminBtn" ${isVipAdmin() ? "" : "style=\"display:none\""}>Mở VIP Admin</button>
-              </div>
-              <div class="vip-note">Khi admin bấm xác nhận, tài khoản sẽ được cộng quà, cộng linh khí và kích hoạt đúng gói VIP đã chọn.</div>
-            </div>
+          <div class="vip-tier-stack">
+            ${Object.values(VIP_TIERS).map(renderVipTierSection).join("")}
           </div>
 
           <div class="vip-admin-card">
             <div class="cm-card-head">
               <div>
                 <div class="cm-card-title">Yêu cầu của tôi</div>
-                <div class="cm-card-sub">Theo dõi trạng thái duyệt VIP gần nhất</div>
+                <div class="cm-card-sub">Sau khi chuyển khoản, bấm xác nhận trong ô VIP. Yêu cầu sẽ hiện ở đây để chờ admin duyệt.</div>
+              </div>
+              <div class="vip-actions">
+                <button class="tab-page-btn" type="button" id="vipBackProfileBtn">Cá nhân</button>
+                <button class="tab-page-btn" type="button" id="vipOpenAdminBtn" ${isVipAdmin() ? "" : 'style="display:none"'}>Mở VIP Admin</button>
               </div>
             </div>
             <div class="vip-my-requests" id="vipMyRequests"></div>
+          </div>
+        </div>
+
+        <div class="vip-modal-overlay hidden" id="vipPlanModalOverlay" aria-hidden="true"></div>
+        <div class="vip-modal-shell hidden" id="vipPlanModalShell" aria-hidden="true">
+          <div class="vip-modal" role="dialog" aria-modal="true" aria-labelledby="vipModalTitle">
+            <div class="vip-modal-head">
+              <div>
+                <div class="vip-modal-title" id="vipModalTitle">Đăng ký VIP</div>
+                <div class="vip-modal-sub" id="vipModalSub">Xem quyền lợi, thông tin chuyển khoản và xác nhận lên VIP.</div>
+              </div>
+              <button class="vip-modal-close" type="button" id="vipModalCloseBtn" aria-label="Đóng">✕</button>
+            </div>
+
+            <div class="vip-modal-grid">
+              <div class="vip-modal-card">
+                <h4>Thông tin gói</h4>
+                <div class="vip-modal-summary" id="vipModalSummary"></div>
+                <div class="vip-modal-note" id="vipModalStatusNote"></div>
+              </div>
+
+              <div class="vip-modal-card">
+                <h4>Quyền lợi VIP</h4>
+                <ul class="vip-modal-benefits" id="vipModalBenefits"></ul>
+              </div>
+
+              <div class="vip-modal-card">
+                <h4>Thông tin chuyển khoản & code nạp</h4>
+                <div class="vip-modal-bank">
+                  <div class="vip-modal-copyline">
+                    <div>
+                      <div class="label">Ngân hàng</div>
+                      <div class="value" id="vipModalBankName">${esc(VIP_BANK_INFO.bankName)}</div>
+                    </div>
+                    <button class="vip-copy-btn" type="button" data-copy-vip="${esc(VIP_BANK_INFO.bankName)}">Copy</button>
+                  </div>
+                  <div class="vip-modal-copyline">
+                    <div>
+                      <div class="label">Chủ tài khoản</div>
+                      <div class="value" id="vipModalBankOwner">${esc(VIP_BANK_INFO.accountName)}</div>
+                    </div>
+                    <button class="vip-copy-btn" type="button" data-copy-vip="${esc(VIP_BANK_INFO.accountName)}">Copy</button>
+                  </div>
+                  <div class="vip-modal-copyline">
+                    <div>
+                      <div class="label">Code nạp hôm nay</div>
+                      <div class="value" id="vipModalTransferCode">${esc(todayCode)}</div>
+                    </div>
+                    <button class="vip-copy-btn" type="button" id="vipModalCopyCodeBtn">Copy</button>
+                  </div>
+                  <div class="vip-modal-qr">
+                    <div class="vip-modal-qr-head">
+                      <div class="vip-modal-qr-title">Mã QR chuyển khoản</div>
+                      <a class="vip-bank-qr-link" href="${esc(VIP_BANK_INFO.qrDownload)}" target="_blank" rel="noopener noreferrer">Tải QR</a>
+                    </div>
+                    <div class="vip-modal-qr-body">
+                      <img src="${esc(VIP_BANK_INFO.qrImage)}" alt="Mã QR chuyển khoản TP Bank">
+                      <div class="vip-modal-qr-note">Quét mã QR để chuyển khoản nhanh. Nếu điện thoại không hiện ảnh ngay, hãy bấm <b>Tải QR</b> để mở hoặc lưu ảnh mã thanh toán.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="vip-modal-note">Code nạp của tài khoản sẽ giữ nguyên trong 1 ngày và sang ngày mới sẽ tự đổi code khác.</div>
+              </div>
+            </div>
+
+            <div class="vip-modal-actions">
+              <button class="tab-page-btn" type="button" id="vipModalCancelBtn">Hủy không đăng ký nữa</button>
+              <button class="tab-page-btn primary" type="button" id="vipModalConfirmBtn">Xác nhận lên VIP</button>
+            </div>
           </div>
         </div>
       `;
@@ -12684,60 +12837,124 @@ rankPrevBtn?.addEventListener("click", () => {
       if (!currentUser){
         const box = $("#vipAuthWarn");
         if (box){
-          box.innerHTML = `<div class="rank-note">Bạn cần đăng nhập trước khi gửi yêu cầu nạp VIP.</div>`;
+          box.innerHTML = `<div class="rank-note">Bạn cần đăng nhập Google để hệ thống tạo đúng code nạp theo tài khoản và gửi yêu cầu VIP cho admin.</div>`;
         }
       }
 
-      let vipProofDataUrl = "";
+      function bindCopyButtons(root = tabPageContent){
+        root.querySelectorAll("[data-copy-vip]").forEach(btn => {
+          if (btn.dataset.vipCopyBound === "1") return;
+          btn.dataset.vipCopyBound = "1";
+          btn.addEventListener("click", async (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            const txt = btn.getAttribute("data-copy-vip") || "";
+            if (!txt) return;
+            try{
+              await navigator.clipboard.writeText(txt);
+              toast("Đã sao chép: " + txt);
+            }catch(_){
+              toast("Không sao chép được. Hãy bôi đen để copy.");
+            }
+          });
+        });
+      }
+      bindCopyButtons();
 
-      function refreshVipAmount(){
-        const tier = getVipTierById($("#vipTierSelect")?.value || "bronze");
-        const months = Math.max(1, Number($("#vipMonthsSelect")?.value || 1) || 1);
-        const amount = Number((tier.prices && tier.prices[months]) || 0);
-        const benefits = buildVipBenefitSnapshot(tier.id, months);
-        const out = [
-          `${tier.label} • ${months} tháng`,
-          `${fmtN(amount)}đ`,
-          `+${fmtN(benefits.bonusCoins)} Xu • +${fmtN(benefits.bonusGems)} Ngọc • +${fmtN(benefits.bonusLk)} Linh Khí`
-        ].join(" | ");
-        const el = $("#vipAmountView");
-        if (el) el.value = out;
+      const modalOverlay = $("#vipPlanModalOverlay");
+      const modalShell = $("#vipPlanModalShell");
+      const modalCloseBtn = $("#vipModalCloseBtn");
+      const modalCancelBtn = $("#vipModalCancelBtn");
+      const modalConfirmBtn = $("#vipModalConfirmBtn");
+      const modalSummary = $("#vipModalSummary");
+      const modalBenefits = $("#vipModalBenefits");
+      const modalTitle = $("#vipModalTitle");
+      const modalSub = $("#vipModalSub");
+      const modalStatusNote = $("#vipModalStatusNote");
+      const modalCodeEl = $("#vipModalTransferCode");
+      const modalCodeCopyBtn = $("#vipModalCopyCodeBtn");
+      let selectedVipPlan = null;
+
+      function closeVipPlanModal(){
+        modalOverlay?.classList.add("hidden");
+        modalShell?.classList.add("hidden");
+        selectedVipPlan = null;
       }
 
-      $("#vipTierSelect")?.addEventListener("change", refreshVipAmount);
-      $("#vipMonthsSelect")?.addEventListener("change", refreshVipAmount);
-      refreshVipAmount();
+      function refreshVipModal(){
+        if (!selectedVipPlan) return;
+        const tier = getVipTierById(selectedVipPlan.tierId);
+        const months = Math.max(1, Number(selectedVipPlan.months || 1) || 1);
+        const price = Number((tier.prices && tier.prices[months]) || 0);
+        const code = currentUser ? getVipTransferCode(currentUser.uid) : "Đăng nhập để tạo mã";
+        if (modalTitle) modalTitle.textContent = `${tier.label} • ${months} tháng`;
+        if (modalSub) modalSub.textContent = `Sau khi chuyển khoản, bấm xác nhận. Yêu cầu sẽ được gửi tới VIP Admin để duyệt.`;
+        if (modalSummary){
+          const savePct = months === 3 ? 10 : (months === 6 ? 20 : 0);
+          modalSummary.innerHTML = `
+            <span class="vip-modal-pill">👑 ${esc(tier.label)}</span>
+            <span class="vip-modal-pill">⏳ ${months} tháng</span>
+            <span class="vip-modal-pill">💸 ${esc(fmtN(price))}đ</span>
+            ${savePct ? `<span class="vip-modal-pill">🔥 Tiết kiệm ${savePct}%</span>` : ``}
+          `;
+        }
+        if (modalBenefits){
+          modalBenefits.innerHTML = getVipModalBenefits(tier).map(item => `<li>${esc(item)}</li>`).join("");
+        }
+        if (modalStatusNote){
+          modalStatusNote.innerHTML = currentUser
+            ? `Code nạp của bạn hôm nay là <b>${esc(code)}</b>. Code này sẽ tự đổi vào ngày hôm sau.`
+            : `Bạn chưa đăng nhập nên chưa có code nạp theo tài khoản. Hãy đăng nhập Google trước.`;
+        }
+        if (modalCodeEl) modalCodeEl.textContent = code;
+        if (modalCodeCopyBtn) modalCodeCopyBtn.setAttribute("data-copy-vip", currentUser ? code : "");
+        if (modalConfirmBtn){
+          modalConfirmBtn.textContent = currentUser ? `Xác nhận lên ${tier.label}` : "Đăng nhập để lên VIP";
+        }
+        bindCopyButtons(modalShell || tabPageContent);
+      }
 
-      tabPageContent.querySelectorAll("[data-copy-vip]").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          const txt = btn.getAttribute("data-copy-vip") || "";
-          try{
-            await navigator.clipboard.writeText(txt);
-            toast("Đã sao chép: " + txt);
-          }catch(_){
-            toast("Không sao chép được. Hãy bôi đen để copy.");
-          }
+      function markSelectedVipCard(tierId, months){
+        tabPageContent.querySelectorAll("[data-vip-card]").forEach(card => {
+          const sameTier = (card.getAttribute("data-vip-card") || "") === String(tierId || "");
+          const sameMonths = Number(card.getAttribute("data-vip-months") || 0) === Number(months || 0);
+          card.classList.toggle("is-selected", sameTier && sameMonths);
+        });
+      }
+
+      function openVipPlanModal(tierId, months){
+        selectedVipPlan = { tierId, months };
+        markSelectedVipCard(tierId, months);
+        refreshVipModal();
+        modalOverlay?.classList.remove("hidden");
+        modalShell?.classList.remove("hidden");
+      }
+
+      modalOverlay?.addEventListener("click", closeVipPlanModal);
+      modalCloseBtn?.addEventListener("click", closeVipPlanModal);
+      modalCancelBtn?.addEventListener("click", closeVipPlanModal);
+      if (window.__vipModalEscHandler) document.removeEventListener("keydown", window.__vipModalEscHandler);
+      window.__vipModalEscHandler = (ev) => {
+        if (location.hash !== "#/vip") return;
+        if (ev.key === "Escape" && modalShell && !modalShell.classList.contains("hidden")) closeVipPlanModal();
+      };
+      document.addEventListener("keydown", window.__vipModalEscHandler);
+
+      tabPageContent.querySelectorAll("[data-vip-trigger]").forEach(btn => {
+        btn.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const tierId = btn.getAttribute("data-vip-trigger") || "bronze";
+          const months = Number(btn.getAttribute("data-vip-months") || 1) || 1;
+          markSelectedVipCard(tierId, months);
+          setTimeout(() => openVipPlanModal(tierId, months), 70);
         });
       });
 
-      $("#vipProofFile")?.addEventListener("change", async (e) => {
-        const file = e?.target?.files?.[0];
-        if (!file) return;
-        try{
-          vipProofDataUrl = await compressImageToDataUrl(file, 1280, 0.82);
-          const pv = $("#vipProofPreview");
-          if (pv){
-            pv.innerHTML = vipProofDataUrl ? `<img src="${esc(vipProofDataUrl)}" alt="proof">` : `Không đọc được ảnh`;
-          }
-        }catch(err){
-          console.warn("vip proof error", err);
-          toast("Không thể đọc ảnh.");
-        }
-      });
-
-      $("#vipSubmitBtn")?.addEventListener("click", async () => {
+      async function submitVipRequest(tierId, months){
         if (!currentUser){
-          toast("Đăng nhập trước khi nạp VIP.");
+          toast("Đăng nhập trước khi nâng VIP.");
+          closeVipPlanModal();
           toggleAccountMenu(true);
           return;
         }
@@ -12745,19 +12962,10 @@ rankPrevBtn?.addEventListener("click", () => {
           toast("Cần Firebase Realtime Database để gửi yêu cầu VIP.");
           return;
         }
-        const tier = getVipTierById($("#vipTierSelect")?.value || "bronze");
-        const months = Math.max(1, Number($("#vipMonthsSelect")?.value || 1) || 1);
-        const transferCode = String($("#vipTransferCodeInput")?.value || "").trim().slice(0, 80);
-        const note = String($("#vipNoteInput")?.value || "").trim().slice(0, 200);
-        if (!transferCode){
-          toast("Hãy nhập nội dung chuyển khoản đã dùng.");
-          return;
-        }
-        if (!vipProofDataUrl){
-          toast("Bạn phải tải ảnh chụp màn hình chuyển khoản lên trước.");
-          return;
-        }
-        const benefit = buildVipBenefitSnapshot(tier.id, months);
+        const tier = getVipTierById(tierId || "bronze");
+        const planMonths = Math.max(1, Number(months || 1) || 1);
+        const transferCode = getVipTransferCode(currentUser.uid);
+        const benefit = buildVipBenefitSnapshot(tier.id, planMonths);
         try{
           const reqRef = push(ref(rtdb, "community/vipRequests"));
           const prof = normalizeProfile(userState?.profile || {});
@@ -12767,8 +12975,9 @@ rankPrevBtn?.addEventListener("click", () => {
             name: prof.name || currentUser.displayName || "Người dùng",
             photoURL: prof.avatar || currentUser.photoURL || "",
             transferCode,
-            note,
-            proofImage: vipProofDataUrl,
+            codeDayKey: getVipDayKey(),
+            note: `Yêu cầu VIP gửi từ giao diện thẻ ${tier.label}.`,
+            proofImage: "",
             status: "pending",
             createdAt: Date.now(),
             updatedAt: Date.now(),
@@ -12780,16 +12989,17 @@ rankPrevBtn?.addEventListener("click", () => {
           };
           await set(reqRef, payload);
           toast("Đã gửi yêu cầu VIP tới admin.");
-          $("#vipNoteInput").value = "";
-          $("#vipProofFile").value = "";
-          vipProofDataUrl = "";
-          const pv = $("#vipProofPreview");
-          if (pv) pv.textContent = "Chưa có ảnh xác nhận";
+          closeVipPlanModal();
           loadMyVipRequests();
         }catch(err){
           console.warn("vip request error", err);
           toast("Không thể gửi yêu cầu VIP.");
         }
+      }
+
+      modalConfirmBtn?.addEventListener("click", async () => {
+        if (!selectedVipPlan) return;
+        await submitVipRequest(selectedVipPlan.tierId, selectedVipPlan.months);
       });
 
       function renderMyVipRequests(rows){
@@ -12809,6 +13019,7 @@ rankPrevBtn?.addEventListener("click", () => {
               <span class="cm-pill">💸 ${esc(fmtN(Number(r.amount || r?.benefit?.amount || 0)))}đ</span>
               <span class="cm-pill">🕒 ${esc(timeAgo(Number(r.createdAt || 0)))}</span>
             </div>
+            <div class="vip-request-code">Code nạp: <b>${esc(String(r.transferCode || ""))}</b></div>
           </div>
         `).join("");
       }
@@ -12820,7 +13031,7 @@ rankPrevBtn?.addEventListener("click", () => {
           renderMyVipRequests([]);
           return;
         }
-        if (window.__vipMyReqUnsub) try{ window.__vipMyReqUnsub(); }catch(_){}
+        if (window.__vipMyReqUnsub) try{ window.__vipMyReqUnsub(); }catch(_){ }
         const qRef = query(ref(rtdb, "community/vipRequests"), orderByChild("createdAt"), limitToLast(80));
         window.__vipMyReqUnsub = onValue(qRef, (snap) => {
           const data = snap?.val ? snap.val() : {};
@@ -12835,7 +13046,8 @@ rankPrevBtn?.addEventListener("click", () => {
       loadMyVipRequests();
     }
 
-    function startVipAdminPanel(){
+    
+function startVipAdminPanel(){
       const listEl = $("#vipAdminList");
       if (!listEl) return;
       if (!ENABLE_FIREBASE || !rtdb || !onValue || !query || !orderByChild || !limitToLast || !set){
@@ -13047,11 +13259,23 @@ rankPrevBtn?.addEventListener("click", () => {
     async function ensureUserDoc(user){
       if (!ENABLE_FIREBASE || !db || !user) return;
       const refUser = doc(db, "users", user.uid);
+      const googleName = String(user.displayName || "").trim();
+      const googleAvatar = String(user.photoURL || "").trim();
       await setDoc(refUser, {
         uid: user.uid,
-        displayName: user.displayName || "",
+        displayName: googleName,
         email: user.email || "",
-        photoURL: user.photoURL || "",
+        photoURL: googleAvatar,
+        profile: {
+          name: googleName || (userState?.profile?.name || ""),
+          bio: String(userState?.profile?.bio || ""),
+          avatar: googleAvatar
+        },
+        authMeta: {
+          email: user.email || "",
+          provider: "google",
+          loginType: "google"
+        },
         lastSeenAt: serverTimestamp(),
         createdAt: serverTimestamp()
       }, { merge: true });
@@ -14662,7 +14886,7 @@ if (searchEl){
     /* ============================
        12) Auth init
        ============================ */
-    function initAuth(){
+    async function initAuth(){
       if (!ENABLE_FIREBASE){
         // Không có Firebase vẫn cho Theo dõi/Lịch sử/Đọc tiếp bằng localStorage
         currentUser = null;
@@ -14671,6 +14895,11 @@ if (searchEl){
         renderAll();
         renderRoute();
         return;
+      }
+      try{
+        await getRedirectResultAuth?.(auth);
+      }catch(err){
+        console.warn("getRedirectResult error", err);
       }
       onAuthStateChanged(auth, async (user) => {
         currentUser = user || null;
@@ -15383,10 +15612,10 @@ if (bossAtkBtn){
           // refill values from state (avoid stale)
           const prof = (userState && userState.profile) ? userState.profile : {};
           const displayName = (prof && prof.name) ? prof.name : (currentUser?.displayName || "Khách");
-          const avatarUrl = (prof && prof.avatar) ? prof.avatar : (currentUser?.photoURL || "");
+          const avatarUrl = currentUser?.photoURL || ((prof && prof.avatar) ? prof.avatar : "");
           const bio = (prof && prof.bio) ? prof.bio : "";
           const inName = $("#pfEditName"); if (inName) inName.value = displayName;
-          const inAvatar = $("#pfEditAvatar"); if (inAvatar) inAvatar.value = avatarUrl;
+          const inAvatar = $("#pfEditAvatar"); if (inAvatar) inAvatar.value = currentUser?.photoURL || avatarUrl;
           const inBio = $("#pfEditBio"); if (inBio) inBio.value = bio;
           ov.classList.remove("hidden");
           ov.setAttribute("aria-hidden","false");
@@ -15403,7 +15632,7 @@ if (bossAtkBtn){
       }
       if (e.target.closest("#pfSaveEdit")){
         const name = normalizeAccountName(($("#pfEditName")?.value || "").trim());
-        const avatar = ($("#pfEditAvatar")?.value || "").trim();
+        const avatar = String(currentUser?.photoURL || "").trim();
         const bio = ($("#pfEditBio")?.value || "").trim();
         if (!name){ toast("Hãy nhập tên tài khoản"); return; }
         if (name.length < 6 && !isAdminUsername(name)){ toast("Tên tài khoản phải trên 5 ký tự"); return; }
@@ -15523,7 +15752,7 @@ if (bossAtkBtn){
 
     btnAccountProfile?.addEventListener("click", () => {
       if (!currentUser){
-        showAccountInlineNote("Bạn chưa đăng nhập. Hãy bấm <strong>Đăng ký / Đăng nhập</strong> để đồng bộ tài khoản.", "warn");
+        showAccountInlineNote("Bạn chưa đăng nhập. Hãy bấm <strong>Đăng nhập Google</strong> để đồng bộ tài khoản.", "warn");
         return;
       }
       const followed = Array.isArray(userState?.followedIds) ? userState.followedIds.length : 0;
@@ -15545,7 +15774,7 @@ if (bossAtkBtn){
     btnAccountVip?.addEventListener("click", () => {
       const vip = getVipSummary();
       if (!currentUser){
-        showAccountInlineNote("VIP cần tài khoản để đồng bộ. Hãy đăng nhập trước, sau đó bấm nút <strong>Nạp</strong> ở header để nâng cấp.", "warn");
+        showAccountInlineNote("VIP cần tài khoản Google để đồng bộ. Hãy đăng nhập trước, sau đó bấm nút <strong>Nạp</strong> ở header để nâng cấp.", "warn");
         return;
       }
       showAccountInlineNote(
@@ -15558,37 +15787,15 @@ if (bossAtkBtn){
     const authOverlay = $("#authOverlay");
     const authModal = $("#authModal");
     const btnAuthClose = $("#btnAuthClose");
-    const authTabRegister = $("#authTabRegister");
-    const authTabLogin = $("#authTabLogin");
-    const authUsername = $("#authUsername");
-    const authEmail = $("#authEmail");
-    const authEmailWrap = $("#authEmailWrap");
-    const authPassword = $("#authPassword");
-    const authPasswordConfirm = $("#authPasswordConfirm");
-    const authConfirmWrap = $("#authConfirmWrap");
     const btnAuthSubmit = $("#btnAuthSubmit");
     const authHint = $("#authHint");
-    let authMode = "register";
 
-    function setAuthMode(mode){
-      authMode = mode === "login" ? "login" : "register";
-      authTabRegister?.classList.toggle("active", authMode === "register");
-      authTabLogin?.classList.toggle("active", authMode === "login");
-      authConfirmWrap?.classList.toggle("hidden", authMode === "login");
-      authEmailWrap?.classList.add("hidden");
-      if (btnAuthSubmit) btnAuthSubmit.textContent = authMode === "login" ? "Đăng nhập" : "Đăng ký";
-      if (authHint) authHint.textContent = authMode === "login"
-        ? "Nhập tên tài khoản và mật khẩu để đăng nhập. Không cần Gmail."
-        : "Tên tài khoản phải trên 5 ký tự, không được trùng nhau. Không cần Gmail. Tài khoản admin dùng tên Admin.";
-    }
-    function openAuthModal(mode){
-      setAuthMode(mode || "register");
+    function openAuthModal(){
       authOverlay?.classList.remove("hidden");
       authModal?.classList.remove("hidden");
       authOverlay?.setAttribute("aria-hidden", "false");
       authModal?.setAttribute("aria-hidden", "false");
       closeAccountMenu();
-      setTimeout(() => { try{ authUsername?.focus(); }catch(_){} }, 30);
     }
     function closeAuthModal(){
       authOverlay?.classList.add("hidden");
@@ -15596,76 +15803,51 @@ if (bossAtkBtn){
       authOverlay?.setAttribute("aria-hidden", "true");
       authModal?.setAttribute("aria-hidden", "true");
     }
-    async function handleAuthSubmit(){
-      if (!ENABLE_FIREBASE || !auth){
+    async function handleGoogleAuth(){
+      if (!ENABLE_FIREBASE || !auth || !googleAuthProvider){
         toast("Firebase chưa sẵn sàng.");
         return;
       }
-      const username = String(authUsername?.value || "").trim();
-      const password = String(authPassword?.value || "");
-      const password2 = String(authPasswordConfirm?.value || "");
-      const cleanName = normalizeAccountName(username);
-      const authEmailValue = usernameToAuthEmail(cleanName);
-      if (authEmail) authEmail.value = authEmailValue;
-      if (authMode === "register"){
-        if (!cleanName){ authHint.textContent = "Hãy nhập tên tài khoản."; return; }
-        if (cleanName.length < 6 && !isAdminUsername(cleanName)){ authHint.textContent = "Tên tài khoản phải trên 5 ký tự. Riêng tài khoản admin dùng tên Admin."; return; }
-        if (password.length < 6){ authHint.textContent = "Mật khẩu phải từ 6 ký tự."; return; }
-        if (password !== password2){ authHint.textContent = "Mật khẩu nhập lại không khớp."; return; }
-      }else{
-        if (!cleanName || !password){ authHint.textContent = "Hãy nhập tên tài khoản và mật khẩu."; return; }
-      }
       btnAuthSubmit.disabled = true;
       const oldTxt = btnAuthSubmit.textContent;
-      btnAuthSubmit.textContent = authMode === "login" ? "Đang đăng nhập..." : "Đang đăng ký...";
+      btnAuthSubmit.textContent = "Đang kết nối Google...";
+      if (authHint) authHint.innerHTML = 'Đang mở đăng nhập Google...';
       try{
-        if (authMode === "register"){
-          const cred = await createUserWithEmailAndPassword(auth, authEmailValue, password);
-          try{
-            await claimUsername(cleanName, cred.user.uid, authEmailValue);
-          }catch(nameErr){
-            try{ await cred.user.delete(); }catch(_){ }
-            throw nameErr;
-          }
-          try{ await updateProfileAuthUser(cred.user, { displayName: cleanName }); }catch(_){ }
-          try{
-            await setDoc(doc(db, "users", cred.user.uid), {
-              profile: { name: cleanName, bio: "", avatar: "" },
-              authMeta: { username: cleanName, email: authEmailValue, provider: "password", loginType: "username" },
-              updatedAt: serverTimestamp()
-            }, { merge: true });
-          }catch(_){ }
-          showAccountInlineNote("Đăng ký thành công. Tài khoản đã được đồng bộ.", "info");
-          toast("Đăng ký thành công");
-        }else{
-          await signInWithEmailAndPassword(auth, authEmailValue, password);
-          showAccountInlineNote("Đăng nhập thành công. Dữ liệu theo dõi / lịch sử đọc sẽ tự đồng bộ.", "info");
-          toast("Đăng nhập thành công");
-        }
+        await signInWithPopupAuth(auth, googleAuthProvider);
+        showAccountInlineNote("Đăng nhập Google thành công. Dữ liệu theo dõi / lịch sử đọc sẽ tự đồng bộ.", "info");
+        toast("Đăng nhập thành công");
         closeAuthModal();
       }catch(err){
-        console.error(err);
         const code = String(err?.code || "unknown");
+        const popupFallbackCodes = [
+          "auth/popup-blocked",
+          "auth/popup-closed-by-user",
+          "auth/cancelled-popup-request",
+          "auth/operation-not-supported-in-this-environment"
+        ];
+        if (popupFallbackCodes.includes(code)){
+          try{
+            if (authHint) authHint.innerHTML = 'Popup không dùng được trên thiết bị này. Đang chuyển sang đăng nhập Google...';
+            await signInWithRedirectAuth(auth, googleAuthProvider);
+            return;
+          }catch(err2){
+            console.error(err2);
+          }
+        }
+        console.error(err);
         const map = {
-          "auth/email-already-in-use": "Tên tài khoản này đã được đăng ký.",
-          "auth/invalid-email": "Không thể tạo định danh đăng nhập cho tài khoản này.",
-          "auth/weak-password": "Mật khẩu quá yếu, hãy dùng từ 6 ký tự trở lên.",
-          "auth/operation-not-allowed": "Firebase chưa bật Email/Password trong Authentication.",
-          "auth/user-not-found": "Không tìm thấy tài khoản này.",
-          "auth/wrong-password": "Sai mật khẩu.",
-          "auth/invalid-credential": "Sai tài khoản hoặc mật khẩu.",
+          "auth/popup-blocked": "Trình duyệt đã chặn popup đăng nhập Google.",
+          "auth/popup-closed-by-user": "Bạn đã đóng cửa sổ đăng nhập Google.",
+          "auth/cancelled-popup-request": "Yêu cầu đăng nhập Google đã bị hủy.",
+          "auth/operation-not-supported-in-this-environment": "Môi trường hiện tại không hỗ trợ popup Google. Hãy mở web bằng HTTPS trên trình duyệt thường.",
+          "auth/unauthorized-domain": "Domain này chưa được thêm vào Authorized domains của Firebase Authentication.",
+          "auth/network-request-failed": "Lỗi mạng khi kết nối Google.",
           "auth/too-many-requests": "Thao tác quá nhiều lần, hãy thử lại sau."
         };
-        const extraMap = {
-          "USERNAME_EMPTY": "Hãy nhập tên tài khoản.",
-          "USERNAME_TOO_SHORT": "Tên tài khoản phải trên 5 ký tự. Riêng tài khoản admin dùng tên Admin.",
-          "USERNAME_TAKEN": "Tên tài khoản này đã có người dùng. Hãy chọn tên khác.",
-          "USERNAME_DB_NOT_READY": "Firebase chưa sẵn sàng để kiểm tra tên tài khoản."
-        };
-        const msg = extraMap[code] || map[code] || ("Lỗi: " + code);
-        if (authHint) authHint.textContent = msg;
+        const msg = map[code] || ("Lỗi: " + code);
+        if (authHint) authHint.innerHTML = msg;
         showAccountInlineNote(msg, "warn");
-        toast(authMode === "login" ? "Đăng nhập thất bại" : "Đăng ký thất bại");
+        toast("Đăng nhập thất bại");
       }finally{
         btnAuthSubmit.disabled = false;
         btnAuthSubmit.textContent = oldTxt;
@@ -15673,17 +15855,11 @@ if (bossAtkBtn){
     }
 
     btnLogin.addEventListener("click", async () => {
-      openAuthModal("register");
+      openAuthModal();
     });
     btnAuthClose?.addEventListener("click", closeAuthModal);
     authOverlay?.addEventListener("click", closeAuthModal);
-    authTabRegister?.addEventListener("click", () => setAuthMode("register"));
-    authTabLogin?.addEventListener("click", () => setAuthMode("login"));
-    btnAuthSubmit?.addEventListener("click", handleAuthSubmit);
-    [authUsername, authEmail, authPassword, authPasswordConfirm].forEach(el => el?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") handleAuthSubmit();
-    }));
-
+    btnAuthSubmit?.addEventListener("click", handleGoogleAuth);
     btnLogout.addEventListener("click", async () => {
       if (!ENABLE_FIREBASE || !auth) return;
       try{
