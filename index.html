@@ -6444,19 +6444,21 @@
        1) Firebase config
        ============================ */
     const firebaseConfig = {
-      // Firebase chính: đăng nhập Google, dữ liệu người dùng, đồng bộ realtime, lượt online, thông báo, lượt xem truyện. Không dùng Storage.
+      // Firebase chính: đăng nhập Google, dữ liệu người dùng, đồng bộ realtime, lượt online, thông báo, lượt xem truyện.
       apiKey: "AIzaSyBMJK0dbtZ_Ko_9b3nrxkaev3Tle0XAK1o",
       authDomain: "online1-557e7.firebaseapp.com",
       databaseURL: "https://online1-557e7-default-rtdb.firebaseio.com",
       projectId: "online1-557e7",
+      storageBucket: "online1-557e7.firebasestorage.app",
       messagingSenderId: "359900501760",
       appId: "1:359900501760:web:6c324577aab3a38d6a05e5"
     };
     const storyContentFirebaseConfig = {
-      // Firebase nội dung truyện: lưu metadata truyện + link ảnh + link TXT chương. Không dùng Storage.
+      // Firebase nội dung truyện: lưu metadata truyện + link ảnh + link TXT chương.
       apiKey: "AIzaSyDKD07pnj003DCalC71hshVdnnz79yp6Rk",
       authDomain: "online3-47f27.firebaseapp.com",
       projectId: "online3-47f27",
+      storageBucket: "online3-47f27.firebasestorage.app",
       messagingSenderId: "1032529429666",
       appId: "1:1032529429666:web:d855322c32e7247779c3fb"
     };
@@ -6470,7 +6472,7 @@
     let app, auth, db, rtdb, storyContentApp, storyContentDb, storyContentAuth;
 
     // === Modular-like wrappers (để giữ nguyên code phía dưới) ===
-    let GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut, serverTimestamp;
+    let GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, serverTimestamp;
     let getFirestore, doc, setDoc, onSnapshot, collection, getDocs;
     let getDatabase, ref, set, onDisconnect, onValue, runTransaction;
     let push, query, orderByChild, limitToLast, onChildAdded;
@@ -7496,8 +7498,6 @@ function normalizeUserState(raw){
         // Auth wrappers
         GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
         signInWithPopup = (authObj, provider) => authObj.signInWithPopup(provider);
-        signInWithRedirect = (authObj, provider) => authObj.signInWithRedirect(provider);
-        getRedirectResult = (authObj) => authObj.getRedirectResult();
         onAuthStateChanged = (authObj, cb) => authObj.onAuthStateChanged(cb);
         signOut = (authObj) => authObj.signOut();
 
@@ -17705,105 +17705,22 @@ Hồi chiêu: ${fmtCooldownSeconds(BOSS_COOLDOWN_MS)} giây`,
       location.hash = "#/vip";
     });
 
-    function isGoogleAuthSupportedContext(){
-      return /^https?:$/i.test(location.protocol);
-    }
-
-    function shouldUseRedirectForGoogleLogin(){
-      try{
-        const ua = navigator.userAgent || "";
-        const isEmbedded = window.self !== window.top;
-        const isMobileUA = /Android|iPhone|iPad|iPod|Mobile|wv|FBAN|FBAV|Instagram|Zalo/i.test(ua);
-        return isEmbedded || isMobileUA || window.matchMedia("(max-width: 900px)").matches;
-      }catch(_){
-        return true;
-      }
-    }
-
-    function explainGoogleAuthError(err){
-      const code = err?.code || "unknown";
-      const map = {
-        "auth/popup-blocked": "Popup đăng nhập bị chặn. Trên điện thoại nên dùng redirect thay vì popup.",
-        "auth/popup-closed-by-user": "Bạn đã đóng cửa sổ đăng nhập trước khi hoàn tất.",
-        "auth/cancelled-popup-request": "Có nhiều yêu cầu đăng nhập cùng lúc. Hãy bấm lại 1 lần.",
-        "auth/unauthorized-domain": `Domain <strong>${esc(location.hostname || location.protocol || "unknown")}</strong> chưa được thêm trong Firebase Authentication → Settings → Authorized domains.`,
-        "auth/operation-not-allowed": "Trong Firebase Authentication, phương thức Google Sign-In đang chưa được bật.",
-        "auth/network-request-failed": "Lỗi mạng hoặc trình duyệt chặn cookie bên thứ ba / popup.",
-        "auth/internal-error": "Lỗi nội bộ từ Firebase Auth. Thường gặp khi chạy web bằng file:// hoặc content://.",
-        "auth/web-storage-unsupported": "Trình duyệt hiện tại không hỗ trợ storage cần thiết cho đăng nhập.",
-        "auth/argument-error": "Cấu hình lời gọi đăng nhập chưa hợp lệ."
-      };
-      return map[code] || `Đăng nhập lỗi: <strong>${esc(code)}</strong>`;
-    }
-
-    async function finishGoogleLogin(result){
-      try{ await syncStoryContentAuthFromPrimaryResult(result); }catch(_){}
-      showAccountInlineNote("Đăng nhập thành công. Dữ liệu theo dõi / lịch sử đọc sẽ tự đồng bộ.", "info");
-      closeAccountMenu();
-      toast("Đăng nhập thành công");
-    }
-
-    async function handleGoogleRedirectResultOnce(){
-      if (!ENABLE_FIREBASE || !auth || !getRedirectResult) return;
-      try{
-        const result = await getRedirectResult(auth);
-        if (result?.user){
-          await finishGoogleLogin(result);
-        }
-      }catch(err){
-        console.error("getRedirectResult error", err);
-        const msg = explainGoogleAuthError(err);
-        showAccountInlineNote(msg, "warn");
-        toast("Đăng nhập thất bại");
-      }
-    }
-
-    handleGoogleRedirectResultOnce();
-
     btnLogin.addEventListener("click", async () => {
-      if (!ENABLE_FIREBASE || !auth){
-        toast("Firebase Auth chưa sẵn sàng.");
+      if (!ENABLE_FIREBASE){
+        toast("Hãy bật ENABLE_FIREBASE = true (Firebase chỉ dùng cho user sync / lượt xem / online)");
         return;
       }
-      if (!isGoogleAuthSupportedContext()){
-        const proto = location.protocol || "unknown";
-        const msg = `Google đăng nhập chỉ nên chạy trên HTTP/HTTPS. Hiện tại web đang mở bằng <strong>${esc(proto)}</strong>. Hãy mở bằng link GitHub Pages / domain HTTPS.`;
-        showAccountInlineNote(msg, "warn");
-        toast("Hãy mở web bằng link HTTPS");
-        return;
-      }
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: "select_account" });
-
       try{
-        if (shouldUseRedirectForGoogleLogin() && signInWithRedirect){
-          showAccountInlineNote("Đang chuyển sang Google để đăng nhập...", "info");
-          await signInWithRedirect(auth, provider);
-          return;
-        }
-
+        const provider = new GoogleAuthProvider();
         const result = await signInWithPopup(auth, provider);
-        await finishGoogleLogin(result);
+        syncStoryContentAuthFromPrimaryResult(result).catch(()=>{});
+        showAccountInlineNote("Đăng nhập thành công. Dữ liệu theo dõi / lịch sử đọc sẽ tự đồng bộ.", "info");
+        closeAccountMenu();
+        toast("Đăng nhập thành công");
       }catch(err){
         console.error(err);
         const code = err?.code || "unknown";
-
-        if ((code === "auth/popup-blocked" || code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") && signInWithRedirect){
-          try{
-            showAccountInlineNote("Popup bị chặn, đang chuyển sang đăng nhập kiểu redirect...", "warn");
-            await signInWithRedirect(auth, provider);
-            return;
-          }catch(err2){
-            console.error("redirect login failed", err2);
-            const msg2 = explainGoogleAuthError(err2);
-            showAccountInlineNote(msg2, "warn");
-            toast("Đăng nhập thất bại");
-            return;
-          }
-        }
-
-        const msg = explainGoogleAuthError(err);
-        showAccountInlineNote(msg, "warn");
+        showAccountInlineNote(`Đăng nhập lỗi: <strong>${esc(code)}</strong>`, "warn");
         toast("Đăng nhập thất bại");
       }
     });
