@@ -955,80 +955,6 @@
     .gamepop.win .gp-result{color:#3cffb8; text-shadow:0 0 18px rgba(60,255,184,.25)}
     .gamepop.lose .gp-result{color:#ff5c7a; text-shadow:0 0 18px rgba(255,92,122,.25)}
     .pf-mini-btn.loading{opacity:.75; pointer-events:none}
-    .gamepop.attacking .gp-result{
-      color:#ffd36d;
-      text-shadow:0 0 18px rgba(255,211,109,.28);
-      animation:gpPulse .9s ease-in-out infinite;
-    }
-    .gamepop.attacking.boss-mode .gp-result{
-      color:#ff9e7a;
-      text-shadow:0 0 18px rgba(255,120,80,.28);
-    }
-    .gamepop.attacking .gp-ic{animation:gpShake .55s linear infinite}
-    .gamepop .gp-battle{margin-top:10px}
-    .gamepop .gp-battle[hidden]{display:none}
-    .gamepop .gp-timer{
-      text-align:center;
-      font-weight:1000;
-      font-size:13px;
-      letter-spacing:.4px;
-      color:#ffe7a2;
-    }
-    .gamepop .gp-progress{
-      position:relative;
-      margin-top:8px;
-      height:12px;
-      border-radius:999px;
-      overflow:hidden;
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,.02);
-    }
-    .gamepop .gp-progress > i{
-      position:absolute; left:0; top:0; bottom:0;
-      width:0%;
-      border-radius:inherit;
-      background:linear-gradient(90deg, rgba(255,211,109,.95), rgba(255,110,75,.98));
-      box-shadow:0 0 18px rgba(255,170,92,.28);
-      transition:width .22s linear;
-    }
-    .gamepop.boss-mode .gp-progress > i{
-      background:linear-gradient(90deg, rgba(255,138,101,.95), rgba(255,74,110,.98));
-      box-shadow:0 0 18px rgba(255,94,98,.28);
-    }
-    .gamepop .gp-fx{
-      margin-top:10px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:14px;
-      min-height:26px;
-      font-size:18px;
-      filter:drop-shadow(0 8px 18px rgba(255,160,84,.22));
-    }
-    .gamepop .gp-fx .s{
-      display:inline-block;
-      animation:gpFloat .8s ease-in-out infinite alternate;
-      transform-origin:center;
-    }
-    .gamepop.attacking .gp-actions .pf-mini-btn,
-    .gamepop.attacking .gp-x{
-      opacity:.45;
-      pointer-events:none;
-    }
-    @keyframes gpPulse{
-      0%,100%{transform:scale(1)}
-      50%{transform:scale(1.04)}
-    }
-    @keyframes gpShake{
-      0%,100%{transform:translateX(0)}
-      25%{transform:translateX(-1px) rotate(-3deg)}
-      75%{transform:translateX(1px) rotate(3deg)}
-    }
-    @keyframes gpFloat{
-      0%{transform:translateY(2px) scale(.95); opacity:.72}
-      100%{transform:translateY(-4px) scale(1.08); opacity:1}
-    }
 
     .muted{color:var(--muted)}
 
@@ -6298,13 +6224,6 @@
     <div class="gp-sub" id="gamePopSub">Đang chuẩn bị giao chiến…</div>
     <div class="gp-result" id="gamePopResult"></div>
     <div class="gp-delta" id="gamePopDelta"></div>
-    <div class="gp-battle" id="gamePopBattle" hidden>
-      <div class="gp-timer" id="gamePopTimer">00:00</div>
-      <div class="gp-progress"><i id="gamePopBattleFill" style="width:0%"></i></div>
-      <div class="gp-fx" id="gamePopFx" aria-hidden="true">
-        <span class="s">⚡</span><span class="s">⚔️</span><span class="s">⚡</span>
-      </div>
-    </div>
     <div class="gp-stats" id="gamePopStats">
       <div class="gp-stat">
         <div class="k" id="gamePopPtsLabel">Điểm PVP</div>
@@ -6444,24 +6363,23 @@
        1) Firebase config
        ============================ */
     const firebaseConfig = {
-      // Firebase chính: đăng nhập Google + đồng bộ dữ liệu người dùng + realtime DB (online/view/thông báo...).
-      apiKey: "AIzaSyBMJK0dbtZ_Ko_9b3nrxkaev3Tle0XAK1o",
-      authDomain: "online1-557e7.firebaseapp.com",
-      databaseURL: "https://online1-557e7-default-rtdb.firebaseio.com",
-      projectId: "online1-557e7",
-      storageBucket: "online1-557e7.firebasestorage.app",
-      messagingSenderId: "359900501760",
-      appId: "1:359900501760:web:6c324577aab3a38d6a05e5"
+      // Firebase chính: đăng nhập Google, đồng bộ dữ liệu người dùng, lượt xem, lượt online.
+      apiKey: "AIzaSyDhq66ZZzNp9_-FnY7T-2gxNlrUDxeDPrU",
+      authDomain: "truyen-b3470.firebaseapp.com",
+      databaseURL: "https://truyen-b3470-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "truyen-b3470",
+      storageBucket: "truyen-b3470.firebasestorage.app",
+      messagingSenderId: "93210370757",
+      appId: "1:93210370757:web:87828b963906ac862f46ac"
     };
     const storyContentFirebaseConfig = {
-      // Firebase nội dung truyện: lưu metadata truyện + link ảnh bìa + link TXT chương.
-      // Project này chỉ dùng app phụ để tách riêng dữ liệu nội dung khỏi dữ liệu tài khoản/người dùng.
-      apiKey: "AIzaSyCT5umDSqZPxmgjOjyUNfaxaWxb6dCXcZw",
-      authDomain: "khotruyen8.firebaseapp.com",
-      projectId: "khotruyen8",
-      storageBucket: "khotruyen8.firebasestorage.app",
-      messagingSenderId: "1040632894174",
-      appId: "1:1040632894174:web:f02623dbe83ba88e6f684f"
+      // Firebase nội dung truyện: lưu metadata truyện + link ảnh + link TXT chương.
+      apiKey: "AIzaSyDKD07pnj003DCalC71hshVdnnz79yp6Rk",
+      authDomain: "online3-47f27.firebaseapp.com",
+      projectId: "online3-47f27",
+      storageBucket: "online3-47f27.firebasestorage.app",
+      messagingSenderId: "1032529429666",
+      appId: "1:1032529429666:web:d855322c32e7247779c3fb"
     };
     const STORY_CONTENT_COLLECTION = "stories_public";
     let ENABLE_FIREBASE = true;
@@ -7067,30 +6985,13 @@ function bossRaidOpenAttack(){
 }
 
 function bossRaidAttack(){
-  const remainMs = getBattleCooldownRemain("boss");
-  const logEl = document.getElementById("bossHitLog");
-  const showLog = (msg) => {
-    if (!logEl) return;
-    logEl.style.display = "block";
-    logEl.textContent = msg;
-  };
-
-  if (remainMs > 0){
-    const sec = fmtCooldownSeconds(remainMs);
-    toast(`Bạn còn ${sec} giây nữa mới được tấn công boss.`);
-    showLog(`⏳ Bạn còn ${sec} giây nữa mới được tấn công boss.`);
-    return;
-  }
-  if (__gamePopBattleState){
-    toast("Bạn đang trong trận chiến khác. Hãy chờ hoàn tất.");
-    return;
-  }
+  const now = Date.now();
+  if (now < __bossRaidAttackCooldown) return;
+  __bossRaidAttackCooldown = now + 180; // chống spam quá nhanh
 
   const btn = document.querySelector('[data-boss-hit="1"]');
   if (btn){
-    btn.classList.add("pressed", "loading");
-    btn.disabled = true;
-    btn.textContent = "⏳ Đang tấn công...";
+    btn.classList.add("pressed");
     setTimeout(() => { try{ btn.classList.remove("pressed"); }catch(_){ } }, 140);
   }
 
@@ -7098,119 +6999,86 @@ function bossRaidAttack(){
   const maxHP = Math.max(1, Number(st.maxHP || 1) || 1);
   const hp = Math.max(0, Math.min(maxHP, Number(st.hp || 0) || 0));
 
+  const logEl = document.getElementById("bossHitLog");
+  const showLog = (msg) => {
+    if (!logEl) return;
+    logEl.style.display = "block";
+    logEl.textContent = msg;
+  };
+
   if (hp <= 0){
-    if (btn){
-      btn.classList.remove("loading");
-      btn.disabled = false;
-      btn.textContent = "☠️ Boss đã chết";
-    }
     toast("☠️ Boss đã chết!");
     showLog("Boss đã chết. Hãy chờ boss hồi sinh.");
     return;
   }
 
-  setBattleCooldown("boss", BOSS_COOLDOWN_MS);
-
+  // Dame theo lực chiến: dame = lực chiến / 2 (làm tròn xuống) — áp dụng cho mọi mức lực chiến
   const myPow = calcCombatPowerFromState();
   const dmg = calcDamageFromPower(myPow);
+
   const me = __bossMeIdentity();
-  const bossPow = Math.max(0, Number(st.power || 0) || 0);
-  const bossDmg = calcDamageFromPower(bossPow);
 
-  showLog("Bạn lao lên tấn công boss...");
-  bossBattleStart(st.name || "Boss", { myPow, bossPow, myDmg: dmg, bossDmg }, BOSS_BATTLE_ANIM_MS, {
-    title: "Boss • Gây dame",
-    ptsLabel: "Tổng dame",
-    streakLabel: "Boss đã hạ",
-    attackLabel: "Boss đang chịu đòn"
-  });
+  // update UI quickly (optimistic) for local feel
+  const newHpLocal = Math.max(0, hp - dmg);
+  __bossRaidState = {...st, hp: newHpLocal, updatedAt: Date.now()};
+  __bossRaidContrib[me.uid] = {
+    name: me.name,
+    avatar: me.avatar,
+    dmg: Math.max(0, Number(__bossRaidContrib?.[me.uid]?.dmg || 0) || 0) + dmg
+  };
+  __bossSaveLocal();
+  __bossUpdateUI();
+  __bossRenderLeaderboard();
 
-  setTimeout(() => {
-    const newHpLocal = Math.max(0, hp - dmg);
-    const totalDmgAfter = Math.max(0, Number(__bossRaidContrib?.[me.uid]?.dmg || 0) || 0) + dmg;
+  showLog(newHpLocal > 0
+    ? `Bạn gây ${fmtN(dmg)} dame (LC ${fmtN(myPow)}) • Boss còn ${fmtN(newHpLocal)} HP`
+    : `Bạn gây ${fmtN(dmg)} dame (LC ${fmtN(myPow)}) • ☠️ Boss đã chết!`);
+  try{ if (navigator.vibrate) navigator.vibrate([18,22,18]); }catch(_){}
 
-    __bossRaidState = {...st, hp: newHpLocal, updatedAt: Date.now()};
-    __bossRaidContrib[me.uid] = {
-      name: me.name,
-      avatar: me.avatar,
-      dmg: totalDmgAfter
-    };
-    __bossSaveLocal();
-    __bossUpdateUI();
-    __bossRenderLeaderboard();
+  if (newHpLocal <= 0){
+    toast("☠️ Boss đã chết!");
+  }
 
-    showLog(newHpLocal > 0
-      ? `Bạn gây ${fmtN(dmg)} dame (LC ${fmtN(myPow)}) • Boss còn ${fmtN(newHpLocal)} HP`
-      : `Bạn gây ${fmtN(dmg)} dame (LC ${fmtN(myPow)}) • ☠️ Boss đã chết!`);
-    try{ if (navigator.vibrate) navigator.vibrate([18,22,18]); }catch(_){ }
+  // sync firebase if available
+  if (FIREBASE_OK && rtdb && ref && runTransaction){
+    try{
+      const stateRef = ref(rtdb, BOSS_RAID_PATH + "/current");
+      runTransaction(stateRef, (cur) => {
+        const def = BOSS_RAID_DEFAULT;
 
-    if (newHpLocal <= 0){
-      toast("☠️ Boss đã chết!");
+        // normalize current state (cur có thể null / number / object)
+        let st;
+        if (cur == null){
+          st = { ...def };
+        }else if (typeof cur === "number"){
+          const hp0 = Math.max(0, Math.min(def.maxHP, Math.floor(cur)));
+          st = { ...def, hp: hp0 };
+        }else if (cur && typeof cur === "object"){
+          const maxHP = Math.max(1, Number(cur.maxHP ?? def.maxHP) || def.maxHP);
+          const hpRaw = Number(cur.hp ?? cur.HP ?? maxHP);
+          const hp0 = Math.max(0, Math.min(maxHP, hpRaw || 0));
+          st = { ...def, ...cur, maxHP, hp: hp0 };
+        }else{
+          st = { ...def };
+        }
+
+        const newHp = Math.max(0, (Number(st.hp||0)||0) - dmg);
+        return { ...st, hp: newHp, updatedAt: Date.now() };
+      });
+    }catch(e){
+      console.warn("boss hp tx fail", e);
     }
-
-    bossBattleResult({
-      win: newHpLocal <= 0,
-      mode: newHpLocal <= 0 ? "win" : "neutral",
-      bossName: st.name || "Boss",
-      resultText: newHpLocal <= 0 ? "HẠ GỤC" : "ĐÃ GÂY DAME",
-      deltaText: newHpLocal > 0
-        ? `+${fmtN(dmg)} dame
-Boss còn: ${fmtN(newHpLocal)} HP
-Hồi chiêu: ${fmtCooldownSeconds(BOSS_COOLDOWN_MS)} giây`
-        : `+${fmtN(dmg)} dame
-☠️ Boss đã gục!
-Hồi chiêu: ${fmtCooldownSeconds(BOSS_COOLDOWN_MS)} giây`,
-      pts: totalDmgAfter,
-      kills: Math.max(0, Number(safeGetLS("boss_kills", "0") || 0)),
-      ptsLabel: "Tổng dame",
-      streakLabel: "Boss đã hạ",
-      title: "Boss • Kết quả gây dame"
-    });
-
-    if (btn){
-      btn.classList.remove("loading");
-      btn.disabled = false;
-      btn.textContent = newHpLocal <= 0 ? "☠️ Boss đã chết" : "⚔️ Chiến đấu";
+    try{
+      const meRef = ref(rtdb, BOSS_RAID_PATH + "/contrib/" + me.uid);
+      runTransaction(meRef, (cur) => {
+        const obj = (cur && typeof cur === "object") ? cur : {};
+        const curDmg = Math.max(0, Number(obj.dmg || 0) || 0);
+        return { name: me.name, avatar: me.avatar, dmg: curDmg + dmg, updatedAt: Date.now() };
+      });
+    }catch(e){
+      console.warn("boss contrib tx fail", e);
     }
-    try{ __bossUpdateUI(); }catch(_){ }
-
-    if (FIREBASE_OK && rtdb && ref && runTransaction){
-      try{
-        const stateRef = ref(rtdb, BOSS_RAID_PATH + "/current");
-        runTransaction(stateRef, (cur) => {
-          const def = BOSS_RAID_DEFAULT;
-          let st;
-          if (cur == null){
-            st = { ...def };
-          }else if (typeof cur === "number"){
-            const hp0 = Math.max(0, Math.min(def.maxHP, Math.floor(cur)));
-            st = { ...def, hp: hp0 };
-          }else if (cur && typeof cur === "object"){
-            const maxHP = Math.max(1, Number(cur.maxHP ?? def.maxHP) || def.maxHP);
-            const hpRaw = Number(cur.hp ?? cur.HP ?? maxHP);
-            const hp0 = Math.max(0, Math.min(maxHP, hpRaw || 0));
-            st = { ...def, ...cur, maxHP, hp: hp0 };
-          }else{
-            st = { ...def };
-          }
-          const newHp = Math.max(0, (Number(st.hp||0)||0) - dmg);
-          return { ...st, hp: newHp, updatedAt: Date.now() };
-        });
-      }catch(e){
-        console.warn("boss hp tx fail", e);
-      }
-      try{
-        const meRef = ref(rtdb, BOSS_RAID_PATH + "/contrib/" + me.uid);
-        runTransaction(meRef, (cur) => {
-          const obj = (cur && typeof cur === "object") ? cur : {};
-          const curDmg = Math.max(0, Number(obj.dmg || 0) || 0);
-          return { name: me.name, avatar: me.avatar, dmg: curDmg + dmg, updatedAt: Date.now() };
-        });
-      }catch(e){
-        console.warn("boss contrib tx fail", e);
-      }
-    }
-  }, BOSS_BATTLE_ANIM_MS);
+  }
 }
 
 
@@ -7505,11 +7373,11 @@ function normalizeUserState(raw){
     };
 
     const VIP_ADMIN_UIDS = [
-      // Có thể thêm UID admin thật ở đây nếu muốn khóa chặt hơn theo UID.
+      "PUT_ADMIN_UID_HERE"
     ];
 
     const VIP_ADMIN_EMAILS = [
-      "sumi22122005@gmail.com"
+      "admin@example.com"
     ];
 
     const VIP_REQUESTS_PATH = "community/vipZone/requests";
@@ -8497,9 +8365,6 @@ function normalizeUserState(raw){
     let userStateUnsub = null;
     let storyViewsUnsub = null;
     let storyViewsMap = {};
-    const STORY_VIEW_WINDOW_MS = 24 * 60 * 60 * 1000;
-    const GUEST_STORY_VIEW_CACHE_KEY = "guest_story_view_cache_v1";
-    const storyViewInflight = new Map();
     let presenceSessionId = null;
     let presenceStarted = false;
 
@@ -9265,9 +9130,8 @@ Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
       applyReaderTheme(readerState.theme);
       setReaderRate(readerState.rate);
 
-      // update history + last reading + unique story view (24h / tài khoản / truyện)
+      // update history + last reading
       markReadStory(storyId, readerState.chapter, { noRender: true, silent: true }).catch(_=>{});
-      registerStoryReadView(storyId, readerState.chapter).catch(err => console.warn("registerStoryReadView error", err));
 
       window.scrollTo({ top: 0, behavior: "auto" });
 
@@ -9455,116 +9319,23 @@ Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
     const gamePopStreak = document.getElementById("gamePopStreak");
     const gamePopOk = document.getElementById("gamePopOk");
     const gamePopX = document.getElementById("gamePopX");
-    const gamePopBattle = document.getElementById("gamePopBattle");
-    const gamePopTimer = document.getElementById("gamePopTimer");
-    const gamePopBattleFill = document.getElementById("gamePopBattleFill");
-    const gamePopFx = document.getElementById("gamePopFx");
-
-    const PVP_COOLDOWN_MS = 120000;
-    const BOSS_COOLDOWN_MS = 220000;
-    const PVP_BATTLE_ANIM_MS = 2600;
-    const BOSS_BATTLE_ANIM_MS = 3200;
-    let __gamePopBattleTicker = null;
-    let __gamePopBattleState = null;
-
-    function fmtBattleClock(ms){
-      const totalSec = Math.max(0, Math.ceil((Number(ms || 0) || 0) / 1000));
-      const mm = Math.floor(totalSec / 60);
-      const ss = totalSec % 60;
-      return String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0");
-    }
-    function fmtCooldownSeconds(ms){
-      return Math.max(1, Math.ceil((Number(ms || 0) || 0) / 1000));
-    }
-    function getBattleCooldownOwner(){
-      try{
-        if (currentUser && currentUser.uid) return "uid:" + String(currentUser.uid);
-      }catch(_){ }
-      return "guest:" + __getOrCreateGuestSeed();
-    }
-    function getBattleCooldownKey(kind){
-      return `battle_cd_${String(kind || "unknown")}_${getBattleCooldownOwner()}`;
-    }
-    function getBattleCooldownRemain(kind){
-      try{
-        const until = Number(safeGetLS(getBattleCooldownKey(kind), "0") || 0);
-        return Math.max(0, until - Date.now());
-      }catch(_){
-        return 0;
-      }
-    }
-    function setBattleCooldown(kind, durationMs){
-      try{
-        safeSetLS(getBattleCooldownKey(kind), String(Date.now() + Math.max(0, Number(durationMs || 0) || 0)));
-      }catch(_){ }
-    }
-    function setGamePopFx(type="pvp"){
-      if (!gamePopFx) return;
-      const frames = (type === "boss") ? ["🔥","⚔️","🐉"] : ["⚡","⚔️","⚡"];
-      gamePopFx.innerHTML = frames.map((x, i) => `<span class="s" style="animation-delay:${(i * 0.12).toFixed(2)}s">${x}</span>`).join("");
-    }
-    function stopGamePopBattlePhase(){
-      try{ if (__gamePopBattleTicker) clearInterval(__gamePopBattleTicker); }catch(_){ }
-      __gamePopBattleTicker = null;
-      __gamePopBattleState = null;
-      if (gamePopBattle) gamePopBattle.hidden = true;
-      if (gamePopBattleFill) gamePopBattleFill.style.width = "0%";
-      if (gamePopTimer) gamePopTimer.textContent = "";
-      if (gamePopEl) gamePopEl.classList.remove("attacking", "boss-mode", "pvp-mode");
-      if (gamePopOk){ gamePopOk.disabled = false; gamePopOk.textContent = "OK"; }
-      if (gamePopX) gamePopX.disabled = false;
-    }
-    function startGamePopBattlePhase({ type="pvp", durationMs=3000, label="Đang tấn công" } = {}){
-      stopGamePopBattlePhase();
-      const startedAt = Date.now();
-      __gamePopBattleState = { type, durationMs, startedAt, label };
-      if (gamePopBattle) gamePopBattle.hidden = false;
-      if (gamePopEl){
-        gamePopEl.classList.add("attacking", type === "boss" ? "boss-mode" : "pvp-mode");
-      }
-      if (gamePopOk){ gamePopOk.disabled = true; gamePopOk.textContent = "Đang tấn công..."; }
-      if (gamePopX) gamePopX.disabled = true;
-      setGamePopFx(type);
-      const frameLabels = (type === "boss")
-        ? ["ĐANG TẤN CÔNG", "ĐANG GÂY DAME", "BÙNG NỔ SÁT THƯƠNG"]
-        : ["ĐANG TẤN CÔNG", "ĐANG GIAO CHIẾN", "TRAO ĐỔI CHIÊU THỨC"];
-      const tick = () => {
-        const remain = Math.max(0, durationMs - (Date.now() - startedAt));
-        const pct = Math.max(0, Math.min(100, ((durationMs - remain) / Math.max(1, durationMs)) * 100));
-        if (gamePopBattleFill) gamePopBattleFill.style.width = pct.toFixed(2) + "%";
-        if (gamePopTimer) gamePopTimer.textContent = `${label} • ${fmtBattleClock(remain)}`;
-        if (gamePopDelta) gamePopDelta.textContent = `Thời gian còn lại: ${fmtBattleClock(remain)}`;
-        if (gamePopResult){
-          const idx = Math.floor((Date.now() / 500) % frameLabels.length);
-          gamePopResult.textContent = frameLabels[idx];
-        }
-        if (remain <= 0){
-          try{ clearInterval(__gamePopBattleTicker); }catch(_){ }
-          __gamePopBattleTicker = null;
-        }
-      };
-      tick();
-      __gamePopBattleTicker = setInterval(tick, 250);
-    }
 
     function openGamePop(){
       if (!gamePopEl || !gamePopBackdrop) return;
       gamePopBackdrop.classList.add("show");
       gamePopEl.classList.add("show");
       gamePopEl.setAttribute("aria-hidden", "false");
-      try{ document.body.style.overflow = "hidden"; }catch(_){ }
+      try{ document.body.style.overflow = "hidden"; }catch(_){}
     }
-    function closeGamePop(force=false){
+    function closeGamePop(){
       if (!gamePopEl || !gamePopBackdrop) return;
-      if (__gamePopBattleState && !force) return;
       try{ if (typeof pvpBattleResult === "function") clearTimeout(pvpBattleResult._t); }catch(_){ }
       try{ if (typeof bossBattleResult === "function") clearTimeout(bossBattleResult._t); }catch(_){ }
-      stopGamePopBattlePhase();
       gamePopBackdrop.classList.remove("show");
       gamePopEl.classList.remove("show");
       gamePopEl.classList.remove("win","lose");
       gamePopEl.setAttribute("aria-hidden", "true");
-      try{ document.body.style.overflow = ""; }catch(_){ }
+      try{ document.body.style.overflow = ""; }catch(_){}
     }
     function setGamePopState({ mode="neutral", icon=null, title="PvP", sub="", result="", delta="", pts=null, streak=null, ptsLabel=null, streakLabel=null } = {}){
       if (!gamePopEl) return;
@@ -9585,10 +9356,10 @@ Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
     function vibe(ms){
       try{
         if (navigator.vibrate) navigator.vibrate(ms);
-      }catch(_){ }
+      }catch(_){}
     }
-    function pvpBattleStart(enemyName="Đối thủ", info=null, durationMs=PVP_BATTLE_ANIM_MS){
-      const lines = [`Đang giao chiến với ${enemyName}…`, `Thời gian tấn công: ${fmtBattleClock(durationMs)}`];
+    function pvpBattleStart(enemyName="Đối thủ", info=null){
+      const lines = [`Đang giao chiến với ${enemyName}…`];
       if (info && typeof info === "object"){
         const myPow = Math.max(0, Number(info.myPow || 0) || 0);
         const enemyPow = Math.max(0, Number(info.enemyPow || 0) || 0);
@@ -9608,12 +9379,10 @@ Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
         streakLabel:"Chuỗi thắng"
       });
       openGamePop();
-      startGamePopBattlePhase({ type:"pvp", durationMs, label:"PvP đang tấn công" });
       vibe(15);
     }
 
     function pvpBattleResult({ win=false, enemyName="Đối thủ", deltaText="", pts=0, streak=0 } = {}){
-      stopGamePopBattlePhase();
       setGamePopState({
         mode: win ? "win" : "lose",
         icon:"⚔️",
@@ -9627,12 +9396,12 @@ Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
       });
       vibe(win ? [20,30,20] : [40,40]);
       clearTimeout(pvpBattleResult._t);
-      pvpBattleResult._t = setTimeout(()=>closeGamePop(true), 10000);
+      // Tự đóng sau 10 giây (hoặc người dùng tự đóng bằng OK/✕)
+      pvpBattleResult._t = setTimeout(()=>closeGamePop(), 10000);
     }
 
-    function bossBattleStart(bossName="Boss", info=null, durationMs=BOSS_BATTLE_ANIM_MS, labels=null){
-      const extra = (labels && typeof labels === "object") ? labels : {};
-      const lines = [`Đang giao chiến với ${bossName}…`, `Thời gian tấn công: ${fmtBattleClock(durationMs)}`];
+    function bossBattleStart(bossName="Boss", info=null){
+      const lines = [`Đang giao chiến với ${bossName}…`];
       if (info && typeof info === "object"){
         const myPow = Math.max(0, Number(info.myPow || 0) || 0);
         const bossPow = Math.max(0, Number(info.bossPow || info.enemyPow || 0) || 0);
@@ -9644,40 +9413,40 @@ Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
       setGamePopState({
         mode:"neutral",
         icon:"🐉",
-        title: extra.title || "Boss • Săn boss",
+        title:"Boss • Săn boss",
         sub: lines.join("\n"),
         result:"🔥🐉🔥",
         delta:"",
-        ptsLabel: extra.ptsLabel || "Điểm Boss",
-        streakLabel: extra.streakLabel || "Boss đã hạ"
+        ptsLabel:"Điểm Boss",
+        streakLabel:"Boss đã hạ"
       });
       openGamePop();
-      startGamePopBattlePhase({ type:"boss", durationMs, label: extra.attackLabel || "Boss đang tấn công" });
       vibe(15);
     }
 
-    function bossBattleResult({ win=false, bossName="Boss", deltaText="", pts=0, kills=0, resultText=null, mode=null, ptsLabel="Điểm Boss", streakLabel="Boss đã hạ", title="Boss • Kết quả" } = {}){
-      stopGamePopBattlePhase();
+    function bossBattleResult({ win=false, bossName="Boss", deltaText="", pts=0, kills=0 } = {}){
       setGamePopState({
-        mode: mode || (win ? "win" : "lose"),
+        mode: win ? "win" : "lose",
         icon:"🐉",
-        title,
+        title:"Boss • Kết quả",
         sub:`Boss: ${bossName}`,
-        result: resultText || (win ? "HẠ GỤC" : "THẤT BẠI"),
+        result: win ? "HẠ GỤC" : "THẤT BẠI",
         delta: (deltaText ? (String(deltaText) + "\n\n(Thông báo tự tắt sau 10 giây • hoặc bấm OK/✕ để đóng)") : "(Thông báo tự tắt sau 10 giây • hoặc bấm OK/✕ để đóng)"),
         pts,
         streak: kills,
-        ptsLabel,
-        streakLabel
+        ptsLabel:"Điểm Boss",
+        streakLabel:"Boss đã hạ"
       });
       vibe(win ? [20,30,20] : [40,40]);
       clearTimeout(bossBattleResult._t);
-      bossBattleResult._t = setTimeout(()=>closeGamePop(true), 10000);
+      // Tự đóng sau 10 giây (hoặc người dùng tự đóng bằng OK/✕)
+      bossBattleResult._t = setTimeout(()=>closeGamePop(), 10000);
     }
 
-    if (gamePopBackdrop) gamePopBackdrop.addEventListener("click", ()=>closeGamePop(false));
-    if (gamePopOk) gamePopOk.addEventListener("click", ()=>closeGamePop(false));
-    if (gamePopX) gamePopX.addEventListener("click", ()=>closeGamePop(false));
+    // Close handlers
+    if (gamePopBackdrop) gamePopBackdrop.addEventListener("click", closeGamePop);
+    if (gamePopOk) gamePopOk.addEventListener("click", closeGamePop);
+    if (gamePopX) gamePopX.addEventListener("click", closeGamePop);
 
     function esc(s=""){
       return String(s)
@@ -11094,65 +10863,6 @@ function getReadingStories(){
         renderAll();
         if ((location.hash || "").startsWith("#/story/")) renderRoute();
       }
-    }
-
-    function sanitizeRtdbKey(input = ""){
-      return String(input || "")
-        .trim()
-        .replace(/[.#$\[\]\/\u0000-\u001F\u007F]/g, "_")
-        .slice(0, 180);
-    }
-
-    function loadGuestStoryViewCache(){
-      try{
-        const raw = safeGetLS(GUEST_STORY_VIEW_CACHE_KEY, "");
-        if (!raw) return {};
-        const parsed = JSON.parse(raw);
-        return (parsed && typeof parsed === "object") ? parsed : {};
-      }catch(_){
-        return {};
-      }
-    }
-
-    function saveGuestStoryViewCache(map){
-      try{
-        const now = Date.now();
-        const src = (map && typeof map === "object") ? map : {};
-        const cleaned = {};
-        Object.entries(src).forEach(([key, val]) => {
-          const expireAt = Number(val || 0);
-          if (expireAt > now && key) cleaned[String(key)] = expireAt;
-        });
-        safeSetLS(GUEST_STORY_VIEW_CACHE_KEY, JSON.stringify(cleaned));
-        return cleaned;
-      }catch(_){
-        return {};
-      }
-    }
-
-    function getStoryViewActor(){
-      const uid = String(currentUser?.uid || "").trim();
-      if (uid){
-        return { type: "uid", raw: uid, key: sanitizeRtdbKey(uid) || uid };
-      }
-      const sid = String(getSessionId() || ("guest_" + Date.now())).trim();
-      return { type: "guest", raw: sid, key: sanitizeRtdbKey("guest_" + sid) || ("guest_" + sid) };
-    }
-
-    function isGuestStoryViewLocked(storyId, now = Date.now()){
-      const key = String(storyId || "").trim();
-      if (!key) return false;
-      const cache = loadGuestStoryViewCache();
-      const expireAt = Number(cache[key] || 0);
-      return expireAt > now;
-    }
-
-    function rememberGuestStoryViewLock(storyId, expireAt){
-      const key = String(storyId || "").trim();
-      if (!key) return;
-      const cache = loadGuestStoryViewCache();
-      cache[key] = Number(expireAt || 0);
-      saveGuestStoryViewCache(cache);
     }
 
     function hideAllPages(){
@@ -12891,6 +12601,7 @@ function goToSearchWithGenreFromMenu(genreLabel){
       setHomeVisible(false);
       hideRouteHeader();
       // (Ẩn route-header trên trang truyện để giao diện sạch hơn)
+      bumpStoryView(storyId).catch(err => console.warn("bumpStoryView error", err));
 
       storyPageCover.src = getCoverSrc(s);
       storyPageCover.alt = s.title || "";
@@ -15047,7 +14758,8 @@ rankPrevBtn?.addEventListener("click", () => {
       if (ok){
         /* không hiện toast "Đã lưu vào lịch sử đọc" */
       }
-      // Lượt xem được tính khi người dùng mở chương để đọc/nghe (ở renderReaderPage), không cộng tại đây.
+      // Đồng bộ lượt xem dùng Firebase RTDB, không ảnh hưởng dữ liệu truyện trong HTML.
+      bumpStoryView(storyId).catch(err => console.warn("bumpStoryView error", err));
     }
 
     
@@ -16481,112 +16193,23 @@ if (searchEl){
       }
     }
 
-    async function registerStoryReadView(storyId, chapter){
-      if (!ENABLE_FIREBASE || !rtdb || !storyId || !runTransaction) return false;
-      const normalizedStoryId = String(storyId || "").trim();
-      if (!normalizedStoryId) return false;
-
-      const actor = getStoryViewActor();
-      const inflightKey = `${actor.key}__${normalizedStoryId}`;
-      if (storyViewInflight.has(inflightKey)){
-        return await storyViewInflight.get(inflightKey);
-      }
-
-      const task = (async () => {
-        const now = Date.now();
-        const storyViewKey = `story_view_lock_${normalizedStoryId}`;
-        try{
-          const lastLocalTs = Number(sessionStorage.getItem(storyViewKey) || "0");
-          if ((now - lastLocalTs) < 2500) return false;
-          sessionStorage.setItem(storyViewKey, String(now));
-        }catch(_){}
-
-        if (!currentUser && isGuestStoryViewLocked(normalizedStoryId, now)){
-          return false;
-        }
-
-        try{
-          const chapterNo = Math.max(1, Number(chapter || 1) || 1);
-          const token = `view_${now.toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
-          const receiptRef = ref(rtdb, `stats/storyViewReceipts/${normalizedStoryId}/${actor.key}`);
-
-          const txResult = await runTransaction(receiptRef, (current) => {
-            const cur = (current && typeof current === "object") ? current : {};
-            const lastCountedAt = Number(cur.lastCountedAt || 0);
-            const expireAt = Number(cur.expireAt || 0);
-            const lockUntil = expireAt || (lastCountedAt ? (lastCountedAt + STORY_VIEW_WINDOW_MS) : 0);
-            if (lockUntil > now){
-              return;
-            }
-            return {
-              token,
-              actorType: actor.type,
-              actorId: actor.raw,
-              lastChapter: chapterNo,
-              lastCountedAt: now,
-              expireAt: now + STORY_VIEW_WINDOW_MS
-            };
-          });
-
-          const committed = !!txResult?.committed;
-          const receiptVal = txResult?.snapshot?.val ? txResult.snapshot.val() : null;
-          const expireAt = Number(receiptVal?.expireAt || 0);
-
-          if (!committed || !receiptVal || String(receiptVal.token || "") !== token){
-            if (!currentUser && expireAt > now){
-              rememberGuestStoryViewLock(normalizedStoryId, expireAt);
-            }
-            return false;
-          }
-
-          const countRef = ref(rtdb, `stats/storyViews/${normalizedStoryId}/count`);
-          await runTransaction(countRef, (current) => {
-            const n = Number(current || 0);
-            return Number.isFinite(n) ? (n + 1) : 1;
-          });
-
-          try{
-            const metaRef = ref(rtdb, `stats/storyViews/${normalizedStoryId}/meta`);
-            await set(metaRef, {
-              storyId: normalizedStoryId,
-              lastChapter: chapterNo,
-              lastCountedAt: now,
-              actorType: actor.type,
-              updatedByUid: currentUser?.uid || null
-            });
-          }catch(_){}
-
-          if (!currentUser){
-            rememberGuestStoryViewLock(normalizedStoryId, now + STORY_VIEW_WINDOW_MS);
-          }
-
-          try{
-            const raw = storyViewsMap?.[normalizedStoryId];
-            const currentCount = typeof raw === "number"
-              ? Number(raw || 0)
-              : Number((raw && typeof raw === "object" ? raw.count : 0) || 0);
-            storyViewsMap = {
-              ...(storyViewsMap || {}),
-              [normalizedStoryId]: {
-                ...(raw && typeof raw === "object" ? raw : {}),
-                count: Math.max(0, currentCount) + 1
-              }
-            };
-            applyRemoteViewMapToStories();
-          }catch(_){}
-
-          return true;
-        }catch(e){
-          console.warn("registerStoryReadView tx error", e);
-          return false;
-        }
-      })();
-
-      storyViewInflight.set(inflightKey, task);
+    async function bumpStoryView(storyId){
+      if (!ENABLE_FIREBASE || !rtdb || !storyId || !runTransaction) return;
       try{
-        return await task;
-      } finally {
-        storyViewInflight.delete(inflightKey);
+        const key = `story_view_ping_${storyId}`;
+        const now = Date.now();
+        const last = Number(sessionStorage.getItem(key) || "0");
+        // Chống tăng view lặp quá nhanh do render lại.
+        if (now - last < 45 * 1000) return;
+        sessionStorage.setItem(key, String(now));
+
+        const countRef = ref(rtdb, `stats/storyViews/${storyId}/count`);
+        await runTransaction(countRef, (current) => {
+          const n = Number(current || 0);
+          return Number.isFinite(n) ? (n + 1) : 1;
+        });
+      }catch(e){
+        console.warn("bumpStoryView tx error", e);
       }
     }
 
@@ -17102,10 +16725,6 @@ if (searchEl){
 
       const pvpChBtn = e.target.closest("[data-pvp-challenge]");
       if (pvpChBtn){
-        if (__gamePopBattleState){
-          toast("Bạn đang trong trận chiến khác. Hãy chờ hoàn tất.");
-          return;
-        }
         const bid = String(pvpChBtn.getAttribute("data-pvp-challenge") || "");
         if (!bid) return;
         const bots = ensurePvPBots(__pvpSeedBase(currentUser));
@@ -17121,28 +16740,24 @@ if (searchEl){
         const ep = Math.max(0, Number(enemy?.points || 0) || 0);
         const pp = Math.max(0, Number(pts || 0) || 0);
 
+        // Lực chiến => dame tấn công (PVP)
         const myPow = calcCombatPowerFromState();
         const myDmg = calcDamageFromPower(myPow);
 
         const enemyPow0 = Math.max(0, Math.floor(Number(enemy?.power || 0) || 0));
         const enemyPow = enemyPow0 > 0 ? enemyPow0 : calcBotPower({ id: enemy?.id, name: enemy?.name, points: ep });
         const enemyDmg = calcDamageFromPower(enemyPow);
-        try{ enemy.power = enemyPow; }catch(_){ }
+        try{ enemy.power = enemyPow; }catch(_){}
 
-        const powDiff = enemyPow - myPow;
+
+        // Điểm nhận/mất (cân theo chênh lệch lực chiến)
+        const powDiff = enemyPow - myPow; // >0 nếu đối thủ mạnh hơn
         const gain = Math.max(12, Math.min(95, Math.floor(28 + powDiff / 6000)));
         const lose = Math.max(10, Math.min(80, Math.floor(20 - powDiff / 9000)));
 
-        const pvpRemainMs = getBattleCooldownRemain("pvp");
-        if (pvpRemainMs > 0){
-          toast(`Bạn còn ${fmtCooldownSeconds(pvpRemainMs)} giây nữa mới được thách đấu lại.`);
-          return;
-        }
-        setBattleCooldown("pvp", PVP_COOLDOWN_MS);
-
-        const __oldPvpBtnText = pvpChBtn.textContent || "Thách đấu";
-        try{ pvpChBtn.classList.add("loading"); pvpChBtn.disabled = true; pvpChBtn.textContent = "⏳ Đang tấn công..."; }catch(_){ }
-        pvpBattleStart(enemy?.name || "đối thủ", { myPow, enemyPow, myDmg, enemyDmg }, PVP_BATTLE_ANIM_MS);
+        // ==== GAME FEEL: popup giữa màn hình + delay giao chiến ====
+        try{ pvpChBtn.classList.add("loading"); pvpChBtn.disabled = true; }catch(_){}
+        pvpBattleStart(enemy?.name || "đối thủ", { myPow, enemyPow, myDmg, enemyDmg });
 
         setTimeout(()=>{
           const hit = (base) => Math.max(1, Math.floor(base * (0.85 + Math.random() * 0.30)));
@@ -17174,9 +16789,7 @@ if (searchEl){
             pvpBattleResult({
               win:true,
               enemyName: enemy.name || "đối thủ",
-              deltaText: `+${gain} điểm PVP
-Gây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}
-Hồi chiêu: ${fmtCooldownSeconds(PVP_COOLDOWN_MS)} giây`,
+              deltaText: `+${gain} điểm PVP\nGây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}`,
               pts,
               streak
             });
@@ -17189,23 +16802,21 @@ Hồi chiêu: ${fmtCooldownSeconds(PVP_COOLDOWN_MS)} giây`,
             pvpBattleResult({
               win:false,
               enemyName: enemy.name || "đối thủ",
-              deltaText: `-${lose} điểm PVP
-Gây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}
-Hồi chiêu: ${fmtCooldownSeconds(PVP_COOLDOWN_MS)} giây`,
+              deltaText: `-${lose} điểm PVP\nGây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}`,
               pts,
               streak
             });
           }
 
-          try{ safeSetLS("pvp_wins", String(Math.max(0, Math.floor(wins)))); }catch(_){ }
-          try{ safeSetLS("pvp_loss", String(Math.max(0, Math.floor(loss)))); }catch(_){ }
-          try{ safeSetLS("pvp_points", String(Math.max(0, Math.floor(pts)))); }catch(_){ }
-          try{ safeSetLS("pvp_streak", String(Math.max(0, Math.floor(streak)))); }catch(_){ }
+          try{ safeSetLS("pvp_wins", String(Math.max(0, Math.floor(wins)))); }catch(_){}
+          try{ safeSetLS("pvp_loss", String(Math.max(0, Math.floor(loss)))); }catch(_){}
+          try{ safeSetLS("pvp_points", String(Math.max(0, Math.floor(pts)))); }catch(_){}
+          try{ safeSetLS("pvp_streak", String(Math.max(0, Math.floor(streak)))); }catch(_){}
 
           bots[ix] = enemy;
           savePvPBots(bots);
 
-          try{ safeSetLS("pf_active_tab", "pvp"); }catch(_){ }
+          try{ safeSetLS("pf_active_tab", "pvp"); }catch(_){}
           renderRoute();
           try{
             const btn = tabPageContent?.querySelector('[data-pf-tab="pvp"]');
@@ -17215,31 +16826,28 @@ Hồi chiêu: ${fmtCooldownSeconds(PVP_COOLDOWN_MS)} giây`,
             }
           }catch(_){ }
 
-          try{ pvpChBtn.classList.remove("loading"); pvpChBtn.disabled = false; pvpChBtn.textContent = __oldPvpBtnText; }catch(_){ }
-        }, PVP_BATTLE_ANIM_MS);
+          try{ pvpChBtn.classList.remove("loading"); pvpChBtn.disabled = false; }catch(_){}
+        }, 650);
 
         return;
       }
 
+            
       const bossHpBtn = e.target.closest("[data-boss-hpbar]");
-      if (bossHpBtn){
-        bossRaidEnsureInit();
-        try{ if (navigator.vibrate) navigator.vibrate(8); }catch(_){ }
-        return;
-      }
-      const bossAtkBtn = e.target.closest("[data-boss-hit]");
-      if (bossAtkBtn){
-        bossRaidEnsureInit();
-        bossRaidAttack();
-        return;
-      }
+if (bossHpBtn){
+  bossRaidEnsureInit();
+  try{ if (navigator.vibrate) navigator.vibrate(8); }catch(_){}
+  return;
+}
+const bossAtkBtn = e.target.closest("[data-boss-hit]");
+if (bossAtkBtn){
+  bossRaidEnsureInit();
+  bossRaidAttack();
+  return;
+}
 
-      const bossFightBtn = e.target.closest("[data-boss-fight]");
+            const bossFightBtn = e.target.closest("[data-boss-fight]");
       if (bossFightBtn){
-        if (__gamePopBattleState){
-          toast("Bạn đang trong trận chiến khác. Hãy chờ hoàn tất.");
-          return;
-        }
         const id = String(bossFightBtn.getAttribute("data-boss-fight") || "");
         if (!id) return;
         const boss = (BOSS_LIST || []).find(b => String(b?.id || "") === id);
@@ -17252,18 +16860,11 @@ Hồi chiêu: ${fmtCooldownSeconds(PVP_COOLDOWN_MS)} giây`,
         const myDmg = calcDamageFromPower(myPow);
 
         const bossPow = Math.max(1, Math.floor(Number(boss?.power || 0) || 0));
-        const bossDmg = calcDamageFromPower(bossPow);
+        const bossDmg = calcDamageFromPower(bossPow); // Dame boss cũng = lực chiến/2
 
-        const bossRemainMs = getBattleCooldownRemain("boss");
-        if (bossRemainMs > 0){
-          toast(`Bạn còn ${fmtCooldownSeconds(bossRemainMs)} giây nữa mới được tấn công boss.`);
-          return;
-        }
-        setBattleCooldown("boss", BOSS_COOLDOWN_MS);
-
-        const __oldBossBtnText = bossFightBtn.textContent || "Săn";
-        try{ bossFightBtn.classList.add("loading"); bossFightBtn.disabled = true; bossFightBtn.textContent = "⏳ Đang tấn công..."; }catch(_){ }
-        bossBattleStart(boss?.name || "Boss", { myPow, bossPow, myDmg, bossDmg }, BOSS_BATTLE_ANIM_MS);
+        // ==== GAME FEEL: popup giữa màn hình + delay giao chiến ====
+        try{ bossFightBtn.classList.add("loading"); bossFightBtn.disabled = true; }catch(_){}
+        bossBattleStart(boss?.name || "Boss", { myPow, bossPow, myDmg, bossDmg });
 
         setTimeout(()=>{
           const hit = (base) => Math.max(1, Math.floor(base * (0.85 + Math.random() * 0.30)));
@@ -17294,9 +16895,7 @@ Hồi chiêu: ${fmtCooldownSeconds(PVP_COOLDOWN_MS)} giây`,
             bossBattleResult({
               win:true,
               bossName: boss.name || "Boss",
-              deltaText: `+${reward} điểm Boss
-Gây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}
-Hồi chiêu: ${fmtCooldownSeconds(BOSS_COOLDOWN_MS)} giây`,
+              deltaText: `+${reward} điểm Boss\nGây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}`,
               pts: bpts,
               kills
             });
@@ -17307,18 +16906,16 @@ Hồi chiêu: ${fmtCooldownSeconds(BOSS_COOLDOWN_MS)} giây`,
             bossBattleResult({
               win:false,
               bossName: boss.name || "Boss",
-              deltaText: `-${penalty} điểm Boss
-Gây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}
-Hồi chiêu: ${fmtCooldownSeconds(BOSS_COOLDOWN_MS)} giây`,
+              deltaText: `-${penalty} điểm Boss\nGây: ${fmtN(dealt)} • Nhận: ${fmtN(taken)}`,
               pts: bpts,
               kills
             });
           }
 
-          try{ safeSetLS("boss_kills", String(Math.max(0, Math.floor(kills)))); }catch(_){ }
-          try{ safeSetLS("boss_points", String(Math.max(0, Math.floor(bpts)))); }catch(_){ }
+          try{ safeSetLS("boss_kills", String(Math.max(0, Math.floor(kills)))); }catch(_){}
+          try{ safeSetLS("boss_points", String(Math.max(0, Math.floor(bpts)))); }catch(_){}
 
-          try{ safeSetLS("pf_active_tab", "boss"); }catch(_){ }
+          try{ safeSetLS("pf_active_tab", "boss"); }catch(_){}
           renderRoute();
           try{
             const btn = tabPageContent?.querySelector('[data-pf-tab="boss"]');
@@ -17326,10 +16923,10 @@ Hồi chiêu: ${fmtCooldownSeconds(BOSS_COOLDOWN_MS)} giây`,
               tabPageContent?.querySelectorAll(".pf-tab").forEach(b=>b.classList.toggle("active", b === btn));
               tabPageContent?.querySelectorAll(".pf-sec").forEach(sec=>sec.classList.toggle("active", sec.id === "pfSec-boss"));
             }
-          }catch(_){ }
+          }catch(_){}
 
-          try{ bossFightBtn.classList.remove("loading"); bossFightBtn.disabled = false; bossFightBtn.textContent = __oldBossBtnText; }catch(_){ }
-        }, BOSS_BATTLE_ANIM_MS);
+          try{ bossFightBtn.classList.remove("loading"); bossFightBtn.disabled = false; }catch(_){}
+        }, 750);
 
         return;
       }
