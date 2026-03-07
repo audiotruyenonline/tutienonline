@@ -6444,21 +6444,19 @@
        1) Firebase config
        ============================ */
     const firebaseConfig = {
-      // Firebase chính: đăng nhập Google, đồng bộ dữ liệu người dùng, lượt xem, lượt online.
-      apiKey: "AIzaSyDhq66ZZzNp9_-FnY7T-2gxNlrUDxeDPrU",
-      authDomain: "truyen-b3470.firebaseapp.com",
-      databaseURL: "https://truyen-b3470-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "truyen-b3470",
-      storageBucket: "truyen-b3470.firebasestorage.app",
-      messagingSenderId: "93210370757",
-      appId: "1:93210370757:web:87828b963906ac862f46ac"
+      // Firebase chính: đăng nhập Google, dữ liệu người dùng, đồng bộ realtime, lượt online, thông báo, lượt xem truyện. Không dùng Storage.
+      apiKey: "AIzaSyBMJK0dbtZ_Ko_9b3nrxkaev3Tle0XAK1o",
+      authDomain: "online1-557e7.firebaseapp.com",
+      databaseURL: "https://online1-557e7-default-rtdb.firebaseio.com",
+      projectId: "online1-557e7",
+      messagingSenderId: "359900501760",
+      appId: "1:359900501760:web:6c324577aab3a38d6a05e5"
     };
     const storyContentFirebaseConfig = {
-      // Firebase nội dung truyện: lưu metadata truyện + link ảnh + link TXT chương.
+      // Firebase nội dung truyện: lưu metadata truyện + link ảnh + link TXT chương. Không dùng Storage.
       apiKey: "AIzaSyDKD07pnj003DCalC71hshVdnnz79yp6Rk",
       authDomain: "online3-47f27.firebaseapp.com",
       projectId: "online3-47f27",
-      storageBucket: "online3-47f27.firebasestorage.app",
       messagingSenderId: "1032529429666",
       appId: "1:1032529429666:web:d855322c32e7247779c3fb"
     };
@@ -6497,6 +6495,8 @@
 
     // ===== Guest (không đăng nhập) - vẫn lưu Theo dõi / Lịch sử / Đọc tiếp ở localStorage =====
     const GUEST_STATE_KEY = "guest_user_state_v1";
+    const GUEST_DOWNLOADS_KEY = "downloadedStoryIds";
+    const ACCOUNT_DOWNLOADS_CACHE_PREFIX = "downloadedStoryIds_uid_";
     
     function normalizeListeningRecent(list){
       if (!Array.isArray(list)) return [];
@@ -7300,8 +7300,10 @@ function normalizeUserState(raw){
         followedIds: Array.isArray(r.followedIds) ? r.followedIds.filter(Boolean) : [],
         bookmarkIds: Array.isArray(r.bookmarkIds) ? r.bookmarkIds.filter(Boolean) : [],
         historyIds: Array.isArray(r.historyIds) ? r.historyIds.filter(Boolean) : [],
+        downloadedIds: Array.isArray(r.downloadedIds) ? r.downloadedIds.filter(Boolean) : [],
         lastReading: (r.lastReading && typeof r.lastReading === "object") ? r.lastReading : {},
-        listeningRecent: normalizeListeningRecent(r.listeningRecent),        profile: normalizeProfile(r.profile),
+        listeningRecent: normalizeListeningRecent(r.listeningRecent),
+        profile: normalizeProfile(r.profile),
         settings: normalizeSettings(r.settings),
 
         wallet: normalizeWallet(r.wallet),
@@ -7353,7 +7355,11 @@ function normalizeUserState(raw){
           followedIds: s.followedIds,
           bookmarkIds: s.bookmarkIds,
           historyIds: s.historyIds,
+          downloadedIds: s.downloadedIds,
           lastReading: s.lastReading,
+          listeningRecent: s.listeningRecent,
+          profile: s.profile,
+          settings: s.settings,
           tuviExp: s.tuviExp,
           wallet: s.wallet,
           bag: s.bag,
@@ -7368,9 +7374,107 @@ function normalizeUserState(raw){
     }
     function hasMeaningfulGuestState(s){
       const st = normalizeUserState(s);
-      return (st.followedIds.length + st.bookmarkIds.length + st.historyIds.length) > 0
+      return (st.followedIds.length + st.bookmarkIds.length + st.historyIds.length + st.downloadedIds.length) > 0
         || (st.lastReading && Object.keys(st.lastReading).length > 0)
+        || (st.listeningRecent && st.listeningRecent.length > 0)
         || (st.bag && st.bag.items && Object.keys(st.bag.items).length > 0);
+    }
+
+    function getDownloadsStorageKey(uid = ""){
+      const cleanUid = String(uid || "").trim();
+      return cleanUid ? (ACCOUNT_DOWNLOADS_CACHE_PREFIX + cleanUid) : GUEST_DOWNLOADS_KEY;
+    }
+
+    function readDownloadedIdsFromStorage(uid = ""){
+      try{
+        const raw = safeGetLS(getDownloadsStorageKey(uid), "");
+        const arr = JSON.parse(raw || "[]");
+        return Array.isArray(arr) ? [...new Set(arr.filter(Boolean).map(String))].slice(0, 200) : [];
+      }catch(_){
+        return [];
+      }
+    }
+
+    function writeDownloadedIdsToStorage(ids, uid = ""){
+      const next = [...new Set((Array.isArray(ids) ? ids : []).filter(Boolean).map(String))].slice(0, 200);
+      try{ localStorage.setItem(getDownloadsStorageKey(uid), JSON.stringify(next)); }catch(_){}
+      return next;
+    }
+
+    function mergeUniqueStoryIds(){
+      const seen = new Set();
+      const out = [];
+      Array.from(arguments).forEach(list => {
+        (Array.isArray(list) ? list : []).forEach(id => {
+          const key = String(id || "").trim();
+          if (!key || seen.has(key)) return;
+          seen.add(key);
+          out.push(key);
+        });
+      });
+      return out;
+    }
+
+    function mergeLastReadingMaps(baseMap, addMap){
+      const next = { ...((baseMap && typeof baseMap === "object") ? baseMap : {}) };
+      Object.keys((addMap && typeof addMap === "object") ? addMap : {}).forEach(storyId => {
+        const currentChapter = Math.max(1, Number(next[storyId] || 1) || 1);
+        const incomingChapter = Math.max(1, Number(addMap[storyId] || 1) || 1);
+        next[storyId] = Math.max(currentChapter, incomingChapter);
+      });
+      return next;
+    }
+
+    function mergeListeningRecentLists(baseList, addList){
+      const map = new Map();
+      [...normalizeListeningRecent(baseList), ...normalizeListeningRecent(addList)].forEach(item => {
+        const storyId = String(item?.storyId || "").trim();
+        if (!storyId) return;
+        const prev = map.get(storyId);
+        if (!prev || Number(item.ts || 0) >= Number(prev.ts || 0)){
+          map.set(storyId, { ...item, storyId });
+        }
+      });
+      return [...map.values()].sort((a,b) => Number(b.ts||0) - Number(a.ts||0)).slice(0, 12);
+    }
+
+    async function mergeGuestStateIntoAccount(user){
+      if (!ENABLE_FIREBASE || !db || !user) return false;
+      try{
+        const guestState = normalizeUserState(loadGuestUserState());
+        const guestDownloadedIds = readDownloadedIdsFromStorage("");
+        guestState.downloadedIds = mergeUniqueStoryIds(guestState.downloadedIds, guestDownloadedIds);
+        if (!hasMeaningfulGuestState(guestState)) return false;
+
+        const refUser = doc(db, "users", user.uid);
+        let remoteRaw = null;
+        try{
+          const snap = await refUser.get();
+          remoteRaw = snap && snap.exists ? (snap.data() || null) : null;
+        }catch(_){
+          remoteRaw = null;
+        }
+        const remoteState = normalizeUserState(remoteRaw);
+
+        const mergedPatch = {
+          followedIds: mergeUniqueStoryIds(remoteState.followedIds, guestState.followedIds),
+          bookmarkIds: mergeUniqueStoryIds(remoteState.bookmarkIds, guestState.bookmarkIds),
+          historyIds: mergeUniqueStoryIds(guestState.historyIds, remoteState.historyIds).slice(0, 50),
+          downloadedIds: mergeUniqueStoryIds(remoteState.downloadedIds, guestState.downloadedIds),
+          lastReading: mergeLastReadingMaps(remoteState.lastReading, guestState.lastReading),
+          listeningRecent: mergeListeningRecentLists(remoteState.listeningRecent, guestState.listeningRecent),
+          lastSeenAt: serverTimestamp()
+        };
+
+        await setDoc(refUser, mergedPatch, { merge: true });
+        clearGuestUserState();
+        try{ localStorage.removeItem(getDownloadsStorageKey("")); }catch(_){}
+        writeDownloadedIdsToStorage(mergedPatch.downloadedIds, user.uid);
+        return true;
+      }catch(err){
+        console.warn("mergeGuestStateIntoAccount error", err);
+        return false;
+      }
     }
 
     function initFirebaseCompat(){
@@ -12677,25 +12781,31 @@ function renderAll(){
       }
     }
 function getDownloadedStoryIds(){
-      try{
-        const raw = safeGetLS("downloadedStoryIds", "");
-        const arr = JSON.parse(raw || "[]");
-        return Array.isArray(arr) ? arr.filter(Boolean) : [];
-      }catch(_){
-        return [];
+      if (currentUser){
+        return Array.isArray(userState?.downloadedIds) ? userState.downloadedIds.filter(Boolean) : readDownloadedIdsFromStorage(currentUser.uid);
       }
+      return readDownloadedIdsFromStorage("");
     }
-    function saveDownloadedStoryIds(ids){
-      const next = [...new Set((Array.isArray(ids) ? ids : []).filter(Boolean))].slice(0, 200);
-      try{ localStorage.setItem("downloadedStoryIds", JSON.stringify(next)); }catch(_){}
-      return next;
+    async function saveDownloadedStoryIds(ids, opts = {}){
+      const next = [...new Set((Array.isArray(ids) ? ids : []).filter(Boolean).map(String))].slice(0, 200);
+      if (!currentUser){
+        writeDownloadedIdsToStorage(next, "");
+        userState = normalizeUserState({ ...(userState || {}), downloadedIds: next });
+        saveGuestUserState(userState);
+        if (!opts.noRender) renderAfterUserStateChange();
+        return next;
+      }
+
+      writeDownloadedIdsToStorage(next, currentUser.uid);
+      const ok = await saveUserStatePatch({ downloadedIds: next }, { noRender: !!opts.noRender });
+      return ok ? next : getDownloadedStoryIds();
     }
-    function addDownloadedStoryId(storyId){
+    async function addDownloadedStoryId(storyId){
       if (!storyId) return [];
-      return saveDownloadedStoryIds([storyId, ...getDownloadedStoryIds().filter(id => id !== storyId)]);
+      return await saveDownloadedStoryIds([storyId, ...getDownloadedStoryIds().filter(id => id !== storyId)]);
     }
-    function removeDownloadedStoryId(storyId){
-      return saveDownloadedStoryIds(getDownloadedStoryIds().filter(id => id !== storyId));
+    async function removeDownloadedStoryId(storyId){
+      return await saveDownloadedStoryIds(getDownloadedStoryIds().filter(id => id !== storyId));
     }
 
     function goToBookshelf(section = "history"){
@@ -12786,7 +12896,7 @@ setActiveBottomNav("bookshelf");
         history: "Các truyện bạn đã mở đọc gần đây.",
         followed: "Danh sách truyện bạn đang theo dõi.",
         bookmark: "Mục đánh dấu nhanh (đang dùng chung dữ liệu với Theo dõi).",
-        download: "Các truyện đã bấm Tải trong web (lưu cục bộ trên thiết bị/trình duyệt)."
+        download: currentUser ? "Các truyện đã bấm Tải và đang đồng bộ theo tài khoản Firebase." : "Các truyện đã bấm Tải trong web (khách: lưu trên thiết bị/trình duyệt, đăng nhập sẽ được gộp vào tài khoản)."
       };
       if (bookshelfSubText) bookshelfSubText.textContent = descMap[tab] || "";
 
@@ -12951,8 +13061,8 @@ function goToSearchWithGenreFromMenu(genreLabel){
 
       if (storyPageRefreshBtn) storyPageRefreshBtn.onclick = () => toast("Đã kiểm tra cập nhật chương");
       if (storyPageDownloadBtn) storyPageDownloadBtn.onclick = async () => {
-        addDownloadedStoryId(storyId);
-        toast("Đã thêm vào mục Tải xuống trong Tủ truyện");
+        await addDownloadedStoryId(storyId);
+        toast(currentUser ? "Đã thêm vào Tải xuống và đồng bộ tài khoản" : "Đã thêm vào mục Tải xuống trong Tủ truyện");
         if (currentUser){
           const s0 = storyById(storyId);
           pushAccountNotification({
@@ -14937,6 +15047,7 @@ rankPrevBtn?.addEventListener("click", () => {
         nextNorm.notificationsUnread = countUnreadNotifications(nextNotifications);
         nextNorm.updatedAt = data.lastSeenAt || null;
         userState = nextNorm;
+        try{ writeDownloadedIdsToStorage(nextNorm.downloadedIds || [], user.uid); }catch(_){}
         // Render nhẹ để tránh lag/giật (đặc biệt ở trang đọc chương)
         try{ renderAfterUserStateChange(); }catch(_){}
         try{ renderNotificationList(); }catch(_){}
@@ -16690,6 +16801,7 @@ if (searchEl){
 
         if (user){
           await ensureUserDoc(user);
+          await mergeGuestStateIntoAccount(user);
           startUserStateListener(user);
           startPresence(user);
 
@@ -16700,7 +16812,7 @@ if (searchEl){
               pushAccountNotification({
                 type: "auth",
                 title: "Đăng nhập thành công",
-                sub: "Tài khoản đã kết nối để đồng bộ theo dõi, lịch sử đọc, thông báo."
+                sub: "Tài khoản đã kết nối để đồng bộ theo dõi, lịch sử đọc, tải xuống, thông báo."
               }).catch(err => console.warn("push login notification error", err));
             }
           }catch(_){}
@@ -16955,7 +17067,7 @@ if (searchEl){
       const rmDl = e.target.closest("[data-bs-remove-download]");
       if (rmDl){
         const sid = rmDl.dataset.bsRemoveDownload;
-        removeDownloadedStoryId(sid);
+        await removeDownloadedStoryId(sid);
         toast("Đã xóa khỏi Tải xuống");
         renderBookshelfPage(getBookshelfSectionFromHash());
         return;
