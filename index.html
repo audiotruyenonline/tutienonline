@@ -8182,16 +8182,15 @@ function normalizeUserState(raw){
         saveBtn.textContent = draft.editingId ? "Đang cập nhật..." : "Đang lưu...";
         try{
           const story = await saveManagedStory(payload);
-          if (!story){
-            toast("Không thể lưu truyện.");
-            return;
-          }
           await loadStories();
-          toast((story.__savedRemote ? "Đã lưu online lên Firebase." : "Đã lưu bản dự phòng trên thiết bị.") + (draft.editingId ? " Truyện đã cập nhật." : " Truyện mới đã được thêm."));
+          toast("Đã lưu online lên Firebase." + (draft.editingId ? " Truyện đã cập nhật." : " Truyện mới đã được thêm."));
           if (currentUser){
             pushAccountNotification({ type: "story_add", title: draft.editingId ? "Đã cập nhật truyện" : "Đã thêm truyện mới", sub: story.title || "" }).catch(()=>{});
           }
           location.hash = "#/community/add-story";
+        }catch(err){
+          console.warn("save story fail", err);
+          toast(err?.message || "Không thể lưu truyện lên Firebase.");
         }finally{
           saveBtn.disabled = false;
           saveBtn.textContent = draft.editingId ? "Cập nhật truyện" : "Lưu truyện";
@@ -10728,17 +10727,34 @@ function getReadingStories(){
       };
     }
 
-    function loadAdminManagedStories(){
-      const remote = Array.isArray(remoteStoriesCache) ? remoteStoriesCache : [];
-      const local = loadStoredCustomStories();
-      const merged = [...remote, ...local];
+    function dedupeStoriesById(list){
+      const arr = Array.isArray(list) ? list : [];
       const seen = new Set();
-      return merged.filter(item => {
+      return arr.filter(item => {
         const id = String(item?.id || "").trim();
         if (!id || seen.has(id)) return false;
         seen.add(id);
         return true;
       });
+    }
+
+    function sortStoriesNewestFirst(list){
+      const arr = Array.isArray(list) ? [...list] : [];
+      arr.sort((a,b) => Number(b?.updatedAtMs || b?.createdAtMs || 0) - Number(a?.updatedAtMs || a?.createdAtMs || 0));
+      return arr;
+    }
+
+    function syncManagedStoriesLocalMirror(list){
+      try{
+        saveStoredCustomStories(Array.isArray(list) ? list : []);
+      }catch(_){ }
+    }
+
+    function loadAdminManagedStories(){
+      if (STORY_FIREBASE_OK && storyContentDb){
+        return dedupeStoriesById(Array.isArray(remoteStoriesCache) ? remoteStoriesCache : []);
+      }
+      return dedupeStoriesById(loadStoredCustomStories());
     }
 
     function findManagedStoryById(storyId){
@@ -10749,63 +10765,71 @@ function getReadingStories(){
 
     async function saveManagedStory(raw){
       const story = normalizeCustomStory(raw);
-      if (!story) return null;
+      if (!story) throw new Error("Dữ liệu truyện không hợp lệ.");
+      if (!STORY_FIREBASE_OK || !storyContentDb) throw new Error("Firebase nội dung truyện chưa sẵn sàng.");
 
-      // luôn giữ bản dự phòng local để tránh mất dữ liệu khi mạng chập chờn
-      upsertCustomStory(story);
-
-      let savedRemote = false;
-      if (STORY_FIREBASE_OK && storyContentDb){
-        try{
-          if (currentUser && storyContentAuth && !storyContentAuth.currentUser){
-            await ensureStoryContentWriteAuth();
-          }
-          const payload = {
-            title: story.title,
-            author: story.author,
-            cover: story.cover,
-            category: story.category,
-            status: story.status,
-            desc: story.desc,
-            chapters: Math.max(1, Number(story.chapters || 1) || 1),
-            chapterTxtLinks: Array.isArray(story.chapterTxtLinks) ? story.chapterTxtLinks.map(x => String(x || "").trim()) : [],
-            access: String(story.access || "public"),
-            tags: Array.isArray(story.tags) ? story.tags : [],
-            createdAtMs: Number(story.createdAtMs || Date.now()) || Date.now(),
-            updatedAtMs: Number(story.updatedAtMs || Date.now()) || Date.now(),
-            updatedAt: story.updatedAt || new Date(Number(story.updatedAtMs || Date.now())).toLocaleDateString("vi-VN"),
-            createdBy: String(story.createdBy || currentUser?.displayName || currentUser?.email || "Quản trị viên"),
-            createdByUid: currentUser?.uid || null,
-            isPublished: true,
-            source: "web_add_story_form_v2"
-          };
-          await storyContentDb.collection(STORY_CONTENT_COLLECTION).doc(story.id).set(payload, { merge: true });
-          savedRemote = true;
-        }catch(err){
-          console.warn("save story to storyContentDb failed", err);
+      try{
+        if (currentUser && storyContentAuth && !storyContentAuth.currentUser){
+          const ok = await ensureStoryContentWriteAuth();
+          if (!ok) throw new Error("Không thể xác thực quyền ghi Firebase nội dung truyện.");
         }
-      }
 
-      return { ...story, __savedRemote: savedRemote };
+        const updatedAtMs = Date.now();
+        const payload = {
+          title: story.title,
+          author: story.author,
+          cover: story.cover,
+          category: story.category,
+          status: story.status,
+          desc: story.desc,
+          chapters: Math.max(1, Number(story.chapters || 1) || 1),
+          chapterTxtLinks: Array.isArray(story.chapterTxtLinks) ? story.chapterTxtLinks.map(x => String(x || "").trim()) : [],
+          access: String(story.access || "public"),
+          tags: Array.isArray(story.tags) ? story.tags : [],
+          createdAtMs: Number(story.createdAtMs || Date.now()) || Date.now(),
+          updatedAtMs,
+          updatedAt: new Date(updatedAtMs).toLocaleDateString("vi-VN"),
+          createdBy: String(story.createdBy || currentUser?.displayName || currentUser?.email || "Quản trị viên"),
+          createdByUid: currentUser?.uid || null,
+          isPublished: true,
+          source: "web_add_story_form_v2"
+        };
+
+        await storyContentDb.collection(STORY_CONTENT_COLLECTION).doc(story.id).set(payload, { merge: true });
+
+        const syncedStory = normalizeRemoteStory(payload, story.id) || { ...story, ...payload, id: story.id, isRemote: true, remoteSource: "storyContentFirebase" };
+        remoteStoriesCache = sortStoriesNewestFirst(dedupeStoriesById([
+          syncedStory,
+          ...(Array.isArray(remoteStoriesCache) ? remoteStoriesCache.filter(x => String(x?.id || "") !== String(story.id || "")) : [])
+        ]));
+        syncManagedStoriesLocalMirror(remoteStoriesCache);
+
+        return { ...syncedStory, __savedRemote: true };
+      }catch(err){
+        console.warn("save story to storyContentDb failed", err);
+        throw err;
+      }
     }
 
     async function deleteManagedStory(storyId){
       const id = String(storyId || "").trim();
-      if (!id) return false;
-      let remoteOk = false;
-      if (STORY_FIREBASE_OK && storyContentDb){
-        try{
-          if (currentUser && storyContentAuth && !storyContentAuth.currentUser){
-            await ensureStoryContentWriteAuth();
-          }
-          await storyContentDb.collection(STORY_CONTENT_COLLECTION).doc(id).delete();
-          remoteOk = true;
-        }catch(err){
-          console.warn("delete remote story failed", err);
+      if (!id) throw new Error("Thiếu id truyện.");
+      if (!STORY_FIREBASE_OK || !storyContentDb) throw new Error("Firebase nội dung truyện chưa sẵn sàng.");
+
+      try{
+        if (currentUser && storyContentAuth && !storyContentAuth.currentUser){
+          const ok = await ensureStoryContentWriteAuth();
+          if (!ok) throw new Error("Không thể xác thực quyền ghi Firebase nội dung truyện.");
         }
+        await storyContentDb.collection(STORY_CONTENT_COLLECTION).doc(id).delete();
+        remoteStoriesCache = sortStoriesNewestFirst((Array.isArray(remoteStoriesCache) ? remoteStoriesCache : []).filter(x => String(x?.id || "") !== id));
+        syncManagedStoriesLocalMirror(remoteStoriesCache);
+        deleteCustomStory(id);
+        return true;
+      }catch(err){
+        console.warn("delete remote story failed", err);
+        throw err;
       }
-      deleteCustomStory(id);
-      return remoteOk || true;
     }
 
     function startStoryContentSync(){
@@ -10820,8 +10844,8 @@ function getReadingStories(){
             const story = normalizeRemoteStory(raw, docSnap.id);
             if (story) arr.push(story);
           });
-          arr.sort((a,b) => Number(b.updatedAtMs || 0) - Number(a.updatedAtMs || 0));
-          remoteStoriesCache = arr;
+          remoteStoriesCache = sortStoriesNewestFirst(dedupeStoriesById(arr));
+          syncManagedStoriesLocalMirror(remoteStoriesCache);
           loadStories().catch(err => console.warn("reload stories after sync failed", err));
         }, (err) => {
           console.warn("story content sync error", err);
@@ -10832,18 +10856,14 @@ function getReadingStories(){
     }
 
     function cloneStoriesFromHtml(){
-      // Nguồn truyện/chương/ảnh = HTML tĩnh + Firebase nội dung truyện + bản dự phòng local.
+      // Nguồn truyện/chương/ảnh = HTML tĩnh + Firebase nội dung truyện.
+      // Chỉ fallback local khi Firebase nội dung truyện chưa sẵn sàng.
       const base = localSeedStories.map(item => ({ ...item, baseViews: Number(item.views || 0) }));
       const remote = (Array.isArray(remoteStoriesCache) ? remoteStoriesCache : []).map(item => ({ ...item, baseViews: Number(item.baseViews || item.views || 0) }));
-      const custom = loadStoredCustomStories().map(item => ({ ...item, baseViews: Number(item.baseViews || item.views || 0) }));
-      const merged = [...base, ...remote, ...custom];
-      const seen = new Set();
-      return merged.filter(item => {
-        const id = String(item?.id || "").trim();
-        if (!id || seen.has(id)) return false;
-        seen.add(id);
-        return true;
-      });
+      const fallbackLocal = (!STORY_FIREBASE_OK || !storyContentDb)
+        ? loadStoredCustomStories().map(item => ({ ...item, baseViews: Number(item.baseViews || item.views || 0) }))
+        : [];
+      return dedupeStoriesById([...base, ...remote, ...fallbackLocal]);
     }
 
     function applyRemoteViewMapToStories(){
