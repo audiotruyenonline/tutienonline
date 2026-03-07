@@ -6444,7 +6444,7 @@
        1) Firebase config
        ============================ */
     const firebaseConfig = {
-      // Firebase chính: đăng nhập Google, dữ liệu người dùng, đồng bộ realtime, lượt online, thông báo, lượt xem truyện.
+      // Firebase chính: đăng nhập Google + đồng bộ dữ liệu người dùng + realtime DB (online/view/thông báo...).
       apiKey: "AIzaSyBMJK0dbtZ_Ko_9b3nrxkaev3Tle0XAK1o",
       authDomain: "online1-557e7.firebaseapp.com",
       databaseURL: "https://online1-557e7-default-rtdb.firebaseio.com",
@@ -6454,13 +6454,14 @@
       appId: "1:359900501760:web:6c324577aab3a38d6a05e5"
     };
     const storyContentFirebaseConfig = {
-      // Firebase nội dung truyện: lưu metadata truyện + link ảnh + link TXT chương.
-      apiKey: "AIzaSyDKD07pnj003DCalC71hshVdnnz79yp6Rk",
-      authDomain: "online3-47f27.firebaseapp.com",
-      projectId: "online3-47f27",
-      storageBucket: "online3-47f27.firebasestorage.app",
-      messagingSenderId: "1032529429666",
-      appId: "1:1032529429666:web:d855322c32e7247779c3fb"
+      // Firebase nội dung truyện: lưu metadata truyện + link ảnh bìa + link TXT chương.
+      // Project này chỉ dùng app phụ để tách riêng dữ liệu nội dung khỏi dữ liệu tài khoản/người dùng.
+      apiKey: "AIzaSyCT5umDSqZPxmgjOjyUNfaxaWxb6dCXcZw",
+      authDomain: "khotruyen8.firebaseapp.com",
+      projectId: "khotruyen8",
+      storageBucket: "khotruyen8.firebasestorage.app",
+      messagingSenderId: "1040632894174",
+      appId: "1:1040632894174:web:f02623dbe83ba88e6f684f"
     };
     const STORY_CONTENT_COLLECTION = "stories_public";
     let ENABLE_FIREBASE = true;
@@ -6497,8 +6498,6 @@
 
     // ===== Guest (không đăng nhập) - vẫn lưu Theo dõi / Lịch sử / Đọc tiếp ở localStorage =====
     const GUEST_STATE_KEY = "guest_user_state_v1";
-    const GUEST_DOWNLOADS_KEY = "downloadedStoryIds";
-    const ACCOUNT_DOWNLOADS_CACHE_PREFIX = "downloadedStoryIds_uid_";
     
     function normalizeListeningRecent(list){
       if (!Array.isArray(list)) return [];
@@ -7302,10 +7301,8 @@ function normalizeUserState(raw){
         followedIds: Array.isArray(r.followedIds) ? r.followedIds.filter(Boolean) : [],
         bookmarkIds: Array.isArray(r.bookmarkIds) ? r.bookmarkIds.filter(Boolean) : [],
         historyIds: Array.isArray(r.historyIds) ? r.historyIds.filter(Boolean) : [],
-        downloadedIds: Array.isArray(r.downloadedIds) ? r.downloadedIds.filter(Boolean) : [],
         lastReading: (r.lastReading && typeof r.lastReading === "object") ? r.lastReading : {},
-        listeningRecent: normalizeListeningRecent(r.listeningRecent),
-        profile: normalizeProfile(r.profile),
+        listeningRecent: normalizeListeningRecent(r.listeningRecent),        profile: normalizeProfile(r.profile),
         settings: normalizeSettings(r.settings),
 
         wallet: normalizeWallet(r.wallet),
@@ -7357,11 +7354,7 @@ function normalizeUserState(raw){
           followedIds: s.followedIds,
           bookmarkIds: s.bookmarkIds,
           historyIds: s.historyIds,
-          downloadedIds: s.downloadedIds,
           lastReading: s.lastReading,
-          listeningRecent: s.listeningRecent,
-          profile: s.profile,
-          settings: s.settings,
           tuviExp: s.tuviExp,
           wallet: s.wallet,
           bag: s.bag,
@@ -7376,107 +7369,9 @@ function normalizeUserState(raw){
     }
     function hasMeaningfulGuestState(s){
       const st = normalizeUserState(s);
-      return (st.followedIds.length + st.bookmarkIds.length + st.historyIds.length + st.downloadedIds.length) > 0
+      return (st.followedIds.length + st.bookmarkIds.length + st.historyIds.length) > 0
         || (st.lastReading && Object.keys(st.lastReading).length > 0)
-        || (st.listeningRecent && st.listeningRecent.length > 0)
         || (st.bag && st.bag.items && Object.keys(st.bag.items).length > 0);
-    }
-
-    function getDownloadsStorageKey(uid = ""){
-      const cleanUid = String(uid || "").trim();
-      return cleanUid ? (ACCOUNT_DOWNLOADS_CACHE_PREFIX + cleanUid) : GUEST_DOWNLOADS_KEY;
-    }
-
-    function readDownloadedIdsFromStorage(uid = ""){
-      try{
-        const raw = safeGetLS(getDownloadsStorageKey(uid), "");
-        const arr = JSON.parse(raw || "[]");
-        return Array.isArray(arr) ? [...new Set(arr.filter(Boolean).map(String))].slice(0, 200) : [];
-      }catch(_){
-        return [];
-      }
-    }
-
-    function writeDownloadedIdsToStorage(ids, uid = ""){
-      const next = [...new Set((Array.isArray(ids) ? ids : []).filter(Boolean).map(String))].slice(0, 200);
-      try{ localStorage.setItem(getDownloadsStorageKey(uid), JSON.stringify(next)); }catch(_){}
-      return next;
-    }
-
-    function mergeUniqueStoryIds(){
-      const seen = new Set();
-      const out = [];
-      Array.from(arguments).forEach(list => {
-        (Array.isArray(list) ? list : []).forEach(id => {
-          const key = String(id || "").trim();
-          if (!key || seen.has(key)) return;
-          seen.add(key);
-          out.push(key);
-        });
-      });
-      return out;
-    }
-
-    function mergeLastReadingMaps(baseMap, addMap){
-      const next = { ...((baseMap && typeof baseMap === "object") ? baseMap : {}) };
-      Object.keys((addMap && typeof addMap === "object") ? addMap : {}).forEach(storyId => {
-        const currentChapter = Math.max(1, Number(next[storyId] || 1) || 1);
-        const incomingChapter = Math.max(1, Number(addMap[storyId] || 1) || 1);
-        next[storyId] = Math.max(currentChapter, incomingChapter);
-      });
-      return next;
-    }
-
-    function mergeListeningRecentLists(baseList, addList){
-      const map = new Map();
-      [...normalizeListeningRecent(baseList), ...normalizeListeningRecent(addList)].forEach(item => {
-        const storyId = String(item?.storyId || "").trim();
-        if (!storyId) return;
-        const prev = map.get(storyId);
-        if (!prev || Number(item.ts || 0) >= Number(prev.ts || 0)){
-          map.set(storyId, { ...item, storyId });
-        }
-      });
-      return [...map.values()].sort((a,b) => Number(b.ts||0) - Number(a.ts||0)).slice(0, 12);
-    }
-
-    async function mergeGuestStateIntoAccount(user){
-      if (!ENABLE_FIREBASE || !db || !user) return false;
-      try{
-        const guestState = normalizeUserState(loadGuestUserState());
-        const guestDownloadedIds = readDownloadedIdsFromStorage("");
-        guestState.downloadedIds = mergeUniqueStoryIds(guestState.downloadedIds, guestDownloadedIds);
-        if (!hasMeaningfulGuestState(guestState)) return false;
-
-        const refUser = doc(db, "users", user.uid);
-        let remoteRaw = null;
-        try{
-          const snap = await refUser.get();
-          remoteRaw = snap && snap.exists ? (snap.data() || null) : null;
-        }catch(_){
-          remoteRaw = null;
-        }
-        const remoteState = normalizeUserState(remoteRaw);
-
-        const mergedPatch = {
-          followedIds: mergeUniqueStoryIds(remoteState.followedIds, guestState.followedIds),
-          bookmarkIds: mergeUniqueStoryIds(remoteState.bookmarkIds, guestState.bookmarkIds),
-          historyIds: mergeUniqueStoryIds(guestState.historyIds, remoteState.historyIds).slice(0, 50),
-          downloadedIds: mergeUniqueStoryIds(remoteState.downloadedIds, guestState.downloadedIds),
-          lastReading: mergeLastReadingMaps(remoteState.lastReading, guestState.lastReading),
-          listeningRecent: mergeListeningRecentLists(remoteState.listeningRecent, guestState.listeningRecent),
-          lastSeenAt: serverTimestamp()
-        };
-
-        await setDoc(refUser, mergedPatch, { merge: true });
-        clearGuestUserState();
-        try{ localStorage.removeItem(getDownloadsStorageKey("")); }catch(_){}
-        writeDownloadedIdsToStorage(mergedPatch.downloadedIds, user.uid);
-        return true;
-      }catch(err){
-        console.warn("mergeGuestStateIntoAccount error", err);
-        return false;
-      }
     }
 
     function initFirebaseCompat(){
@@ -7610,11 +7505,11 @@ function normalizeUserState(raw){
     };
 
     const VIP_ADMIN_UIDS = [
-      "PUT_ADMIN_UID_HERE"
+      // Có thể thêm UID admin thật ở đây nếu muốn khóa chặt hơn theo UID.
     ];
 
     const VIP_ADMIN_EMAILS = [
-      "admin@example.com"
+      "sumi22122005@gmail.com"
     ];
 
     const VIP_REQUESTS_PATH = "community/vipZone/requests";
@@ -12783,31 +12678,25 @@ function renderAll(){
       }
     }
 function getDownloadedStoryIds(){
-      if (currentUser){
-        return Array.isArray(userState?.downloadedIds) ? userState.downloadedIds.filter(Boolean) : readDownloadedIdsFromStorage(currentUser.uid);
+      try{
+        const raw = safeGetLS("downloadedStoryIds", "");
+        const arr = JSON.parse(raw || "[]");
+        return Array.isArray(arr) ? arr.filter(Boolean) : [];
+      }catch(_){
+        return [];
       }
-      return readDownloadedIdsFromStorage("");
     }
-    async function saveDownloadedStoryIds(ids, opts = {}){
-      const next = [...new Set((Array.isArray(ids) ? ids : []).filter(Boolean).map(String))].slice(0, 200);
-      if (!currentUser){
-        writeDownloadedIdsToStorage(next, "");
-        userState = normalizeUserState({ ...(userState || {}), downloadedIds: next });
-        saveGuestUserState(userState);
-        if (!opts.noRender) renderAfterUserStateChange();
-        return next;
-      }
-
-      writeDownloadedIdsToStorage(next, currentUser.uid);
-      const ok = await saveUserStatePatch({ downloadedIds: next }, { noRender: !!opts.noRender });
-      return ok ? next : getDownloadedStoryIds();
+    function saveDownloadedStoryIds(ids){
+      const next = [...new Set((Array.isArray(ids) ? ids : []).filter(Boolean))].slice(0, 200);
+      try{ localStorage.setItem("downloadedStoryIds", JSON.stringify(next)); }catch(_){}
+      return next;
     }
-    async function addDownloadedStoryId(storyId){
+    function addDownloadedStoryId(storyId){
       if (!storyId) return [];
-      return await saveDownloadedStoryIds([storyId, ...getDownloadedStoryIds().filter(id => id !== storyId)]);
+      return saveDownloadedStoryIds([storyId, ...getDownloadedStoryIds().filter(id => id !== storyId)]);
     }
-    async function removeDownloadedStoryId(storyId){
-      return await saveDownloadedStoryIds(getDownloadedStoryIds().filter(id => id !== storyId));
+    function removeDownloadedStoryId(storyId){
+      return saveDownloadedStoryIds(getDownloadedStoryIds().filter(id => id !== storyId));
     }
 
     function goToBookshelf(section = "history"){
@@ -12898,7 +12787,7 @@ setActiveBottomNav("bookshelf");
         history: "Các truyện bạn đã mở đọc gần đây.",
         followed: "Danh sách truyện bạn đang theo dõi.",
         bookmark: "Mục đánh dấu nhanh (đang dùng chung dữ liệu với Theo dõi).",
-        download: currentUser ? "Các truyện đã bấm Tải và đang đồng bộ theo tài khoản Firebase." : "Các truyện đã bấm Tải trong web (khách: lưu trên thiết bị/trình duyệt, đăng nhập sẽ được gộp vào tài khoản)."
+        download: "Các truyện đã bấm Tải trong web (lưu cục bộ trên thiết bị/trình duyệt)."
       };
       if (bookshelfSubText) bookshelfSubText.textContent = descMap[tab] || "";
 
@@ -13063,8 +12952,8 @@ function goToSearchWithGenreFromMenu(genreLabel){
 
       if (storyPageRefreshBtn) storyPageRefreshBtn.onclick = () => toast("Đã kiểm tra cập nhật chương");
       if (storyPageDownloadBtn) storyPageDownloadBtn.onclick = async () => {
-        await addDownloadedStoryId(storyId);
-        toast(currentUser ? "Đã thêm vào Tải xuống và đồng bộ tài khoản" : "Đã thêm vào mục Tải xuống trong Tủ truyện");
+        addDownloadedStoryId(storyId);
+        toast("Đã thêm vào mục Tải xuống trong Tủ truyện");
         if (currentUser){
           const s0 = storyById(storyId);
           pushAccountNotification({
@@ -15049,7 +14938,6 @@ rankPrevBtn?.addEventListener("click", () => {
         nextNorm.notificationsUnread = countUnreadNotifications(nextNotifications);
         nextNorm.updatedAt = data.lastSeenAt || null;
         userState = nextNorm;
-        try{ writeDownloadedIdsToStorage(nextNorm.downloadedIds || [], user.uid); }catch(_){}
         // Render nhẹ để tránh lag/giật (đặc biệt ở trang đọc chương)
         try{ renderAfterUserStateChange(); }catch(_){}
         try{ renderNotificationList(); }catch(_){}
@@ -16803,7 +16691,6 @@ if (searchEl){
 
         if (user){
           await ensureUserDoc(user);
-          await mergeGuestStateIntoAccount(user);
           startUserStateListener(user);
           startPresence(user);
 
@@ -16814,7 +16701,7 @@ if (searchEl){
               pushAccountNotification({
                 type: "auth",
                 title: "Đăng nhập thành công",
-                sub: "Tài khoản đã kết nối để đồng bộ theo dõi, lịch sử đọc, tải xuống, thông báo."
+                sub: "Tài khoản đã kết nối để đồng bộ theo dõi, lịch sử đọc, thông báo."
               }).catch(err => console.warn("push login notification error", err));
             }
           }catch(_){}
@@ -17069,7 +16956,7 @@ if (searchEl){
       const rmDl = e.target.closest("[data-bs-remove-download]");
       if (rmDl){
         const sid = rmDl.dataset.bsRemoveDownload;
-        await removeDownloadedStoryId(sid);
+        removeDownloadedStoryId(sid);
         toast("Đã xóa khỏi Tải xuống");
         renderBookshelfPage(getBookshelfSectionFromHash());
         return;
