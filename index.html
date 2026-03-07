@@ -332,7 +332,51 @@
     .account-inline-note.info{border-color:rgba(95,150,255,.18); background:rgba(95,150,255,.06)}
     .account-inline-note.warn{border-color:rgba(255,186,87,.18); background:rgba(255,186,87,.06)}
     .account-menu-list{display:grid; gap:3px}
-    .account-menu-btn{
+.account-auth-form{
+  display:grid; gap:4px;
+  margin-bottom:4px;
+}
+.account-auth-row{
+  display:grid; gap:4px;
+}
+.account-auth-input{
+  width:100%;
+  height:29px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.03);
+  color:#eef3ff;
+  padding:0 8px;
+  font-size:10px;
+  font-weight:700;
+  outline:none;
+}
+.account-auth-input::placeholder{color:#91a4cf}
+.account-auth-input:focus{
+  border-color:rgba(93,145,255,.30);
+  box-shadow:0 0 0 3px rgba(93,145,255,.12);
+  background:rgba(255,255,255,.05);
+}
+.account-auth-help{
+  padding:4px 2px 2px;
+  color:#9db1dd;
+  font-size:8.8px;
+  line-height:1.35;
+}
+.account-auth-help b{color:#eef3ff}
+body.theme-light .account-auth-input{
+  color:#233456;
+  background:#fff;
+  border-color:rgba(30,50,100,.08);
+}
+body.theme-light .account-auth-input::placeholder{color:#6d81aa}
+body.theme-light .account-auth-input:focus{
+  border-color:rgba(81,126,220,.22);
+  box-shadow:0 0 0 3px rgba(81,126,220,.10);
+  background:#fff;
+}
+body.theme-light .account-auth-help{color:#5a6d94}
+.account-menu-btn{
       width:100%; height:28px;
       border-radius:8px; border:1px solid rgba(255,255,255,.06);
       background:rgba(255,255,255,.02); color:#dfe7ff;
@@ -5563,62 +5607,7 @@
       }
     }
 
-
-    /* ===== Thêm truyện / quản lý truyện tự tạo ===== */
-    .story-admin-layout{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}
-    .story-admin-layout .cm-card{min-width:0}
-    .story-admin-form{display:grid;gap:10px}
-    .story-admin-form input,
-    .story-admin-form select,
-    .story-admin-form textarea{
-      width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);color:var(--text);
-      padding:12px 14px;font-size:14px;outline:none
-    }
-    .story-admin-form textarea{min-height:110px;resize:vertical;line-height:1.55}
-    .story-admin-form .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .story-admin-note{font-size:12px;color:var(--muted);line-height:1.55}
-    .story-admin-actions{display:flex;gap:10px;flex-wrap:wrap}
-    .story-admin-links-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .story-admin-links-meta{font-size:12px;color:var(--muted)}
-    .story-admin-links-box{display:grid;gap:8px;padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);max-height:420px;overflow:auto}
-    .story-admin-link-row{display:grid;grid-template-columns:88px minmax(0,1fr);gap:8px;align-items:center}
-    .story-admin-link-row .lbl{font-size:12px;font-weight:800;color:var(--muted)}
-    .story-admin-list{display:grid;gap:10px}
-    .story-admin-item{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);border-radius:18px;padding:12px}
-    .story-admin-top{display:flex;gap:12px;align-items:flex-start}
-    .story-admin-cover{width:58px;height:78px;border-radius:14px;overflow:hidden;flex:0 0 auto;border:1px solid rgba(255,255,255,.08);background:#0b0e1a}
-    .story-admin-cover img{width:100%;height:100%;object-fit:cover;display:block}
-    .story-admin-meta{min-width:0;flex:1}
-    .story-admin-name{font-weight:800;font-size:15px;line-height:1.35}
-    .story-admin-sub{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
-    .story-admin-desc{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .story-admin-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-    .story-admin-badge{font-size:11px;padding:5px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05)}
-    .story-admin-badge.vip{border-color:rgba(255,215,120,.30);background:rgba(255,215,120,.12);color:#ffe6a3}
-    .story-admin-item .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .story-admin-empty{padding:14px;border-radius:16px;border:1px dashed rgba(255,255,255,.10);color:var(--muted);text-align:center}
-    body.theme-light .story-admin-form input,
-    body.theme-light .story-admin-form select,
-    body.theme-light .story-admin-form textarea{
-      background:#fff;border-color:rgba(25,41,80,.12);color:#1d2738
-    }
-    body.theme-light .story-admin-item{
-      background:#fff;border-color:rgba(25,41,80,.10)
-    }
-    body.theme-light .story-admin-links-box{
-      background:#fff;border-color:rgba(25,41,80,.10)
-    }
-    body.theme-light .story-admin-cover{background:#eef3ff;border-color:rgba(25,41,80,.10)}
-    @media (max-width:900px){
-      .story-admin-layout{grid-template-columns:1fr}
-    }
-    @media (max-width:560px){
-      .story-admin-form .row2{grid-template-columns:1fr}
-      .story-admin-link-row{grid-template-columns:1fr}
-      .story-admin-cover{width:52px;height:70px}
-    }
-
-  </style>
+</style>
 </head>
 <body>
   <header class="topbar">
@@ -5699,7 +5688,17 @@
         <span class="left"><span class="icon">👑</span><span>VIP</span></span>
         <span>›</span>
       </button>
-      <button class="account-menu-btn primary" id="btnLogin" type="button">Đăng nhập Google</button>
+      <div class="account-auth-form" id="accountAuthForm">
+        <div class="account-auth-row">
+          <input class="account-auth-input" id="authUsername" type="text" autocomplete="username" placeholder="Tên tài khoản" maxlength="24" />
+          <input class="account-auth-input" id="authPassword" type="password" autocomplete="current-password" placeholder="Mật khẩu" maxlength="64" />
+          <input class="account-auth-input" id="authPasswordConfirm" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu (để đăng ký)" maxlength="64" />
+        </div>
+        <button class="account-menu-btn primary" id="btnLogin" type="button">Đăng nhập / Đăng ký</button>
+        <div class="account-auth-help" id="accountAuthHelp">
+          Nhập <b>tài khoản + mật khẩu</b> để đăng nhập. Nếu tài khoản chưa có, nhập thêm <b>nhập lại mật khẩu</b> để tạo mới.
+        </div>
+      </div>
       <button class="account-menu-btn warn hidden" id="btnLogout" type="button">Đăng xuất</button>
     </div>
     <div class="account-inline-note hidden muted" id="accountInlineNote"></div>
@@ -5810,7 +5809,7 @@
         <div class="section-desc">Để số phận chọn truyện cho bạn — kéo ngang để xem thêm.</div>
         <div class="action-row">
           <button class="btn-random" id="btnRandomPick">🎯 Thử vận may</button>
-          <div class="timer-pill"><span class="timer-dot"></span><span id="randomCooldownText">Sẵn sàng</span></div>
+          <div class="timer-pill"><span class="timer-dot"></span><span id="randomCooldownText">55s</span></div>
         </div>
         <div class="hscroll-cards" id="randomGrid" aria-label="Truyện ngẫu nhiên (kéo ngang)"></div>
       </section>
@@ -6363,7 +6362,8 @@
        1) Firebase config
        ============================ */
     const firebaseConfig = {
-      // Firebase chính: đăng nhập Google, đồng bộ dữ liệu người dùng, lượt xem, lượt online.
+      // Firebase chỉ dùng cho: đăng nhập tài khoản, đồng bộ dữ liệu người dùng, lượt xem, lượt online.
+      // KHÔNG dùng để thêm/xóa/sửa truyện/chương/ảnh (dữ liệu nội dung nằm trong HTML tĩnh).
       apiKey: "AIzaSyDhq66ZZzNp9_-FnY7T-2gxNlrUDxeDPrU",
       authDomain: "truyen-b3470.firebaseapp.com",
       databaseURL: "https://truyen-b3470-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -6372,26 +6372,16 @@
       messagingSenderId: "93210370757",
       appId: "1:93210370757:web:87828b963906ac862f46ac"
     };
-    const storyContentFirebaseConfig = {
-      // Firebase nội dung truyện: lưu metadata truyện + link ảnh + link TXT chương.
-      apiKey: "AIzaSyDKD07pnj003DCalC71hshVdnnz79yp6Rk",
-      authDomain: "online3-47f27.firebaseapp.com",
-      projectId: "online3-47f27",
-      storageBucket: "online3-47f27.firebasestorage.app",
-      messagingSenderId: "1032529429666",
-      appId: "1:1032529429666:web:d855322c32e7247779c3fb"
-    };
-    const STORY_CONTENT_COLLECTION = "stories_public";
     let ENABLE_FIREBASE = true;
-    const USE_LOCAL_SEED_WHEN_EMPTY = false;
+    const USE_LOCAL_SEED_WHEN_EMPTY = true;
 
     /* ============================
        2) Firebase (Compat) Init
        ============================ */
-    let app, auth, db, rtdb, storyContentApp, storyContentDb, storyContentAuth;
+    let app, auth, db, rtdb;
 
     // === Modular-like wrappers (để giữ nguyên code phía dưới) ===
-    let GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, serverTimestamp;
+    let createUserWithEmailAndPassword, signInWithEmailAndPassword, fetchSignInMethodsForEmail, updateProfileAuthUser, onAuthStateChanged, signOut, serverTimestamp;
     let getFirestore, doc, setDoc, onSnapshot, collection, getDocs;
     let getDatabase, ref, set, onDisconnect, onValue, runTransaction;
     let push, query, orderByChild, limitToLast, onChildAdded;
@@ -6405,13 +6395,221 @@
         return (v === null || v === undefined) ? fallback : v;
       }catch(_){ return fallback; }
     }
-    function safeSetLS(key, val){
-      try{ localStorage.setItem(key, val); }catch(_){}
+function safeSetLS(key, val){
+  try{ localStorage.setItem(key, val); }catch(_){}
+}
+
+const ACCOUNT_EMAIL_DOMAIN = "account.local";
+const DEFAULT_ADMIN_USERNAME = "admin";
+const DEFAULT_ADMIN_PASSWORD = "166505";
+const DEFAULT_ADMIN_EMAIL = `${DEFAULT_ADMIN_USERNAME}@${ACCOUNT_EMAIL_DOMAIN}`;
+
+function normalizeAccountUsername(raw){
+  return String(raw || "").trim().replace(/\s+/g, "");
+}
+function normalizeAccountUsernameLower(raw){
+  return normalizeAccountUsername(raw).toLowerCase();
+}
+function isValidAccountUsername(raw){
+  const name = normalizeAccountUsername(raw);
+  return /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]{1,22}[a-zA-Z0-9])$/.test(name);
+}
+function usernameToFakeEmail(raw){
+  const lower = normalizeAccountUsernameLower(raw);
+  return lower ? `${lower}@${ACCOUNT_EMAIL_DOMAIN}` : "";
+}
+function getPreferredUsername(user = currentUser){
+  const stateUsername = String(userState?.username || "").trim();
+  if (stateUsername) return stateUsername;
+  const authName = String(user?.displayName || "").trim();
+  if (authName) return authName;
+  const profName = String(userState?.profile?.name || "").trim();
+  if (profName) return profName;
+  const email = String(user?.email || "").trim().toLowerCase();
+  if (email.endsWith(`@${ACCOUNT_EMAIL_DOMAIN}`)) return email.slice(0, -(`@${ACCOUNT_EMAIL_DOMAIN}`.length));
+  return "";
+}
+function friendlyAuthError(err){
+  const code = String(err?.code || "");
+  if (code.includes("wrong-password")) return "Sai mật khẩu.";
+  if (code.includes("invalid-credential")) return "Sai tài khoản hoặc mật khẩu.";
+  if (code.includes("user-not-found")) return "Tài khoản chưa tồn tại.";
+  if (code.includes("email-already-in-use")) return "Tên tài khoản này đã tồn tại.";
+  if (code.includes("weak-password")) return "Mật khẩu quá yếu. Hãy dùng ít nhất 6 ký tự.";
+  if (code.includes("too-many-requests")) return "Bạn thử nhiều lần quá nhanh. Hãy chờ một chút rồi thử lại.";
+  if (code.includes("network-request-failed")) return "Lỗi mạng. Hãy kiểm tra kết nối rồi thử lại.";
+  if (code.includes("invalid-email")) return "Tên tài khoản không hợp lệ.";
+  return code ? `Lỗi: ${code}` : "Không thể xử lý đăng nhập.";
+}
+function updateAuthFieldsVisibility(){
+  const loggedIn = !!currentUser;
+  accountAuthForm?.classList.toggle("hidden", loggedIn);
+  if (authUsernameInput) authUsernameInput.disabled = loggedIn;
+  if (authPasswordInput) authPasswordInput.disabled = loggedIn;
+  if (authPasswordConfirmInput) authPasswordConfirmInput.disabled = loggedIn;
+  if (accountAuthHelp && loggedIn){
+    accountAuthHelp.textContent = "Bạn đang đăng nhập. Có thể mở Tài khoản hoặc VIP ngay trong menu này.";
+  } else if (accountAuthHelp){
+    accountAuthHelp.innerHTML = 'Nhập <b>tài khoản + mật khẩu</b> để đăng nhập. Nếu tài khoản chưa có, nhập thêm <b>nhập lại mật khẩu</b> để tạo mới.';
+  }
+}
+function syncAuthFormFromCurrentUser(){
+  if (!currentUser){
+    if (authUsernameInput && !(document.activeElement === authUsernameInput)) authUsernameInput.value = "";
+    if (authPasswordInput) authPasswordInput.value = "";
+    if (authPasswordConfirmInput) authPasswordConfirmInput.value = "";
+    return;
+  }
+  const name = getPreferredUsername(currentUser) || "";
+  if (authUsernameInput) authUsernameInput.value = name;
+  if (authPasswordInput) authPasswordInput.value = "";
+  if (authPasswordConfirmInput) authPasswordConfirmInput.value = "";
+}
+async function ensureDefaultAdminAccount(){
+  if (!ENABLE_FIREBASE || !window.firebase || !db) return;
+  let secondaryApp = null;
+  let secondaryAuth = null;
+  try{
+    const appName = "bootstrap_" + Math.random().toString(36).slice(2, 8);
+    secondaryApp = firebase.initializeApp(firebaseConfig, appName);
+    secondaryAuth = secondaryApp.auth();
+
+    const methods = await fetchSignInMethodsForEmail(secondaryAuth, DEFAULT_ADMIN_EMAIL);
+    let adminUser = null;
+
+    if (!Array.isArray(methods) || methods.length === 0){
+      const cred = await createUserWithEmailAndPassword(secondaryAuth, DEFAULT_ADMIN_EMAIL, DEFAULT_ADMIN_PASSWORD);
+      adminUser = cred?.user || null;
+      if (adminUser){
+        try{ await updateProfileAuthUser(adminUser, { displayName: DEFAULT_ADMIN_USERNAME }); }catch(_){}
+      }
+    } else {
+      try{
+        const cred = await signInWithEmailAndPassword(secondaryAuth, DEFAULT_ADMIN_EMAIL, DEFAULT_ADMIN_PASSWORD);
+        adminUser = cred?.user || null;
+      }catch(err){
+        console.warn("Không thể xác thực tài khoản admin mặc định bằng mật khẩu hiện tại.", err);
+      }
     }
-    function cleanupDemoLocalData(){
-      const keys = ["guest_seed", "pvp_bots_v1", "rank_bots_v1", "guild_demo_v1"];
-      keys.forEach(k => { try{ localStorage.removeItem(k); }catch(_){} });
+
+    if (adminUser){
+      await setDoc(doc(db, "users", adminUser.uid), {
+        uid: adminUser.uid,
+        displayName: DEFAULT_ADMIN_USERNAME,
+        username: DEFAULT_ADMIN_USERNAME,
+        usernameLower: DEFAULT_ADMIN_USERNAME,
+        email: DEFAULT_ADMIN_EMAIL,
+        authType: "username",
+        role: "admin",
+        isAdmin: true,
+        lastSeenAt: serverTimestamp(),
+        createdAt: serverTimestamp()
+      }, { merge: true });
     }
+  }catch(err){
+    console.warn("ensureDefaultAdminAccount error", err);
+  }finally{
+    try{
+      if (secondaryAuth?.currentUser) await secondaryAuth.signOut();
+    }catch(_){}
+    try{
+      if (secondaryApp) await secondaryApp.delete();
+    }catch(_){}
+  }
+}
+async function handleUsernamePasswordAuth(){
+  if (!ENABLE_FIREBASE || !auth){
+    toast("Hãy bật Firebase để dùng đăng nhập tài khoản.");
+    return;
+  }
+
+  const usernameRaw = normalizeAccountUsername(authUsernameInput?.value || "");
+  const usernameLower = normalizeAccountUsernameLower(usernameRaw);
+  const password = String(authPasswordInput?.value || "");
+  const confirm = String(authPasswordConfirmInput?.value || "");
+  const fakeEmail = usernameToFakeEmail(usernameRaw);
+
+  if (!usernameRaw){
+    showAccountInlineNote("Hãy nhập <strong>tên tài khoản</strong>.", "warn");
+    authUsernameInput?.focus();
+    return;
+  }
+  if (!isValidAccountUsername(usernameRaw)){
+    showAccountInlineNote("Tên tài khoản chỉ được dùng chữ, số, dấu chấm, gạch dưới, gạch ngang và dài 3-24 ký tự.", "warn");
+    authUsernameInput?.focus();
+    return;
+  }
+  if (!password){
+    showAccountInlineNote("Hãy nhập <strong>mật khẩu</strong>.", "warn");
+    authPasswordInput?.focus();
+    return;
+  }
+  if (password.length < 6){
+    showAccountInlineNote("Mật khẩu cần ít nhất <strong>6 ký tự</strong>.", "warn");
+    authPasswordInput?.focus();
+    return;
+  }
+
+  btnLogin.disabled = true;
+  showAccountInlineNote("Đang xử lý tài khoản...", "info");
+
+  try{
+    const methods = await fetchSignInMethodsForEmail(auth, fakeEmail);
+    const exists = Array.isArray(methods) && methods.length > 0;
+
+    if (exists){
+      await signInWithEmailAndPassword(auth, fakeEmail, password);
+      showAccountInlineNote("Đăng nhập thành công. Dữ liệu sẽ tự đồng bộ.", "info");
+      closeAccountMenu();
+      toast("Đăng nhập thành công");
+      return;
+    }
+
+    if (usernameLower === DEFAULT_ADMIN_USERNAME && password !== DEFAULT_ADMIN_PASSWORD){
+      showAccountInlineNote("Tên tài khoản <strong>admin</strong> đã được giữ sẵn. Chỉ mật khẩu đúng mới dùng được.", "warn");
+      authPasswordInput?.focus();
+      return;
+    }
+
+    if (!confirm){
+      showAccountInlineNote("Tài khoản chưa có. Hãy nhập thêm <strong>nhập lại mật khẩu</strong> để đăng ký.", "warn");
+      authPasswordConfirmInput?.focus();
+      return;
+    }
+    if (password !== confirm){
+      showAccountInlineNote("Mật khẩu nhập lại <strong>không khớp</strong>.", "warn");
+      authPasswordConfirmInput?.focus();
+      return;
+    }
+
+    const cred = await createUserWithEmailAndPassword(auth, fakeEmail, password);
+    const user = cred?.user || auth.currentUser;
+    if (user){
+      try{ await updateProfileAuthUser(user, { displayName: usernameRaw }); }catch(_){}
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        displayName: usernameRaw,
+        username: usernameRaw,
+        usernameLower,
+        email: fakeEmail,
+        authType: "username",
+        role: usernameLower === DEFAULT_ADMIN_USERNAME ? "admin" : "user",
+        isAdmin: usernameLower === DEFAULT_ADMIN_USERNAME,
+        lastSeenAt: serverTimestamp(),
+        createdAt: serverTimestamp()
+      }, { merge: true });
+    }
+    showAccountInlineNote("Đăng ký thành công. Tài khoản đã được tạo và đăng nhập.", "info");
+    closeAccountMenu();
+    toast("Đăng ký thành công");
+  }catch(err){
+    console.error(err);
+    showAccountInlineNote(friendlyAuthError(err), "warn");
+    toast("Không thể đăng nhập");
+  }finally{
+    btnLogin.disabled = false;
+  }
+}
 
 
     // ===== Guest (không đăng nhập) - vẫn lưu Theo dõi / Lịch sử / Đọc tiếp ở localStorage =====
@@ -7123,8 +7321,54 @@ const bossRaidEnsureInit = (...args) => (window.__bossRaidEnsureInit ? window.__
 const bossRaidAttack = (...args) => (window.__bossRaidAttack ? window.__bossRaidAttack(...args) : null);
 
 function ensurePvPBots(seedStr){
-  try{ safeSetLS(PVP_BOTS_KEY, JSON.stringify([])); }catch(_){}
-  return [];
+  try{
+    const raw = safeGetLS(PVP_BOTS_KEY, "");
+    if (raw){
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length === 10){
+        return arr.map(x => {
+          const points = Math.max(0, Math.floor(Number(x.points || 0) || 0));
+          const storedPow = Math.max(0, Math.floor(Number(x.power || 0) || 0));
+          const power = storedPow > 0 ? storedPow : calcBotPower({ id: x.id, name: x.name, points });
+          return {
+            id: String(x.id || ""),
+            name: String(x.name || "Đối thủ"),
+            avatar: String(x.avatar || ""),
+            points,
+            power
+          };
+        });
+      }
+    }
+  }catch(_){}
+
+  const seed = __hash32(String(seedStr || "pvp"));
+  const rng = __mulberry32(seed);
+  const namesPool = [
+    "Hắc Phong","Bạch Vân","Thanh Vũ","Hỏa Linh","Băng Ảnh","Lôi Quang","Mộc Dạ","Kim Vũ","Thủy Nguyệt","Thổ Sơn",
+    "Thiên Lang","U Minh","Dạ Vương","Ngân Hà","Huyết Ảnh","Phong Vũ","Cửu Vân","Long Nha","Hổ Khiếu","Phượng Minh",
+    "Vạn Kiếm","Thiên Cơ","Ma Tôn","Thánh Tử","Ngọc Diệp","Huyền Vũ","Chu Tước","Bạch Hổ","Thanh Long","Kỳ Lân"
+  ];
+  const pick = (arr) => arr[Math.max(0, Math.min(arr.length-1, Math.floor(rng()*arr.length)))];
+  const used = new Set();
+  const bots = [];
+  for (let i = 0; i < 10; i++){
+    let nm = pick(namesPool);
+    let guard = 0;
+    while (used.has(nm) && guard < 30){ nm = pick(namesPool); guard++; }
+    used.add(nm);
+    const hue = Math.floor(rng()*360);
+    const pts = Math.floor(600 + rng()*2400); // 600..3000
+    bots.push({
+      id: "bot_" + (i+1),
+      name: nm,
+      avatar: __svgAvatar(nm.slice(0,1), hue),
+      points: pts,
+      power: Math.max(1, Math.floor(8000 + pts * 55 + rng() * 12000))
+    });
+  }
+  try{ safeSetLS(PVP_BOTS_KEY, JSON.stringify(bots)); }catch(_){}
+  return bots;
 }
 function savePvPBots(bots){
   try{ safeSetLS(PVP_BOTS_KEY, JSON.stringify((bots||[]).slice(0,10))); }catch(_){}
@@ -7170,7 +7414,10 @@ function normalizeUserState(raw){
         bookmarkIds: Array.isArray(r.bookmarkIds) ? r.bookmarkIds.filter(Boolean) : [],
         historyIds: Array.isArray(r.historyIds) ? r.historyIds.filter(Boolean) : [],
         lastReading: (r.lastReading && typeof r.lastReading === "object") ? r.lastReading : {},
-        listeningRecent: normalizeListeningRecent(r.listeningRecent),        profile: normalizeProfile(r.profile),
+        listeningRecent: normalizeListeningRecent(r.listeningRecent),
+        username: String(r.username || "").trim().slice(0, 24),
+        usernameLower: String(r.usernameLower || "").trim().toLowerCase().slice(0, 24),
+        profile: normalizeProfile(r.profile),
         settings: normalizeSettings(r.settings),
 
         wallet: normalizeWallet(r.wallet),
@@ -7259,8 +7506,10 @@ function normalizeUserState(raw){
         rtdb = firebase.database();
 
         // Auth wrappers
-        GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
-        signInWithPopup = (authObj, provider) => authObj.signInWithPopup(provider);
+        createUserWithEmailAndPassword = (authObj, email, password) => authObj.createUserWithEmailAndPassword(email, password);
+        signInWithEmailAndPassword = (authObj, email, password) => authObj.signInWithEmailAndPassword(email, password);
+        fetchSignInMethodsForEmail = (authObj, email) => authObj.fetchSignInMethodsForEmail(email);
+        updateProfileAuthUser = (userObj, data) => userObj.updateProfile(data);
         onAuthStateChanged = (authObj, cb) => authObj.onAuthStateChanged(cb);
         signOut = (authObj) => authObj.signOut();
 
@@ -7304,66 +7553,6 @@ function normalizeUserState(raw){
 
     const FIREBASE_OK = initFirebaseCompat();
 
-    function initStoryContentFirebaseCompat(){
-      if (!window.firebase) return false;
-      try{
-        const appName = "storyContentApp";
-        try{
-          storyContentApp = firebase.app(appName);
-        }catch(_){
-          storyContentApp = firebase.initializeApp(storyContentFirebaseConfig, appName);
-        }
-        storyContentDb = storyContentApp.firestore();
-        storyContentAuth = storyContentApp.auth();
-        return true;
-      }catch(e){
-        console.warn("Story content Firebase init failed:", e);
-        storyContentApp = null;
-        storyContentDb = null;
-        storyContentAuth = null;
-        return false;
-      }
-    }
-
-    async function ensureStoryContentWriteAuth(){
-      if (!storyContentAuth || !GoogleAuthProvider || !signInWithPopup) return false;
-      try{
-        if (storyContentAuth.currentUser) return true;
-        const provider = new GoogleAuthProvider();
-        await signInWithPopup(storyContentAuth, provider);
-        return !!storyContentAuth.currentUser;
-      }catch(e){
-        console.warn("Story content auth popup failed:", e);
-        return false;
-      }
-    }
-
-    async function signOutStoryContentAuth(){
-      try{
-        if (storyContentAuth && storyContentAuth.currentUser){
-          await storyContentAuth.signOut();
-        }
-      }catch(e){
-        console.warn("Story content signout failed:", e);
-      }
-    }
-
-    async function syncStoryContentAuthFromPrimaryResult(result){
-      if (!storyContentAuth || !window.firebase?.auth?.GoogleAuthProvider) return false;
-      try{
-        if (storyContentAuth.currentUser) return true;
-        const cred = firebase.auth.GoogleAuthProvider.credentialFromResult(result);
-        if (!cred) return false;
-        await storyContentAuth.signInWithCredential(cred);
-        return !!storyContentAuth.currentUser;
-      }catch(e){
-        console.warn("Story content auth sync failed:", e);
-        return false;
-      }
-    }
-
-    const STORY_FIREBASE_OK = initStoryContentFirebaseCompat();
-
     const VIP_BANK_CONFIG = {
       bankName: "MB Bank",
       ownerName: "NGUYEN VAN A",
@@ -7377,7 +7566,7 @@ function normalizeUserState(raw){
     ];
 
     const VIP_ADMIN_EMAILS = [
-      "admin@example.com"
+      DEFAULT_ADMIN_EMAIL
     ];
 
     const VIP_REQUESTS_PATH = "community/vipZone/requests";
@@ -7972,279 +8161,6 @@ function normalizeUserState(raw){
       });
     }
 
-    function renderAddStoryPage(){
-      hideAllPages();
-      tabPage?.classList.remove("hidden");
-      setActiveBottomNav("");
-      showRouteHeader({ title: "Thêm truyện", sub: "Tạo truyện mới trực tiếp trên web", back: true, chips: ["Tính năng khác"] });
-
-      const customStories = loadAdminManagedStories().sort((a,b) => Number(b.updatedAtMs || 0) - Number(a.updatedAtMs || 0));
-      const categoryOptions = [...new Set(["Tiên hiệp","Huyền huyễn","Đồng nhân","Tận thế","Hệ thống","Xuyên không","Đô thị", ...((stories || []).map(s => String(s?.category || "").trim()).filter(Boolean))])];
-
-      tabPageContent.innerHTML = `
-        <div class="cm-subhead">
-          <button class="cm-subback" id="cmBackHub" type="button">← Cộng đồng</button>
-          <span class="community-meta"><span class="dot"></span> Online: <b>${esc(String(realtimeOnlineCount || 0))}</b></span>
-        </div>
-
-        <div class="story-admin-layout">
-          <div class="cm-card">
-            <div class="cm-card-head">
-              <div>
-                <div class="cm-card-title">Form thêm truyện</div>
-                <div class="cm-card-sub">Ưu tiên lưu online lên Firebase nội dung truyện. Khi lưu xong, truyện sẽ hiện ngay cho người xem.</div>
-              </div>
-            </div>
-
-            <div class="story-admin-form">
-              <input id="addStoryTitle" type="text" maxlength="120" placeholder="Tên truyện *">
-              <div class="row2">
-                <input id="addStoryAuthor" type="text" maxlength="80" placeholder="Tác giả">
-                <input id="addStoryCover" type="url" maxlength="500" placeholder="Link ảnh bìa">
-              </div>
-              <div class="row2">
-                <select id="addStoryCategory">
-                  ${categoryOptions.map(cat => `<option value="${esc(cat)}">${esc(cat)}</option>`).join("")}
-                </select>
-                <select id="addStoryStatus">
-                  <option value="Đang ra">Đang ra</option>
-                  <option value="Hoàn thành">Hoàn thành</option>
-                  <option value="Tạm dừng">Tạm dừng</option>
-                </select>
-              </div>
-              <div class="row2">
-                <input id="addStoryChapterCount" type="number" min="1" max="1500" step="1" value="1" placeholder="Số tập (tối đa 1500)">
-                <div class="story-admin-note" style="display:flex;align-items:center;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;background:rgba(255,255,255,.03)">
-                  Chọn số tập, web sẽ tự hiện đúng số ô để dán <b style="margin-left:4px">link chương TXT</b> (tối đa 1500 chương).
-                </div>
-              </div>
-              <textarea id="addStoryDesc" maxlength="1500" placeholder="Mô tả truyện"></textarea>
-
-              <div class="story-admin-links-head">
-                <div>
-                  <div class="cm-card-title" style="font-size:14px">Link chương TXT</div>
-                  <div class="story-admin-links-meta" id="addStoryLinkMeta">Đang tạo 1 ô link chương.</div>
-                </div>
-              </div>
-              <div class="story-admin-links-box" id="addStoryChapterLinks"></div>
-
-              <div class="story-admin-note">
-                * Mỗi ô là một link TXT của một chương/tập. Bạn có thể thêm tối đa <b>1500 chương</b>. Ví dụ chọn <b>50</b> thì sẽ hiện <b>50 ô</b> để dán link.
-                <br>* Nên dùng link TXT công khai truy cập trực tiếp. Nếu để trống ô nào, chương đó sẽ báo chưa có nội dung.
-                <br>* Khi Firebase nội dung truyện sẵn sàng, dữ liệu sẽ lưu online để người xem thấy ngay. Nếu lưu online thất bại, web sẽ giữ bản dự phòng trên thiết bị này.
-              </div>
-              <div class="story-admin-actions">
-                <button class="tab-page-btn primary" id="addStorySaveBtn" type="button">Lưu truyện</button>
-                <button class="tab-page-btn" id="addStoryResetBtn" type="button">Làm mới form</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="cm-card">
-            <div class="cm-card-head">
-              <div>
-                <div class="cm-card-title">Truyện đã thêm</div>
-                <div class="cm-card-sub">Danh sách ghép từ Firebase nội dung truyện và bản dự phòng local.</div>
-              </div>
-            </div>
-            <div class="story-admin-list" id="storyAdminList">
-              ${customStories.length ? customStories.map(st => `
-                <article class="story-admin-item" data-custom-story="${esc(String(st.id || ""))}">
-                  <div class="story-admin-top">
-                    <div class="story-admin-cover"><img src="${esc(getCoverSrc(st))}" alt="${esc(st.title || "")}" loading="lazy"></div>
-                    <div class="story-admin-meta">
-                      <div class="story-admin-name">${esc(st.title || "Chưa có tên")}</div>
-                      <div class="story-admin-sub">${esc(st.author || "Đang cập nhật")} • ${esc(st.category || "Truyện")} • ${Math.max(1, Number(st.chapters || 1) || 1)} chương</div>
-                      <div class="story-admin-desc">${esc(st.desc || "Chưa có mô tả.")}</div>
-                      <div class="story-admin-badges">
-                        <span class="story-admin-badge">${esc(st.status || "Đang ra")}</span>
-                        ${String(st.access || "public") === "vip" ? `<span class="story-admin-badge vip">VIP</span>` : ``}
-                        <span class="story-admin-badge">Cập nhật ${esc(st.updatedAt || vipDateOnly(st.updatedAtMs))}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="acts">
-                    <button class="tab-page-btn primary" type="button" data-story-open="${esc(String(st.id || ""))}">Mở</button>
-                    <button class="tab-page-btn" type="button" data-story-edit="${esc(String(st.id || ""))}">Sửa</button>
-                    <button class="tab-page-btn warn" type="button" data-story-delete="${esc(String(st.id || ""))}">Xóa</button>
-                  </div>
-                </article>
-              `).join("") : `<div class="story-admin-empty">Chưa có truyện tự thêm nào.</div>`}
-            </div>
-          </div>
-        </div>
-      `;
-
-      $("#cmBackHub")?.addEventListener("click", () => { location.hash = "#/community"; });
-
-      const draft = { editingId: null };
-      const titleEl = $("#addStoryTitle");
-      const authorEl = $("#addStoryAuthor");
-      const coverEl = $("#addStoryCover");
-      const categoryEl = $("#addStoryCategory");
-      const statusEl = $("#addStoryStatus");
-      const chapterCountEl = $("#addStoryChapterCount");
-      const descEl = $("#addStoryDesc");
-      const chapterLinksEl = $("#addStoryChapterLinks");
-      const linkMetaEl = $("#addStoryLinkMeta");
-      const saveBtn = $("#addStorySaveBtn");
-      const resetBtn = $("#addStoryResetBtn");
-      const listEl = $("#storyAdminList");
-
-      const getSafeChapterCount = (value) => {
-        const n = Number(value || 1);
-        return Math.max(1, Math.min(1500, Number.isFinite(n) ? Math.floor(n) : 1));
-      };
-
-      const renderChapterLinkInputs = (count, values = []) => {
-        const total = getSafeChapterCount(count);
-        if (chapterCountEl) chapterCountEl.value = String(total);
-        if (linkMetaEl) linkMetaEl.textContent = `Đang tạo ${total} ô link chương TXT.`;
-        if (!chapterLinksEl) return;
-        chapterLinksEl.innerHTML = Array.from({ length: total }, (_, idx) => {
-          const linkVal = String((Array.isArray(values) ? values[idx] : "") || "").trim();
-          const chapterNo = idx + 1;
-          return `
-            <div class="story-admin-link-row">
-              <div class="lbl">Tập ${chapterNo}</div>
-              <input type="url" maxlength="1200" data-chapter-link="${chapterNo}" placeholder="Link TXT chương ${chapterNo}" value="${esc(linkVal)}">
-            </div>
-          `;
-        }).join("");
-      };
-
-      const collectChapterLinks = () => {
-        const total = getSafeChapterCount(chapterCountEl?.value || 1);
-        return Array.from({ length: total }, (_, idx) => {
-          const input = chapterLinksEl?.querySelector(`[data-chapter-link="${idx + 1}"]`);
-          return String(input?.value || "").trim();
-        });
-      };
-
-      const resetForm = () => {
-        draft.editingId = null;
-        if (titleEl) titleEl.value = "";
-        if (authorEl) authorEl.value = "";
-        if (coverEl) coverEl.value = "";
-        if (categoryEl) categoryEl.value = categoryOptions[0] || "Tiên hiệp";
-        if (statusEl) statusEl.value = "Đang ra";
-        if (descEl) descEl.value = "";
-        renderChapterLinkInputs(1, []);
-        if (saveBtn) saveBtn.textContent = "Lưu truyện";
-      };
-
-      chapterCountEl?.addEventListener("input", () => {
-        const oldValues = collectChapterLinks();
-        renderChapterLinkInputs(chapterCountEl?.value || 1, oldValues);
-      });
-
-      resetBtn?.addEventListener("click", resetForm);
-      resetForm();
-
-      saveBtn?.addEventListener("click", async () => {
-        const title = String(titleEl?.value || "").trim();
-        const chapterCount = getSafeChapterCount(chapterCountEl?.value || 1);
-        const chapterTxtLinks = collectChapterLinks();
-        if (!title){
-          toast("Nhập tên truyện trước đã.");
-          titleEl?.focus();
-          return;
-        }
-        if (!chapterTxtLinks.some(Boolean)){
-          toast("Bạn chưa nhập link chương TXT nào.");
-          chapterLinksEl?.querySelector("[data-chapter-link='1']")?.focus();
-          return;
-        }
-
-        const oldStory = draft.editingId ? findManagedStoryById(draft.editingId) : null;
-        const now = Date.now();
-        const payload = {
-          id: oldStory?.id || ("user-" + vipSlug(title + "-" + now)),
-          title,
-          author: String(authorEl?.value || "").trim(),
-          cover: String(coverEl?.value || "").trim(),
-          category: String(categoryEl?.value || "Tiên hiệp"),
-          status: String(statusEl?.value || "Đang ra"),
-          desc: String(descEl?.value || "").trim(),
-          chapters: chapterCount,
-          chapterTxtLinks,
-          access: String(oldStory?.access || "public"),
-          tags: Array.isArray(oldStory?.tags) ? oldStory.tags : [],
-          chaptersText: Array.isArray(oldStory?.chaptersText) ? oldStory.chaptersText : [],
-          contentRaw: String(oldStory?.contentRaw || ""),
-          createdAtMs: Number(oldStory?.createdAtMs || now) || now,
-          updatedAtMs: now,
-          views: Number(oldStory?.views || 0) || 0,
-          baseViews: Number(oldStory?.baseViews || oldStory?.views || 0) || 0,
-          createdBy: String(oldStory?.createdBy || currentUser?.displayName || currentUser?.email || "Quản trị viên")
-        };
-        saveBtn.disabled = true;
-        saveBtn.textContent = draft.editingId ? "Đang cập nhật..." : "Đang lưu...";
-        try{
-          const story = await saveManagedStory(payload);
-          await loadStories();
-          toast("Đã lưu online lên Firebase." + (draft.editingId ? " Truyện đã cập nhật." : " Truyện mới đã được thêm."));
-          if (currentUser){
-            pushAccountNotification({ type: "story_add", title: draft.editingId ? "Đã cập nhật truyện" : "Đã thêm truyện mới", sub: story.title || "" }).catch(()=>{});
-          }
-          location.hash = "#/community/add-story";
-        }catch(err){
-          console.warn("save story fail", err);
-          toast(err?.message || "Không thể lưu truyện lên Firebase.");
-        }finally{
-          saveBtn.disabled = false;
-          saveBtn.textContent = draft.editingId ? "Cập nhật truyện" : "Lưu truyện";
-        }
-      });
-
-      listEl?.addEventListener("click", (e) => {
-        const openBtn = e.target.closest("[data-story-open]");
-        const editBtn = e.target.closest("[data-story-edit]");
-        const delBtn = e.target.closest("[data-story-delete]");
-        const id = openBtn?.getAttribute("data-story-open") || editBtn?.getAttribute("data-story-edit") || delBtn?.getAttribute("data-story-delete") || "";
-        if (!id) return;
-        const story = findManagedStoryById(id);
-        if (!story) return;
-        if (openBtn){
-          goToStory(id);
-          return;
-        }
-        if (editBtn){
-          draft.editingId = story.id;
-          if (titleEl) titleEl.value = String(story.title || "");
-          if (authorEl) authorEl.value = String(story.author || "");
-          if (coverEl) coverEl.value = String(story.cover || "");
-          if (categoryEl) categoryEl.value = String(story.category || categoryOptions[0] || "Tiên hiệp");
-          if (statusEl) statusEl.value = String(story.status || "Đang ra");
-          if (descEl) descEl.value = String(story.desc || "");
-          renderChapterLinkInputs(Number(story.chapters || (Array.isArray(story.chapterTxtLinks) ? story.chapterTxtLinks.length : 1) || 1), Array.isArray(story.chapterTxtLinks) ? story.chapterTxtLinks : []);
-          if (saveBtn) saveBtn.textContent = "Cập nhật truyện";
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          titleEl?.focus();
-          return;
-        }
-        if (delBtn){
-          const ok = window.confirm(`Xóa truyện "${story.title || ""}"?`);
-          if (!ok) return;
-          deleteManagedStory(id)
-            .then(async () => {
-              await loadStories();
-              toast("Đã xóa truyện.");
-              if ((location.hash || "").includes("#/story/") && String(readerState?.storyId || "") === String(id)){
-                location.hash = "#/home";
-                return;
-              }
-              location.hash = "#/community/add-story";
-            })
-            .catch((err) => {
-              console.warn("delete story fail", err);
-              toast("Không thể xóa truyện.");
-            });
-          return;
-        }
-      });
-    }
-
     function renderVipPage(){
       hideAllPages();
       tabPage?.classList.remove("hidden");
@@ -8277,7 +8193,7 @@ function normalizeUserState(raw){
               <div class="vip-top-pills">
                 <div class="vip-top-pill"><span class="k">Trạng thái</span><span>${esc(vip.label || "Thường")}</span></div>
                 <div class="vip-top-pill"><span class="k">Yêu cầu</span><span>${esc(latestReqText)}</span></div>
-                <div class="vip-top-pill"><span class="k">Tài khoản</span><span>${esc(currentUser ? (currentUser.displayName || currentUser.email || "Đã đăng nhập") : "Khách")}</span></div>
+                <div class="vip-top-pill"><span class="k">Tài khoản</span><span>${esc(currentUser ? (getPreferredUsername(currentUser) || currentUser.displayName || "Đã đăng nhập") : "Khách")}</span></div>
               </div>
             </div>
             <div class="vip-actions">
@@ -8337,7 +8253,7 @@ function normalizeUserState(raw){
       $("#vipGoProfileBtn")?.addEventListener("click", () => { location.hash = "#/profile"; });
       $("#vipLoginHintBtn")?.addEventListener("click", () => {
         toggleAccountMenu(true);
-        showAccountInlineNote("Bạn chưa đăng nhập. Hãy bấm <strong>Đăng nhập Google</strong> trong khung tài khoản để mua VIP.", "warn");
+        showAccountInlineNote("Bạn chưa đăng nhập. Hãy nhập <strong>tài khoản + mật khẩu</strong> trong khung tài khoản để mua VIP.", "warn");
       });
       $("#vipAdminShortcutBtn")?.addEventListener("click", () => { location.hash = "#/community/vip-zone"; });
     }
@@ -8345,16 +8261,85 @@ function normalizeUserState(raw){
     /* ============================
        3) Seed data
        ============================ */
-    const localSeedStories = [];
-    const CUSTOM_STORIES_LS_KEY = "custom_stories_v1";
-    const CUSTOM_STORY_SPLIT_RE = /\n\s*(?:={3,}|-{3,}|###)\s*\n/g;
+    const localSeedStories = [
+      {
+        id: "s1",
+        title: "Lấy Một Long Chi Lực Đánh Bại Toàn Bộ Thế Giới",
+        author: "Đường Tống Nguyên Minh Khinh",
+        cover: "https://placehold.co/300x400/1f2235/ffffff?text=Truyen+1",
+        desc: "Main tăng sức mạnh theo từng chương, chiến đấu liên tục với nhịp độ nhanh và nhiều tình tiết leo rank.",
+        chapters: 852, views: 259, rating: 5.0, category: "Tu tiên", status: "Đang ra",
+        updatedAtText: "08:53 17/2/2026", updatedAtMs: Date.now() - 1000*60*10
+      },
+      {
+        id: "s2",
+        title: "Ta Tại Tận Thế Đánh Dấu Để Mạnh Mẽ Hơn Trong Những Ngày Qua",
+        author: "Phá Ức",
+        cover: "https://placehold.co/300x400/2f1835/ffffff?text=Truyen+2",
+        desc: "Hệ thống đánh dấu và sinh tồn tận thế, càng đọc càng cuốn, map mở rộng theo tiến độ nhân vật.",
+        chapters: 584, views: 704, rating: 3.0, category: "Tận thế", status: "Đang ra",
+        updatedAtText: "09:10 17/2/2026", updatedAtMs: Date.now() - 1000*60*30
+      },
+      {
+        id: "s3",
+        title: "Nói Xong Tham Gia Quân Ngũ Thì Ta Lại Bị Ép Thành Cường Giả",
+        author: "Sưu tầm",
+        cover: "https://placehold.co/300x400/18263a/ffffff?text=Truyen+3",
+        desc: "Truyện hệ thống, quân đội, tu luyện, map chiến trường, nhịp nhanh. Phù hợp đọc giải trí.",
+        chapters: 321, views: 1200, rating: 4.6, category: "Huyền huyễn", status: "Đang ra",
+        updatedAtText: "07:28 17/2/2026", updatedAtMs: Date.now() - 1000*60*90
+      },
+      {
+        id: "s4",
+        title: "Lãnh Chúa Diễn Trang Ở Thế Giới Quái Vật",
+        author: "Trứng Mộng",
+        cover: "https://placehold.co/300x400/352518/ffffff?text=Truyen+4",
+        desc: "Lãnh địa + xây dựng + triệu hồi, lối chơi phát triển tài nguyên và chiến đấu rất hợp gu cày cuốc.",
+        chapters: 410, views: 880, rating: 4.2, category: "Lãnh chúa", status: "Tạm dừng",
+        updatedAtText: "Hôm qua", updatedAtMs: Date.now() - 1000*60*60*8
+      },
+      {
+        id: "s5",
+        title: "Người Tại Đấu La, Võ Hồn Địa Ngục Hỏa",
+        author: "Lan Lưu Thiên Trì",
+        cover: "https://placehold.co/300x400/1a3827/ffffff?text=Truyen+5",
+        desc: "Đồng nhân pha chiến đấu + upgrade võ hồn, nhiều đoạn combat và xây dựng kỹ năng.",
+        chapters: 999, views: 5000, rating: 4.9, category: "Đồng nhân", status: "Đang ra",
+        updatedAtText: "10 phút trước", updatedAtMs: Date.now() - 1000*60*10
+      },
+      {
+        id: "s6",
+        title: "Tận Thế Da Vật: Ta Mặc Áo Thần Nữ",
+        author: "Tác giả A",
+        cover: "https://placehold.co/300x400/3a1d2e/ffffff?text=Truyen+6",
+        desc: "Bối cảnh tận thế dị năng, yếu tố sinh tồn và nâng cấp trang bị cực cuốn.",
+        chapters: 278, views: 641, rating: 4.0, category: "Tận thế", status: "Đang ra",
+        updatedAtText: "1 giờ trước", updatedAtMs: Date.now() - 1000*60*60
+      },
+      {
+        id: "s7",
+        title: "Trùng Sinh Thành Xà, Tu Vi Tăng Vọt",
+        author: "Tác giả B",
+        cover: "https://placehold.co/300x400/232323/ffffff?text=Truyen+7",
+        desc: "Trùng sinh thành yêu thú, tiến hóa nhiều nhánh kỹ năng và map thế giới rộng.",
+        chapters: 367, views: 3321, rating: 4.5, category: "Yêu thú", status: "Đang ra",
+        updatedAtText: "3 giờ trước", updatedAtMs: Date.now() - 1000*60*60*3
+      },
+      {
+        id: "s8",
+        title: "Ngậm Miệng Ác Long, Ta Không Muốn Lại Sinh Con",
+        author: "Tác giả C",
+        cover: "https://placehold.co/300x400/1c2f45/ffffff?text=Truyen+8",
+        desc: "Giả tưởng, hài hước, nhiều tình huống troll và tạo hình nhân vật bắt mắt.",
+        chapters: 198, views: 59, rating: 5.0, category: "Hài", status: "Tạm dừng",
+        updatedAtText: "2 ngày trước", updatedAtMs: Date.now() - 1000*60*60*48
+      }
+    ];
 
     /* ============================
        4) State
        ============================ */
     let stories = [];
-    let remoteStoriesCache = [];
-    let remoteStoriesUnsub = null;
     let currentUser = null;
     let userState = loadGuestUserState();
 
@@ -8598,6 +8583,11 @@ const bookshelfTabs = $("#bookshelfTabs");
     const avatarBox = $("#avatarBox");
     const btnLogin = $("#btnLogin");
     const btnLogout = $("#btnLogout");
+    const authUsernameInput = $("#authUsername");
+    const authPasswordInput = $("#authPassword");
+    const authPasswordConfirmInput = $("#authPasswordConfirm");
+    const accountAuthHelp = $("#accountAuthHelp");
+    const accountAuthForm = $("#accountAuthForm");
 
     const storyPageCover = $("#storyPageCover");
     const storyPageTitle = $("#storyPageTitle");
@@ -8789,9 +8779,6 @@ const bookshelfTabs = $("#bookshelfTabs");
       }
     }
 
-    let __readerRenderToken = 0;
-    const chapterTxtFetchCache = new Map();
-
     function splitToChunks(text){
       const raw = String(text || "").replace(/\r/g,"").trim();
       if (!raw) return ["(Chưa có nội dung chương)"];
@@ -8815,61 +8802,24 @@ const bookshelfTabs = $("#bookshelfTabs");
       return out.length ? out : ["(Chưa có nội dung chương)"];
     }
 
-    async function getChapterText(story, chapter){
+    function getChapterText(story, chapter){
+      // Bạn có thể tự khai báo:
+      // story.chapterTexts = { 1: "Nội dung...", 2: "..." }
+      // hoặc story.chaptersText = [...]
       if (story && story.chapterTexts && story.chapterTexts[chapter]) return String(story.chapterTexts[chapter]);
       if (story && Array.isArray(story.chaptersText) && story.chaptersText[chapter-1]) return String(story.chaptersText[chapter-1]);
 
       const title = story?.title || "Truyện";
       const author = story?.author || "Chưa rõ";
-      const chapterLinks = Array.isArray(story?.chapterTxtLinks) ? story.chapterTxtLinks : [];
-      const txtLink = String(chapterLinks[chapter - 1] || "").trim();
+      const sample = [
+        `Tống Vũ: Bắt đầu Đánh Dấu Mười Vạn Đại Quân, những chuyện xảy ra khiến người ta khó tin.`,
+        `“Ai xuyên qua Đại Tống triều cũng coi như bình thường, nhưng sao ta lại gặp đủ thứ kỳ quái như vậy?”`,
+        `Gió đêm thổi qua, ánh đèn lay động, tâm trí hắn dần tỉnh táo giữa vô số suy nghĩ.`,
+        `Quân thượng, hãy nghỉ ngơi một chút. Đường còn dài, chuyện còn nhiều.`,
+      ].join("\n\n");
 
-      if (txtLink){
-        let lastReason = "Không xác định";
-        const fetchCandidates = getDropboxFetchCandidates(txtLink);
-        for (const candidateUrl of fetchCandidates){
-          try{
-            let pending = chapterTxtFetchCache.get(candidateUrl);
-            if (!pending){
-              pending = fetch(candidateUrl, { cache: "no-store", redirect: "follow" })
-                .then(async (res) => {
-                  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                  const raw = await res.text();
-                  const cleaned = String(raw || "").replace(/^\uFEFF/, "").trim();
-                  if (!cleaned) throw new Error("File TXT trống");
-                  if (/^<!doctype html/i.test(cleaned) || /^<html[\s>]/i.test(cleaned)){
-                    throw new Error("Link đang trả về trang HTML xem trước, không phải nội dung TXT trực tiếp");
-                  }
-                  return cleaned;
-                });
-              chapterTxtFetchCache.set(candidateUrl, pending);
-            }
-            const remoteText = await pending;
-            const finalText = String(remoteText || "").trim();
-            if (finalText){
-              if (!story.chapterTexts || typeof story.chapterTexts !== "object") story.chapterTexts = {};
-              story.chapterTexts[chapter] = finalText;
-              return finalText;
-            }
-          }catch(err){
-            chapterTxtFetchCache.delete(candidateUrl);
-            lastReason = String(err?.message || err || "Không xác định");
-          }
-        }
-        return `${title}
-Tác giả: ${author}
-Chương ${chapter}
-
-Không thể tải nội dung từ link TXT.
-Link gốc: ${txtLink}
-Lý do: ${lastReason}`;
-      }
-
-      return `${title}
-Tác giả: ${author}
-Chương ${chapter}
-
-Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
+      // tạo nội dung giả lập nhưng dễ nhìn
+      return `${title}\nTác giả: ${author}\nChương ${chapter}: Xuyên qua tổng võ thế giới\n\n${sample}\n\n${sample}\n\n${sample}`;
     }
 
     function openReaderToc(){
@@ -9058,7 +9008,7 @@ Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
       return { storyId: decodeURIComponent(m[1]), chapter: Number(m[2] || 1) };
     }
 
-    async function renderReaderPage(storyId, chapter){
+    function renderReaderPage(storyId, chapter){
       const s = storyById(storyId);
       if (!s){
         toast("Không tìm thấy truyện");
@@ -9100,11 +9050,7 @@ Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
 
       if (readerStoryTitle) readerStoryTitle.textContent = s.title || "Truyện";
       if (readerChapterTitle) readerChapterTitle.textContent = `Chương ${readerState.chapter} • Đọc / Nghe`;
-      const renderToken = ++__readerRenderToken;
-      if (readerContent) readerContent.innerHTML = `<p>Đang tải nội dung chương...</p>`;
-      const text = await getChapterText(s, readerState.chapter);
-      if (renderToken !== __readerRenderToken) return;
-      if (String(readerState.storyId || "") !== String(storyId || "") || Number(readerState.chapter || 0) !== Math.max(1, Number(chapter || 1))) return;
+      const text = getChapterText(s, readerState.chapter);
 
       if (readerContent){
         // render to paragraphs
@@ -10339,54 +10285,8 @@ Chương này hiện chưa có link TXT hoặc chưa có nội dung thật.`;
       const u = String(url || "");
       return !u || u.includes("placehold.co") || u.includes("text=Truyen") || u.includes("text=Truyện") || u.includes("Truyen+");
     }
-    function normalizeDropboxDirectUrl(url=""){
-      const raw = String(url || "").trim();
-      if (!raw) return "";
-      try{
-        const u = new URL(raw, location.href);
-        const host = String(u.hostname || "").replace(/^www\./, "");
-        const isDropboxHost = host === "dropbox.com" || host === "dl.dropbox.com" || host === "dl.dropboxusercontent.com";
-        if (!isDropboxHost) return raw;
-        u.searchParams.delete("raw");
-        u.searchParams.set("dl", "0");
-        if (u.hostname === "www.dropbox.com" || u.hostname === "dropbox.com" || u.hostname === "dl.dropbox.com"){
-          u.hostname = "dl.dropboxusercontent.com";
-        }
-        return u.toString();
-      }catch(_){
-        return raw;
-      }
-    }
-    function getDropboxFetchCandidates(url=""){
-      const raw = String(url || "").trim();
-      if (!raw) return [];
-      const out = [];
-      const add = (value) => {
-        const v = String(value || "").trim();
-        if (v && !out.includes(v)) out.push(v);
-      };
-      add(normalizeDropboxDirectUrl(raw));
-      try{
-        const u = new URL(raw, location.href);
-        const host = String(u.hostname || "").replace(/^www\./, "");
-        const isDropboxHost = host === "dropbox.com" || host === "dl.dropbox.com" || host === "dl.dropboxusercontent.com";
-        if (isDropboxHost){
-          const rawUrl = new URL(raw, location.href);
-          rawUrl.searchParams.delete("dl");
-          rawUrl.searchParams.set("raw", "1");
-          add(rawUrl.toString());
-
-          const dlUrl = new URL(raw, location.href);
-          dlUrl.searchParams.delete("raw");
-          dlUrl.searchParams.set("dl", "1");
-          add(dlUrl.toString());
-        }
-      }catch(_){}
-      add(raw);
-      return out;
-    }
     function getCoverSrc(story){
-      const u = normalizeDropboxDirectUrl(story?.cover || "");
+      const u = story?.cover || "";
       return isPlaceholderCover(u) ? makeCoverSVG(story?.title || "Truyện", activeTheme) : u;
     }
     function formatShort(n=0){
@@ -10519,7 +10419,7 @@ function getReadingStories(){
 
     function renderAccountMenuSummary(){
       if (accountAuthState){
-        accountAuthState.textContent = currentUser ? "Đã đăng nhập" : "Khách";
+        accountAuthState.textContent = currentUser ? (getPreferredUsername(currentUser) || "Đã đăng nhập") : "Khách";
       }
       if (accountVipState){
         const vip = getVipSummary();
@@ -10527,7 +10427,7 @@ function getReadingStories(){
       }
 
       if (!currentUser){
-        showAccountInlineNote("Bạn đang ở chế độ <strong>Khách</strong>. ", "warn");
+        showAccountInlineNote("Bạn đang ở chế độ <strong>Khách</strong>. Hãy nhập tài khoản và mật khẩu để đăng nhập hoặc đăng ký.", "warn");
       } else {
         const currentNoteText = (accountInlineNote?.textContent || "").toLowerCase();
         const needResetGuestNote = currentNoteText.includes("chế độ khách") || currentNoteText.includes("đăng nhập để đồng bộ");
@@ -10613,257 +10513,9 @@ function getReadingStories(){
       }
     }
 
-    function splitStoryContentToChapters(rawText=""){
-      const raw = String(rawText || "").replace(/\r/g, "").trim();
-      if (!raw) return [];
-      const parts = raw.split(CUSTOM_STORY_SPLIT_RE)
-        .map(x => String(x || "").trim())
-        .filter(Boolean);
-      return parts.length ? parts : [raw];
-    }
-
-    function normalizeCustomStory(raw){
-      const r = (raw && typeof raw === "object") ? raw : null;
-      if (!r) return null;
-      const title = String(r.title || "").trim();
-      if (!title) return null;
-      const author = String(r.author || "").trim() || "Đang cập nhật";
-      const category = String(r.category || "Tiên hiệp").trim() || "Tiên hiệp";
-      const status = String(r.status || "Đang ra").trim() || "Đang ra";
-      const desc = String(r.desc || "").trim() || "Chưa có mô tả.";
-      const cover = String(r.cover || "").trim();
-      const createdAtMs = Math.max(0, Number(r.createdAtMs || Date.now()) || Date.now());
-      const updatedAtMs = Math.max(createdAtMs, Number(r.updatedAtMs || Date.now()) || Date.now());
-      const contentRaw = typeof r.contentRaw === "string" ? r.contentRaw : "";
-      const chaptersText = Array.isArray(r.chaptersText)
-        ? r.chaptersText.map(x => String(x || "").trim())
-        : splitStoryContentToChapters(contentRaw);
-      const rawChapterLinks = Array.isArray(r.chapterTxtLinks)
-        ? r.chapterTxtLinks.map(x => String(x || "").trim())
-        : [];
-      const chapters = Math.max(1, Number(r.chapters || rawChapterLinks.length || chaptersText.length || 1) || 1);
-      const chapterTxtLinks = Array.from({ length: chapters }, (_, idx) => String(rawChapterLinks[idx] || "").trim());
-      const rawTags = Array.isArray(r.tags)
-        ? r.tags
-        : String(r.tags || "").split(",");
-      const tags = [...new Set(rawTags.map(x => String(x || "").trim()).filter(Boolean))].slice(0, 8);
-      const access = String(r.access || "public").toLowerCase() === "vip" ? "vip" : "public";
-      if (access === "vip" && !tags.some(t => String(t).toLowerCase() === "vip")) tags.unshift("VIP");
-      const fallbackId = "user-" + vipSlug(title + "-" + createdAtMs) + "-" + Math.random().toString(36).slice(2, 6);
-      const rawId = String(r.id || "").trim();
-      const id = rawId ? (rawId.startsWith("user-") ? rawId : ("user-" + rawId)) : fallbackId;
-      return {
-        id,
-        title,
-        author,
-        category,
-        status,
-        desc,
-        cover,
-        tags,
-        access,
-        chapters,
-        chapterTxtLinks,
-        chaptersText: chaptersText.length ? chaptersText : Array.from({ length: chapters }, () => ""),
-        rating: Math.max(0, Number(r.rating || 0) || 0),
-        ratingCount: Math.max(0, Number(r.ratingCount || 0) || 0),
-        likes: Math.max(0, Number(r.likes || 0) || 0),
-        views: Math.max(0, Number(r.views || 0) || 0),
-        baseViews: Math.max(0, Number(r.baseViews || r.views || 0) || 0),
-        updatedAt: r.updatedAt || new Date(updatedAtMs).toLocaleDateString("vi-VN"),
-        updatedAtMs,
-        completedAtMs: String(status || "").toLowerCase().includes("hoàn") ? updatedAtMs : 0,
-        createdAtMs,
-        createdBy: String(r.createdBy || currentUser?.displayName || currentUser?.email || "Quản trị viên"),
-        isCustom: true,
-        contentRaw: chaptersText.filter(Boolean).length ? chaptersText.filter(Boolean).join("\n\n===\n\n") : contentRaw
-      };
-    }
-
-    function loadStoredCustomStories(){
-      try{
-        const raw = safeGetLS(CUSTOM_STORIES_LS_KEY, "");
-        if (!raw) return [];
-        const arr = JSON.parse(raw);
-        return Array.isArray(arr) ? arr.map(normalizeCustomStory).filter(Boolean).slice(0, 300) : [];
-      }catch(_){ return []; }
-    }
-
-    function saveStoredCustomStories(list){
-      try{
-        const arr = Array.isArray(list) ? list.map(normalizeCustomStory).filter(Boolean).slice(0, 300) : [];
-        safeSetLS(CUSTOM_STORIES_LS_KEY, JSON.stringify(arr));
-        return arr;
-      }catch(_){ return []; }
-    }
-
-    function upsertCustomStory(raw){
-      const story = normalizeCustomStory(raw);
-      if (!story) return null;
-      const list = loadStoredCustomStories();
-      const idx = list.findIndex(x => String(x?.id || "") === String(story.id || ""));
-      if (idx >= 0) list[idx] = story;
-      else list.unshift(story);
-      saveStoredCustomStories(list);
-      return story;
-    }
-
-    function deleteCustomStory(storyId){
-      const id = String(storyId || "").trim();
-      if (!id) return false;
-      const next = loadStoredCustomStories().filter(x => String(x?.id || "") !== id);
-      saveStoredCustomStories(next);
-      return true;
-    }
-
-    function normalizeRemoteStory(raw, docId){
-      const story = normalizeCustomStory({ ...(raw || {}), id: docId || raw?.id, isCustom: true });
-      if (!story) return null;
-      return {
-        ...story,
-        isRemote: true,
-        remoteSource: "storyContentFirebase",
-        createdBy: String(raw?.createdBy || raw?.createdByName || story.createdBy || "Quản trị viên")
-      };
-    }
-
-    function dedupeStoriesById(list){
-      const arr = Array.isArray(list) ? list : [];
-      const seen = new Set();
-      return arr.filter(item => {
-        const id = String(item?.id || "").trim();
-        if (!id || seen.has(id)) return false;
-        seen.add(id);
-        return true;
-      });
-    }
-
-    function sortStoriesNewestFirst(list){
-      const arr = Array.isArray(list) ? [...list] : [];
-      arr.sort((a,b) => Number(b?.updatedAtMs || b?.createdAtMs || 0) - Number(a?.updatedAtMs || a?.createdAtMs || 0));
-      return arr;
-    }
-
-    function syncManagedStoriesLocalMirror(list){
-      try{
-        saveStoredCustomStories(Array.isArray(list) ? list : []);
-      }catch(_){ }
-    }
-
-    function loadAdminManagedStories(){
-      if (STORY_FIREBASE_OK && storyContentDb){
-        return dedupeStoriesById(Array.isArray(remoteStoriesCache) ? remoteStoriesCache : []);
-      }
-      return dedupeStoriesById(loadStoredCustomStories());
-    }
-
-    function findManagedStoryById(storyId){
-      const id = String(storyId || "").trim();
-      if (!id) return null;
-      return loadAdminManagedStories().find(x => String(x?.id || "") === id) || null;
-    }
-
-    async function saveManagedStory(raw){
-      const story = normalizeCustomStory(raw);
-      if (!story) throw new Error("Dữ liệu truyện không hợp lệ.");
-      if (!STORY_FIREBASE_OK || !storyContentDb) throw new Error("Firebase nội dung truyện chưa sẵn sàng.");
-
-      try{
-        if (currentUser && storyContentAuth && !storyContentAuth.currentUser){
-          const ok = await ensureStoryContentWriteAuth();
-          if (!ok) throw new Error("Không thể xác thực quyền ghi Firebase nội dung truyện.");
-        }
-
-        const updatedAtMs = Date.now();
-        const payload = {
-          title: story.title,
-          author: story.author,
-          cover: story.cover,
-          category: story.category,
-          status: story.status,
-          desc: story.desc,
-          chapters: Math.max(1, Number(story.chapters || 1) || 1),
-          chapterTxtLinks: Array.isArray(story.chapterTxtLinks) ? story.chapterTxtLinks.map(x => String(x || "").trim()) : [],
-          access: String(story.access || "public"),
-          tags: Array.isArray(story.tags) ? story.tags : [],
-          createdAtMs: Number(story.createdAtMs || Date.now()) || Date.now(),
-          updatedAtMs,
-          updatedAt: new Date(updatedAtMs).toLocaleDateString("vi-VN"),
-          createdBy: String(story.createdBy || currentUser?.displayName || currentUser?.email || "Quản trị viên"),
-          createdByUid: currentUser?.uid || null,
-          isPublished: true,
-          source: "web_add_story_form_v2"
-        };
-
-        await storyContentDb.collection(STORY_CONTENT_COLLECTION).doc(story.id).set(payload, { merge: true });
-
-        const syncedStory = normalizeRemoteStory(payload, story.id) || { ...story, ...payload, id: story.id, isRemote: true, remoteSource: "storyContentFirebase" };
-        remoteStoriesCache = sortStoriesNewestFirst(dedupeStoriesById([
-          syncedStory,
-          ...(Array.isArray(remoteStoriesCache) ? remoteStoriesCache.filter(x => String(x?.id || "") !== String(story.id || "")) : [])
-        ]));
-        syncManagedStoriesLocalMirror(remoteStoriesCache);
-
-        return { ...syncedStory, __savedRemote: true };
-      }catch(err){
-        console.warn("save story to storyContentDb failed", err);
-        throw err;
-      }
-    }
-
-    async function deleteManagedStory(storyId){
-      const id = String(storyId || "").trim();
-      if (!id) throw new Error("Thiếu id truyện.");
-      if (!STORY_FIREBASE_OK || !storyContentDb) throw new Error("Firebase nội dung truyện chưa sẵn sàng.");
-
-      try{
-        if (currentUser && storyContentAuth && !storyContentAuth.currentUser){
-          const ok = await ensureStoryContentWriteAuth();
-          if (!ok) throw new Error("Không thể xác thực quyền ghi Firebase nội dung truyện.");
-        }
-        await storyContentDb.collection(STORY_CONTENT_COLLECTION).doc(id).delete();
-        remoteStoriesCache = sortStoriesNewestFirst((Array.isArray(remoteStoriesCache) ? remoteStoriesCache : []).filter(x => String(x?.id || "") !== id));
-        syncManagedStoriesLocalMirror(remoteStoriesCache);
-        deleteCustomStory(id);
-        return true;
-      }catch(err){
-        console.warn("delete remote story failed", err);
-        throw err;
-      }
-    }
-
-    function startStoryContentSync(){
-      if (!STORY_FIREBASE_OK || !storyContentDb) return;
-      try{
-        if (typeof remoteStoriesUnsub === "function") remoteStoriesUnsub();
-        remoteStoriesUnsub = storyContentDb.collection(STORY_CONTENT_COLLECTION).onSnapshot((snap) => {
-          const arr = [];
-          snap.forEach((docSnap) => {
-            const raw = docSnap.data() || {};
-            if (raw.isPublished === false) return;
-            const story = normalizeRemoteStory(raw, docSnap.id);
-            if (story) arr.push(story);
-          });
-          remoteStoriesCache = sortStoriesNewestFirst(dedupeStoriesById(arr));
-          syncManagedStoriesLocalMirror(remoteStoriesCache);
-          loadStories().catch(err => console.warn("reload stories after sync failed", err));
-        }, (err) => {
-          console.warn("story content sync error", err);
-        });
-      }catch(err){
-        console.warn("startStoryContentSync fail", err);
-      }
-    }
-
     function cloneStoriesFromHtml(){
-      // Nguồn truyện/chương/ảnh = HTML tĩnh + Firebase nội dung truyện.
-      // Chỉ fallback local khi Firebase nội dung truyện chưa sẵn sàng.
-      const base = localSeedStories.map(item => ({ ...item, baseViews: Number(item.views || 0) }));
-      const remote = (Array.isArray(remoteStoriesCache) ? remoteStoriesCache : []).map(item => ({ ...item, baseViews: Number(item.baseViews || item.views || 0) }));
-      const fallbackLocal = (!STORY_FIREBASE_OK || !storyContentDb)
-        ? loadStoredCustomStories().map(item => ({ ...item, baseViews: Number(item.baseViews || item.views || 0) }))
-        : [];
-      return dedupeStoriesById([...base, ...remote, ...fallbackLocal]);
+      // Nguồn truyện/chương/ảnh là HTML tĩnh (không đọc từ Firebase)
+      return localSeedStories.map(item => ({ ...item, baseViews: Number(item.views || 0) }));
     }
 
     function applyRemoteViewMapToStories(){
@@ -10921,36 +10573,38 @@ function getReadingStories(){
     }
 
     function applyUserUI(){
-      if (currentUser){
-        const name = currentUser.displayName || "Người dùng";
-        profileName.textContent = name;
-        profileSub.textContent = currentUser.email || "Đang đồng bộ Firebase";
-        btnLogin.classList.add("hidden");
-        btnLogout.classList.remove("hidden");
-        [profileAvatar, avatarBox].forEach(el=>{
-          if (currentUser.photoURL){
-            el.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt="avatar">`;
-          } else {
-            el.textContent = initials(name);
-          }
-        });
+  if (currentUser){
+    const name = getPreferredUsername(currentUser) || "Người dùng";
+    profileName.textContent = name;
+    profileSub.textContent = "@" + name;
+    btnLogin.classList.add("hidden");
+    btnLogout.classList.remove("hidden");
+    [profileAvatar, avatarBox].forEach(el=>{
+      if (currentUser.photoURL){
+        el.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt="avatar">`;
       } else {
-        profileName.textContent = "Khách";
-        profileSub.textContent = "";
-        btnLogin.classList.remove("hidden");
-        btnLogout.classList.add("hidden");
-        profileAvatar.textContent = "?";
-        avatarBox.textContent = "?";
+        el.textContent = initials(name);
       }
-      renderAccountMenuSummary();
-      updateHeaderLoginGates();
-      renderNotificationList();
-      try{ updateBagBubble(); }catch(_){ }
-      renderAll();
-      renderRoute();
-    }
+    });
+  } else {
+    profileName.textContent = "Khách";
+    profileSub.textContent = "";
+    btnLogin.classList.remove("hidden");
+    btnLogout.classList.add("hidden");
+    profileAvatar.textContent = "?";
+    avatarBox.textContent = "?";
+  }
+  syncAuthFormFromCurrentUser();
+  updateAuthFieldsVisibility();
+  renderAccountMenuSummary();
+  updateHeaderLoginGates();
+  renderNotificationList();
+  try{ updateBagBubble(); }catch(_){ }
+  renderAll();
+  renderRoute();
+}
 
-    function setThemeButtonIcon(mode){
+function setThemeButtonIcon(mode){
       if (!btnTheme) return;
       btnTheme.innerHTML = mode === "light"
         ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`
@@ -13033,15 +12687,10 @@ function goToSearchWithGenreFromMenu(genreLabel){
         const FANPAGE_URL = "https://facebook.com/";
         const GROUP_URL   = "https://facebook.com/groups/";
         const YOUTUBE_URL = "https://youtube.com/";
-        const canSeeVipAdmin = isCurrentUserAdmin();
+        const canSeeVipZone = isCurrentUserAdmin();
 
         if (view === "vip-zone"){
           renderVipAdminPanel();
-          return;
-        }
-
-        if (view === "add-story"){
-          renderAddStoryPage();
           return;
         }
 
@@ -13389,22 +13038,14 @@ if (view === "estate" || view === "trangvien" || view === "tv"){
   <div class="cm-hub-ico">🏡</div>
   <div class="cm-hub-label">Trang viên</div>
 </button>
-                <button class="cm-hub-item" type="button" data-act="vip">
-                  <div class="cm-hub-ico">👑</div>
-                  <div class="cm-hub-label">Khu VIP</div>
-                </button>
-                <button class="cm-hub-item" type="button" data-act="add-story">
-                  <div class="cm-hub-ico">📚</div>
-                  <div class="cm-hub-label">Thêm truyện</div>
-                </button>
                 <button class="cm-hub-item" type="button" data-act="youtube">
                   <div class="cm-hub-ico">▶</div>
                   <div class="cm-hub-label">Kênh YouTube</div>
                 </button>
-                ${canSeeVipAdmin ? `
+                ${canSeeVipZone ? `
                 <button class="cm-hub-item" type="button" data-act="vip-zone">
-                  <div class="cm-hub-ico">🛡️</div>
-                  <div class="cm-hub-label">VIP Admin</div>
+                  <div class="cm-hub-ico">👑</div>
+                  <div class="cm-hub-label">Khu Vip</div>
                 </button>
                 ` : ``}
               </div>
@@ -13419,8 +13060,6 @@ if (view === "estate" || view === "trangvien" || view === "tv"){
             if (act === "guild")  return (location.hash = "#/community/guild");
             if (act === "market") return (location.hash = "#/community/market");
             if (act === "estate") return (location.hash = "#/community/estate");
-            if (act === "vip") return (location.hash = "#/vip");
-            if (act === "add-story") return (location.hash = "#/community/add-story");
             if (act === "vip-zone") return (location.hash = "#/community/vip-zone");
             if (act === "fanpage") return openExternal(FANPAGE_URL);
             if (act === "group")   return openExternal(GROUP_URL);
@@ -13439,7 +13078,7 @@ if (view === "estate" || view === "trangvien" || view === "tv"){
           : (currentUser
               ? "Chào mừng bạn quay lại! Lưu truyện để đồng bộ theo dõi • lịch sử • đánh dấu."
               : "Chưa có giới thiệu.");
-        const emailText = currentUser?.email || "Chưa đăng nhập";
+        const emailText = currentUser ? ("@" + (getPreferredUsername(currentUser) || "tai-khoan")) : "Chưa đăng nhập";
 
         const followed = Array.isArray(userState?.followedIds) ? userState.followedIds.length : 0;
         const bookmark = Array.isArray(userState?.bookmarkIds) ? userState.bookmarkIds.length : 0;
@@ -13467,7 +13106,7 @@ if (view === "estate" || view === "trangvien" || view === "tv"){
         const joinedDays = (()=>{ try{ const d = new Date(joinedIso); const ms = d.getTime(); if (!isFinite(ms)) return 0; return Math.max(0, Math.floor((Date.now() - ms) / 86400000)); }catch(_){ return 0; } })();
         const totalReadSeconds = Number(safeGetLS(__lsReadSecondsKey(), "0") || 0);
         const minutesRead = Math.max(0, Math.floor(totalReadSeconds / 60));
-        const accountTypeLabel = currentUser ? "Google" : "Khách";
+        const accountTypeLabel = currentUser ? "Tài khoản" : "Khách";
         // --- Tu Vi (linh khí) ---
         const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
         const estateInfo = getEstateInfo(estateLv);
@@ -13784,7 +13423,7 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
                 </div>
 
                 <div class="rank-note" style="margin-top:10px">
-                  Chỉ hiển thị khi có dữ liệu PVP thật.
+                  Thách đấu 10 đối thủ bên dưới để tăng điểm. (Demo lưu cục bộ; sau này có thể đồng bộ Firebase theo tài khoản.)
                 </div>
               </div>
 
@@ -13850,13 +13489,13 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
     <div class="s">Cộng dồn theo lượt đánh</div>
   </div>
   <div class="boss-lb" id="bossLb">
-    <div class="muted" style="padding:10px 2px">Chưa có dữ liệu thật để hiển thị.</div>
+    <div class="muted" style="padding:10px 2px">Đang tải bảng xếp hạng…</div>
   </div>
 </section>
 <section class="pf-sec" id="pfSec-gear">
               <div class="pf-section-title">
                 <div class="t">Trang Bị</div>
-                <div class="s">Kho đồ</div>
+                <div class="s">Kho đồ (demo)</div>
               </div>
 
               <div class="pf-setting">
@@ -13925,7 +13564,7 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
 
               <div class="tab-page-actions">
                 <button class="tab-page-btn" type="button" id="pfResetSettingsBtn">Reset cài đặt</button>
-                <button class="tab-page-btn primary" type="button" id="pfOpenReaderDemoBtn">Mở trình đọc/nghe</button>
+                <button class="tab-page-btn primary" type="button" id="pfOpenReaderDemoBtn">Test đọc/nghe</button>
               </div>
             </section>
 
@@ -14065,7 +13704,7 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
       motsach:   { label:"Mọt Sách",    icon:"📚", desc:"Số chương đọc nhiều nhất trong ngày (hôm nay)." },
       boss:      { label:"Săn Boss",    icon:"🐉", desc:"Điểm săn boss tích lũy." },
       trangvien: { label:"Trang Viên",  icon:"🏡", desc:"Cấp Trang viên (tăng % linh khí tu luyện)." },
-      banghoi:   { label:"Bang Hội",    icon:"🏯", desc:"Xếp hạng bang hội khi có dữ liệu thật." }
+      banghoi:   { label:"Bang Hội",    icon:"🏯", desc:"Xếp hạng bang hội (demo theo điểm & thành viên)." }
     };
 
     function _rankTitleSub(state){
@@ -14134,8 +13773,42 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
 
     function ensureRankBots(){
       const key = "rank_bots_v1";
-      try{ localStorage.removeItem(key); }catch(_){}
-      return [];
+      try{
+        const raw = safeGetLS(key, "");
+        if (raw){
+          const arr = JSON.parse(raw);
+          if (Array.isArray(arr) && arr.length >= 10) return arr;
+        }
+      }catch(_){}
+
+      const names = ["Thiên Vũ","Huyền Phong","Băng Tâm","Hắc Long","Thanh Vân","Lôi Ảnh","Ma Tôn","Nguyệt Ảnh","Kim Cốt","U Minh","Thiên Kiếm","Huyết Hổ","Linh Vũ","Vạn Kiếm"];
+      const demo = [];
+      for (let i = 0; i < 14; i++){
+        const nm = names[i] + " " + (i+1);
+        const id = "rb_" + i;
+        const seed = __hash32(id + "|" + nm);
+
+        const tuvi = 5000 + (seed % 650000);              // Tu Vi exp
+        const estateLv = clampEstateLevel(seed % 18);      // 0..18
+        const pvp = seed % 8000;
+        const boss = seed % 12000;
+        const motsach = 5 + (seed % 220);
+        const gearSlots = seed % 6;
+        const ri = getRealmByExp(tuvi);
+        const range = __getRealmPowerRange(ri?.realm);
+        const basePow = range ? calcPowerByStar(range.min, range.max, ri?.star || 1) : Math.max(0, Math.floor(tuvi));
+        const power = calcCombatPowerWithGear(basePow, gearSlots);
+        const guild = ["Thiên Kiếm","Huyền Minh","Thanh Vân","Hắc Long","Băng Tâm","Ma Tông"][(seed >> 8) % 6];
+
+        demo.push({
+          id, name: nm,
+          avatar: __svgAvatar(nm.slice(0,1), (i*37)%360),
+          tuvi, power, pvp, boss, motsach, estateLv, guild
+        });
+      }
+
+      try{ safeSetLS(key, JSON.stringify(demo)); }catch(_){}
+      return demo;
     }
 
     function _rankMe(){
@@ -14160,8 +13833,26 @@ const pvpWins = Number(safeGetLS("pvp_wins", "0") || 0);
 
     function ensureGuildDemo(){
       const key = "guild_demo_v1";
-      try{ localStorage.removeItem(key); }catch(_){}
-      return [];
+      let arr = null;
+      try{ arr = JSON.parse(safeGetLS(key, "null") || "null"); }catch(_){ arr = null; }
+      if (!Array.isArray(arr) || arr.length < 6){
+        const names = ["Thiên Kiếm","Huyền Minh","Thanh Vân","Hắc Long","Băng Tâm","Ma Tông","Long Tộc","Vạn Kiếm","U Minh","Lôi Ảnh"];
+        arr = [];
+        for (let i = 0; i < 10; i++){
+          const nm = names[i];
+          const seed = __hash32("g|" + nm);
+          const points = 1000 + (seed % 180000);
+          const members = 10 + (seed % 380);
+          arr.push({
+            id: "g_" + i,
+            name: nm,
+            avatar: __svgAvatar(nm.slice(0,1), (i*48)%360),
+            points, members
+          });
+        }
+        try{ safeSetLS(key, JSON.stringify(arr)); }catch(_){}
+      }
+      return arr;
     }
 
     function _rankValueFor(entry, type){
@@ -14884,32 +14575,32 @@ rankPrevBtn?.addEventListener("click", () => {
     }
 
     function renderCommunityAuthHint(){
-      const hint = $("#cmAuthHint");
-      if (!hint) return;
+  const hint = $("#cmAuthHint");
+  if (!hint) return;
 
-      if (!currentUser){
-        hint.innerHTML = `
-          <div class="cm-auth-box">
-            Bạn đang ở <b>chế độ khách</b>. 
-            <button class="cm-link" id="cmHintLogin" type="button">Đăng nhập Google</button>
-            để gửi chat / tạo thế lực / đăng bài.
-          </div>
-        `;
-        $("#cmHintLogin")?.addEventListener("click", () => {
-          toggleAccountMenu(true);
-          setTimeout(() => { $("#btnLogin")?.scrollIntoView({ block:"center" }); $("#btnLogin")?.focus(); }, 50);
-        });
-      } else {
-        hint.innerHTML = `
-          <div class="cm-auth-box">
-            Xin chào <b>${esc(currentUser.displayName || "bạn")}</b> 👋 
-            <span class="muted">(${esc(currentUser.email || "Đã đăng nhập")})</span>
-          </div>
-        `;
-      }
-    }
+  if (!currentUser){
+    hint.innerHTML = `
+      <div class="cm-auth-box">
+        Bạn đang ở <b>chế độ khách</b>. 
+        <button class="cm-link" id="cmHintLogin" type="button">Đăng nhập / Đăng ký</button>
+        để gửi chat / tạo thế lực / đăng bài.
+      </div>
+    `;
+    $("#cmHintLogin")?.addEventListener("click", () => {
+      toggleAccountMenu(true);
+      setTimeout(() => { $("#authUsername")?.scrollIntoView({ block:"center" }); $("#authUsername")?.focus(); }, 50);
+    });
+  } else {
+    hint.innerHTML = `
+      <div class="cm-auth-box">
+        Xin chào <b>${esc(getPreferredUsername(currentUser) || "bạn")}</b> 👋 
+        <span class="muted">(@${esc(getPreferredUsername(currentUser) || "tai-khoan")})</span>
+      </div>
+    `;
+  }
+}
 
-    const CHAT_EMOJI_SET = ["😀","😁","😂","🤣","😊","😍","😘","🥰","😎","🤩","🤔","😭","😡","🙏","👍","👎","👏","🔥","❤️","💛","✨","🎉","🤝","☕","🌙"];
+const CHAT_EMOJI_SET = ["😀","😁","😂","🤣","😊","😍","😘","🥰","😎","🤩","🤔","😭","😡","🙏","👍","👎","👏","🔥","❤️","💛","✨","🎉","🤝","☕","🌙"];
 
     function insertChatTextAtCursor(inputEl, text){
       if (!inputEl || !text) return;
@@ -16187,7 +15878,7 @@ if (searchEl){
        10) Load stories (HTML tĩnh)
        ============================ */
     async function loadStories(){
-      // Dữ liệu truyện được ghép từ HTML tĩnh + Firebase nội dung truyện + bản dự phòng local.
+      // Dữ liệu nội dung truyện/chương/ảnh nằm trong HTML tĩnh, KHÔNG đọc từ Firebase.
       stories = cloneStoriesFromHtml();
       applyRemoteViewMapToStories();
       renderAll();
@@ -16328,6 +16019,7 @@ if (searchEl){
         renderRoute();
         return;
       }
+      ensureDefaultAdminAccount().catch(err => console.warn("default admin setup error", err));
       onAuthStateChanged(auth, async (user) => {
         currentUser = user || null;
         applyUserUI();
@@ -16352,7 +16044,6 @@ if (searchEl){
           if (userStateUnsub) userStateUnsub();
           userStateUnsub = null;
           userState = loadGuestUserState();
-          signOutStoryContentAuth().catch(()=>{});
           startPresence(null); // vẫn giữ realtime online cho khách
           syncHeaderOnlineStatus();
           closeNotifyPanel();
@@ -17184,25 +16875,27 @@ if (bossAtkBtn){
     });
 
     btnAccountProfile?.addEventListener("click", () => {
-      if (!currentUser){
-        showAccountInlineNote("Bạn chưa đăng nhập. Hãy bấm <strong>Đăng nhập Google</strong> để đồng bộ tài khoản.", "warn");
-        return;
-      }
-      const followed = Array.isArray(userState?.followedIds) ? userState.followedIds.length : 0;
-      const history = Array.isArray(userState?.historyIds) ? userState.historyIds.length : 0;
-      showAccountInlineNote(
-        `Tài khoản: <strong>${esc(currentUser.displayName || "Người dùng")}</strong><br>` +
-        `Email: ${esc(currentUser.email || "(không có)")}<br>` +
-        `Theo dõi: <strong>${followed}</strong> • Lịch sử đọc: <strong>${history}</strong>`,
-        "info"
-      );
-      const profileNav = document.querySelector('.nav-item[data-tab="profile"]');
-      if (profileNav){
-        $$(".nav-item").forEach(n=>n.classList.remove("active"));
-        profileNav.classList.add("active");
-      }
-      location.hash = "#/profile";
-    });
+  if (!currentUser){
+    showAccountInlineNote("Bạn chưa đăng nhập. Hãy nhập <strong>tài khoản + mật khẩu</strong> để đồng bộ dữ liệu.", "warn");
+    authUsernameInput?.focus();
+    return;
+  }
+  const followed = Array.isArray(userState?.followedIds) ? userState.followedIds.length : 0;
+  const history = Array.isArray(userState?.historyIds) ? userState.historyIds.length : 0;
+  const username = getPreferredUsername(currentUser) || "Người dùng";
+  showAccountInlineNote(
+    `Tài khoản: <strong>${esc(username)}</strong><br>` +
+    `Loại: ${esc(String(userState?.role || "user").toUpperCase())}<br>` +
+    `Theo dõi: <strong>${followed}</strong> • Lịch sử đọc: <strong>${history}</strong>`,
+    "info"
+  );
+  const profileNav = document.querySelector('.nav-item[data-tab="profile"]');
+  if (profileNav){
+    $$(".nav-item").forEach(n=>n.classList.remove("active"));
+    profileNav.classList.add("active");
+  }
+  location.hash = "#/profile";
+});
 
     btnAccountVip?.addEventListener("click", () => {
       closeAccountMenu();
@@ -17210,30 +16903,22 @@ if (bossAtkBtn){
     });
 
     btnLogin.addEventListener("click", async () => {
-      if (!ENABLE_FIREBASE){
-        toast("Hãy bật ENABLE_FIREBASE = true (Firebase chỉ dùng cho user sync / lượt xem / online)");
-        return;
-      }
-      try{
-        const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        syncStoryContentAuthFromPrimaryResult(result).catch(()=>{});
-        showAccountInlineNote("Đăng nhập thành công. Dữ liệu theo dõi / lịch sử đọc sẽ tự đồng bộ.", "info");
-        closeAccountMenu();
-        toast("Đăng nhập thành công");
-      }catch(err){
-        console.error(err);
-        const code = err?.code || "unknown";
-        showAccountInlineNote(`Đăng nhập lỗi: <strong>${esc(code)}</strong>`, "warn");
-        toast("Đăng nhập thất bại");
-      }
-    });
+  await handleUsernamePasswordAuth();
+});
+
+[authUsernameInput, authPasswordInput, authPasswordConfirmInput].forEach((el) => {
+  el?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter"){
+      e.preventDefault();
+      handleUsernamePasswordAuth();
+    }
+  });
+});
 
     btnLogout.addEventListener("click", async () => {
       if (!ENABLE_FIREBASE || !auth) return;
       try{
         await signOut(auth);
-        await signOutStoryContentAuth();
         showAccountInlineNote("Đã đăng xuất. Bạn đang ở chế độ khách.", "warn");
         closeAccountMenu();
         toast("Đã đăng xuất");
@@ -17436,9 +17121,13 @@ if (bossAtkBtn){
     });
 
 
-    (function syncRandomStatus(){
-      const el = $("#randomCooldownText");
-      if (el) el.textContent = stories.length ? "Sẵn sàng" : "Chưa có truyện";
+    (function startFakeCooldown(){
+      let t = 55;
+      setInterval(()=>{
+        t--;
+        if (t <= 0) t = 55;
+        $("#randomCooldownText").textContent = t + "s";
+      }, 1000);
     })();
 
     window.addEventListener("hashchange", () => { __navTrack(location.hash || "#/home"); closeSideMenu(); renderRoute(); });
@@ -17451,13 +17140,11 @@ if (bossAtkBtn){
       __navInit();
       applyTheme(activeTheme);
       applyUserUI();
-      cleanupDemoLocalData();
       await loadStories();
       if (ENABLE_FIREBASE){
         startStoryViewsSync();
         startPresence(null);
       }
-      startStoryContentSync();
       initAuth();
       syncHeaderOnlineStatus();
       renderNotificationList();
