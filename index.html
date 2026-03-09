@@ -276,13 +276,37 @@
       color:#d8e1ff;
       display:flex; align-items:center; gap:8px;
       padding:0 11px;
-      cursor:pointer;
+      cursor:text;
       box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+      transition:border-color .16s ease, box-shadow .16s ease, transform .08s ease;
+    }
+    .header-search-btn:hover{border-color:rgba(120,170,255,.18)}
+    .header-search-btn:focus-within{
+      border-color:rgba(0,186,255,.36);
+      box-shadow:0 0 0 3px rgba(0,186,255,.10), inset 0 1px 0 rgba(255,255,255,.02);
     }
     .header-search-btn svg{width:16px;height:16px;opacity:.85;flex:0 0 auto}
-    .header-search-text{
-      min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-      font-weight:700; font-size:12px; color:#b9c4ea;
+    .header-search-input{
+      flex:1; min-width:0;
+      background:transparent;
+      border:0;
+      outline:none;
+      color:inherit;
+      font-weight:700;
+      font-size:12px;
+      line-height:1;
+      padding:0;
+      caret-color:#38bdf8;
+    }
+    .header-search-input::placeholder{color:#b9c4ea; opacity:1}
+    .header-search-input::-webkit-search-cancel-button{
+      -webkit-appearance:none;
+      appearance:none;
+      height:14px; width:14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.16);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+      cursor:pointer;
     }
     .pill.gold.compact{
       height:34px;
@@ -2044,10 +2068,10 @@ body.theme-light .account-auth-help{color:#5a6d94}
     .notify-item .sub{font-size:9px; color:var(--muted); line-height:1.25}
 
     .search-panel{
-      position:fixed; inset:calc(env(safe-area-inset-top) + 10px) 12px auto 12px;
+      position:fixed; inset:auto 12px auto 12px;
       max-width:560px; margin:0 auto;
       width:calc(100% - 24px);
-      max-height:calc(100vh - env(safe-area-inset-top) - 24px);
+      max-height:min(62vh, 540px);
       border-radius:18px;
       border:1px solid rgba(255,255,255,.08);
       background:linear-gradient(180deg,#12182b,#0d1220);
@@ -2057,8 +2081,10 @@ body.theme-light .account-auth-help{color:#5a6d94}
       opacity:0; pointer-events:none;
       transition:opacity .18s ease, transform .18s ease;
       overflow:hidden;
+      top:calc(env(safe-area-inset-top) + 88px);
     }
     .search-panel.show{opacity:1; pointer-events:auto; transform:translateY(0) scale(1)}
+    .search-match-hit{color:#38bdf8; font-weight:900; text-shadow:0 0 10px rgba(56,189,248,.22)}
     .search-head{
       padding:12px; display:flex; gap:8px; align-items:center;
       border-bottom:1px solid rgba(255,255,255,.06);
@@ -2088,7 +2114,7 @@ body.theme-light .account-auth-help{color:#5a6d94}
       border-bottom:1px solid rgba(255,255,255,.04);
     }
     .search-results{
-      max-height:calc(100vh - env(safe-area-inset-top) - 140px);
+      max-height:min(calc(62vh - 48px), 470px);
       overflow:auto; padding:10px;
       display:flex; flex-direction:column; gap:8px;
     }
@@ -2193,7 +2219,8 @@ body.theme-light .account-auth-help{color:#5a6d94}
       background:#ffffff;
       border-color:rgba(34,197,94,.32);
     }
-    body.theme-light .header-search-text{color:#55678f}
+    body.theme-light .header-search-input,
+    body.theme-light .header-search-input::placeholder{color:#55678f}
     body.theme-light .notify-item,
     body.theme-light .search-item{
       background:rgba(27,39,66,.02);
@@ -2342,8 +2369,10 @@ body.theme-light .account-auth-help{color:#5a6d94}
       border-color:rgba(74,222,128,.24);
       box-shadow:0 0 0 2px rgba(34,197,94,.12) inset;
     }
-    body.theme-sepia .header-search-text{color:#7b674d}
-    body.theme-amoled .header-search-text{color:#b5c2e8}
+    body.theme-sepia .header-search-input,
+    body.theme-sepia .header-search-input::placeholder{color:#7b674d}
+    body.theme-amoled .header-search-input,
+    body.theme-amoled .header-search-input::placeholder{color:#b5c2e8}
     body.theme-sepia .notify-item,
     body.theme-sepia .search-item{
       background:rgba(90,67,39,.04);
@@ -5059,11 +5088,59 @@ body.theme-light .account-auth-help{color:#5a6d94}
       .rank-bar .chip.long-label{font-size:10px;}
     }
     .rank-podium{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:10px;align-items:end;margin-top:10px;}
-    .podium-card{border:1px solid var(--line);background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.12);min-width:0;}
+    .podium-card{border:1px solid var(--line);background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.12);min-width:0;position:relative;}
+    .podium-card.rank-1{
+      border-color:rgba(255,221,113,.62);
+      background:
+        radial-gradient(circle at top center, rgba(255,231,145,.22), transparent 58%),
+        linear-gradient(180deg, rgba(255,244,186,.12), rgba(255,196,66,.05)),
+        linear-gradient(180deg, rgba(13,24,52,.98), rgba(8,13,32,.98));
+      box-shadow:0 0 28px rgba(255,204,77,.16), 0 10px 28px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,245,210,.12);
+    }
+    .podium-card.rank-2{
+      border-color:rgba(214,226,255,.72);
+      background:
+        radial-gradient(circle at top center, rgba(241,247,255,.18), transparent 58%),
+        linear-gradient(180deg, rgba(246,251,255,.11), rgba(184,204,232,.05)),
+        linear-gradient(180deg, rgba(12,22,46,.98), rgba(8,13,32,.98));
+      box-shadow:0 0 24px rgba(214,226,255,.14), 0 10px 28px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.10);
+    }
+    .podium-card.rank-3{
+      border-color:rgba(230,150,106,.72);
+      background:
+        radial-gradient(circle at top center, rgba(255,208,180,.16), transparent 58%),
+        linear-gradient(180deg, rgba(255,222,198,.10), rgba(212,104,52,.05)),
+        linear-gradient(180deg, rgba(13,22,45,.98), rgba(8,13,32,.98));
+      box-shadow:0 0 24px rgba(214,104,52,.14), 0 10px 28px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.08);
+    }
     .podium-card .cover{aspect-ratio:3/4;width:100%;object-fit:cover;display:block;}
     .podium-card .info{padding:10px;min-width:0;}
-    .podium-rank{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12px;}
-    .podium-title{margin-top:6px;font-weight:800;line-height:1.15;display:block;overflow:visible;max-height:none;word-break:break-word;overflow-wrap:anywhere;font-size:clamp(14px,2.8vw,22px);}
+    .podium-rank{display:flex;align-items:center;justify-content:center;margin:10px auto 0;font-weight:900;font-size:13px;padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));box-shadow:0 8px 18px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.10);width:fit-content;min-width:96px;text-align:center;}
+    .podium-rank.rank-1{
+      color:#fff8d8;
+      border-color:rgba(255,221,113,.62);
+      background:
+        linear-gradient(180deg, rgba(255,244,186,.34), rgba(255,196,66,.18)),
+        linear-gradient(180deg, #8a6012, #4a2d06);
+      box-shadow:0 0 22px rgba(255,204,77,.28), 0 10px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.26);
+    }
+    .podium-rank.rank-2{
+      color:#f8fbff;
+      border-color:rgba(214,226,255,.78);
+      background:
+        linear-gradient(180deg, rgba(246,251,255,.38), rgba(184,204,232,.18)),
+        linear-gradient(180deg, #78879b, #465365);
+      box-shadow:0 0 20px rgba(214,226,255,.22), 0 10px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.28);
+    }
+    .podium-rank.rank-3{
+      color:#fff1e7;
+      border-color:rgba(230,150,106,.78);
+      background:
+        linear-gradient(180deg, rgba(255,222,198,.28), rgba(212,104,52,.18)),
+        linear-gradient(180deg, #8f4f2d, #5b2615);
+      box-shadow:0 0 20px rgba(214,104,52,.22), 0 10px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.22);
+    }
+    .podium-title{margin-top:0;font-weight:800;line-height:1.15;display:block;overflow:visible;max-height:none;word-break:break-word;overflow-wrap:anywhere;font-size:clamp(14px,2.8vw,22px);}
     .podium-title .vip-name-text{white-space:normal;overflow:visible;text-overflow:clip;max-width:100%;}
     .podium-sub{margin-top:6px;opacity:.85;font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;}
     .podium-sub .tag{opacity:.85;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -5075,7 +5152,60 @@ body.theme-light .account-auth-help{color:#5a6d94}
     .rank-row .meta .t{font-weight:800;line-height:1.2;display:block;overflow:visible;max-height:none;word-break:break-word;overflow-wrap:anywhere;}
     .rank-row .meta .t .vip-name-text{white-space:normal;overflow:visible;text-overflow:clip;max-width:100%;}
     .rank-row .meta .s{margin-top:4px;font-size:12px;opacity:.85;display:flex;gap:10px;flex-wrap:wrap;}
+    .rank-row .meta .s.hidden{display:none !important;}
     .rank-row .stat{font-weight:900;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;align-self:center;}
+    .rank-stat-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      min-height:34px;
+      padding:7px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      font-weight:900;
+      font-size:13px;
+      line-height:1;
+      white-space:nowrap;
+      box-shadow:0 8px 18px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    }
+    .rank-stat-badge.realm{
+      color:#dbeafe;
+      border-color:rgba(96,165,250,.45);
+      background:linear-gradient(180deg, rgba(37,99,235,.22), rgba(30,64,175,.12));
+      box-shadow:0 10px 24px rgba(37,99,235,.18), inset 0 1px 0 rgba(255,255,255,.10);
+    }
+    .rank-stat-badge.power{
+      color:#fff7ed;
+      border-color:rgba(251,146,60,.52);
+      background:
+        radial-gradient(circle at 22% 20%, rgba(251,146,60,.30), transparent 40%),
+        radial-gradient(circle at 78% 22%, rgba(239,68,68,.18), transparent 36%),
+        linear-gradient(180deg, rgba(154,52,18,.24), rgba(120,53,15,.10));
+      box-shadow:0 12px 26px rgba(249,115,22,.22), inset 0 1px 0 rgba(255,255,255,.12);
+      position:relative;
+    }
+    .rank-stat-badge.power::before,
+    .rank-stat-badge.power::after{
+      content:"";
+      width:10px;
+      height:14px;
+      border-radius:999px 999px 999px 999px / 12px 12px 8px 8px;
+      background:radial-gradient(circle at 50% 22%, rgba(255,237,213,.96), rgba(251,146,60,.95) 45%, rgba(220,38,38,.88) 78%, transparent 79%);
+      box-shadow:0 0 14px rgba(249,115,22,.32);
+      display:inline-block;
+      transform-origin:center bottom;
+    }
+    .rank-stat-badge.power::before{ transform:rotate(-12deg); }
+    .rank-stat-badge.power::after{ transform:rotate(12deg); }
+    .rank-stat-badge.pvp{
+      color:#dbeafe;
+      border-color:rgba(96,165,250,.48);
+      background:linear-gradient(180deg, rgba(30,64,175,.26), rgba(30,41,59,.12));
+      box-shadow:0 10px 24px rgba(59,130,246,.18), inset 0 1px 0 rgba(255,255,255,.10);
+    }
+    .podium-stat-wrap{display:flex;justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:8px;min-width:0;}
     .rank-note{margin-top:10px;padding:12px;border:1px dashed var(--line);border-radius:16px;opacity:.9;}
     .rank-pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;}
     .rank-pager .btn{padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-weight:800;}
@@ -8489,6 +8619,205 @@ body.theme-light .account-auth-help{color:#5a6d94}
       :root{ --page-fit-gap: 18px; }
     }
 
+
+    /* ===== Header refresh: theme + avatar on row 1, account drawer slide-in ===== */
+    .topbar-row-main{
+      display:grid;
+      grid-template-columns:auto minmax(0,1fr) auto auto;
+      gap:8px;
+      height:42px;
+    }
+    .topbar-row-main .brand{min-width:0;height:42px;}
+    .topbar-row-main > *{min-width:0;}
+    .topbar-row-tools{height:38px;}
+    .topbar-row-tools .header-search-btn{width:100%;flex:1;}
+    .avatar-wrap{
+      width:42px;
+      min-width:42px;
+      padding:0;
+      justify-content:center;
+      border-radius:14px;
+      gap:0;
+    }
+    .avatar-wrap .caret,
+    .avatar-wrap .account-trigger-label{display:none!important;}
+    .avatar-wrap.guest-mode{
+      min-width:42px;
+      width:42px;
+      padding:0;
+      gap:0;
+      justify-content:center;
+    }
+    .avatar-wrap.guest-mode .avatar{display:grid!important;}
+    .topbar .avatar{
+      width:34px;
+      height:34px;
+      border-width:1px;
+    }
+    .account-drawer-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(3,7,14,.56);
+      backdrop-filter:blur(5px);
+      z-index:1540;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .22s ease;
+    }
+    .account-drawer-overlay.show{opacity:1;pointer-events:auto;}
+    #accountMenu.account-drawer{
+      position:fixed;
+      top:0;
+      right:0;
+      bottom:0;
+      left:auto;
+      width:min(88vw, 340px);
+      max-height:none;
+      overflow:auto;
+      padding:calc(env(safe-area-inset-top) + 14px) 12px calc(env(safe-area-inset-bottom) + 18px);
+      border-radius:24px 0 0 24px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg,rgba(16,22,38,.985),rgba(8,12,24,.985));
+      box-shadow:-18px 0 44px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.04);
+      z-index:1550;
+      transform:translateX(108%);
+      opacity:1;
+      transition:transform .24s ease;
+      animation:none;
+    }
+    #accountMenu.account-drawer::before{display:none;}
+    #accountMenu.account-drawer.hidden{
+      display:block!important;
+      visibility:hidden;
+      pointer-events:none;
+      transform:translateX(108%);
+    }
+    #accountMenu.account-drawer.open{
+      visibility:visible;
+      pointer-events:auto;
+      transform:translateX(0);
+    }
+    .account-drawer-headbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:12px;
+    }
+    .account-drawer-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      color:#eef4ff;
+      letter-spacing:.02em;
+    }
+    .account-drawer-title .dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 30%, #b8fbff, #2dd4ff 60%, #2563eb 100%);
+      box-shadow:0 0 18px rgba(45,212,255,.42);
+      flex:0 0 auto;
+    }
+    .account-drawer-close{
+      width:34px;
+      height:34px;
+      border:none;
+      border-radius:12px;
+      color:inherit;
+      cursor:pointer;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 8px 18px rgba(0,0,0,.18);
+    }
+    #accountMenu.account-drawer .account-menu-head{
+      padding:10px;
+      border-radius:16px;
+      margin-bottom:10px;
+    }
+    #accountMenu.account-drawer .account-menu-head .avatar{width:42px;height:42px;}
+    #accountMenu.account-drawer .account-menu-head .name{font-size:14px;}
+    #accountMenu.account-drawer .account-menu-head .sub{font-size:11px;}
+    #accountMenu.account-drawer .account-menu-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:0 0 10px;
+    }
+    #accountMenu.account-drawer .account-chip{
+      min-height:30px;
+      padding:0 10px;
+      font-size:11px;
+      border-radius:999px;
+    }
+    #accountMenu.account-drawer .account-chip b{font-size:11px;max-width:116px;}
+    #accountMenu.account-drawer #onlinePill{
+      display:inline-flex;
+      min-height:30px;
+      padding:0 12px;
+      border-radius:999px;
+    }
+    #accountMenu.account-drawer #onlinePill.hidden{display:none!important;}
+    #accountMenu.account-drawer .account-menu-list{gap:8px;}
+    #accountMenu.account-drawer .account-menu-btn{
+      min-height:46px;
+      height:auto;
+      padding:10px 12px;
+      font-size:13px;
+      border-radius:14px;
+      border-color:rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+    }
+    #accountMenu.account-drawer .account-menu-btn .left{gap:9px;}
+    #accountMenu.account-drawer .account-menu-btn .icon{width:18px;font-size:14px;}
+    #accountMenu.account-drawer .account-menu-btn.primary{
+      border-color:rgba(255,211,87,.28);
+      background:linear-gradient(180deg, rgba(255,211,87,.20), rgba(255,211,87,.08));
+    }
+    #accountMenu.account-drawer .right-inline{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    #accountMenu.account-drawer #notifyBadge{
+      position:static;
+      min-width:20px;
+      height:20px;
+      padding:0 6px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:10px;
+      box-shadow:none;
+    }
+    #accountMenu.account-drawer .account-auth-input{height:38px;font-size:12px;border-radius:12px;}
+    #accountMenu.account-drawer .account-auth-help{font-size:10px;padding:6px 2px 2px;}
+    #accountMenu.account-drawer .account-inline-note{padding:8px 10px;font-size:10.5px;border-radius:12px;}
+    .notify-backdrop{z-index:1552;}
+    .notify-panel{z-index:1560;}
+    body.theme-light #accountMenu.account-drawer{
+      background:linear-gradient(180deg, rgba(255,255,255,.99), rgba(242,246,255,.99));
+      border-color:rgba(35,58,112,.10);
+      box-shadow:-18px 0 44px rgba(35,58,112,.18);
+    }
+    body.theme-light .account-drawer-close{
+      color:#233456;
+      background:linear-gradient(180deg,#fff,#f2f6ff);
+      border-color:rgba(35,58,112,.10);
+    }
+    body.theme-light .account-drawer-title{color:#1b2742;}
+    body.theme-light #accountMenu.account-drawer .account-menu-btn{
+      color:#263354;
+      border-color:rgba(30,50,100,.08);
+      background:#fff;
+    }
+    body.theme-light #accountMenu.account-drawer .account-menu-btn.primary{
+      background:linear-gradient(180deg, rgba(255,211,87,.22), rgba(255,211,87,.10));
+      border-color:rgba(209,155,43,.24);
+    }
+
 </style>
 </head>
 <body>
@@ -8506,10 +8835,7 @@ body.theme-light .account-auth-help{color:#5a6d94}
           <div class="brand-name">Vạn <span>Thư Các</span></div>
         </div>
 
-        <button class="pill online hidden" id="onlinePill" title="Người đang online">
-          <span class="online-dot"></span>
-          <span class="online-count" id="onlineCount">0</span>
-        </button>
+        <button class="icon-btn theme-switch" id="btnTheme" title="Đổi giao diện" aria-label="Đổi giao diện" aria-expanded="false"></button>
 
         <button class="avatar-wrap guest-mode" id="btnAccount" type="button" title="Đăng nhập" aria-label="Đăng nhập" aria-controls="accountMenu" aria-expanded="false">
           <div class="avatar" id="avatarBox">?</div>
@@ -8519,35 +8845,24 @@ body.theme-light .account-auth-help{color:#5a6d94}
       </div>
 
       <div class="topbar-row topbar-row-tools">
-        <button class="header-search-btn" id="btnSearch" title="Tìm kiếm" aria-label="Tìm kiếm">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <div class="header-search-btn" id="btnSearch" title="Tìm kiếm truyện">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <circle cx="11" cy="11" r="7"></circle>
             <path d="M20 20l-3.5-3.5"></path>
           </svg>
-          <span class="header-search-text">Tìm truyện, tác giả, thể loại...</span>
-        </button>
-
-        <button class="icon-btn notify-in-header" id="btnNotify" title="Thông báo" aria-label="Thông báo">
-          <span class="badge-dot hidden" id="notifyBadge">0</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5"/>
-            <path d="M9 17a3 3 0 0 0 6 0"/>
-          </svg>
-        </button>
-
-        <button class="pill gold compact" id="btnNap" title="VIP">
-          <span class="vip-icon">👑</span>
-          <span class="btn-nap-label">VIP</span>
-        </button>
-
-        <button class="icon-btn theme-switch" id="btnTheme" title="Đổi giao diện" aria-label="Đổi giao diện" aria-expanded="false"></button>
-
+          <input class="header-search-input" id="headerSearchInput" type="search" placeholder="Tìm truyện theo tên..." autocomplete="off" spellcheck="false" />
+        </div>
         <div class="theme-pop hidden" id="themePop" aria-hidden="true" style="display:none!important"></div>
       </div>
     </div>
   </header>
 
-  <div class="account-menu hidden" id="accountMenu" aria-hidden="true">
+  <div class="account-drawer-overlay hidden" id="accountDrawerOverlay" aria-hidden="true"></div>
+  <div class="account-menu account-drawer hidden" id="accountMenu" aria-hidden="true">
+    <div class="account-drawer-headbar">
+      <div class="account-drawer-title"><span class="dot"></span><span>Tài khoản</span></div>
+      <button class="account-drawer-close" id="btnCloseAccountMenu" type="button" aria-label="Đóng bảng tài khoản">✕</button>
+    </div>
     <div class="account-menu-head hidden" id="accountMenuHead">
       <div class="avatar" id="profileAvatar">?</div>
       <div style="min-width:0">
@@ -8557,8 +8872,20 @@ body.theme-light .account-auth-help{color:#5a6d94}
     </div>
     <div class="account-menu-meta hidden" id="accountMenuMeta">
       <div class="account-chip"><span>TK</span><b id="accountAuthState">Khách</b></div>
+      <button class="pill online hidden" id="onlinePill" title="Người đang online" type="button">
+        <span class="online-dot"></span>
+        <span class="online-count" id="onlineCount">0</span>
+      </button>
     </div>
     <div class="account-menu-list">
+      <button class="account-menu-btn" id="btnNotify" type="button" title="Thông báo" aria-label="Thông báo">
+        <span class="left"><span class="icon">🔔</span><span>Thông báo</span></span>
+        <span class="right-inline"><span class="badge-dot hidden" id="notifyBadge">0</span><span>›</span></span>
+      </button>
+      <button class="account-menu-btn primary" id="btnNap" type="button" title="VIP">
+        <span class="left"><span class="icon">👑</span><span>VIP</span></span>
+        <span>›</span>
+      </button>
       <button class="account-menu-btn" id="btnAccountProfile" type="button">
         <span class="left"><span class="icon">👤</span><span>Hồ Sơ</span></span>
         <span>›</span>
@@ -8746,33 +9073,16 @@ body.theme-light .account-auth-help{color:#5a6d94}
       </section>
 
       
-      <section class="section" style="margin-top:16px" id="homeChatSection">
+      <section class="section" style="margin-top:16px" id="updatedSection">
         <div class="section-head">
           <div class="section-title" style="margin:0">
-            <div class="bubble">💬</div>
-            <div>Chat cộng đồng</div>
+            <div class="bubble">🆕</div>
+            <div>Truyện mới cập nhật</div>
           </div>
-          <button class="btn-link" id="homeChatOpenCommunity">Mở chat web →</button>
+          <button class="btn-link" id="viewAllUpdated">Xem tất cả →</button>
         </div>
-        <div class="section-desc">Chat web mới ngay tại trang chủ, có ô nhập nhanh, nút gửi và nút biểu cảm.</div>
-
-        <div class="home-chatbox" aria-label="Chat cộng đồng">
-          <div class="chat-web-screen home-chat-screen">
-            <div class="home-chat-list chat-web-list" id="homeChatList" aria-label="Danh sách tin nhắn"></div>
-            <div class="chat-web-bottom home-chat-compose">
-              <div class="chat-web-inputrow">
-                <button class="chat-web-emoji-toggle" id="homeChatEmojiToggle" type="button" aria-label="Mở biểu cảm">😊</button>
-                <div class="chat-web-compose-main">
-                  <div class="chat-web-emoji-panel hidden" id="homeChatEmojiPanel"></div>
-                  <div class="chat-web-inputbar">
-                    <input class="home-chat-input chat-web-input" id="homeChatInput" inputmode="text" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Nhập tin nhắn..."/>
-                    <button class="home-chat-send chat-web-send" id="homeChatSend" type="button">Gửi</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="section-desc">Danh sách truyện vừa cập nhật mới nhất trên web, bấm vào để mở truyện.</div>
+        <div class="updated-scroll" id="updatedList" aria-label="Truyện mới cập nhật"></div>
       </section>
 
 
@@ -9191,11 +9501,7 @@ body.theme-light .account-auth-help{color:#5a6d94}
 
   <div class="search-overlay" id="searchOverlay" aria-hidden="true"></div>
   <div class="search-panel" id="searchPanel" aria-hidden="true">
-    <div class="search-head">
-      <input class="search-input" id="searchInput" type="search" placeholder="Nhập tên truyện, tác giả, thể loại..." autocomplete="off" />
-      <button class="search-close-btn" id="btnCloseSearch" type="button">Đóng</button>
-    </div>
-    <div class="search-meta" id="searchMeta">Nhập từ khóa để tìm truyện.</div>
+    <div class="search-meta" id="searchMeta">Nhập chữ vào thanh tìm kiếm trên đầu để lọc truyện theo tên.</div>
     <div class="search-results" id="searchResults"></div>
   </div>
 
@@ -9500,7 +9806,10 @@ function serializeFullUserState(state){
     pvpPoints: s.pvpPoints,
     pvpWins: s.pvpWins,
     pvpLoss: s.pvpLoss,
-    pvpStreak: s.pvpStreak
+    pvpStreak: s.pvpStreak,
+    bossPoints: s.bossPoints,
+    dailyReadCount: s.dailyReadCount,
+    dailyReadDate: s.dailyReadDate
   };
 }
 function buildAccountUserState(account, seedState = null){
@@ -11088,6 +11397,9 @@ function normalizeUserState(raw){
       try{ norm.pvpWins = Math.max(0, Math.floor(Number(r.pvpWins || 0) || 0)); }catch(_){ norm.pvpWins = 0; }
       try{ norm.pvpLoss = Math.max(0, Math.floor(Number(r.pvpLoss || 0) || 0)); }catch(_){ norm.pvpLoss = 0; }
       try{ norm.pvpStreak = Math.max(0, Math.floor(Number(r.pvpStreak || 0) || 0)); }catch(_){ norm.pvpStreak = 0; }
+      try{ norm.bossPoints = Math.max(0, Math.floor(Number(r.bossPoints || 0) || 0)); }catch(_){ norm.bossPoints = 0; }
+      try{ norm.dailyReadCount = Math.max(0, Math.floor(Number(r.dailyReadCount || 0) || 0)); }catch(_){ norm.dailyReadCount = 0; }
+      try{ norm.dailyReadDate = String(r.dailyReadDate || ""); }catch(_){ norm.dailyReadDate = ""; }
       return norm;
     }
     function loadGuestUserState(){
@@ -11116,7 +11428,10 @@ function normalizeUserState(raw){
           listeningRecent: s.listeningRecent,
           notifications: s.notifications,
           notificationsUnread: s.notificationsUnread,
-          notifyMeta: s.notifyMeta
+          notifyMeta: s.notifyMeta,
+          bossPoints: s.bossPoints,
+          dailyReadCount: s.dailyReadCount,
+          dailyReadDate: s.dailyReadDate
         };
         safeSetLS(GUEST_STATE_KEY, JSON.stringify(payload));
       }catch(_){}
@@ -11215,6 +11530,8 @@ function normalizeUserState(raw){
     const VIP_CHECKOUT_LS_PREFIX = "vip_checkout_draft_v1_";
     const VIP_MONTH_MS = 30 * 24 * 60 * 60 * 1000;
     const LOCAL_VIP_REQUESTS_KEY = "local_vip_requests_v2";
+    const LOCAL_CUSTOM_STORIES_KEY = "local_custom_stories_v1";
+    const CHAPTER_LINK_TEXT_CACHE = new Map();
     const vipRequestBadgeState = { count: 0, unsub: null };
     const VIP_PLAN_REWARDS = {
       dong: { coins: 10000, gems: 100, tuviExp: 9000 },
@@ -12192,7 +12509,7 @@ function normalizeUserState(raw){
           <div class="vip-inline-card">
             <h3>Không gian Admin</h3>
             <div class="vip-note">
-              Chọn mục quản trị để mở khu riêng. Hiện đã có mục <b>Quản lý yêu cầu VIP</b> để duyệt người dùng gửi yêu cầu nạp VIP.
+              Chọn mục quản trị để mở khu riêng. Hiện có mục <b>Quản lý yêu cầu VIP</b> và <b>Thêm truyện</b>.
             </div>
           </div>
           <div class="cm-hub-grid" style="margin-top:14px">
@@ -12200,6 +12517,10 @@ function normalizeUserState(raw){
               <span class="vip-pending-badge hidden" data-vip-pending-badge="vip-admin-panel">0</span>
               <div class="cm-hub-ico">👑</div>
               <div class="cm-hub-label">Quản lý yêu cầu VIP</div>
+            </button>
+            <button class="cm-hub-item" type="button" id="openStoryAdminBtn">
+              <div class="cm-hub-ico">📚</div>
+              <div class="cm-hub-label">Thêm truyện</div>
             </button>
           </div>
         </div>
@@ -12217,6 +12538,215 @@ function normalizeUserState(raw){
       $("#openVipRequestAdminBtn")?.addEventListener("click", () => {
         location.hash = "#/community/admin/vip-requests";
       });
+      $("#openStoryAdminBtn")?.addEventListener("click", () => {
+        location.hash = "#/community/admin/add-story";
+      });
+    }
+
+    function renderCommunityStoryAdminPage(){
+      hideRouteHeader();
+      if (!isCurrentUserAdmin()){
+        tabPageContent.innerHTML = `<div class="vip-space"><div class="vip-inline-card"><h3>Admin</h3><div class="vip-note">Bạn không có quyền truy cập mục này.</div></div></div>`;
+        return;
+      }
+
+      const localStories = loadLocalCustomStories();
+
+      tabPageContent.innerHTML = `
+        <div class="vip-space">
+          <div class="cm-subhead" style="margin-bottom:12px">
+            <button class="cm-subback" id="adminStoryBackBtn" type="button">← Admin</button>
+            <span class="community-meta"><span class="dot"></span> Kho truyện cục bộ: <b>${esc(String(localStories.length))}</b></span>
+          </div>
+
+          <div class="vip-inline-card">
+            <h3>Thêm truyện</h3>
+            <div class="vip-note">
+              Khu này lưu truyện bằng <b>localStorage</b> trên thiết bị/trình duyệt hiện tại. Nhập <b>tên</b>, <b>thể loại</b>, <b>mô tả</b>, <b>trạng thái</b>, <b>link ảnh</b> và số chương. Sau đó bấm tạo danh sách chương để dán từng link TXT.
+            </div>
+          </div>
+
+          <div class="vip-inline-card" style="margin-top:12px">
+            <div style="display:grid; gap:12px;">
+              <input id="adminStoryTitle" type="text" maxlength="140" placeholder="Tên truyện">
+              <input id="adminStoryCategory" type="text" maxlength="40" placeholder="Thể loại">
+              <textarea id="adminStoryDesc" maxlength="1500" placeholder="Mô tả truyện" style="min-height:110px; resize:vertical;"></textarea>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <select id="adminStoryStatus">
+                  <option value="Đang ra">Đang ra</option>
+                  <option value="Hoàn thành">Hoàn thành</option>
+                  <option value="Tạm dừng">Tạm dừng</option>
+                </select>
+                <input id="adminStoryCover" type="text" placeholder="Link ảnh bìa">
+              </div>
+
+              <div style="display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:end;">
+                <input id="adminStoryChapterCount" type="number" min="1" max="2000" value="1" placeholder="Số chương">
+                <button class="tab-page-btn primary" id="adminStoryBuildChaptersBtn" type="button">Tạo danh sách chương</button>
+              </div>
+
+              <div id="adminStoryChapterList" style="display:grid; gap:10px;"></div>
+
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn primary" id="adminStorySaveBtn" type="button">Lưu truyện</button>
+                <button class="tab-page-btn" id="adminStoryResetBtn" type="button">Làm mới form</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="vip-inline-card" style="margin-top:12px">
+            <h3>Truyện đã thêm trên thiết bị này</h3>
+            <div id="adminStoryLocalList" style="display:grid; gap:10px; margin-top:10px;"></div>
+          </div>
+        </div>
+      `;
+
+      const chapterCountInput = $("#adminStoryChapterCount");
+      const chapterListEl = $("#adminStoryChapterList");
+      const localListEl = $("#adminStoryLocalList");
+
+      const renderChapterInputs = (count, values = []) => {
+        const total = Math.max(1, Math.min(2000, Number(count || 1) || 1));
+        if (chapterCountInput) chapterCountInput.value = String(total);
+        if (!chapterListEl) return;
+        chapterListEl.innerHTML = Array.from({ length: total }, (_, idx) => `
+          <div class="vip-admin-chip" style="display:grid; gap:8px; padding:12px;">
+            <div style="font-weight:900; color:#eef4ff;">Chương ${idx + 1}</div>
+            <input type="text" data-admin-chapter-link="${idx}" value="${esc(values[idx] || "")}" placeholder="Link TXT chương ${idx + 1}">
+          </div>
+        `).join("");
+      };
+
+      const renderLocalStoryList = () => {
+        const rows = loadLocalCustomStories();
+        if (!localListEl) return;
+        if (!rows.length){
+          localListEl.innerHTML = `<div class="vip-empty">Chưa có truyện nào được thêm ở thiết bị này.</div>`;
+          return;
+        }
+        localListEl.innerHTML = rows.map(item => `
+          <article class="vip-admin-card vip-admin-strip">
+            <div class="vip-admin-row">
+              <div class="vip-admin-avatar">
+                ${item.cover ? `<img src="${esc(item.cover)}" alt="cover">` : `<span>${esc(initials(item.title || "T"))}</span>`}
+              </div>
+              <div class="vip-admin-main">
+                <div class="vip-admin-name">${esc(item.title || "Truyện")}</div>
+                <div class="vip-admin-sub">${esc(item.category || "Khác")} • ${esc(item.status || "Đang ra")} • <b>${esc(String(item.chapters || 0))} chương</b></div>
+                <div class="vip-admin-meta">
+                  <div class="vip-admin-chip"><span class="k">Cập nhật</span><span class="v">${esc(item.updatedAtText || "Vừa thêm")}</span></div>
+                </div>
+              </div>
+              <div class="vip-admin-cta">
+                <button class="btn" type="button" data-admin-story-open="${esc(String(item.id || ""))}">Mở truyện</button>
+                <button class="tab-page-btn" type="button" data-admin-story-delete="${esc(String(item.id || ""))}">Xóa</button>
+              </div>
+            </div>
+          </article>
+        `).join("");
+      };
+
+      const collectChapterLinks = () => {
+        return Array.from(tabPageContent.querySelectorAll("[data-admin-chapter-link]"))
+          .map(input => normalizeAvatarValue(input?.value || ""));
+      };
+
+      const resetForm = () => {
+        $("#adminStoryTitle").value = "";
+        $("#adminStoryCategory").value = "";
+        $("#adminStoryDesc").value = "";
+        $("#adminStoryStatus").value = "Đang ra";
+        $("#adminStoryCover").value = "";
+        renderChapterInputs(1, []);
+      };
+
+      $("#adminStoryBackBtn")?.addEventListener("click", () => {
+        location.hash = "#/community/admin";
+      });
+
+      $("#adminStoryBuildChaptersBtn")?.addEventListener("click", () => {
+        renderChapterInputs(chapterCountInput?.value || 1, collectChapterLinks());
+      });
+
+      chapterCountInput?.addEventListener("change", () => {
+        renderChapterInputs(chapterCountInput?.value || 1, collectChapterLinks());
+      });
+
+      $("#adminStoryResetBtn")?.addEventListener("click", () => {
+        resetForm();
+      });
+
+      $("#adminStorySaveBtn")?.addEventListener("click", () => {
+        const title = String($("#adminStoryTitle")?.value || "").trim();
+        const category = String($("#adminStoryCategory")?.value || "").trim();
+        const desc = String($("#adminStoryDesc")?.value || "").trim();
+        const status = String($("#adminStoryStatus")?.value || "Đang ra").trim() || "Đang ra";
+        const cover = normalizeAvatarValue($("#adminStoryCover")?.value || "");
+        const chapters = Math.max(1, Math.min(2000, Number(chapterCountInput?.value || 1) || 1));
+        const chapterLinks = collectChapterLinks();
+
+        if (!title){
+          toast("Nhập tên truyện trước đã.");
+          return;
+        }
+        if (!category){
+          toast("Nhập thể loại truyện.");
+          return;
+        }
+        if (chapterLinks.some(link => !String(link || "").trim())){
+          toast("Hãy gắn đủ link TXT cho tất cả chương.");
+          return;
+        }
+
+        const story = upsertLocalCustomStory({
+          title,
+          category,
+          desc,
+          status,
+          cover,
+          chapters,
+          chapterLinks,
+          updatedAtMs: Date.now(),
+          updatedAtText: "Vừa thêm",
+          author: "Admin"
+        });
+
+        if (!story){
+          toast("Không thể lưu truyện.");
+          return;
+        }
+
+        stories = cloneStoriesFromHtml();
+        applyRemoteViewMapToStories();
+        renderAll();
+        renderLocalStoryList();
+        resetForm();
+        toast("Đã thêm truyện mới vào web trên thiết bị này.");
+      });
+
+      localListEl?.addEventListener("click", (e) => {
+        const openBtn = e.target.closest("[data-admin-story-open]");
+        const delBtn = e.target.closest("[data-admin-story-delete]");
+        if (openBtn){
+          const storyId = openBtn.getAttribute("data-admin-story-open") || "";
+          if (storyId) goToStory(storyId);
+          return;
+        }
+        if (delBtn){
+          const storyId = delBtn.getAttribute("data-admin-story-delete") || "";
+          if (!storyId) return;
+          removeLocalCustomStory(storyId);
+          stories = cloneStoriesFromHtml();
+          applyRemoteViewMapToStories();
+          renderAll();
+          renderLocalStoryList();
+          toast("Đã xóa truyện khỏi kho cục bộ.");
+        }
+      });
+
+      renderChapterInputs(1, []);
+      renderLocalStoryList();
     }
 
     function renderVipAdminPanel(){
@@ -13240,88 +13770,7 @@ const bookshelfTabs = $("#bookshelfTabs");
       }catch(_){}
     }
 
-
-
-    function parseReadHash(hash){
-      // #/read/<storyId>/<chapter>
-      const m = (hash || "").match(/^#\/read\/([^\/]+)\/(\d+)/);
-      if (!m) return null;
-      return { storyId: decodeURIComponent(m[1]), chapter: Number(m[2] || 1) };
-    }
-
-    function renderReaderPage(storyId, chapter){
-      const s = storyById(storyId);
-      if (!s){
-        toast("Không tìm thấy truyện");
-        goToHome();
-        return;
-      }
-
-      // Nếu đang ở đúng truyện + đúng chương rồi (do re-render UI từ Firebase) thì không reset lại trang đọc
-      const __nextStoryId = String(storyId || "");
-      const __nextChapter = Math.max(1, Number(chapter || 1));
-      const __alreadyHere =
-        document.body.classList.contains("reader-mode") &&
-        readerPage && !readerPage.classList.contains("hidden") &&
-        String((readerState && readerState.storyId) || "") === __nextStoryId &&
-        Number((readerState && readerState.chapter) || 0) === __nextChapter;
-
-      if (__alreadyHere){
-        // giữ nguyên vị trí scroll, chỉ reset trạng thái auto-hide của player
-        try{ _rpResetAutoHide(); }catch(_){ }
-        return;
-      }
-
-
-      hideAllPages();
-      readerPage?.classList.remove("hidden");
-      setActiveBottomNav(""); // no active highlight
-      hideRouteHeader();
-      setReaderMode(true);
-
-      // close header-related panels if any
-      closeSideMenu();
-      closeNotifyPanel();
-      closeAccountMenu();
-      closeSearchPanel();
-
-      readerState.storyId = storyId;
-      readerState.chapter = Math.max(1, Number(chapter || 1));
-      readerState.idx = 0;
-
-      if (readerStoryTitle) readerStoryTitle.textContent = s.title || "Truyện";
-      if (readerChapterTitle) readerChapterTitle.textContent = `Chương ${readerState.chapter} • Đọc / Nghe`;
-      const text = getChapterText(s, readerState.chapter);
-
-      if (readerContent){
-        // render to paragraphs
-        const safe = String(text || "");
-        const paras = safe.split(/\n{2,}/g).map(t=>t.trim()).filter(Boolean);
-        const html = paras.map(p=>`<p>${esc(p)}</p>`).join("");
-        const totalCh = Math.max(1, Number((s && s.chapters) || 0) || 1);
-        const canPrev = readerState.chapter > 1;
-        const canNext = readerState.chapter < totalCh;
-        const endNav = `
-          <div class="reader-endnav" id="readerEndNav">
-            <button class="endnav-btn" id="readerPrevChapterBtn" type="button" ${canPrev ? "" : "disabled"}>← Chương trước</button>
-            <button class="endnav-btn primary" id="readerNextChapterBtn" type="button" ${canNext ? "" : "disabled"}>Chương sau →</button>
-          </div>
-        `;
-        readerContent.innerHTML = (html || `<p>(Chưa có nội dung chương)</p>`) + endNav;
-      }
-
-      readerState.chunks = splitToChunks(text);
-      syncReaderProgress();
-      applyReaderFont();
-      applyReaderTheme(readerState.theme);
-      setReaderRate(readerState.rate);
-
-      // update history + last reading
-      markReadStory(storyId, readerState.chapter, { noRender: true, silent: true }).catch(_=>{});
-
-      window.scrollTo({ top: 0, behavior: "auto" });
-
-      // autoplay TTS (nếu click từ nút Nghe)
+    function runReaderAutoplayIfPending(storyId){
       try{
         const pending = (__pendingListenAutoplay && __pendingListenAutoplay.autoplay) ? __pendingListenAutoplay : null;
         const auto = pending ? "1" : sessionStorage.getItem("autoplay_tts");
@@ -13342,11 +13791,113 @@ const bookshelfTabs = $("#bookshelfTabs");
             readerState.idx = Math.min(wantIdx, maxIdx);
             syncReaderProgress();
           }
-          // lưu "Đang nghe" trước khi phát
           touchListeningRecent(storyId, readerState.chapter, readerState.idx);
           try{ speakCurrent(); }catch(_){ }
         }
       }catch(_){ }
+    }
+
+
+    function parseReadHash(hash){
+      // #/read/<storyId>/<chapter>
+      const m = (hash || "").match(/^#\/read\/([^\/]+)\/(\d+)/);
+      if (!m) return null;
+      return { storyId: decodeURIComponent(m[1]), chapter: Number(m[2] || 1) };
+    }
+
+    function renderReaderPage(storyId, chapter){
+      const s = storyById(storyId);
+      if (!s){
+        toast("Không tìm thấy truyện");
+        goToHome();
+        return;
+      }
+
+      const __nextStoryId = String(storyId || "");
+      const __nextChapter = Math.max(1, Number(chapter || 1));
+      const __alreadyHere =
+        document.body.classList.contains("reader-mode") &&
+        readerPage && !readerPage.classList.contains("hidden") &&
+        String((readerState && readerState.storyId) || "") === __nextStoryId &&
+        Number((readerState && readerState.chapter) || 0) === __nextChapter;
+
+      if (__alreadyHere){
+        try{ _rpResetAutoHide(); }catch(_){ }
+        return;
+      }
+
+      hideAllPages();
+      readerPage?.classList.remove("hidden");
+      setActiveBottomNav("");
+      hideRouteHeader();
+      setReaderMode(true);
+
+      closeSideMenu();
+      closeNotifyPanel();
+      closeAccountMenu();
+      closeSearchPanel();
+
+      readerState.storyId = storyId;
+      readerState.chapter = Math.max(1, Number(chapter || 1));
+      readerState.idx = 0;
+
+      if (readerStoryTitle) readerStoryTitle.textContent = s.title || "Truyện";
+      if (readerChapterTitle) readerChapterTitle.textContent = `Chương ${readerState.chapter} • Đọc / Nghe`;
+
+      const totalCh = Math.max(1, Number((s && s.chapters) || 0) || 1);
+      const canPrev = readerState.chapter > 1;
+      const canNext = readerState.chapter < totalCh;
+      const chapterLink = getStoryChapterLink(s, readerState.chapter);
+
+      const paintReaderText = (sourceText) => {
+        const safe = String(sourceText || "");
+        const paras = safe.split(/\n{2,}/g).map(t=>t.trim()).filter(Boolean);
+        const html = paras.map(p=>`<p>${esc(p)}</p>`).join("");
+        const endNav = `
+          <div class="reader-endnav" id="readerEndNav">
+            <button class="endnav-btn" id="readerPrevChapterBtn" type="button" ${canPrev ? "" : "disabled"}>← Chương trước</button>
+            <button class="endnav-btn primary" id="readerNextChapterBtn" type="button" ${canNext ? "" : "disabled"}>Chương sau →</button>
+          </div>
+        `;
+        if (readerContent){
+          readerContent.innerHTML = (html || `<p>(Chưa có nội dung chương)</p>`) + endNav;
+        }
+        readerState.chunks = splitToChunks(safe);
+        readerState.idx = 0;
+        syncReaderProgress();
+        applyReaderFont();
+        applyReaderTheme(readerState.theme);
+        setReaderRate(readerState.rate);
+      };
+
+      paintReaderText(chapterLink ? "Đang tải nội dung chương từ link TXT..." : getChapterText(s, readerState.chapter));
+
+      markReadStory(storyId, readerState.chapter, { noRender: true, silent: true }).catch(_=>{});
+      window.scrollTo({ top: 0, behavior: "auto" });
+
+      if (chapterLink){
+        fetchChapterTextFromLink(chapterLink).then((loadedText) => {
+          const stillHere =
+            document.body.classList.contains("reader-mode") &&
+            String((readerState && readerState.storyId) || "") === String(storyId) &&
+            Number((readerState && readerState.chapter) || 0) === Number(__nextChapter);
+          if (!stillHere) return;
+          try{ stopTTS(); }catch(_){ }
+          paintReaderText(loadedText);
+          runReaderAutoplayIfPending(storyId);
+        }).catch((err) => {
+          console.warn("chapter txt load error", err);
+          const stillHere =
+            document.body.classList.contains("reader-mode") &&
+            String((readerState && readerState.storyId) || "") === String(storyId) &&
+            Number((readerState && readerState.chapter) || 0) === Number(__nextChapter);
+          if (!stillHere) return;
+          paintReaderText("Không thể tải nội dung chương từ link TXT. Hãy kiểm tra lại đường dẫn chương.");
+          toast("Không thể tải link TXT của chương này.");
+        });
+      } else {
+        runReaderAutoplayIfPending(storyId);
+      }
 
       try{ startLootSession(storyId, readerState.chapter); }catch(_){ }
       _rpResetAutoHide();
@@ -13364,8 +13915,11 @@ const bookshelfTabs = $("#bookshelfTabs");
     const btnNotify = $("#btnNotify");
     const notifyBadge = $("#notifyBadge");
     const btnSearch = $("#btnSearch");
+    const headerSearchInput = $("#headerSearchInput");
     const btnAccount = $("#btnAccount");
     const accountMenu = $("#accountMenu");
+    const accountDrawerOverlay = $("#accountDrawerOverlay");
+    const btnCloseAccountMenu = $("#btnCloseAccountMenu");
     const btnAccountProfile = $("#btnAccountProfile");
     const btnAccountGame = $("#btnAccountGame");
     const btnAccountSettings = $("#btnAccountSettings");
@@ -13461,9 +14015,6 @@ const bookshelfTabs = $("#bookshelfTabs");
       if (notifyPanel && btnNotify){
         positionFloatingPanel(notifyPanel, btnNotify, { maxWidth: 190, gap: 6, align: "right" });
       }
-      if (accountMenu && btnAccount){
-        positionFloatingPanel(accountMenu, btnAccount, { maxWidth: 190, gap: 6, align: "right" });
-      }
     }
 
     function resetHeaderInteractiveState(opts = {}){
@@ -13479,8 +14030,7 @@ const bookshelfTabs = $("#bookshelfTabs");
       try{ document.body.style.overflow = ""; }catch(_){ }
       try{
         requestAnimationFrame(() => {
-          try{ positionFloatingPanels(); }catch(_){ }
-        });
+            });
       }catch(_){ }
     }
 
@@ -14946,9 +15496,136 @@ function getReadingStories(){
       }
     }
 
+    function normalizeCustomChapterLinks(raw, total = 0){
+      let rows = [];
+      if (Array.isArray(raw)){
+        rows = raw.slice();
+      } else if (raw && typeof raw === "object"){
+        rows = Object.keys(raw)
+          .sort((a,b) => Number(a) - Number(b))
+          .map(k => raw[k]);
+      }
+      rows = rows.map(v => normalizeAvatarValue(v)).map(v => String(v || "").trim());
+      const count = Math.max(0, Math.floor(Number(total || rows.length) || 0));
+      if (!count) return rows;
+      return Array.from({ length: count }, (_, idx) => rows[idx] || "");
+    }
+
+    function normalizeCustomStoryItem(raw){
+      const item = raw && typeof raw === "object" ? raw : {};
+      const title = String(item.title || "").trim().slice(0, 140);
+      if (!title) return null;
+
+      const chapterSeed = Array.isArray(item.chapterLinks)
+        ? item.chapterLinks.length
+        : (item.chapterLinks && typeof item.chapterLinks === "object" ? Object.keys(item.chapterLinks).length : 0);
+      const chapters = Math.max(1, Math.floor(Number(item.chapters || chapterSeed || 1) || 1));
+      const chapterLinks = normalizeCustomChapterLinks(item.chapterLinks, chapters);
+      const now = Date.now();
+
+      return {
+        id: String(item.id || ("local_story_" + Math.random().toString(36).slice(2, 8) + "_" + now.toString(36))).trim(),
+        title,
+        author: String(item.author || "Admin").trim().slice(0, 60) || "Admin",
+        cover: normalizeAvatarValue(item.cover || item.image || ""),
+        desc: String(item.desc || "").trim().slice(0, 1500),
+        chapters,
+        views: Math.max(0, Number(item.views || 0) || 0),
+        rating: Math.max(0, Number(item.rating || 5) || 5),
+        category: String(item.category || "Khác").trim().slice(0, 40) || "Khác",
+        status: String(item.status || "Đang ra").trim().slice(0, 30) || "Đang ra",
+        updatedAtText: String(item.updatedAtText || "Vừa thêm").trim() || "Vừa thêm",
+        updatedAtMs: Math.max(0, Number(item.updatedAtMs || now) || now),
+        chapterLinks,
+        isAdminStory: true,
+        createdBy: String(item.createdBy || (currentUser?.uid || "local-admin")).trim()
+      };
+    }
+
+    function loadLocalCustomStories(){
+      try{
+        const raw = safeGetLS(LOCAL_CUSTOM_STORIES_KEY, "[]") || "[]";
+        const list = JSON.parse(raw);
+        if (!Array.isArray(list)) return [];
+        const normalized = list.map(normalizeCustomStoryItem).filter(Boolean);
+        normalized.sort((a,b) => Number(b.updatedAtMs || 0) - Number(a.updatedAtMs || 0));
+        return normalized;
+      }catch(_){
+        return [];
+      }
+    }
+
+    function saveLocalCustomStories(list){
+      try{
+        const rows = Array.isArray(list) ? list.map(normalizeCustomStoryItem).filter(Boolean) : [];
+        safeSetLS(LOCAL_CUSTOM_STORIES_KEY, JSON.stringify(rows));
+        return true;
+      }catch(_){
+        return false;
+      }
+    }
+
+    function upsertLocalCustomStory(raw){
+      const story = normalizeCustomStoryItem(raw);
+      if (!story) return null;
+      const list = loadLocalCustomStories();
+      const idx = list.findIndex(item => String(item.id || "") === String(story.id || ""));
+      if (idx >= 0) list[idx] = story;
+      else list.unshift(story);
+      saveLocalCustomStories(list);
+      return story;
+    }
+
+    function removeLocalCustomStory(storyId){
+      const id = String(storyId || "").trim();
+      if (!id) return false;
+      const next = loadLocalCustomStories().filter(item => String(item.id || "") !== id);
+      return saveLocalCustomStories(next);
+    }
+
+    function getStoryChapterLink(story, chapter){
+      if (!story) return "";
+      const ch = Math.max(1, Number(chapter || 1) || 1);
+      const links = story.chapterLinks;
+      if (Array.isArray(links)){
+        return normalizeAvatarValue(links[ch - 1] || "");
+      }
+      if (links && typeof links === "object"){
+        return normalizeAvatarValue(links[ch] || links[String(ch)] || "");
+      }
+      return "";
+    }
+
+    async function fetchChapterTextFromLink(url){
+      const rawUrl = normalizeAvatarValue(url);
+      if (!rawUrl) throw new Error("missing-link");
+      if (CHAPTER_LINK_TEXT_CACHE.has(rawUrl)) return await CHAPTER_LINK_TEXT_CACHE.get(rawUrl);
+
+      const loader = (async () => {
+        const res = await fetch(rawUrl, { cache: "no-store" });
+        if (!res.ok) throw new Error("chapter-fetch-failed");
+        const txt = await res.text();
+        return String(txt || "").replace(/^\uFEFF/, "").replace(/\r/g, "").trim() || "(Chưa có nội dung chương)";
+      })();
+
+      CHAPTER_LINK_TEXT_CACHE.set(rawUrl, loader);
+      try{
+        return await loader;
+      }catch(err){
+        CHAPTER_LINK_TEXT_CACHE.delete(rawUrl);
+        throw err;
+      }
+    }
+
     function cloneStoriesFromHtml(){
-      // Nguồn truyện/chương/ảnh là HTML tĩnh (không đọc từ Firebase)
-      return localSeedStories.map(item => ({ ...item, baseViews: Number(item.views || 0) }));
+      // Nguồn truyện/chương/ảnh là HTML tĩnh (không đọc từ Firebase).
+      // Các truyện thêm trong Admin sẽ lưu localStorage trên thiết bị hiện tại rồi ghép vào danh sách.
+      const seeded = localSeedStories.map(item => ({ ...item, baseViews: Number(item.views || 0) }));
+      const customs = loadLocalCustomStories().map(item => ({ ...item, baseViews: Number(item.views || 0) }));
+      const merged = new Map();
+      seeded.forEach(item => merged.set(String(item.id || ""), item));
+      customs.forEach(item => merged.set(String(item.id || ""), item));
+      return Array.from(merged.values());
     }
 
     function applyRemoteViewMapToStories(){
@@ -15195,8 +15872,12 @@ function normalizeThemeMode(mode){
     }
     function closeAccountMenu(){
       if (!accountMenu) return;
+      accountMenu.classList.remove("open");
       accountMenu.classList.add("hidden");
       accountMenu.setAttribute("aria-hidden", "true");
+      accountDrawerOverlay?.classList.remove("show");
+      accountDrawerOverlay?.classList.add("hidden");
+      accountDrawerOverlay?.setAttribute("aria-hidden", "true");
       btnAccount?.classList.remove("open");
       btnAccount?.setAttribute("aria-expanded", "false");
     }
@@ -15212,13 +15893,23 @@ function normalizeThemeMode(mode){
       }
       if (!accountMenu) return;
       if (next) closeNotifyPanel();
-      accountMenu.classList.toggle("hidden", !next);
+      if (next){
+        accountMenu.classList.remove("hidden");
+        requestAnimationFrame(() => accountMenu.classList.add("open"));
+      }else{
+        accountMenu.classList.remove("open");
+        accountMenu.classList.add("hidden");
+      }
       accountMenu.setAttribute("aria-hidden", next ? "false" : "true");
+      if (accountDrawerOverlay){
+        accountDrawerOverlay.classList.toggle("hidden", !next);
+        accountDrawerOverlay.classList.toggle("show", !!next);
+        accountDrawerOverlay.setAttribute("aria-hidden", next ? "false" : "true");
+      }
       btnAccount?.classList.toggle("open", !!next);
       btnAccount?.setAttribute("aria-expanded", next ? "true" : "false");
       if (next){
         renderAccountMenuSummary();
-        positionFloatingPanels();
       }
     }
 
@@ -15270,30 +15961,55 @@ function normalizeThemeMode(mode){
       syncHeaderOnlineStatus();
     }
 
+    function updateHeaderSearchValue(val = ""){
+      if (!headerSearchInput) return;
+      if (headerSearchInput.value !== String(val || "")) headerSearchInput.value = String(val || "");
+    }
+
+    function escapeRegExp(str){
+      return String(str || "").split("").map(ch => "\\^$.*+?()[]{}|".includes(ch) ? "\\" + ch : ch).join("");
+    }
+
+    function highlightStoryTitle(textValue, query){
+      const raw = String(textValue || "");
+      const q = String(query || "").trim();
+      if (!q) return esc(raw);
+      const re = new RegExp(`(${escapeRegExp(q)})`, "ig");
+      return esc(raw).replace(re, '<span class="search-match-hit">$1</span>');
+    }
+
+    function positionHeaderSearchPanel(){
+      if (!searchPanel || !btnSearch) return;
+      const rect = btnSearch.getBoundingClientRect();
+      const left = Math.max(12, Math.round(rect.left));
+      const right = Math.max(12, Math.round(window.innerWidth - rect.right));
+      const top = Math.round(rect.bottom + 8);
+      searchPanel.style.left = left + "px";
+      searchPanel.style.right = right + "px";
+      searchPanel.style.top = top + "px";
+      searchPanel.style.width = "auto";
+      searchPanel.style.maxWidth = "none";
+    }
+
     function searchStories(query){
       const q = (query || "").trim().toLowerCase();
       if (!q) return sortedUpdatedStories().slice(0, 20);
       return stories.filter(s => {
-        const hay = [
-          s.title || "",
-          s.author || "",
-          s.category || "",
-          s.desc || ""
-        ].join(" ").toLowerCase();
-        return hay.includes(q);
+        const title = String(s?.title || "").toLowerCase();
+        return title.includes(q);
       }).sort((a,b)=>(b.updatedAtMs||0)-(a.updatedAtMs||0));
     }
 
-    function renderSearchResults(query = searchInput?.value || ""){
+    function renderSearchResults(query = headerSearchInput?.value || ""){
       if (!searchResults || !searchMeta) return;
       const q = (query || "").trim();
       const items = searchStories(q);
       if (!q){
-        searchMeta.textContent = `Hiển thị ${items.length} truyện gần đây. Nhập từ khóa để lọc theo tên / tác giả / thể loại.`;
+        searchMeta.textContent = `Hiển thị ${items.length} truyện gần đây. Nhập chữ vào ô tìm kiếm để lọc theo tên truyện.`;
       } else {
         searchMeta.textContent = items.length
-          ? `Tìm thấy ${items.length} truyện với từ khóa: "${q}"`
-          : `Không tìm thấy truyện với từ khóa: "${q}"`;
+          ? `Tìm thấy ${items.length} truyện có tên chứa: "${q}"`
+          : `Không tìm thấy truyện có tên chứa: "${q}"`;
       }
 
       if (!items.length){
@@ -15305,7 +16021,7 @@ function normalizeThemeMode(mode){
         <button class="search-item" type="button" data-search-open="${esc(s.id)}" title="${esc(s.title)}">
           <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title)}" loading="lazy">
           <div class="search-item-main">
-            <div class="search-item-title">${esc(s.title)}</div>
+            <div class="search-item-title">${highlightStoryTitle(s.title, q)}</div>
             <div class="search-item-sub">${esc(s.author || "Chưa rõ")} • ${Number(s.chapters||0)} chương • ⭐ ${Number(s.rating||0).toFixed(1)}</div>
           </div>
           <div class="search-item-cat">${esc(s.category || "Truyện")}</div>
@@ -15314,23 +16030,26 @@ function normalizeThemeMode(mode){
     }
 
     function openSearchPanel(prefill = ""){
-      if (!searchPanel || !searchOverlay) return;
+      if (!searchPanel) return;
       closeNotifyPanel();
+      if (typeof prefill === "string") updateHeaderSearchValue(prefill);
+      positionHeaderSearchPanel();
       searchPanel.classList.add("show");
-      searchOverlay.classList.add("show");
       searchPanel.setAttribute("aria-hidden","false");
-      searchOverlay.setAttribute("aria-hidden","false");
-      if (typeof prefill === "string") searchInput.value = prefill;
-      renderSearchResults(searchInput?.value || "");
-      setTimeout(() => searchInput?.focus(), 0);
-      try{ searchInput?.select(); }catch(_){}
+      if (searchOverlay){
+        searchOverlay.classList.remove("show");
+        searchOverlay.setAttribute("aria-hidden","true");
+      }
+      renderSearchResults(headerSearchInput?.value || "");
     }
     function closeSearchPanel(){
-      if (!searchPanel || !searchOverlay) return;
+      if (!searchPanel) return;
       searchPanel.classList.remove("show");
-      searchOverlay.classList.remove("show");
       searchPanel.setAttribute("aria-hidden","true");
-      searchOverlay.setAttribute("aria-hidden","true");
+      if (searchOverlay){
+        searchOverlay.classList.remove("show");
+        searchOverlay.setAttribute("aria-hidden","true");
+      }
     }
 
 
@@ -15412,10 +16131,7 @@ function normalizeThemeMode(mode){
       const descQ = String(searchTabState.desc || "").trim().toLowerCase();
 
       if (q){
-        list = list.filter(s => {
-          const hay = [s.title||"", s.author||"", s.category||""].join(" ").toLowerCase();
-          return hay.includes(q);
-        });
+        list = list.filter(s => String(s.title||"").toLowerCase().includes(q));
       }
       if (descQ){
         list = list.filter(s => String(s.desc||"").toLowerCase().includes(descQ));
@@ -15547,7 +16263,7 @@ meta.textContent = `Hiển thị ${items.length} truyện theo bộ lọc${extra
                       <button class="row-card" type="button" data-tab-open-story="${esc(s.id)}" title="${esc(s.title||"")}">
                         <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title||"")}" loading="lazy">
                         <div class="rc-info">
-                          <div class="rc-t">${esc(s.title||"")}</div>
+                          <div class="rc-t">${highlightStoryTitle(s.title||"", q)}</div>
                           <div class="rc-s">${esc(s.author||"Chưa rõ")}</div>
                         </div>
                       </button>
@@ -15570,7 +16286,7 @@ meta.textContent = `Hiển thị ${items.length} truyện theo bộ lọc${extra
               <button class="tab-inline-search-item" type="button" data-tab-open-story="${esc(s.id)}">
                 <img src="${esc(getCoverSrc(s))}" alt="${esc(s.title||"")}" loading="lazy">
                 <div class="main">
-                  <div class="t">${esc(s.title||"")}</div>
+                  <div class="t">${highlightStoryTitle(s.title||"", q)}</div>
                   <div class="s">${esc(s.author||"Chưa rõ")} • ${Number(s.chapters||0)} chương • 👁 ${getTotalViews(s)}</div>
                 </div>
               </button>
@@ -15584,7 +16300,7 @@ meta.textContent = `Hiển thị ${items.length} truyện theo bộ lọc${extra
               <button class="tab-search-item" type="button" data-tab-open-story="${esc(s.id)}">
                 <img class="cover" src="${esc(getCoverSrc(s))}" alt="${esc(s.title||"")}" loading="lazy">
                 <div class="info">
-                  <div class="t">${esc(s.title||"")}</div>
+                  <div class="t">${highlightStoryTitle(s.title||"", q)}</div>
                   <div class="s">${esc(s.author||"Chưa rõ")} • ${Number(s.chapters||0)}c • 👁 ${getTotalViews(s)}</div>
                 </div>
               </button>
@@ -16878,16 +17594,25 @@ setActiveBottomNav("bookshelf");
       __nav.currentHash = h;
       if (__isMainHash(h)) __nav.lastMainHash = h;
     }
-function goToSearchWithGenreFromMenu(genreLabel){
-  const g = String(genreLabel || "").trim();
-  // Reset toàn bộ bộ lọc về mặc định rồi áp thể loại được chọn
-  searchTabState = { ...DEFAULT_SEARCH_FILTER };
-  if (g && g !== "Tất cả" && g !== "all") searchTabState.genre = g;
-  // Khi đã lọc thì dùng grid để kéo dọc tìm nhanh
-  searchTabState.view = "grid";
+function goToSearchWithPreset(preset = {}){
+  const next = { ...DEFAULT_SEARCH_FILTER, ...preset };
+
+  next.q = String(next.q || "");
+  next.desc = String(next.desc || "");
+  next.source = String(next.source || "all");
+  next.minCh = Number(next.minCh || 0) || 0;
+  next.sort = String(next.sort || "none");
+  next.genre = String(next.genre || "all");
+  next.status = String(next.status || "all");
+  next.view = String(next.view || "grid");
+
+  if (next.genre === "Tất cả") next.genre = "all";
+
+  searchTabState = next;
+
+  updateHeaderSearchValue(String(searchTabState.q || ""));
 
   if ((location.hash || "").startsWith("#/search")){
-    // đang ở tab tìm kiếm: render lại ngay
     try{
       const input = $("#tabSearchBar");
       if (input) input.value = String(searchTabState.q || "");
@@ -16896,6 +17621,21 @@ function goToSearchWithGenreFromMenu(genreLabel){
   }else{
     location.hash = "#/search";
   }
+}
+
+function goToSearchWithGenreFromMenu(genreLabel){
+  const g = String(genreLabel || "").trim();
+  goToSearchWithPreset({
+    genre: (g && g !== "Tất cả" && g !== "all") ? g : "all",
+    view: "grid"
+  });
+}
+
+function goToSearchWithUpdatedPreset(){
+  goToSearchWithPreset({
+    sort: "updated",
+    view: "grid"
+  });
 }
     function renderStoryPage(storyId){
       const s = storyById(storyId);
@@ -17281,6 +18021,7 @@ function goToSearchWithGenreFromMenu(genreLabel){
 
         input?.addEventListener("input", (e) => {
           searchTabState.q = String(e.target.value || "");
+          updateHeaderSearchValue(searchTabState.q);
           renderTabSearchResults();
         });
         input?.addEventListener("keydown", (e) => {
@@ -17334,6 +18075,10 @@ function goToSearchWithGenreFromMenu(genreLabel){
         if (view === "admin"){
           if (adminSubView === "vip-requests"){
             renderVipAdminPanel();
+            return;
+          }
+          if (adminSubView === "add-story"){
+            renderCommunityStoryAdminPage();
             return;
           }
           renderCommunityAdminHub();
@@ -18531,34 +19276,158 @@ const pvpProfile = getCurrentPvpProfile();
 
     function ensureRankBots(){
       const key = "rank_bots_v1";
-      try{ localStorage.removeItem(key); }catch(_){}
+      try{ localStorage.removeItem(key); }catch(_){ }
       return [];
     }
 
-    function _rankMe(){
-      const prof = (userState && userState.profile) ? userState.profile : {};
-      const name = String((prof && prof.name) ? prof.name : (currentUser?.displayName || "Khách"));
-      const avatar = String((prof && prof.avatar) ? prof.avatar : (currentUser?.photoURL || __svgAvatar(name.slice(0,1), 210)));
+    function getBossPointsValue(){
+      try{ return Math.max(0, Math.floor(Number(safeGetLS("boss_points", "0") || 0) || 0)); }catch(_){ return 0; }
+    }
+    function getBossPointsFromState(state){
+      try{ return Math.max(0, Math.floor(Number(state?.bossPoints || 0) || 0)); }catch(_){ return 0; }
+    }
+    function getDailyReadCountFromState(state){
+      try{
+        const day = String(state?.dailyReadDate || "");
+        const count = Math.max(0, Math.floor(Number(state?.dailyReadCount || 0) || 0));
+        return day === __todayKeyLocal() ? count : 0;
+      }catch(_){
+        return 0;
+      }
+    }
+    function calcCombatPowerFromAnyState(state){
+      try{
+        const tuviExp = Math.max(0, Math.floor(Number(state?.tuviExp || 0) || 0));
+        const base = calcBaseCombatPowerFromTuviExp(tuviExp);
+        const gear = (state && state.gear && typeof state.gear === "object") ? state.gear : {};
+        const gearSlotsCount = Object.values(gear || {}).filter(v => v && String(v).trim() && String(v).trim() !== "—").length;
+        return calcCombatPowerWithGear(base, gearSlotsCount);
+      }catch(_){
+        return 0;
+      }
+    }
+    function __currentRankAccountLower(){
+      return normalizeAccountUsernameLower(
+        currentUser?.usernameLower || currentUser?.username || userState?.usernameLower || userState?.username || ""
+      );
+    }
+    function syncCurrentAccountRankMetrics(){
+      try{
+        const usernameLower = __currentRankAccountLower();
+        if (!usernameLower) return false;
+        const account = getLocalAccountByUsername(usernameLower) || findLocalAccountByUid(currentUser?.uid || "");
+        if (!account || !account.usernameLower) return false;
+        const prev = loadLocalAccountState(account.usernameLower);
+        const nextState = buildAccountUserState(account, {
+          ...(prev || {}),
+          ...(userState || {}),
+          bossPoints: getBossPointsValue(),
+          dailyReadCount: getDailyReadCount(),
+          dailyReadDate: __todayKeyLocal()
+        });
+        saveLocalAccountState(account.usernameLower, nextState);
+        if (usernameLower === account.usernameLower){
+          userState = nextState;
+          try{ syncCurrentLocalUserFromState(); }catch(_){ }
+        }
+        return true;
+      }catch(_){
+        return false;
+      }
+    }
+    function __rankAccountSnapshotFromAccount(account){
+      try{
+        if (!account || !account.usernameLower) return null;
+        const isMe = __currentRankAccountLower() === String(account.usernameLower || "");
+        let st = loadLocalAccountState(account.usernameLower);
+        if (isMe){
+          st = buildAccountUserState(account, {
+            ...(st || {}),
+            ...(userState || {}),
+            bossPoints: getBossPointsValue(),
+            dailyReadCount: getDailyReadCount(),
+            dailyReadDate: __todayKeyLocal()
+          });
+        }else{
+          st = buildAccountUserState(account, st);
+        }
 
-      const tuvi = calcTuviExpFromState();
-      const power = calcCombatPowerFromState();
-      const pvp = getPvpPointsValue();
-      const boss = Math.max(0, Number(safeGetLS("boss_points", "0") || 0));
-      const motsach = getDailyReadCount();
-      const estateLv = clampEstateLevel((userState && userState.estate) ? userState.estate.level : 0);
-
-      return {
-        id: String(currentUser?.uid || "me_guest"),
-        name, avatar,
-        tuvi, power, pvp, boss, motsach, estateLv,
-        vipInfo: currentVipRenderInfo(),
-        isMe: true
-      };
+        const prof = (st && typeof st.profile === "object") ? st.profile : {};
+        const name = normalizeDisplayName(prof?.name || account?.username || "Người dùng") || account?.username || "Người dùng";
+        const seed = Math.abs(__hash32(String(account?.uid || account?.usernameLower || name)) % 360);
+        const avatar = String(prof?.avatar || __svgAvatar(name.slice(0,1), seed));
+        const tuvi = Math.max(0, Math.floor(Number(st?.tuviExp || 0) || 0));
+        const pvp = Math.max(0, Math.floor(Number(st?.pvpPoints || PVP_DEFAULT_POINTS) || 0));
+        const boss = getBossPointsFromState(st);
+        const motsach = getDailyReadCountFromState(st);
+        const estateLv = clampEstateLevel(Number(st?.estate?.level || 0) || 0);
+        return {
+          id: String(account?.uid || account?.usernameLower || name),
+          uid: String(account?.uid || ""),
+          usernameLower: String(account?.usernameLower || ""),
+          name,
+          avatar,
+          tuvi,
+          power: calcCombatPowerFromAnyState(st),
+          pvp,
+          boss,
+          motsach,
+          estateLv,
+          vipInfo: st?.vipInfo || null,
+          isMe,
+          createdAt: Number(account?.createdAt || 0) || 0
+        };
+      }catch(_){
+        return null;
+      }
+    }
+    function __rankAccountSnapshots(){
+      syncCurrentAccountRankMetrics();
+      const accounts = Object.values(loadLocalAccounts() || {});
+      return accounts
+        .map(__rankAccountSnapshotFromAccount)
+        .filter(Boolean);
+    }
+    function __rankResolveAccountFromActorKey(key){
+      const raw = String(key || "").trim();
+      if (!raw) return null;
+      let account = findLocalAccountByUid(raw);
+      if (!account) account = getLocalAccountByUsername(raw);
+      if (!account && raw.startsWith("local_")) account = getLocalAccountByUsername(raw.replace(/^local_/i, ""));
+      return account ? __rankAccountSnapshotFromAccount(account) : null;
+    }
+    function __rankGuildListReal(){
+      const rows = readLocalGuildStore();
+      if (!Array.isArray(rows) || !rows.length) return [];
+      return rows.map((g) => {
+        const members = Array.isArray(g?.members) ? g.members : [];
+        const resolvedMembers = members.map(m => __rankResolveAccountFromActorKey(m?.key || "")).filter(Boolean);
+        const points = resolvedMembers.reduce((sum, m) => {
+          return sum
+            + Math.max(0, Number(m?.power || 0) || 0)
+            + Math.max(0, Number(m?.pvp || 0) || 0)
+            + Math.floor(Math.max(0, Number(m?.tuvi || 0) || 0) / 10)
+            + Math.max(0, Number(m?.boss || 0) || 0)
+            + (Math.max(0, Number(m?.estateLv || 0) || 0) * 500);
+        }, 0);
+        return {
+          id: String(g?.id || ""),
+          name: String(g?.name || "Bang hội"),
+          avatar: String(g?.avatarUrl || ""),
+          points,
+          members: Number(Array.isArray(g?.members) ? g.members.length : Number(g?.memberCount || 0) || 0) || 0,
+          createdAt: Number(g?.createdAt || 0) || 0
+        };
+      }).sort((a,b) => {
+        return (Number(b.points || 0) - Number(a.points || 0))
+          || (Number(b.members || 0) - Number(a.members || 0))
+          || (Number(a.createdAt || 0) - Number(b.createdAt || 0));
+      });
     }
 
     function ensureGuildDemo(){
       const key = "guild_demo_v1";
-      try{ localStorage.removeItem(key); }catch(_){}
+      try{ localStorage.removeItem(key); }catch(_){ }
       return [];
     }
 
@@ -18577,19 +19446,29 @@ const pvpProfile = getCurrentPvpProfile();
       const type = String(state?.type || "tuvi").toLowerCase();
 
       if (type === "banghoi"){
-        const guilds = ensureGuildDemo();
+        const guilds = __rankGuildListReal();
         guilds.sort((a,b) => (Number(b.points||0) - Number(a.points||0)) || (Number(b.members||0) - Number(a.members||0)));
         return guilds;
       }
 
-      const me = _rankMe();
-      const list = [me];
-      list.sort((a,b) => _rankValueFor(b, type) - _rankValueFor(a, type));
+      const list = __rankAccountSnapshots();
+      list.sort((a,b) => {
+        return (_rankValueFor(b, type) - _rankValueFor(a, type))
+          || (Number(b.createdAt || 0) - Number(a.createdAt || 0))
+          || String(a.name || "").localeCompare(String(b.name || ""), 'vi');
+      });
       return list;
+    }
+    function _rankRealmDisplay(entry){
+      const ri = getRealmByExp(Number(entry?.tuvi || 0));
+      return String((ri?.display || ri?.realm || "Phàm Nhân")).trim() || "Phàm Nhân";
     }
 
     function _rankStatText(entry){
       const type = String(rankState.type || "tuvi").toLowerCase();
+      if (type === "tuvi"){
+        return _rankRealmDisplay(entry);
+      }
       if (type === "trangvien"){
         const lv = clampEstateLevel(Number(entry?.estateLv || 0));
         const info = getEstateInfo(lv);
@@ -18601,15 +19480,36 @@ const pvpProfile = getCurrentPvpProfile();
       if (type === "banghoi"){
         return `👥 ${fmtN(Number(entry?.members||0))}`;
       }
+      if (type === "pvp"){
+        return `${fmtN(_rankValueFor(entry, type))} PVP`;
+      }
       return fmtN(_rankValueFor(entry, type));
+    }
+
+    function _rankStatBadgeHtml(entry, type){
+      const t = String(type || rankState.type || "tuvi").toLowerCase();
+      if (t === "tuvi"){
+        return `<span class="rank-stat-badge realm">${esc(_rankRealmDisplay(entry))}</span>`;
+      }
+      if (t === "lucchien"){
+        return `<span class="rank-stat-badge power">${esc(fmtN(Number(entry?.power || 0) || 0))}</span>`;
+      }
+      if (t === "pvp"){
+        return `<span class="rank-stat-badge pvp">${esc(fmtN(Number(entry?.pvp || 0) || 0))} PVP</span>`;
+      }
+      const stat = (t === "banghoi") ? fmtN(Number(entry?.points || 0)) : _rankStatText(entry);
+      return `<span>${esc(stat)}</span>`;
+    }
+
+    function _rankHideSubline(type){
+      const t = String(type || rankState.type || "tuvi").toLowerCase();
+      return t === "tuvi" || t === "lucchien" || t === "pvp";
     }
 
     function _rankPodiumHtml(items){
       const top = (items || []).slice(0,3);
       if (!top.length) return "";
       const slot = [1,0,2];
-      const type = String(rankState.type || "tuvi").toLowerCase();
-      const cfg = RANK_TYPES[type] || RANK_TYPES.tuvi;
 
       return slot.map((i) => {
         const it = top[i];
@@ -18618,26 +19518,13 @@ const pvpProfile = getCurrentPvpProfile();
 
         const nm = String(it.name || "—");
         const ava = String(it.avatar || "");
-        let tag = (type === "banghoi") ? "Bang hội" : "Người chơi";
-        if (type === "tuvi"){
-          const ri = getRealmByExp(Number(it?.tuvi || 0));
-          const acct = (it?.isMe && !currentUser) ? "Khách" : "Thường";
-          const realmTxt = String(ri?.realm || "phàm nhân").toLowerCase();
-          const starTxt = String(ri?.starName || "nhất tinh").toLowerCase();
-          tag = `${acct} - ${realmTxt} ${starTxt}`.trim();
-        }
-        const stat = (type === "banghoi") ? fmtN(Number(it.points||0)) : _rankStatText(it);
 
         return `
-          <article class="podium-card" role="group" aria-label="${esc(nm)}">
+          <article class="podium-card rank-${no}" role="group" aria-label="${esc(nm)}">
             <img class="cover" src="${esc(ava || __svgAvatar(nm.slice(0,1), 120))}" alt="${esc(nm)}" loading="lazy">
             <div class="info">
-              <div class="podium-rank">#${no} <span style="opacity:.85">${esc(cfg.icon)}</span></div>
               <div class="podium-title">${renderVipNameAuto(nm, it)}</div>
-              <div class="podium-sub">
-                <span class="tag">${esc(tag)}</span>
-                <span class="stat">${esc(stat)}</span>
-              </div>
+              <div class="podium-rank rank-${no}">Hạng ${no}</div>
             </div>
           </article>
         `;
@@ -18658,23 +19545,14 @@ const pvpProfile = getCurrentPvpProfile();
         sub = "📅 Hôm nay";
       }else if (type === "banghoi"){
         sub = `👥 ${fmtN(Number(it?.members||0))} thành viên`;
-      }else if (type === "pvp"){
-        sub = "⚔️ Thách đấu để tăng điểm";
       }else if (type === "boss"){
         sub = "🐉 Đánh boss để tăng điểm";
-      }else if (type === "lucchien"){
-        sub = "💥 Sức mạnh tài khoản";
-      }else if (type === "tuvi"){
-        const ri = getRealmByExp(Number(it?.tuvi || 0));
-        const acct = (it?.isMe && !currentUser) ? "Khách" : "Thường";
-        const realmTxt = String(ri?.realm || "phàm nhân").toLowerCase();
-        const starTxt = String(ri?.starName || "nhất tinh").toLowerCase();
-        sub = `${acct} - ${realmTxt} ${starTxt}`.trim();
       }else{
-        sub = "⚡ Linh khí tích lũy";
+        sub = "";
       }
 
-      const stat = (type === "banghoi") ? fmtN(Number(it?.points||0)) : _rankStatText(it);
+      const statHtml = _rankStatBadgeHtml(it, type);
+      const hideSub = _rankHideSubline(type);
 
       return `
         <article class="rank-row" role="group" aria-label="${esc(nm)}">
@@ -18682,9 +19560,9 @@ const pvpProfile = getCurrentPvpProfile();
           <img class="thumb" src="${esc(ava || __svgAvatar(nm.slice(0,1), 120))}" alt="${esc(nm)}" loading="lazy">
           <div class="meta">
             <div class="t">${renderVipNameAuto(nm, it)}</div>
-            <div class="s">${esc(sub)}</div>
+            <div class="s${hideSub ? " hidden" : ""}">${esc(sub)}</div>
           </div>
-          <div class="stat">${esc(stat)}</div>
+          <div class="stat">${statHtml}</div>
         </article>
       `;
     }
@@ -21485,10 +22363,7 @@ if (searchEl){
     });
 
     $("#viewAllUpdated")?.addEventListener("click", () => {
-      __browseQuery = "";
-      if (browseSearchInput) browseSearchInput.value = "";
-      browseClearBtn?.classList.remove("show");
-      location.hash = "#/all/updated/1";
+      goToSearchWithUpdatedPreset();
     });
     $("#viewAllCompleted")?.addEventListener("click", () => {
       __browseQuery = "";
@@ -21497,7 +22372,24 @@ if (searchEl){
       location.hash = "#/all/completed/1";
     });
 
-    btnSearch?.addEventListener("click", () => openSearchPanel());
+    btnSearch?.addEventListener("click", (e) => {
+      if (e.target === headerSearchInput) return;
+      e.preventDefault();
+      headerSearchInput?.focus();
+      openSearchPanel(headerSearchInput?.value || "");
+    });
+    headerSearchInput?.addEventListener("focus", () => openSearchPanel(headerSearchInput.value || ""));
+    headerSearchInput?.addEventListener("input", (e) => {
+      renderSearchResults(e.target.value || "");
+      if (!searchPanel?.classList.contains("show")) openSearchPanel(e.target.value || "");
+    });
+    headerSearchInput?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter"){
+        const first = searchResults?.querySelector("[data-search-open]");
+        if (first) first.click();
+      }
+      if (e.key === "Escape") closeSearchPanel();
+    });
     $("#btnNap").addEventListener("click", () => { location.hash = "#/vip"; });
     bindSmartTap(btnNotify, (e) => { e?.stopPropagation?.(); toggleNotifyPanel(); }, { preventDefault:false });
     btnTheme?.addEventListener("click", (e) => {
@@ -21519,18 +22411,15 @@ if (searchEl){
 
     sideMenuOverlay?.addEventListener("click", closeSideMenu);
     btnCloseSideMenu?.addEventListener("click", closeSideMenu);
+    accountDrawerOverlay?.addEventListener("click", closeAccountMenu);
+    btnCloseAccountMenu?.addEventListener("click", closeAccountMenu);
 
     notifyBackdrop?.addEventListener("click", closeNotifyPanel);
     btnCloseNotify?.addEventListener("click", closeNotifyPanel);
 
     searchOverlay?.addEventListener("click", closeSearchPanel);
-    btnCloseSearch?.addEventListener("click", closeSearchPanel);
-    searchInput?.addEventListener("input", (e) => renderSearchResults(e.target.value));
-    searchInput?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter"){
-        const first = searchResults?.querySelector("[data-search-open]");
-        if (first) first.click();
-      }
+    window.addEventListener("resize", () => {
+      if (searchPanel?.classList.contains("show")) positionHeaderSearchPanel();
     });
     searchResults?.addEventListener("click", (e) => {
       const item = e.target.closest("[data-search-open]");
@@ -21538,6 +22427,11 @@ if (searchEl){
       const id = item.dataset.searchOpen;
       closeSearchPanel();
       if (id) goToStory(id);
+    });
+
+    document.addEventListener("click", (e) => {
+      const insideSearch = e.target.closest("#btnSearch") || e.target.closest("#searchPanel");
+      if (!insideSearch) closeSearchPanel();
     });
 
     sideMenu?.addEventListener("click", (e) => {
@@ -22282,7 +23176,6 @@ if (bossAtkBtn){
     function handleAccountButtonToggle(e){
       e?.stopPropagation?.();
       e?.preventDefault?.();
-      try{ positionFloatingPanels(); }catch(_){ }
       if (!currentUser){
         openAuthModal();
         return;
