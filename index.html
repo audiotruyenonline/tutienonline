@@ -8681,6 +8681,16 @@ body.theme-light .account-auth-help{color:#5a6d94}
     .pf-embed-discover-card .pf-story-cover .icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:34px;color:rgba(255,255,255,.94)}
     .pf-embed-discover-meta{margin-top:7px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;font-weight:900;color:var(--muted)}
     .pf-embed-discover-meta span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .pf-embed-actions{display:flex;gap:8px;margin-top:10px}
+    .pf-embed-mini-btn{flex:1;min-width:0;border:1px solid rgba(138,111,255,.30);background:linear-gradient(135deg, rgba(133,96,255,.22), rgba(108,79,255,.16));color:#fff;border-radius:12px;padding:10px 12px;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 10px 20px rgba(55,39,126,.14)}
+    .pf-embed-mini-btn.alt{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--text)}
+    .pf-embed-mini-btn:active{transform:translateY(1px) scale(.99)}
+    .pf-embed-mini-btn[disabled]{opacity:.55;cursor:not-allowed;box-shadow:none}
+    .pf-embed-loading{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:900;color:rgba(235,238,255,.92)}
+    .pf-embed-loading i{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.22);border-top-color:#9f8dff;display:inline-block;animation:pfSpin .8s linear infinite}
+    .pf-embed-searchbox.is-busy .pf-embed-search-btn{opacity:.72;pointer-events:none}
+    .pf-embed-searchbox.is-busy .pf-embed-search-field{border-color:rgba(138,111,255,.28);box-shadow:0 0 0 3px rgba(128,96,255,.10)}
+
     .pf-profile-comment-box{margin-top:12px;border:1px solid var(--line);background:rgba(15,17,27,.55);border-radius:18px;padding:12px;box-shadow:0 14px 32px rgba(0,0,0,.18)}
     .pf-profile-comment-box .story-comment-list{margin-top:12px}
     body.theme-light .pf-main-tab,
@@ -20208,12 +20218,15 @@ function getReadingStories(){
         desc: String(item.desc || "").trim().slice(0, 1500),
         chapters,
         views: Math.max(0, Number(item.views || 0) || 0),
-        rating: Math.max(0, Number(item.rating || 5) || 5),
+        rating: Math.max(0, Number(item.rating ?? 0) || 0),
         category: String(item.category || "Khác").trim().slice(0, 40) || "Khác",
         status: String(item.status || "Đang ra").trim().slice(0, 30) || "Đang ra",
         updatedAtText: String(item.updatedAtText || "Vừa thêm").trim() || "Vừa thêm",
         updatedAtMs: Math.max(0, Number(item.updatedAtMs || now) || now),
         chapterLinks,
+        externalUrl: String(normalizeEmbedUrl(item.externalUrl || item.url || "") || item.externalUrl || item.url || "").trim(),
+        externalSourceName: String(item.externalSourceName || item.source || "").trim().slice(0, 80),
+        isEmbeddedStory: !!item.isEmbeddedStory,
         isAdminStory: true,
         createdBy: String(item.createdBy || (currentUser?.uid || "local-admin")).trim()
       };
@@ -20273,16 +20286,74 @@ function getReadingStories(){
       return "";
     }
 
+    function storyHasReadableChapterLinks(story){
+      if (!story) return false;
+      const links = story.chapterLinks;
+      if (Array.isArray(links)){
+        return links.some(v => String(v || "").trim());
+      }
+      if (links && typeof links === "object"){
+        return Object.values(links).some(v => String(v || "").trim());
+      }
+      return false;
+    }
+
     async function fetchChapterTextFromLink(url){
       const rawUrl = normalizeAvatarValue(url);
       if (!rawUrl) throw new Error("missing-link");
       if (CHAPTER_LINK_TEXT_CACHE.has(rawUrl)) return await CHAPTER_LINK_TEXT_CACHE.get(rawUrl);
 
       const loader = (async () => {
-        const res = await fetch(rawUrl, { cache: "no-store" });
-        if (!res.ok) throw new Error("chapter-fetch-failed");
-        const txt = await res.text();
-        return String(txt || "").replace(/^\uFEFF/, "").replace(/\r/g, "").trim() || "(Chưa có nội dung chương)";
+        const txt = await fetchTextWithFallback(rawUrl);
+        const clean = String(txt || "").replace(/^\ufeff/, "").replace(/\n/g, "").trim();
+        if (!clean) return "(Chưa có nội dung chương)";
+        if (/(<html\b|<body\b|<div\b|<p\b|<article\b)/i.test(clean)){
+          const doc = new DOMParser().parseFromString(clean, "text/html");
+          Array.from(doc.querySelectorAll("script,style,noscript,iframe,canvas,svg,header,footer,nav,form,button,.ads,.adv,.advertisement,.banner,.social,.share,.comment,.comments,.footer,.header,.menu,.breadcrumb,.pagination,.related,.recommend,.recommendations")).forEach((el) => el.remove());
+          const selectors = [
+            ".chapter-content", ".reading-content", ".read-content", ".entry-content", ".chapter-c", ".chaptercontent", ".chapter-text", ".chapter-body",
+            ".box-chap", ".contentbox", ".article-content", "article .content", "article", "main article", "main", "#content", ".content"
+          ];
+          let best = "";
+          let bestScore = 0;
+          const htmlToText = (inputHtml) => String(inputHtml || "")
+            .replace(/<br\s*\/?>(\s*)/gi, "\n")
+            .replace(/<\/p>/gi, "\n\n")
+            .replace(/<\/div>/gi, "\n")
+            .replace(/<\/li>/gi, "\n")
+            .replace(/<\/h[1-6]>/gi, "\n\n")
+            .replace(/<[^>]*>/g, " ")
+            .replace(/[ 	]+/g, " ")
+            .replace(/\n{3,}/g, "\n\n")
+            .trim();
+          selectors.forEach((sel) => {
+            doc.querySelectorAll(sel).forEach((node) => {
+              const text = htmlToText(node.innerHTML || node.textContent || "");
+              const score = text.length + (node.querySelectorAll("p,br").length * 20);
+              if (text.length >= 200 && score > bestScore){
+                best = text;
+                bestScore = score;
+              }
+            });
+          });
+          if (!best){
+            Array.from(doc.querySelectorAll("div,article,section,main")).forEach((node) => {
+              const text = htmlToText(node.innerHTML || node.textContent || "");
+              const score = text.length + (node.querySelectorAll("p,br").length * 12);
+              if (text.length >= 300 && score > bestScore){
+                best = text;
+                bestScore = score;
+              }
+            });
+          }
+          if (best){
+            return best
+              .replace(/^(Mục lục|Danh sách chương|Chương mới nhất)\s*$/gim, "")
+              .replace(/\n{3,}/g, "\n\n")
+              .trim();
+          }
+        }
+        return clean;
       })();
 
       CHAPTER_LINK_TEXT_CACHE.set(rawUrl, loader);
@@ -22581,8 +22652,24 @@ function goToSearchWithUpdatedPreset(){
       const s = storyById(storyId);
       if (!s) return;
       const totalChapters = Math.max(0, Math.floor(Number(s.chapters || 0) || 0));
+      const externalUrl = String(s?.externalUrl || "").trim();
+      const hasChapterLinks = storyHasReadableChapterLinks(s);
       if (storyPageChapterViewState.storyId !== storyId){
         storyPageChapterViewState = { storyId, page: 1 };
+      }
+      if (externalUrl && !hasChapterLinks){
+        if (storyPageChapterModeLabel) storyPageChapterModeLabel.textContent = 'Nguồn truyện';
+        if (storyPageChapterToggle){
+          storyPageChapterToggle.textContent = '🌐 Mở nguồn';
+          storyPageChapterToggle.classList.remove('active');
+        }
+        storyPageChapters.innerHTML = `
+          <div class="rank-note">Truyện này được nhúng từ web ngoài. Nhấn nút bên dưới để mở truyện gốc.</div>
+          <div style="margin-top:10px">
+            <button class="btn primary" type="button" data-open-external-story="${esc(externalUrl)}">Mở truyện nguồn</button>
+          </div>
+        `;
+        return;
       }
       if (totalChapters <= 0){
         if (storyPageChapterModeLabel) storyPageChapterModeLabel.textContent = 'Danh Sách Chương';
@@ -22709,10 +22796,18 @@ function goToSearchWithUpdatedPreset(){
       };
 
       const _lastChPreview = Number((userState?.lastReading || {})[storyId] || 1);
-      storyPageReadBtn.textContent = _lastChPreview > 1 ? `▶ Đọc tiếp (Ch. ${_lastChPreview})` : "▶ Đọc";
+      const _externalUrl = String(s?.externalUrl || "").trim();
+      const _hasChapterLinks = storyHasReadableChapterLinks(s);
+      storyPageReadBtn.textContent = (_externalUrl && !_hasChapterLinks)
+        ? "🌐 Mở nguồn"
+        : (_lastChPreview > 1 ? `▶ Đọc tiếp (Ch. ${_lastChPreview})` : "▶ Đọc");
 
       storyPageReadBtn.onclick = (e) => {
         try{ e?.preventDefault?.(); e?.stopPropagation?.(); }catch(_){}
+        if (_externalUrl && !_hasChapterLinks){
+          try{ window.open(_externalUrl, "_blank", "noopener,noreferrer"); }catch(_){ }
+          return false;
+        }
         const lastCh = Number((userState?.lastReading || {})[storyId] || 1);
         // Điều hướng trước để tránh "đứng" do render lại nặng
         goToReader(storyId, lastCh);
@@ -22789,6 +22884,12 @@ function goToSearchWithUpdatedPreset(){
         storyPageChapterToggle.onclick = () => openStoryPageToc(storyId);
       }
       storyPageChapters.onclick = async (e) => {
+        const externalBtn = e.target.closest("[data-open-external-story]");
+        if (externalBtn){
+          const url = String(externalBtn.getAttribute("data-open-external-story") || "").trim();
+          if (url) try{ window.open(url, "_blank", "noopener,noreferrer"); }catch(_){ }
+          return;
+        }
         const chapterBtn = e.target.closest("[data-chapter]");
         if (chapterBtn){
           const chapter = Number(chapterBtn.dataset.chapter || 1);
@@ -24341,7 +24442,7 @@ const pvpProfile = getCurrentPvpProfile();
             return Math.max(0, embedStoryCount);
           }
         }
-        const embedLimitDaily = Math.max(0, Number(vipUiTier.embed || 0) || 0);
+        const embedLimitDaily = Math.max(1, Number(safeGetLS("pf_embed_free_limit", "50") || 50) || 50);
         const embedUsedToday = Math.max(0, readProfileEmbedUsageToday());
         const embedRemainToday = Math.max(0, embedLimitDaily - embedUsedToday);
         const embedPreferredSourceId = (() => {
@@ -24418,6 +24519,516 @@ const pvpProfile = getCurrentPvpProfile();
           });
           return Array.from(map.values()).slice(0, 120);
         })();
+        function escapeRegex(str){
+          return String(str || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+        function stripHtmlText(str){
+          return String(str || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+        }
+        function looksLikeUrl(raw){
+          const s = String(raw || "").trim();
+          return /^(https?:\/\/|www\.)/i.test(s);
+        }
+        function cleanEmbedInputUrl(raw){
+          const s = String(raw || "").trim();
+          if (!s) return "";
+          if (/^www\./i.test(s)) return `https://${s}`;
+          return s;
+        }
+        function normalizeEmbedUrl(rawUrl){
+          try{
+            const u = new URL(cleanEmbedInputUrl(rawUrl), location.href);
+            if (!/^https?:$/i.test(u.protocol)) return "";
+            u.hash = "";
+            u.search = "";
+            let path = String(u.pathname || "/");
+            path = path.replace(/\/(?:chapter|chuong)[-_\/][^/]+\/?$/i, "/");
+            path = path.replace(/\/(?:doc-truyen|read)\/?$/i, "/");
+            if (path.length > 1) path = path.replace(/\/+$/, "");
+            u.pathname = path || "/";
+            return u.href.replace(/\/+$/, "");
+          }catch(_){
+            return "";
+          }
+        }
+        function detectEmbedSourceByUrl(rawUrl){
+          try{
+            const host = new URL(cleanEmbedInputUrl(rawUrl), location.href).hostname.replace(/^www\./i, "").toLowerCase();
+            return embedSources.find((src) => {
+              const srcHost = String(src?.domain || "").replace(/^www\./i, "").toLowerCase();
+              return host === srcHost || host.endsWith(`.${srcHost}`);
+            }) || null;
+          }catch(_){
+            return null;
+          }
+        }
+        function prettifyTitleFromUrl(rawUrl){
+          try{
+            const u = new URL(cleanEmbedInputUrl(rawUrl), location.href);
+            const parts = String(u.pathname || "").split("/").filter(Boolean);
+            let last = parts.pop() || "";
+            if (/^(chapter|chuong)[-_]/i.test(last) && parts.length) last = parts.pop() || last;
+            last = decodeURIComponent(last).replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+            return last ? last.replace(/\b\w/g, (m) => m.toUpperCase()) : "";
+          }catch(_){
+            return "";
+          }
+        }
+        function cleanRemoteStoryTitle(title, source){
+          let t = String(title || "").replace(/\s+/g, " ").trim();
+          if (!t) return "";
+          t = t.replace(/\s*[|\-–—]\s*(?:Chương|Chapter)\b.*$/i, "").trim();
+          const sourceName = String(source?.name || "").trim();
+          if (sourceName){
+            t = t.replace(new RegExp(`\\s*[|\\-–—]\\s*${escapeRegex(sourceName)}$`, "i"), "").trim();
+          }
+          t = t.replace(/\s*[|\-–—]\s*(?:Trang chủ|Home)$/i, "").trim();
+          return t;
+        }
+        function absolutizeUrl(raw, base){
+          try{ return new URL(String(raw || "").trim(), base).href; }catch(_){ return String(raw || "").trim(); }
+        }
+        function readEmbedUsageState(){
+          const today = __todayKeyLocal();
+          try{
+            const raw = safeGetLS("profile_embed_usage_v1", "") || localStorage.getItem("profile_embed_usage_v1") || "";
+            if (raw){
+              const parsed = JSON.parse(raw);
+              if (parsed && typeof parsed === "object"){
+                return {
+                  day: String(parsed.day || parsed.date || today || ""),
+                  count: Math.max(0, Number(parsed.count ?? parsed.used ?? 0) || 0)
+                };
+              }
+            }
+          }catch(_){ }
+          return { day: today, count: Math.max(0, Number(embedUsedToday || 0) || 0) };
+        }
+        function writeEmbedUsageState(state){
+          const payload = {
+            day: String(state?.day || __todayKeyLocal()),
+            count: Math.max(0, Number(state?.count || 0) || 0)
+          };
+          try{ safeSetLS("profile_embed_usage_v1", JSON.stringify(payload)); }catch(_){ }
+          try{ safeSetLS("profile_embed_used_today", String(payload.count)); }catch(_){ }
+        }
+        function bumpEmbedUsageToday(step = 1){
+          const today = __todayKeyLocal();
+          const state = readEmbedUsageState();
+          const base = state.day === today ? state.count : 0;
+          const next = { day: today, count: Math.max(0, base + Math.max(0, Number(step || 0) || 0)) };
+          writeEmbedUsageState(next);
+          return next.count;
+        }
+        function writeEmbeddedStoriesLocal(rows){
+          const safeRows = Array.isArray(rows) ? rows : [];
+          const raw = JSON.stringify(safeRows.slice(0, 100));
+          ["profile_embed_stories_v1", "embeddedStories", "story_embeds", "myEmbeddedStories", "profileEmbeddedStories"].forEach((key) => {
+            try{ safeSetLS(key, raw); }catch(_){
+              try{ localStorage.setItem(key, raw); }catch(__){ }
+            }
+          });
+        }
+        function makeExternalEmbedId(url, source){
+          const base = `${String(source?.id || source?.domain || "ext")}_${normalizeEmbedUrl(url) || String(url || "")}`;
+          const norm = normForSearch(base).replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 120);
+          return `ext_${norm || Date.now()}`;
+        }
+        function saveImportedExternalStory(story){
+          const draft = story && typeof story === "object" ? story : {};
+          const list = readEmbeddedStoriesLocal().slice();
+          const urlKey = normalizeEmbedUrl(draft.url || "");
+          const titleKey = normForSearch(draft.title || "");
+          const sourceName = String(draft.source || "Nguồn ngoài");
+          const index = list.findIndex((it) => {
+            const itUrl = normalizeEmbedUrl(it?.url || "");
+            if (urlKey && itUrl && itUrl === urlKey) return true;
+            return !!titleKey && normForSearch(it?.title || "") === titleKey && String(it?.source || "") === sourceName;
+          });
+          const payload = {
+            id: String(draft.id || makeExternalEmbedId(draft.url || "", detectEmbedSourceByUrl(draft.url || "") || { name: sourceName, id: sourceName })),
+            storyId: String(draft.id || makeExternalEmbedId(draft.url || "", detectEmbedSourceByUrl(draft.url || "") || { name: sourceName, id: sourceName })),
+            title: String(draft.title || "Truyện nhúng"),
+            cover: String(draft.cover || draft.image || draft.thumb || ""),
+            author: String(draft.author || sourceName || "Nguồn ngoài"),
+            chapter: Math.max(0, Number(draft.chapter || 0) || 0),
+            url: String(normalizeEmbedUrl(draft.url || "") || draft.url || ""),
+            source: sourceName,
+            desc: String(draft.desc || "").trim(),
+            category: String(draft.category || "Nhúng truyện").trim() || "Nhúng truyện",
+            status: String(draft.status || "Nguồn ngoài").trim() || "Nguồn ngoài",
+            chapterLinks: normalizeCustomChapterLinks(draft.chapterLinks, Math.max(0, Number(draft.chapter || 0) || 0)),
+            importedAt: Date.now()
+          };
+          const webStory = upsertLocalCustomStory({
+            id: payload.storyId,
+            title: payload.title,
+            author: payload.author,
+            cover: payload.cover,
+            desc: String(payload.desc || `Truyện được nhúng từ ${sourceName}.`).trim(),
+            chapters: Math.max(1, Number(payload.chapter || payload.chapterLinks.length || 1) || 1),
+            views: 0,
+            rating: 0,
+            category: payload.category,
+            status: payload.status,
+            updatedAtText: payload.chapterLinks.length ? "Đã lấy danh sách chương" : "Vừa nhúng",
+            updatedAtMs: payload.importedAt,
+            chapterLinks: payload.chapterLinks,
+            externalUrl: payload.url,
+            externalSourceName: payload.source,
+            isEmbeddedStory: true
+          });
+          if (webStory?.id) payload.storyId = String(webStory.id);
+          let isNew = false;
+          if (index >= 0){
+            list[index] = { ...list[index], ...payload };
+          } else {
+            list.unshift(payload);
+            isNew = true;
+          }
+          writeEmbeddedStoriesLocal(list);
+          return { isNew, count: list.length, story: payload };
+        }
+        function buildSearchQueryForSource(source, query, suggest = false){
+          return suggest
+            ? `site:${source.domain} truyện`
+            : `site:${source.domain} ${String(query || "").trim()}`;
+        }
+        function buildSearchRssUrl(source, query, suggest = false){
+          return `https://www.bing.com/search?format=rss&q=${encodeURIComponent(buildSearchQueryForSource(source, query, suggest))}`;
+        }
+        function buildSearchHtmlUrls(source, query, suggest = false){
+          const q = encodeURIComponent(buildSearchQueryForSource(source, query, suggest));
+          return [
+            `https://www.bing.com/search?q=${q}`,
+            `https://html.duckduckgo.com/html/?q=${q}`
+          ];
+        }
+        function isLikelyStoryUrl(link, source){
+          const href = String(link || "").trim();
+          if (!href) return false;
+          try{
+            const u = new URL(href);
+            const host = u.hostname.replace(/^www\./i, "").toLowerCase();
+            const wantedHost = String(source?.domain || "").replace(/^www\./i, "").toLowerCase();
+            if (!(host === wantedHost || host.endsWith(`.${wantedHost}`))) return false;
+            const normalized = normalizeEmbedUrl(href) || href;
+            if (/\/(?:the-loai|xep-hang|tac-gia|tag|tim-kiem|search|danh-sach|genre|author|ranking|bang-xep-hang)\b/i.test(normalized)) return false;
+            const parts = String(new URL(normalized).pathname || "").split("/").filter(Boolean);
+            return parts.length >= 1;
+          }catch(_){
+            return false;
+          }
+        }
+        function parseEmbedSearchHtml(pageText, source){
+          const text = String(pageText || "").trim();
+          if (!text) return [];
+          const out = [];
+          const seen = new Set();
+          const addRow = (link, title = "", note = "") => {
+            const normalized = normalizeEmbedUrl(link) || String(link || "").trim();
+            if (!isLikelyStoryUrl(normalized, source)) return;
+            const key = String(normalized || "").toLowerCase();
+            if (!key || seen.has(key)) return;
+            seen.add(key);
+            const cleanTitle = cleanRemoteStoryTitle(title || "", source) || prettifyTitleFromUrl(normalized);
+            if (!cleanTitle) return;
+            out.push({
+              id: "",
+              title: cleanTitle,
+              cover: "",
+              author: source?.name || source?.domain || "Nguồn web",
+              chapter: 0,
+              url: normalized,
+              source: source?.name || "Nguồn web",
+              subtitle: note || "Nhúng truyện từ web nguồn",
+              badge: "Web thật",
+              isExternal: true
+            });
+          };
+          try{
+            const doc = new DOMParser().parseFromString(text, "text/html");
+            Array.from(doc.querySelectorAll('a[href]')).forEach((a) => {
+              const href = String(a.getAttribute('href') || '').trim();
+              const title = stripHtmlText(a.textContent || a.getAttribute('title') || '');
+              addRow(href, title);
+            });
+          }catch(_){ }
+          const mdMatches = text.match(/\[[^\]]{2,120}\]\((https?:\/\/[^\s)]+)\)/g) || [];
+          mdMatches.forEach((chunk) => {
+            const m = chunk.match(/^\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)$/);
+            if (m) addRow(m[2], m[1], "Kết quả dò từ công cụ tìm kiếm");
+          });
+          const rawMatches = text.match(/https?:\/\/[^\s"'<>\])]+/g) || [];
+          rawMatches.forEach((link) => addRow(link, "", "Kết quả dò từ công cụ tìm kiếm"));
+          return out.slice(0, 12);
+        }
+        async function fetchRemoteSearchRows(source, query, suggest = false){
+          const cacheKey = suggest ? `suggest::${source.id}` : `search::${source.id}::${normForSearch(query || "")}`;
+          const cached = getEmbedSearchCache(cacheKey, suggest ? 1000 * 60 * 60 * 12 : 1000 * 60 * 30);
+          if (cached.length) return { rows: cached, fromCache: true };
+          const rssUrl = buildSearchRssUrl(source, query, suggest);
+          try{
+            const rssFeed = await fetchTextWithFallback(rssUrl);
+            let rows = parseEmbedSearchFeed(rssFeed, source);
+            if (suggest) rows = rows.slice(0, 5);
+            if (rows.length){
+              setEmbedSearchCache(cacheKey, rows);
+              return { rows, fromCache: false };
+            }
+          }catch(_){ }
+          for (const htmlUrl of buildSearchHtmlUrls(source, query, suggest)){
+            try{
+              const html = await fetchTextWithFallback(htmlUrl);
+              let rows = parseEmbedSearchHtml(html, source);
+              if (suggest) rows = rows.slice(0, 5);
+              if (rows.length){
+                setEmbedSearchCache(cacheKey, rows);
+                return { rows, fromCache: false };
+              }
+            }catch(_){ }
+          }
+          return { rows: [], fromCache: false };
+        }
+        async function fetchTextWithFallback(url){
+          const target = String(url || "").trim();
+          if (!target) throw new Error("empty-url");
+          const attempts = [
+            async () => {
+              const res = await fetch(target, { cache: "no-store", credentials: "omit" });
+              if (!res.ok) throw new Error(`http-${res.status}`);
+              return await res.text();
+            },
+            async () => {
+              const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(target)}`, { cache: "no-store" });
+              if (!res.ok) throw new Error(`raw-${res.status}`);
+              return await res.text();
+            },
+            async () => {
+              const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`, { cache: "no-store" });
+              if (!res.ok) throw new Error(`get-${res.status}`);
+              const json = await res.json();
+              return String(json?.contents || "");
+            },
+            async () => {
+              const proxyUrl = `https://r.jina.ai/http://${target.replace(/^https?:\/\//i, "")}`;
+              const res = await fetch(proxyUrl, { cache: "no-store" });
+              if (!res.ok) throw new Error(`jina-${res.status}`);
+              return await res.text();
+            }
+          ];
+          let lastErr = null;
+          for (const attempt of attempts){
+            try{
+              const out = await attempt();
+              if (String(out || "").trim().length > 20) return out;
+            }catch(err){
+              lastErr = err;
+            }
+          }
+          throw lastErr || new Error("fetch-failed");
+        }
+        function parseEmbedSearchFeed(feedText, source){
+          const xml = String(feedText || "").trim();
+          if (!xml) return [];
+          const doc = new DOMParser().parseFromString(xml, "text/xml");
+          const items = Array.from(doc.querySelectorAll("item"));
+          const wantedHost = String(source?.domain || "").replace(/^www\./i, "").toLowerCase();
+          const out = [];
+          const seen = new Set();
+          items.forEach((item) => {
+            let link = String(item.querySelector("link")?.textContent || item.querySelector("guid")?.textContent || "").trim();
+            if (!link) return;
+            link = normalizeEmbedUrl(link) || link;
+            try{
+              const host = new URL(link).hostname.replace(/^www\./i, "").toLowerCase();
+              if (!(host === wantedHost || host.endsWith(`.${wantedHost}`))) return;
+            }catch(_){ return; }
+            if (/\/(?:the-loai|xep-hang|tac-gia|tag|tim-kiem|search|danh-sach)\b/i.test(link)) return;
+            const key = String(link || "").toLowerCase();
+            if (!key || seen.has(key)) return;
+            seen.add(key);
+            const title = cleanRemoteStoryTitle(item.querySelector("title")?.textContent || "", source) || prettifyTitleFromUrl(link);
+            if (!title) return;
+            const desc = stripHtmlText(item.querySelector("description")?.textContent || "");
+            out.push({
+              id: "",
+              title,
+              cover: "",
+              author: source?.name || wantedHost,
+              chapter: 0,
+              url: link,
+              source: source?.name || "Nguồn web",
+              subtitle: desc || "Nhúng truyện từ web nguồn",
+              badge: "Web thật",
+              isExternal: true
+            });
+          });
+          return out.slice(0, 12);
+        }
+        function normalizeChapterUrl(raw, base){
+          try{
+            const u = new URL(String(raw || "").trim(), base);
+            if (!/^https?:$/i.test(u.protocol)) return "";
+            u.hash = "";
+            return u.href;
+          }catch(_){
+            return "";
+          }
+        }
+        function extractChapterOrderFromUrl(rawUrl){
+          const href = String(rawUrl || "").toLowerCase();
+          const m = href.match(/(?:chuong|chapter)[-_\/]?(\d{1,6})/i) || href.match(/[-_/](\d{1,6})(?:\.html?)?$/i);
+          return m ? Math.max(0, Number(m[1] || 0) || 0) : 0;
+        }
+        function isLikelyChapterUrl(rawHref, source, storyUrl = ""){
+          const href = normalizeChapterUrl(rawHref, storyUrl || location.href);
+          if (!href) return false;
+          try{
+            const u = new URL(href);
+            const host = u.hostname.replace(/^www\./i, "").toLowerCase();
+            const wantedHost = String(source?.domain || "").replace(/^www\./i, "").toLowerCase();
+            if (wantedHost && !(host === wantedHost || host.endsWith(`.${wantedHost}`))) return false;
+            const path = String(u.pathname || "/");
+            const storyNorm = String(normalizeEmbedUrl(storyUrl) || storyUrl || "").toLowerCase();
+            if (storyNorm && String(href).toLowerCase() === storyNorm) return false;
+            if (/\/(?:the-loai|xep-hang|tac-gia|tag|tim-kiem|search|danh-sach|genre|author|ranking|bang-xep-hang|trang-\d+)\b/i.test(path)) return false;
+            if (/(?:chuong|chapter)[-_\/]/i.test(path)) return true;
+            if (/\/read\//i.test(path)) return true;
+            return false;
+          }catch(_){
+            return false;
+          }
+        }
+        function collectStoryChapterLinksFromHtml(html, url, source){
+          try{
+            const doc = new DOMParser().parseFromString(String(html || ""), "text/html");
+            const out = [];
+            const seen = new Set();
+            Array.from(doc.querySelectorAll('a[href]')).forEach((a) => {
+              const href = String(a.getAttribute('href') || '').trim();
+              if (!isLikelyChapterUrl(href, source, url)) return;
+              const abs = normalizeChapterUrl(href, url);
+              if (!abs) return;
+              const key = abs.toLowerCase();
+              if (seen.has(key)) return;
+              seen.add(key);
+              const label = stripHtmlText(a.textContent || a.getAttribute('title') || '');
+              out.push({ href: abs, order: extractChapterOrderFromUrl(abs), label });
+            });
+            out.sort((a, b) => {
+              if (a.order && b.order && a.order !== b.order) return a.order - b.order;
+              if (a.order && !b.order) return -1;
+              if (!a.order && b.order) return 1;
+              return String(a.label || '').localeCompare(String(b.label || ''), 'vi');
+            });
+            return out.map((it) => it.href);
+          }catch(_){
+            return [];
+          }
+        }
+        function parseStoryMetaFromHtml(html, url, source, fallback = {}){
+          let title = String(fallback?.title || "").trim();
+          let cover = String(fallback?.cover || "").trim();
+          let author = String(fallback?.author || "").trim();
+          let chapterCount = Math.max(0, Number(fallback?.chapter || 0) || 0);
+          let desc = String(fallback?.desc || "").trim();
+          let category = String(fallback?.category || "").trim();
+          let status = String(fallback?.status || "").trim();
+          let chapterLinks = normalizeCustomChapterLinks(fallback?.chapterLinks, chapterCount);
+          try{
+            const doc = new DOMParser().parseFromString(String(html || ""), "text/html");
+            const metaPick = (selectors = []) => {
+              for (const sel of selectors){
+                const el = doc.querySelector(sel);
+                const val = el?.getAttribute?.("content") || el?.getAttribute?.("src") || el?.textContent || "";
+                if (String(val || "").trim()) return String(val).trim();
+              }
+              return "";
+            };
+            title = cleanRemoteStoryTitle(
+              metaPick([`meta[property="og:title"]`, `meta[name="twitter:title"]`, `meta[name="title"]`])
+              || doc.querySelector("h1")?.textContent
+              || doc.querySelector("title")?.textContent
+              || title,
+              source
+            ) || title;
+            cover = metaPick([`meta[property="og:image"]`, `meta[name="twitter:image"]`, `meta[itemprop="image"]`]) || cover;
+            if (!cover){
+              const img = doc.querySelector(".book img, .summary_image img, .truyen img, .detail img, article img, .series-cover img, img");
+              cover = String(img?.getAttribute?.("src") || "").trim();
+            }
+            cover = absolutizeUrl(cover, url);
+            author = metaPick([`meta[name="author"]`, `meta[property="book:author"]`]) || author;
+            if (!author){
+              const bodyText = stripHtmlText(doc.body?.textContent || "");
+              const match = bodyText.match(/(?:Tác giả|Tac gia|Author)\s*[:\-]?\s*([^\n\r|]{2,80})/i);
+              if (match) author = String(match[1] || "").trim();
+            }
+            desc = metaPick([`meta[property="og:description"]`, `meta[name="description"]`, `meta[name="twitter:description"]`]) || desc;
+            if (!desc){
+              const descEl = doc.querySelector('.summary__content, .summary_content, .detail-content, .book-intro, .book-desc, .desc-text, .entry-content, .intro, [itemprop="description"]');
+              desc = String(descEl?.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 1500);
+            }
+            if (!category){
+              const cats = Array.from(doc.querySelectorAll('a[href*="the-loai"], a[href*="genre"], .genres a, .book-tags a, .tags a'))
+                .map((a) => stripHtmlText(a.textContent || ''))
+                .filter(Boolean);
+              category = Array.from(new Set(cats)).slice(0, 4).join(' • ');
+            }
+            if (!status){
+              const bodyText = stripHtmlText(doc.body?.textContent || '');
+              const m = bodyText.match(/(?:Tình trạng|Trạng thái|Status)\s*[:\-]?\s*(Hoàn thành|Full|Completed|Đang ra|Đang cập nhật|Ongoing)/i);
+              status = String(m?.[1] || '').trim();
+            }
+            chapterLinks = collectStoryChapterLinksFromHtml(html, url, source);
+            if (!chapterCount){
+              chapterCount = chapterLinks.length;
+              if (!chapterCount){
+                const htmlText = String(html || '');
+                const matches = htmlText.match(/\/(?:chapter|chuong)[-_\/][^"' )<]+/gi) || [];
+                chapterCount = new Set(matches.map((v) => String(v || '').toLowerCase())).size;
+              }
+            }
+          }catch(_){ }
+          chapterCount = Math.max(chapterCount, chapterLinks.length);
+          return {
+            id: String(fallback?.id || makeExternalEmbedId(url, source)),
+            title: title || prettifyTitleFromUrl(url) || "Truyện nhúng",
+            cover,
+            author: author || String(source?.name || fallback?.source || "Nguồn ngoài"),
+            chapter: Math.max(0, Number(chapterCount || 0) || 0),
+            url: String(normalizeEmbedUrl(url) || url || ""),
+            source: String(source?.name || fallback?.source || "Nguồn ngoài"),
+            desc: String(desc || '').trim(),
+            category: String(category || 'Nhúng truyện').trim() || 'Nhúng truyện',
+            status: String(status || 'Nguồn ngoài').trim() || 'Nguồn ngoài',
+            chapterLinks
+          };
+        }
+        function readEmbedSearchCache(){
+          try{
+            const raw = safeGetLS("pf_embed_search_cache_v1", "") || localStorage.getItem("pf_embed_search_cache_v1") || "";
+            const parsed = raw ? JSON.parse(raw) : {};
+            return parsed && typeof parsed === "object" ? parsed : {};
+          }catch(_){ return {}; }
+        }
+        function writeEmbedSearchCache(store){
+          try{ safeSetLS("pf_embed_search_cache_v1", JSON.stringify(store || {})); }catch(_){ }
+        }
+        function getEmbedSearchCache(key, maxAgeMs = 1000 * 60 * 60 * 8){
+          const store = readEmbedSearchCache();
+          const entry = store?.[key];
+          if (!entry || !Array.isArray(entry.rows)) return [];
+          const ts = Math.max(0, Number(entry.ts || 0) || 0);
+          if (!ts || (Date.now() - ts) > maxAgeMs) return [];
+          return entry.rows;
+        }
+        function setEmbedSearchCache(key, rows){
+          const store = readEmbedSearchCache();
+          store[key] = { ts: Date.now(), rows: Array.isArray(rows) ? rows.slice(0, 20) : [] };
+          writeEmbedSearchCache(store);
+        }
         function buildProfileEmbedDiscoverGrid(rows = [], emptyText = "Chưa có truyện để hiển thị."){
           if (!rows.length){
             return `<div class="pf-story-empty">${emptyText}</div>`;
@@ -24426,24 +25037,29 @@ const pvpProfile = getCurrentPvpProfile();
             const sid = String(s?.id || "");
             const url = String(s?.url || "");
             const badge = String(s?.badge || s?.source || "Đề cử");
-            const metaRight = s.chapter > 0 ? `Ch.${fmtN(s.chapter)}` : String(s?.subtitle || "Nhấn để mở");
+            const sourceName = String(s?.source || "Nguồn ngoài");
+            const author = String(s?.author || sourceName || "Nguồn ngoài");
+            const chapterText = s.chapter > 0 ? `• ${fmtN(s.chapter)} chương` : "";
             return `
-              <button class="pf-story-card pf-embed-discover-card" type="button" data-pf-embed-story="${esc(sid)}" ${url ? `data-pf-embed-url="${esc(url)}"` : ""}>
+              <div class="pf-story-card pf-embed-discover-card">
                 <div class="pf-story-cover">
-                  ${s.cover ? `<img src="${esc(s.cover)}" alt="${esc(s.title || "")}" loading="lazy">` : `<div class="icon">🔗</div>`}
+                  ${s.cover ? `<img src="${esc(s.cover)}" alt="${esc(s.title || "")}" loading="lazy">` : `<div class="icon">📚</div>`}
                   <div class="pf-story-badge">${esc(badge)}</div>
                 </div>
                 <div class="t">${esc(s.title || "Truyện nhúng")}</div>
-                <div class="s">${esc(s.author || "Nguồn ngoài")}</div>
-                <div class="pf-embed-discover-meta"><span>${esc(s.source || "Thư viện web")}</span><span>${esc(metaRight)}</span></div>
-              </button>
+                <div class="s">${esc(author)}${chapterText ? " " + esc(chapterText) : ""}</div>
+                <div class="pf-embed-discover-meta"><span>${esc(sourceName || "Nguồn web")}</span><span> </span></div>
+                <div class="pf-embed-actions">
+                  ${url ? `<button class="pf-embed-mini-btn" type="button" data-pf-embed-add="${esc(url)}" data-pf-embed-title="${esc(s.title || "")}" data-pf-embed-author="${esc(author)}" data-pf-embed-source-name="${esc(sourceName)}" data-pf-embed-chapter="${esc(String(s.chapter || 0))}">Nhúng</button>` : sid ? `<button class="pf-embed-mini-btn" type="button" data-pf-embed-open-local="${esc(sid)}">Mở truyện</button>` : `<button class="pf-embed-mini-btn" type="button" disabled>Chưa có link</button>`}
+                </div>
+              </div>
             `;
           }).join("")}</div>`;
         }
-        const embedInitialRows = embedDiscoverPool.slice(0, 5);
+        const embedInitialRows = [];
         const embedDiscoverInitialHtml = buildProfileEmbedDiscoverGrid(
-          embedInitialRows.length ? embedInitialRows : buildProfileEmbedSourcePreviewRows(embedPreferredSourceId),
-          "Chưa có gợi ý để hiển thị.<br>Hãy nhập tên truyện để lọc trong dữ liệu hiện có."
+          embedInitialRows,
+          "Chưa có truyện nào để hiển thị.<br>Nhập tên truyện hoặc dán link truyện nguồn rồi bấm <b>Tìm kiếm</b> để nhúng vào web của bạn."
         );
         const embedSourceChipHtml = embedSources.map((src) => `
           <button class="pf-embed-source-chip ${src.id === embedPreferredSourceId ? "active" : ""}" type="button" data-pf-embed-source="${esc(src.id)}">${esc(src.name)}</button>
@@ -24457,21 +25073,39 @@ const pvpProfile = getCurrentPvpProfile();
           const meta = root.querySelector("#pfEmbedResultMeta");
           const hint = root.querySelector("#pfEmbedResultHint");
           const currentSourceEl = root.querySelector("#pfEmbedCurrentSource");
+          const searchBox = root.querySelector(".pf-embed-searchbox");
+          const searchBtn = root.querySelector("#pfEmbedSearchBtn");
           const chips = Array.from(root.querySelectorAll("[data-pf-embed-source]"));
           let selectedSourceId = embedPreferredSourceId;
-          const getSelectedSource = () => embedSources.find((src) => src.id === selectedSourceId) || embedSources[0] || { name: "Nguồn nhúng", url: "" };
+          let requestToken = 0;
+          let inputSearchTimer = 0;
+          const getSelectedSource = () => embedSources.find((src) => src.id === selectedSourceId) || embedSources[0] || { name: "Nguồn nhúng", url: "", domain: "" };
+          const setBusy = (busy, message = "Đang tải kết quả thật từ web nguồn...") => {
+            if (searchBox) searchBox.classList.toggle("is-busy", !!busy);
+            if (searchBtn) searchBtn.disabled = !!busy;
+            if (busy && hint) hint.innerHTML = `<span class="pf-embed-loading"><i></i>${esc(message)}</span>`;
+          };
           const renderChips = () => {
             chips.forEach((btn) => {
               btn.classList.toggle("active", String(btn.getAttribute("data-pf-embed-source") || "") === selectedSourceId);
             });
           };
-          const renderResults = () => {
-            const query = String(input?.value || "").trim();
+          const renderRows = (rows, metaText, hintText, emptyText) => {
+            if (currentSourceEl) currentSourceEl.textContent = getSelectedSource().name || "Nguồn nhúng";
+            if (meta) meta.textContent = metaText || `${rows.length} kết quả`;
+            if (hint) hint.textContent = hintText || "Đang hiển thị kết quả.";
+            if (grid){
+              grid.innerHTML = buildProfileEmbedDiscoverGrid(
+                rows,
+                emptyText || "Chưa có truyện để hiển thị.<br>Hãy nhập tên truyện hoặc đổi nguồn nhúng phía trên."
+              );
+            }
+          };
+          const renderLocalFallback = (query = "", reason = "") => {
             const selectedSource = getSelectedSource();
-            if (currentSourceEl) currentSourceEl.textContent = selectedSource.name || "Nguồn nhúng";
+            const qn = normForSearch(query || "");
             let rows = [];
             if (query){
-              const qn = normForSearch(query);
               rows = embedDiscoverPool.filter((item) => {
                 const hay = normForSearch([
                   item?.title,
@@ -24483,43 +25117,226 @@ const pvpProfile = getCurrentPvpProfile();
                 ].filter(Boolean).join(" "));
                 return hay.includes(qn);
               }).slice(0, 12);
-              if (!rows.length){
-                rows = buildProfileEmbedSourcePreviewRows(selectedSourceId).filter((item) => {
-                  const hay = normForSearch([item?.title, item?.author, item?.source].join(" "));
-                  return hay.includes(qn);
-                }).slice(0, 5);
-              }
-              if (meta) meta.textContent = rows.length ? `${rows.length} kết quả` : "Không có kết quả";
-              if (hint) hint.textContent = rows.length
-                ? "Đang lọc trong dữ liệu truyện đã có của file. Muốn kéo truyện thật trực tiếp từ web nguồn cần backend/proxy."
-                : "Chưa có truyện khớp trong dữ liệu sẵn có. Bạn vẫn có thể đổi nguồn hoặc mở web nguồn để nhúng thủ công.";
-            } else {
-              rows = embedDiscoverPool.slice(0, 5);
-              if (!rows.length) rows = buildProfileEmbedSourcePreviewRows(selectedSourceId);
-              if (meta) meta.textContent = rows.length ? `${rows.length} gợi ý` : "0 gợi ý";
-              if (hint) hint.textContent = "Khi chưa nhập từ khóa sẽ hiện 5 gợi ý nhanh. Bản HTML tĩnh hiện UI + lọc cục bộ; muốn lấy truyện trực tiếp từ web nguồn cần backend/proxy để tránh lỗi CORS.";
-            }
-            if (grid){
-              grid.innerHTML = buildProfileEmbedDiscoverGrid(
+              renderRows(
                 rows,
-                "Chưa có truyện để hiển thị.<br>Hãy nhập tên truyện hoặc đổi nguồn nhúng phía trên."
+                rows.length ? `${rows.length} kết quả local` : "Không có kết quả",
+                reason || (rows.length
+                  ? "Không lấy được web nguồn, đang hiển thị dữ liệu sẵn có trong file hiện tại."
+                  : "Không lấy được web nguồn và chưa có truyện khớp trong dữ liệu hiện tại."),
+                "Chưa có truyện để hiển thị.<br>Hãy thử đổi nguồn hoặc dán link truyện nguồn để nhúng thẳng vào web."
+              );
+            } else {
+              rows = [];
+              renderRows(
+                rows,
+                "0 kết quả",
+                reason || "Nhập tên truyện hoặc dán link truyện nguồn để nhúng vào web của bạn.",
+                "Chưa có truyện nào để hiển thị.<br>Nhập tên truyện hoặc dán link truyện nguồn rồi bấm <b>Tìm kiếm</b>."
               );
             }
+          };
+          const searchRemote = async (query = "", suggest = false) => {
+            const source = getSelectedSource();
+            if (suggest){
+              renderRows(
+                [],
+                "0 kết quả",
+                "Nhập tên truyện hoặc dán link truyện nguồn để thêm truyện từ web nguồn vào web của bạn.",
+                "Chưa có truyện nào để hiển thị.<br>Nhập tên truyện hoặc dán link truyện nguồn rồi bấm <b>Tìm kiếm</b>."
+              );
+              return;
+            }
+            const token = ++requestToken;
+            setBusy(true, `Đang dò "${String(query || '').trim()}" trên nhiều nguồn...`);
+            try{
+              const orderedSources = [source].concat(embedSources.filter((src) => src && src.id !== source.id));
+              const settled = await Promise.allSettled(
+                orderedSources.map((src) => fetchRemoteSearchRows(src, query, false).then((res) => ({ src, rows: Array.isArray(res?.rows) ? res.rows : [] })))
+              );
+              if (token !== requestToken) return;
+              const merged = [];
+              const seen = new Set();
+              let hitSources = 0;
+              settled.forEach((item) => {
+                if (item.status !== 'fulfilled') return;
+                const src = item.value?.src;
+                const rows = Array.isArray(item.value?.rows) ? item.value.rows : [];
+                if (rows.length) hitSources += 1;
+                rows.forEach((row) => {
+                  const normalizedUrl = normalizeEmbedUrl(row?.url || '');
+                  const normalizedTitle = normForSearch(row?.title || '');
+                  const dedupeKey = normalizedUrl || `${normalizedTitle}::${normForSearch(row?.source || src?.name || '')}`;
+                  if (!dedupeKey || seen.has(dedupeKey)) return;
+                  seen.add(dedupeKey);
+                  merged.push({
+                    ...row,
+                    source: String(row?.source || src?.name || 'Nguồn web'),
+                    badge: String(row?.source || src?.name || 'Nguồn web')
+                  });
+                });
+              });
+              merged.sort((a, b) => {
+                const aSel = String(a?.source || '').toLowerCase() === String(source?.name || '').toLowerCase() ? 1 : 0;
+                const bSel = String(b?.source || '').toLowerCase() === String(source?.name || '').toLowerCase() ? 1 : 0;
+                if (aSel !== bSel) return bSel - aSel;
+                const aCh = Math.max(0, Number(a?.chapter || 0) || 0);
+                const bCh = Math.max(0, Number(b?.chapter || 0) || 0);
+                if (aCh !== bCh) return bCh - aCh;
+                return String(a?.title || '').localeCompare(String(b?.title || ''), 'vi');
+              });
+              const rows = merged.slice(0, 30);
+              if (rows.length){
+                renderRows(
+                  rows,
+                  `${rows.length} kết quả • ${hitSources}/${orderedSources.length} nguồn có dữ liệu`,
+                  `Đã gom kết quả từ nhiều nguồn. Nguồn ưu tiên hiện tại: ${source.name}. Nhấn Nhúng để thêm truyện vào web của bạn.`,
+                  "Chưa có truyện để hiển thị.<br>Hãy thử nhập tên khác hoặc dán link truyện nguồn."
+                );
+                return;
+              }
+              renderLocalFallback(query, `Không thấy kết quả thật trên ${orderedSources.length} nguồn đã dò. Bạn hãy thử dán link truyện trực tiếp để nhúng chắc chắn hơn.`);
+            }catch(_){
+              if (token !== requestToken) return;
+              renderLocalFallback(query, "Không tải được công cụ dò web nguồn trên thiết bị hiện tại. Bạn hãy dán link truyện trực tiếp để nhúng ổn định hơn.");
+            }finally{
+              if (token === requestToken) setBusy(false);
+            }
+          };
+          const importStoryFromUrl = async (rawUrl, fallback = {}) => {
+            const cleanUrl = cleanEmbedInputUrl(rawUrl);
+            const source = detectEmbedSourceByUrl(cleanUrl) || getSelectedSource();
+            if (!cleanUrl || !looksLikeUrl(cleanUrl)){
+              toast("Nhập link truyện hợp lệ trước đã.");
+              return;
+            }
+            if (!source){
+              toast("Link này chưa thuộc nguồn nhúng hỗ trợ.");
+              return;
+            }
+            if (embedLimitDaily <= 0){
+              toast("Tài khoản hiện chưa có lượt nhúng.");
+              return;
+            }
+            const usageState = readEmbedUsageState();
+            const remain = Math.max(0, embedLimitDaily - (usageState.day === __todayKeyLocal() ? usageState.count : 0));
+            if (remain <= 0){
+              toast("Hôm nay bạn đã hết lượt nhúng.");
+              return;
+            }
+            setBusy(true, "Đang lấy ảnh bìa, mô tả và danh sách chương từ web nguồn...");
+            let parsed = {
+              id: makeExternalEmbedId(cleanUrl, source),
+              title: String(fallback?.title || prettifyTitleFromUrl(cleanUrl) || "Truyện nhúng"),
+              cover: String(fallback?.cover || ""),
+              author: String(fallback?.author || source.name || "Nguồn ngoài"),
+              chapter: Math.max(0, Number(fallback?.chapter || 0) || 0),
+              url: String(normalizeEmbedUrl(cleanUrl) || cleanUrl),
+              source: String(source?.name || fallback?.source || "Nguồn ngoài"),
+              desc: String(fallback?.desc || "").trim(),
+              category: String(fallback?.category || "Nhúng truyện").trim() || "Nhúng truyện",
+              status: String(fallback?.status || "Nguồn ngoài").trim() || "Nguồn ngoài",
+              chapterLinks: normalizeCustomChapterLinks(fallback?.chapterLinks, Math.max(0, Number(fallback?.chapter || 0) || 0))
+            };
+            try{
+              const html = await fetchTextWithFallback(cleanUrl);
+              parsed = { ...parsed, ...parseStoryMetaFromHtml(html, cleanUrl, source, parsed) };
+            }catch(_){ }
+            const saved = saveImportedExternalStory(parsed);
+            if (saved.isNew){
+              bumpEmbedUsageToday(1);
+              toast(`Đã nhúng "${parsed.title}" với ${fmtN(parsed.chapter || parsed.chapterLinks?.length || 0)} chương.`);
+            } else {
+              toast(`Đã cập nhật "${parsed.title}".`);
+            }
+            try{ await loadStories(); }catch(_){ }
+            try{ safeSetLS("pf_main_tab", "embed"); }catch(_){ }
+            rerenderProfilePageKeepingPosition("tuvi", "#pfMain-embed");
           };
           chips.forEach((btn) => {
             btn.addEventListener("click", () => {
               selectedSourceId = String(btn.getAttribute("data-pf-embed-source") || embedPreferredSourceId || "");
               try{ safeSetLS("pf_embed_source", selectedSourceId); }catch(_){ }
               renderChips();
-              renderResults();
+              const q = String(input?.value || "").trim();
+              if (q) searchRemote(q, false);
+              else searchRemote("", true);
             });
           });
-          input?.addEventListener("input", renderResults);
-          root.querySelector("#pfEmbedSearchBtn")?.addEventListener("click", () => {
-            renderResults();
+          searchBtn?.addEventListener("click", async () => {
+            const q = String(input?.value || "").trim();
+            if (looksLikeUrl(q)){
+              await importStoryFromUrl(q);
+              return;
+            }
+            if (!q){
+              renderRows(
+                [],
+                "0 kết quả",
+                "Nhập tên truyện hoặc dán link truyện nguồn để thêm truyện từ web nguồn vào web của bạn.",
+                "Chưa có truyện nào để hiển thị.<br>Nhập tên truyện hoặc dán link truyện nguồn rồi bấm <b>Tìm kiếm</b>."
+              );
+              return;
+            }
+            await searchRemote(q, false);
+          });
+          input?.addEventListener("keydown", async (ev) => {
+            if (ev.key !== "Enter") return;
+            ev.preventDefault();
+            searchBtn?.click();
+          });
+          input?.addEventListener("input", () => {
+            const q = String(input?.value || "").trim();
+            if (inputSearchTimer) clearTimeout(inputSearchTimer);
+            if (!q){
+              searchRemote("", true);
+              return;
+            }
+            if (looksLikeUrl(q)){
+              if (meta) meta.textContent = "Link truyện";
+              if (hint) hint.textContent = "Đã nhận link truyện. Nhấn nút Tìm kiếm để nhúng trực tiếp vào web của bạn.";
+              return;
+            }
+            inputSearchTimer = window.setTimeout(() => {
+              searchRemote(q, false);
+            }, 320);
+          });
+          root.addEventListener("click", async (ev) => {
+            const addBtn = ev.target.closest("[data-pf-embed-add]");
+            if (addBtn){
+              ev.preventDefault();
+              ev.stopPropagation();
+              await importStoryFromUrl(String(addBtn.getAttribute("data-pf-embed-add") || ""), {
+                title: String(addBtn.getAttribute("data-pf-embed-title") || ""),
+                author: String(addBtn.getAttribute("data-pf-embed-author") || ""),
+                source: String(addBtn.getAttribute("data-pf-embed-source-name") || ""),
+                chapter: Math.max(0, Number(addBtn.getAttribute("data-pf-embed-chapter") || 0) || 0)
+              });
+              return;
+            }
+            const openBtn = ev.target.closest("[data-pf-embed-open]");
+            if (openBtn){
+              ev.preventDefault();
+              ev.stopPropagation();
+              const url = String(openBtn.getAttribute("data-pf-embed-open") || "").trim();
+              if (url) try{ window.open(url, "_blank", "noopener,noreferrer"); }catch(_){ }
+              return;
+            }
+            const openLocalBtn = ev.target.closest("[data-pf-embed-open-local]");
+            if (openLocalBtn){
+              ev.preventDefault();
+              ev.stopPropagation();
+              const sid = String(openLocalBtn.getAttribute("data-pf-embed-open-local") || "").trim();
+              if (sid && storyById(sid)) goToStory(sid);
+              return;
+            }
           });
           renderChips();
-          renderResults();
+          renderRows(
+            [],
+            "0 kết quả",
+            "Nhập tên truyện hoặc dán link truyện nguồn để thêm truyện từ web nguồn vào web của bạn.",
+            "Chưa có truyện nào để hiển thị.<br>Nhập tên truyện hoặc dán link truyện nguồn rồi bấm <b>Tìm kiếm</b>."
+          );
         }
 
         hideRouteHeader();
@@ -24928,7 +25745,7 @@ truyện</span>
               <div class="pf-story-panel">
                 <div class="pf-section-title" style="margin-top:0">
                   <div class="t">🔗 Nhúng truyện</div>
-                  <div class="s">Nguồn nhúng + ô tìm truyện + danh sách đã nhúng</div>
+                  <div class="s">Tìm truyện thật và nhúng vào web hiện tại</div>
                 </div>
                 <div class="pf-story-stats pf-embed-stats">
                   <div class="pf-story-stat"><div class="k">Giới hạn nhúng</div><div class="v">${fmtN(embedLimitDaily)}</div></div>
@@ -24943,7 +25760,7 @@ truyện</span>
                 <div class="pf-embed-searchbox">
                   <div class="pf-section-title" style="margin-top:0">
                     <div class="t">🔎 Tìm kiếm truyện để nhúng</div>
-                    <div class="s" id="pfEmbedCurrentSource">${esc((embedSources.find(src => src.id === embedPreferredSourceId) || embedSources[0] || {}).name || "Nguồn nhúng")}</div>
+                    <div class="s" id="pfEmbedCurrentSource">${esc(`Ưu tiên ${(embedSources.find(src => src.id === embedPreferredSourceId) || embedSources[0] || {}).name || "Nguồn nhúng"} • vẫn dò nhiều nguồn`)}</div>
                   </div>
                   <div class="pf-embed-source-list">
                     ${embedSourceChipHtml}
@@ -24951,19 +25768,19 @@ truyện</span>
                   <div class="pf-embed-search-row">
                     <label class="pf-embed-search-field">
                       <span>🔎</span>
-                      <input id="pfEmbedSearchInput" type="text" placeholder="Nhập tên truyện để tìm và nhúng..." autocomplete="off">
+                      <input id="pfEmbedSearchInput" type="text" placeholder="Gõ tên truyện hoặc dán link truyện nguồn..." autocomplete="off">
                     </label>
                     <button class="pf-embed-search-btn" type="button" id="pfEmbedSearchBtn">Tìm kiếm</button>
                   </div>
-                  <div class="pf-embed-search-hint">Khi chưa nhập tìm kiếm, phía dưới sẽ hiện 5 gợi ý nhanh. Bạn có thể đổi nguồn nhúng ở các chip vàng phía trên.</div>
+                  <div class="pf-embed-search-hint">Gõ tên như “đấu la” để dò nhiều nguồn cùng lúc, hoặc dán link truyện để nhúng trực tiếp vào web hiện tại.</div>
                 </div>
 
                 <div class="pf-embed-results">
                   <div class="pf-section-title" style="margin-top:0">
-                    <div class="t">📖 Khung hiện truyện</div>
-                    <div class="s" id="pfEmbedResultMeta">5 gợi ý</div>
+                    <div class="t">📖 Kết quả truyện</div>
+                    <div class="s" id="pfEmbedResultMeta">0 kết quả</div>
                   </div>
-                  <div class="pf-embed-result-hint" id="pfEmbedResultHint">Đang hiển thị gợi ý nhanh để nhúng.</div>
+                  <div class="pf-embed-result-hint" id="pfEmbedResultHint">Nhập tên truyện hoặc dán link truyện nguồn để thêm truyện từ web nguồn vào web của bạn.</div>
                   <div id="pfEmbedSearchGrid">${embedDiscoverInitialHtml}</div>
                 </div>
 
