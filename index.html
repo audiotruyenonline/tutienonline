@@ -2154,7 +2154,6 @@ body.theme-light .account-auth-help{color:#5a6d94}
 
     /* ===== Tủ truyện page ===== */
 
-
     /* Nhích Tủ sách vào nhẹ 2 bên */
     #bookshelfPage > .section{
       padding-left:10px;
@@ -5345,7 +5344,6 @@ body.theme-light .account-auth-help{color:#5a6d94}
       .rtoc-item{ min-height:56px; font-size:14px; padding:0 14px; }
       .rtoc-item::before{ font-size:17px; }
     }
-
 
     /* Reader TOC compact half-sheet */
     #readerToc{
@@ -12084,202 +12082,6 @@ body.theme-light .account-auth-help{color:#5a6d94}
       text-shadow:0 0 10px rgba(48,226,255,.14);
     }
 
-    /* Estate neon theme for Trang Viên board */
-    .rank-scroll-section.theme-estate .rank-scroll-frame{
-      --cut: 18px;
-      border:2px solid rgba(224,116,255,.84);
-      border-radius:24px;
-      background:
-        linear-gradient(180deg, rgba(38,12,74,.98), rgba(10,8,38,.99));
-      box-shadow:
-        0 0 0 1px rgba(251,213,255,.10) inset,
-        0 0 24px rgba(220,102,255,.22),
-        0 22px 52px rgba(0,0,0,.34),
-        inset 0 0 36px rgba(170,78,255,.12);
-      clip-path:polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-frame::before{
-      inset:6px;
-      border:1px solid rgba(244,196,255,.24);
-      clip-path:inherit;
-      box-shadow:
-        0 0 18px rgba(225,136,255,.22),
-        inset 0 0 22px rgba(201,108,255,.12);
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-frame::after{
-      background:
-        radial-gradient(circle at 50% 0%, rgba(255,168,255,.34), rgba(255,168,255,0) 18%),
-        radial-gradient(circle at 50% 100%, rgba(214,102,255,.28), rgba(214,102,255,0) 18%),
-        radial-gradient(circle at 0% 50%, rgba(235,132,255,.26), rgba(235,132,255,0) 16%),
-        radial-gradient(circle at 100% 50%, rgba(235,132,255,.28), rgba(235,132,255,0) 16%);
-      mix-blend-mode:screen;
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-paper{
-      --cut: 14px;
-      border-radius:18px;
-      padding:14px 10px 14px;
-      border:1px solid rgba(221,118,255,.24);
-      background:
-        radial-gradient(circle at 50% 0%, rgba(255,180,255,.12), transparent 18%),
-        linear-gradient(180deg, rgba(28,10,58,.94), rgba(9,7,32,.98));
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.03),
-        inset 0 18px 24px rgba(210,98,255,.06),
-        inset 0 -14px 18px rgba(0,0,0,.18);
-      clip-path:polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-paper::before{
-      opacity:.92;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.05), transparent 20%, transparent 80%, rgba(214,102,255,.08)),
-        radial-gradient(circle at 50% 0%, rgba(255,196,255,.14), transparent 14%),
-        repeating-linear-gradient(90deg, rgba(255,255,255,.015) 0 1px, transparent 1px 3px);
-      mix-blend-mode:screen;
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-aura{
-      inset:10px;
-      border:1px solid rgba(231,144,255,.16);
-      border-radius:18px;
-      box-shadow:
-        inset 0 0 24px rgba(194,92,255,.14),
-        0 0 20px rgba(194,92,255,.10);
-      clip-path:polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-header{
-      --cut: 12px;
-      border:2px solid rgba(223,118,255,.84);
-      border-radius:18px;
-      background:
-        linear-gradient(90deg, rgba(78,18,120,.96) 0%, rgba(58,16,96,.92) 42%, rgba(52,18,90,.76) 54%, rgba(34,24,56,.24) 66%, rgba(20,20,32,.08) 100%),
-        linear-gradient(180deg, rgba(105,26,160,.92), rgba(36,10,84,.96));
-      box-shadow:
-        0 0 0 1px rgba(255,220,255,.12) inset,
-        0 0 18px rgba(214,98,255,.24),
-        inset 0 10px 18px rgba(246,136,255,.08);
-      clip-path:polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
-      overflow:hidden;
-      position:relative;
-      min-height:96px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-header::before{
-      inset:5px;
-      border:1px solid rgba(255,218,255,.24);
-      clip-path:inherit;
-      opacity:.95;
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-header::after{
-      content:"";
-      position:absolute;
-      inset:6px 8px 6px 45%;
-      background-image:
-        linear-gradient(90deg, rgba(54,22,82,.72) 0%, rgba(54,22,82,.18) 18%, rgba(54,22,82,0) 30%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 920 280'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2379b7ff'/%3E%3Cstop offset='1' stop-color='%23f7b07a'/%3E%3C/linearGradient%3E%3ClinearGradient id='pool' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2396ecff'/%3E%3Cstop offset='1' stop-color='%233b9ccc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='920' height='280' fill='url(%23sky)'/%3E%3Crect y='170' width='920' height='110' fill='url(%23pool)'/%3E%3Crect y='150' width='920' height='20' fill='%23549e57'/%3E%3Cg fill='%23efe4ce'%3E%3Crect x='370' y='92' width='230' height='74' rx='4'/%3E%3Crect x='600' y='86' width='140' height='80' rx='4'/%3E%3Crect x='320' y='118' width='50' height='48' rx='3'/%3E%3Crect x='648' y='118' width='36' height='48' rx='3'/%3E%3Crect x='690' y='118' width='36' height='48' rx='3'/%3E%3C/g%3E%3Cg fill='%237d5d42'%3E%3Cpolygon points='352,92 486,44 620,92'/%3E%3Cpolygon points='582,86 670,46 758,86'/%3E%3Cpolygon points='310,118 345,95 380,118'/%3E%3C/g%3E%3Cg fill='%23ffd88a'%3E%3Crect x='405' y='112' width='52' height='34' rx='4'/%3E%3Crect x='475' y='112' width='52' height='34' rx='4'/%3E%3Crect x='635' y='108' width='30' height='36' rx='4'/%3E%3Crect x='694' y='108' width='30' height='36' rx='4'/%3E%3C/g%3E%3Cg fill='%2389c08b'%3E%3Ccircle cx='806' cy='118' r='32'/%3E%3Crect x='800' y='118' width='12' height='54'/%3E%3Ccircle cx='286' cy='126' r='22'/%3E%3Crect x='282' y='126' width='8' height='34'/%3E%3C/g%3E%3C/svg%3E");
-      background-size:cover;
-      background-position:right center;
-      background-repeat:no-repeat;
-      border-radius:12px;
-      opacity:.92;
-      pointer-events:none;
-      z-index:0;
-      filter:saturate(1.05) brightness(1.02);
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-title{
-      position:relative;
-      z-index:2;
-      color:#fff0ff;
-      text-shadow:
-        0 1px 0 rgba(58,10,92,.88),
-        0 0 18px rgba(236,126,255,.24),
-        0 8px 18px rgba(0,0,0,.36);
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-subtitle{
-      color:#f1d2ff;
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-table{
-      --cut: 14px;
-      border:2px solid rgba(223,118,255,.78);
-      border-radius:18px;
-      background:
-        linear-gradient(180deg, rgba(24,9,54,.96), rgba(8,5,28,.99));
-      box-shadow:
-        0 0 0 1px rgba(255,216,255,.10) inset,
-        0 0 20px rgba(214,98,255,.18),
-        inset 0 18px 28px rgba(216,90,255,.05);
-      clip-path:polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-head{
-      background:
-        linear-gradient(180deg, rgba(120,22,170,.98), rgba(54,14,102,.98));
-      color:#fff0ff;
-      border-bottom:1px solid rgba(244,183,255,.26);
-      box-shadow:inset 0 1px 0 rgba(255,232,255,.12);
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-body{
-      background:
-        linear-gradient(180deg, rgba(16,8,42,.97), rgba(7,5,24,.99));
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-row{
-      color:#f6e7ff;
-      border-bottom:1px solid rgba(221,138,255,.16);
-      background:
-        linear-gradient(180deg, rgba(30,12,62,.78), rgba(12,7,30,.90));
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-row:nth-child(even){
-      background:
-        linear-gradient(180deg, rgba(36,14,72,.80), rgba(11,6,28,.92));
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-name{
-      color:#fff1ff;
-      text-shadow:0 1px 0 rgba(0,0,0,.38), 0 0 12px rgba(230,130,255,.10);
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-titleline{
-      color:#f5bdff;
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-stat,
-    .rank-scroll-section.theme-estate .rank-scroll-note{
-      color:#f2ddff;
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-stat .stat-pill{
-      background:linear-gradient(180deg, rgba(104,22,156,.98), rgba(44,12,96,.98));
-      border:1px solid rgba(236,166,255,.34);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.10),
-        0 10px 18px rgba(0,0,0,.18),
-        0 0 14px rgba(208,92,255,.14);
-      color:#fff4ff;
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-avatar{
-      border:2px solid rgba(223,132,255,.34);
-      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(78,22,116,.42));
-      box-shadow:0 8px 14px rgba(0,0,0,.18), 0 0 14px rgba(208,92,255,.12);
-    }
-    .rank-scroll-section.theme-estate .rank-medal{
-      color:#fff2ff;
-      border:1px solid rgba(236,166,255,.34);
-      background:
-        linear-gradient(180deg, rgba(106,22,158,.98), rgba(44,12,96,.98));
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.12),
-        0 8px 14px rgba(0,0,0,.18),
-        0 0 14px rgba(208,92,255,.12);
-    }
-    .rank-scroll-section.theme-estate .rank-medal.top-1{
-      color:#6a4308;
-    }
-    .rank-scroll-section.theme-estate .rank-medal.top-2{
-      color:#4b5665;
-    }
-    .rank-scroll-section.theme-estate .rank-medal.top-3{
-      color:#704122;
-    }
-    .rank-scroll-section.theme-estate .rank-scroll-foot{
-      color:#efd9ff;
-      text-shadow:0 0 10px rgba(208,92,255,.14);
-    }
-
     /* Neon green sci-fi theme for Bang Hội board */
     .rank-scroll-section.theme-green .rank-scroll-frame{
       --cut: 18px;
@@ -13322,9 +13124,6 @@ body.theme-light .account-auth-help{color:#5a6d94}
       background:rgba(255,255,255,.05);
       font-size:10px;font-weight:950;color:var(--text);
     }
-    .tuvi-estate-name{margin-top:10px;font-size:18px;line-height:1.15;font-weight:950;color:var(--text)}
-    .tuvi-estate-bonus{margin-top:8px;font-size:26px;line-height:1;font-weight:1000;color:#a6f1ff;text-shadow:0 0 18px rgba(85,223,255,.12)}
-    .tuvi-estate-desc{margin-top:8px;font-size:11px;line-height:1.45;color:var(--muted);font-weight:800}
     .tuvi-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
     .tuvi-mini{
       border:1px solid rgba(255,255,255,.08);
@@ -13396,7 +13195,6 @@ body.theme-light .account-auth-help{color:#5a6d94}
       border-color:rgba(66,127,184,.18);
       box-shadow:0 10px 18px rgba(66,127,184,.10);
     }
-    body.theme-light .tuvi-estate-bonus{color:#1275b7;text-shadow:none}
     body.theme-light .tuvi-kicker,
     body.theme-light .tuvi-eyebrow,
     body.theme-light .tuvi-progress-sub,
@@ -13427,7 +13225,6 @@ body.theme-light .account-auth-help{color:#5a6d94}
       border-color:rgba(149,108,53,.18);
       box-shadow:none;
     }
-    body.theme-sepia .tuvi-estate-bonus{color:#9b5d1a;text-shadow:none}
     body.theme-sepia .tuvi-kicker,
     body.theme-sepia .tuvi-eyebrow,
     body.theme-sepia .tuvi-progress-sub,
@@ -14239,44 +14036,6 @@ body.theme-light .account-auth-help{color:#5a6d94}
 
   
 /* BXH */
-.estate-summary{ margin-top:10px; }
-.estate-line{ margin-top:6px; }
-.estate-bar{
-  height:10px;
-  background: rgba(255,255,255,.08);
-  border-radius: 999px;
-  overflow:hidden;
-  margin-top:12px;
-}
-.estate-bar span{
-  display:block;
-  height:100%;
-  width:0%;
-  background: linear-gradient(90deg, rgba(242,190,45,.90), rgba(0,212,255,.85));
-}
-.estate-level-list{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:10px;
-  padding:6px 2px 2px;
-}
-@media (min-width: 780px){
-  .estate-level-list{ grid-template-columns: repeat(3, 1fr); }
-}
-.estate-lv{
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.04);
-  border-radius: 14px;
-  padding: 10px;
-}
-.estate-lv.cur{
-  border-color: rgba(242,190,45,.55);
-  box-shadow: 0 0 0 1px rgba(242,190,45,.25) inset;
-}
-.estate-lv.done{ opacity: .88; }
-.estate-lv-name{ font-weight: 700; }
-.estate-lv-bonus{ margin-top:6px; font-size: 12px; color: var(--gold); }
-.estate-lv-tag{ margin-top:6px; font-size: 11px; color: var(--muted); }
 /* ---- Market/Shop redesign (Fantasy Cửa Hàng) ---- */
 
 .market-topbar{
@@ -21169,7 +20928,6 @@ body.theme-light .pf2-skill-panel{
       overflow-x:hidden;
     }
 
-
   /* Profile header: bỏ khung trắng, để chữ nằm trực tiếp trên nền */
   .pf-modern-nameplate-core{
     background:transparent !important;
@@ -22313,7 +22071,6 @@ body.theme-light .pf2-skill-panel{
 
 </style>
 
-
 <style id="explore-contrast-fix">
   /* Tăng độ rõ cho mục Khám phá ở cả sáng/tối */
   body:not(.theme-light) .explore-item-title,
@@ -22466,8 +22223,6 @@ body.theme-light .pf2-skill-panel{
   }
 
 </style>
-
-
 
 <style id="explore-refresh-style">
   /* Khám phá: giao diện tối, đậm màu, gần ảnh mẫu */
@@ -23018,7 +22773,6 @@ body.theme-light .pf2-skill-panel{
   }
 
 </style>
-
 
 <style id="profile-screenshot-style">
   .pf-simple-page{
@@ -23738,9 +23492,6 @@ body.theme-light .pf2-skill-panel{
   }
 
 </style>
-
-
-
 
 <style id="profile-modern-ui">
   body.profile-page-mode .topbar{display:none !important;}
@@ -25044,9 +24795,6 @@ body.theme-light .pf2-skill-panel{
 
 </style>
 
-
-
-
 <style>
 .route-header-back{display:none!important;}
 
@@ -25097,7 +24845,6 @@ body.theme-light .pf2-skill-panel{
   }
 
 </style>
-
 
 <style id="profile-home-theme-sync">
   body.profile-page-mode .app,
@@ -25703,7 +25450,6 @@ body.theme-light .pf2-skill-panel{
 
 </style>
 
-
 <style id="bookshelf-card-ghost-fix">
   /* Làm khung thẻ trong Tủ sách mờ đi giống ảnh mẫu */
   .bookshelf-item,
@@ -25782,7 +25528,6 @@ body.theme-light .pf2-skill-panel{
 
 </style>
 
-
 <style id="profile-hero-gap-fix">
   .pf-modern-hero{
     gap:6px !important;
@@ -25837,7 +25582,6 @@ body.theme-light .pf2-skill-panel{
   }
 </style>
 
-
 <style id="profile-name-center-fix-v1">
 .pf-modern-title-stack,
 .pf-modern-nameplate{
@@ -25867,7 +25611,6 @@ body.theme-light .pf2-skill-panel{
   transform-origin:center center !important;
 }
 </style>
-
 
 <style id="profile-exp-bar-rework-v1">
 .pf-modern-hero{
@@ -26078,6 +25821,35 @@ body.theme-light .pf-modern-exp-level{
     font-size:9px !important;
   }
 }
+</style>
+
+
+<style id="hide-bang-hoi-ui-v1">
+  /* Ẩn toàn bộ mục Bang Hội/Guild mà không ảnh hưởng phần khác */
+  .guild-page,
+  .guild-shell,
+  .guild-bottom-chatdock,
+  .guild-bottom-toggle,
+  .guild-bottom-chatbar,
+  .guild-floating-chatcenter,
+  .rank-scroll-section.theme-green,
+  [class^="guild-"],
+  [class*=" guild-"],
+  [id^="cmGuild"],
+  [id*=" cmGuild"],
+  [data-guild-tab],
+  [data-guild-tab-btn],
+  [data-guild-quick],
+  [data-rank-section="banghoi"],
+  [data-cm-rank-type="banghoi"],
+  a[href*="#/community/guild"],
+  a[href*="#/community/banghoi"],
+  a[href*="#/community/factions"],
+  button[data-act="guild"],
+  button[data-act="banghoi"],
+  button[data-act="factions"]{
+    display:none !important;
+  }
 </style>
 
 </head>
@@ -30831,7 +30603,6 @@ function normalizeUserState(raw){
       }catch(_){ }
     }
 
-
 function getAdminBaseHash(){
   return String(location.hash || "").startsWith("#/profile/admin")
     ? "#/profile/admin"
@@ -31419,7 +31190,6 @@ function getAdminBaseHash(){
       syncModeState();
       renderCloudStoryList();
     }
-
 
     function renderCommunityUserLockPage(){
       hideRouteHeader();
@@ -34202,7 +33972,6 @@ function getCultivationExpForRealmSelection(realmIndex, levelInRealm){
       el.addEventListener("touchcancel", reset, { passive:true });
     }
 
-
         const completedList = $("#completedList");
     const homeChatList = $("#homeChatList");
     const homeChatInput = $("#homeChatInput");
@@ -34613,14 +34382,24 @@ const bookshelfTabs = $("#bookshelfTabs");
       audioUrl: "",
       lastHiddenAt: 0,
       resumeTimer: null,
+      resumeOnVisible: false,
+      resumeStoryId: "",
+      resumeChapter: 0,
+      resumeIdx: 0,
+      resumeAttemptTimer: null,
+      resumeBurstTimer: null,
+      lastResumeSignalAt: 0,
       wakeLock: null,
       wakeLockWanted: false
     };
 
     const READER_TTS_OWNER_STORAGE_KEY = "reader_tts_owner_v1";
+    const READER_TTS_RESUME_SIGNAL_KEY = "reader_tts_resume_signal_v1";
     const __readerTtsTabId = (() => {
       try{ return getSessionId(); }catch(_){ return "tts_" + Math.random().toString(36).slice(2) + Date.now().toString(36); }
     })();
+
+    let __readerOwnerResumePingTimers = [];
 
     function __readerTtsReadOwner(){
       try{
@@ -34662,6 +34441,164 @@ const bookshelfTabs = $("#bookshelfTabs");
         const owner = __readerTtsReadOwner();
         if (!force && owner && owner.tabId !== __readerTtsTabId) return false;
         localStorage.removeItem(READER_TTS_OWNER_STORAGE_KEY);
+        return true;
+      }catch(_){
+        return false;
+      }
+    }
+
+    function __clearReaderResumeOnVisible(){
+      try{
+        if (__readerBackgroundMode.resumeAttemptTimer){
+          clearTimeout(__readerBackgroundMode.resumeAttemptTimer);
+          __readerBackgroundMode.resumeAttemptTimer = null;
+        }
+        if (__readerBackgroundMode.resumeBurstTimer){
+          clearTimeout(__readerBackgroundMode.resumeBurstTimer);
+          __readerBackgroundMode.resumeBurstTimer = null;
+        }
+      }catch(_){ }
+      __readerBackgroundMode.resumeOnVisible = false;
+      __readerBackgroundMode.resumeStoryId = "";
+      __readerBackgroundMode.resumeChapter = 0;
+      __readerBackgroundMode.resumeIdx = 0;
+    }
+
+    function __markReaderResumeOnVisible(){
+      __readerBackgroundMode.resumeOnVisible = true;
+      __readerBackgroundMode.resumeStoryId = String(readerState?.storyId || "");
+      __readerBackgroundMode.resumeChapter = Math.max(1, Number(readerState?.chapter || 1) || 1);
+      __readerBackgroundMode.resumeIdx = Math.max(0, Number(readerState?.idx || 0) || 0);
+    }
+
+    function __readerCanResumeAfterHidden(options = {}){
+      if (!__readerBackgroundMode.resumeOnVisible) return false;
+      const allowHidden = !!(options && options.allowHidden);
+      if (!allowHidden && document.hidden) return false;
+      if (!__readerTtsOwnsPlayback()) return false;
+      if (!document.body.classList.contains("reader-mode")) return false;
+      const expectStory = String(__readerBackgroundMode.resumeStoryId || "");
+      const expectChapter = Math.max(1, Number(__readerBackgroundMode.resumeChapter || 1) || 1);
+      if (expectStory && String(readerState?.storyId || "") !== expectStory) return false;
+      if (Number(readerState?.chapter || 0) !== expectChapter) return false;
+      return true;
+    }
+
+    function __scheduleReaderResumeOnVisible(delay = 260, options = {}){
+      try{
+        if (__readerBackgroundMode.resumeAttemptTimer){
+          clearTimeout(__readerBackgroundMode.resumeAttemptTimer);
+          __readerBackgroundMode.resumeAttemptTimer = null;
+        }
+      }catch(_){ }
+      const allowHidden = !!(options && options.allowHidden);
+      if (!__readerCanResumeAfterHidden({ allowHidden })) return false;
+      __readerBackgroundMode.resumeAttemptTimer = setTimeout(() => {
+        __readerBackgroundMode.resumeAttemptTimer = null;
+        if (!__readerCanResumeAfterHidden({ allowHidden })) return;
+        try{
+          const wantIdx = Math.max(0, Number(__readerBackgroundMode.resumeIdx || 0) || 0);
+          if (Array.isArray(readerState?.chunks) && readerState.chunks.length){
+            const maxIdx = Math.max(0, readerState.chunks.length - 1);
+            readerState.idx = Math.min(wantIdx, maxIdx);
+            syncReaderProgress();
+          }
+        }catch(_){ }
+        try{
+          const synth = window.speechSynthesis;
+          const isSpeaking = !!(synth && (synth.speaking || synth.pending));
+          if (isSpeaking){
+            readerState.playing = true;
+            updateRpPlayButton();
+            __clearReaderResumeOnVisible();
+            return;
+          }
+        }catch(_){ }
+        try{
+          speakCurrent();
+          __clearReaderResumeOnVisible();
+        }catch(_){ }
+      }, Math.max(120, Number(delay || 260) || 260));
+      return true;
+    }
+
+    function __clearReaderOwnerResumePings(){
+      try{
+        if (Array.isArray(__readerOwnerResumePingTimers) && __readerOwnerResumePingTimers.length){
+          __readerOwnerResumePingTimers.forEach(id => {
+            try{ clearTimeout(id); }catch(_){ }
+          });
+        }
+      }catch(_){ }
+      __readerOwnerResumePingTimers = [];
+    }
+
+    function __scheduleReaderResumeBurst(options = {}){
+      const allowHidden = !!(options && options.allowHidden);
+      const attempts = Math.max(1, Number(options && options.attempts || 6) || 6);
+      const delay = Math.max(120, Number(options && options.delay || 180) || 180);
+      const interval = Math.max(180, Number(options && options.interval || 420) || 420);
+      try{
+        if (__readerBackgroundMode.resumeBurstTimer){
+          clearTimeout(__readerBackgroundMode.resumeBurstTimer);
+          __readerBackgroundMode.resumeBurstTimer = null;
+        }
+      }catch(_){ }
+      if (!__readerCanResumeAfterHidden({ allowHidden })) return false;
+      let remaining = attempts;
+      const tick = () => {
+        __readerBackgroundMode.resumeBurstTimer = null;
+        if (!__readerCanResumeAfterHidden({ allowHidden })) return;
+        try{
+          const synth = window.speechSynthesis;
+          const isSpeaking = !!(synth && (synth.speaking || synth.pending));
+          if (isSpeaking){
+            readerState.playing = true;
+            updateRpPlayButton();
+            try{ __startReaderBackgroundMode(); }catch(_){ }
+            __clearReaderResumeOnVisible();
+            return;
+          }
+        }catch(_){ }
+        try{ __scheduleReaderResumeOnVisible(100, { allowHidden }); }catch(_){ }
+        remaining -= 1;
+        if (remaining > 0 && __readerCanResumeAfterHidden({ allowHidden })){
+          __readerBackgroundMode.resumeBurstTimer = setTimeout(tick, interval);
+        }
+      };
+      __readerBackgroundMode.resumeBurstTimer = setTimeout(tick, delay);
+      return true;
+    }
+
+    function __notifyReaderOwnerToResumeBurst(reason = "screen-on", options = {}){
+      const attempts = Math.max(1, Number(options && options.attempts || 5) || 5);
+      const interval = Math.max(180, Number(options && options.interval || 420) || 420);
+      __clearReaderOwnerResumePings();
+      for (let i = 0; i < attempts; i++){
+        const timerId = setTimeout(() => {
+          try{ __notifyReaderOwnerToResume(reason); }catch(_){ }
+          try{
+            __readerOwnerResumePingTimers = __readerOwnerResumePingTimers.filter(id => id !== timerId);
+          }catch(_){ }
+        }, i * interval);
+        __readerOwnerResumePingTimers.push(timerId);
+      }
+      return true;
+    }
+
+    function __notifyReaderOwnerToResume(reason = "screen-on"){
+      try{
+        const owner = __readerTtsReadOwner();
+        if (!owner || !owner.tabId) return false;
+        const payload = {
+          ts: Date.now(),
+          ownerTabId: String(owner.tabId || ""),
+          issuerTabId: String(__readerTtsTabId || ""),
+          storyId: String(owner.storyId || ""),
+          chapter: Math.max(1, Number(owner.chapter || 1) || 1),
+          reason: String(reason || "screen-on")
+        };
+        localStorage.setItem(READER_TTS_RESUME_SIGNAL_KEY, JSON.stringify(payload));
         return true;
       }catch(_){
         return false;
@@ -35165,6 +35102,7 @@ const bookshelfTabs = $("#bookshelfTabs");
       const keepManualHidden = preservePlayerState ? !!(readerState && readerState.playerManualHidden) : false;
       const retainOwnership = !!(options && options.retainOwnership);
       const forceGlobalCancel = !!(options && options.forceGlobalCancel);
+      const preserveResumeOnVisible = !!(options && options.preserveResumeOnVisible);
       const ownsPlayback = __readerTtsOwnsPlayback();
       try{
         if (readerState.utter){
@@ -35190,6 +35128,8 @@ const bookshelfTabs = $("#bookshelfTabs");
       }else if (forceGlobalCancel || ownsPlayback){
         try{ __readerTtsClaimOwnership({ storyId: readerState?.storyId, chapter: readerState?.chapter }); }catch(_){ }
       }
+      if (!preserveResumeOnVisible) __clearReaderResumeOnVisible();
+      if (!retainOwnership) __clearReaderOwnerResumePings();
       // lưu vị trí để nút "Nghe tiếp" quay đúng chỗ
       try{ if (readerState?.storyId) touchListeningRecent(readerState.storyId, readerState.chapter, readerState.idx); }catch(_){ }
       updateRpPlayButton();
@@ -35264,6 +35204,20 @@ const bookshelfTabs = $("#bookshelfTabs");
         }
       };
       u.onerror = () => {
+        if (document.hidden && __readerBackgroundMode.resumeOnVisible && __readerTtsOwnsPlayback()){
+          try{
+            if (readerState.utter){
+              readerState.utter.onend = null;
+              readerState.utter.onerror = null;
+            }
+          }catch(_){ }
+          readerState.utter = null;
+          readerState.playing = false;
+          readerState.playerPinnedWhileListening = false;
+          try{ __stopReaderBackgroundMode(); }catch(_){ }
+          updateRpPlayButton();
+          return;
+        }
         stopTTS();
       };
 
@@ -40122,7 +40076,6 @@ function normalizeThemeMode(mode){
       restoreSearchTabScrollState();
     }
 
-
     function normalizeFilterValue(value){
       return String(value == null ? "" : value).trim();
     }
@@ -43776,11 +43729,6 @@ function goToSearchWithUpdatedPreset(){
           location.hash = "#/community";
           return;
         }
-
-        if (view === "estate" || view === "trangvien" || view === "tv"){
-          location.hash = "#/community";
-          return;
-        }
         if (view === "market" || view === "muaban" || view === "consign"){
           location.hash = "#/community";
           return;
@@ -44012,12 +43960,6 @@ function goToSearchWithUpdatedPreset(){
             title: "Khung ảnh mở khóa",
             value: frameEntries.length ? `${fmtN(unlockedFrameEntries.length)}/${fmtN(frameEntries.length)}` : "Chưa có",
             desc: nextFrameEntry ? `Mốc tiếp theo ở Lv.${normalizeLogoFrameRequiredLevel(nextFrameEntry?.requiredLevel || 1)}.` : "Không còn khung cấp độ nào bị khóa."
-          },
-          {
-            icon: "🏯",
-            title: "Linh điền hiện tại",
-            value: `${String(estateInfoValue?.name || "Hoàng cấp Hạ phẩm")}`,
-            desc: `Đang cộng thêm +${fmtN(estateBonusPct)}% linh khí mỗi phút.`
           }
         ];
 
@@ -44085,7 +44027,6 @@ function goToSearchWithUpdatedPreset(){
           tabPageContent.querySelector("#pfNotifyBackBtn")?.addEventListener("click", () => { location.hash = "#/profile"; });
           return;
         }
-
 
 if (profileView === "admin"){
   if (profileAdminSub === "vip-requests"){
@@ -44191,7 +44132,6 @@ if (profileView === "admin"){
                 </div>
               </div>
             </div>
-
 
             <div class="pf-modern-tab-panels" id="pfModernTabPanels">
               <section class="pf-modern-tab-panel ${profileMainTab === 'overview' ? 'is-active' : ''}" data-pf-panel="overview" role="tabpanel">
@@ -44310,11 +44250,6 @@ if (profileView === "admin"){
                           <div class="k">Đọc / nghe truyện</div>
                           <div class="v">${fmtN(baseAbsorbPerMin)}/phút</div>
                           <div class="d">Nguồn linh khí chính của web</div>
-                        </div>
-                        <div class="pf-tuvi-source-item">
-                          <div class="k">Linh điền</div>
-                          <div class="v">+${fmtN(estateBonusPct)}%</div>
-                          <div class="d">${esc(String(estateInfoValue?.name || 'Hoàng cấp Hạ phẩm'))}</div>
                         </div>
                         <div class="pf-tuvi-source-item">
                           <div class="k">Chương hôm nay</div>
@@ -45047,7 +44982,6 @@ if (profileView === "admin"){
       if (t === "pvp") return Number(entry?.pvp || 0) || 0;
       if (t === "motsach") return Number(entry?.motsach || 0) || 0;
       if (t === "boss") return Number(entry?.boss || 0) || 0;
-      if (t === "trangvien") return Number(entry?.estateLv || 0) || 0;
       if (t === "banghoi") return Number(entry?.points || 0) || 0;
       return Number(entry?.tuvi || 0) || 0;
     }
@@ -45078,11 +45012,6 @@ if (profileView === "admin"){
       const type = String(rankState.type || "tuvi").toLowerCase();
       if (type === "tuvi"){
         return _rankRealmDisplay(entry);
-      }
-      if (type === "trangvien"){
-        const lv = clampEstateLevel(Number(entry?.estateLv || 0));
-        const info = getEstateInfo(lv);
-        return `Cấp ${lv} • +${Number(info.bonus||0)}%`;
       }
       if (type === "motsach"){
         return `${fmtN(_rankValueFor(entry, type))} chương`;
@@ -45146,12 +45075,7 @@ if (profileView === "admin"){
       const nm = String(it?.name || "—");
       const ava = String(it?.avatar || "");
       let sub = "";
-
-      if (type === "trangvien"){
-        const lv = clampEstateLevel(Number(it?.estateLv || 0));
-        const info = getEstateInfo(lv);
-        sub = `🏡 ${info.name || "BXH"} • +${Number(info.bonus||0)}%`;
-      }else if (type === "motsach"){
+      if (type === "motsach"){
         sub = "📅 Hôm nay";
       }else if (type === "banghoi"){
         sub = `👥 ${fmtN(Number(it?.members||0))} thành viên`;
@@ -45232,9 +45156,7 @@ if (profileView === "admin"){
         lucchien: ["Chiến Vô Cực", "Phong Diễm", "Lôi Huyền", "Bạch Hổ Tướng", "Tô Dạ Hàn", "Tiêu Kiếm Ca", "Lục Ảnh", "Viêm Thiếu Thiên", "Triệu Hạo Thiên", "Nhạc Vân Sơn"],
         pvp: ["Chiến Thần Vô Song", "Huyết Ảnh", "Băng Kiếm Tôn", "Độc Cô Mặc", "Lôi Sát", "Phá Quân", "Sát Tinh", "Ma La", "Hỏa Vũ", "Thiên Lang"],
         boss: ["Đồ Long Sứ", "Khai Sơn Giả", "U Minh Liệp Thủ", "Xích Diễm Khách", "Bạch Long Vệ", "Cửu Kiếm", "Phong Ma", "Viêm Vũ", "Bắc Minh", "Hắc Lang"],
-        motsach: ["Mặc Hương Sinh", "Thư Linh Nhi", "Bút Tiên", "Trang Sinh", "Văn Tâm", "Hàn Mặc", "Tàng Thư", "Vân Thư", "Bạch Chỉ", "Thanh Mặc"],
-        trangvien: ["Vân Cảnh Chủ", "Lạc Viên Chủ", "Cửu Hoa Chủ", "Thanh Mộc Chủ", "Lưu Ly Chủ", "Thiên Trúc Chủ", "Bách Hoa Chủ", "Hàn Tuyền Chủ", "Nguyệt Trúc Chủ", "Tử Vân Chủ"],
-        banghoi: ["Thiên Long Điện", "Thanh Vân Các", "Vạn Kiếm Tông", "Huyền Ảnh Minh", "Cửu U Cung", "Bất Diệt Thành", "Băng Tâm Cốc", "Thần Võ Môn", "Tinh La Điện", "Thiên Hà Bang"]
+        motsach: ["Mặc Hương Sinh", "Thư Linh Nhi", "Bút Tiên", "Trang Sinh", "Văn Tâm", "Hàn Mặc", "Tàng Thư", "Vân Thư", "Bạch Chỉ", "Thanh Mặc"]
       };
       return map[type] || map.tuvi;
     }
@@ -45256,18 +45178,14 @@ if (profileView === "admin"){
         lucchien: 880000,
         pvp: 6500,
         boss: 3200,
-        motsach: 288,
-        trangvien: 12,
-        banghoi: 180000
+        motsach: 288
       };
       const step = {
         tuvi: 4700000,
         lucchien: 42000,
         pvp: 240,
         boss: 170,
-        motsach: 9,
-        trangvien: 1,
-        banghoi: 15000
+        motsach: 9
       };
 
       const base = lastVal > 0 ? Math.max(0, lastVal - step[type]) : defaults[type];
@@ -45291,7 +45209,7 @@ if (profileView === "admin"){
 
         const tuviBase = type === 'tuvi' ? Math.max(800000, base - (i * step[type])) : Math.max(0, 76000000 - idx * 2500000);
         const totalReadChapters = type === 'motsach' ? Math.max(12, 288 - idx * 9) : Math.max(6, 120 - idx * 4);
-        const estateLv = type === 'trangvien' ? Math.max(1, Math.min(12, base - i)) : Math.max(1, 10 - Math.floor(idx / 2));
+        const estateLv = Math.max(1, 10 - Math.floor(idx / 2));
         rows.push({
           id: `${type}_demo_${idx}`,
           name,
@@ -45311,10 +45229,7 @@ if (profileView === "admin"){
     }
 
     function __rankBoardColumns(type){
-      if (type === 'banghoi'){
-        return { name: 'Bang Hội', stat: 'Điểm Bang', note: 'Thành Viên' };
-      }
-      if (type === 'tuvi'){
+            if (type === 'tuvi'){
         return { name: 'Đạo Hữu', stat: 'Cảnh Giới', note: 'Linh Khí' };
       }
       if (type === 'lucchien'){
@@ -45328,9 +45243,6 @@ if (profileView === "admin"){
       }
       if (type === 'motsach'){
         return { name: 'Đạo Hữu', stat: 'Số Chương', note: 'Tổng Chương' };
-      }
-      if (type === 'trangvien'){
-        return { name: 'Đạo Hữu', stat: 'Trang Viên', note: 'Linh Khí' };
       }
       return { name: 'Đạo Hữu', stat: 'Chỉ Số', note: 'Ghi Chú' };
     }
@@ -45355,11 +45267,6 @@ if (profileView === "admin"){
       if (type === 'motsach'){
         return `<span class="stat-pill realm">${esc(fmtN(Number(entry?.motsach || 0) || 0))} chương</span>`;
       }
-      if (type === 'trangvien'){
-        const lv = clampEstateLevel(Number(entry?.estateLv || 0));
-        const info = getEstateInfo(lv);
-        return `<span class="stat-pill realm">${esc(info.name || ('Cấp ' + lv))}</span>`;
-      }
       if (type === 'banghoi'){
         return `<span class="stat-pill realm">${esc(fmtN(Number(entry?.points || 0) || 0))}</span>`;
       }
@@ -45379,11 +45286,6 @@ if (profileView === "admin"){
       }
       if (type === 'boss') return `${fmtN(Number(entry?.boss || 0) || 0)} chiến tích`;
       if (type === 'motsach') return `${fmtN(Number(entry?.totalReadChapters || 0) || 0)} chương`;
-      if (type === 'trangvien'){
-        const lv = clampEstateLevel(Number(entry?.estateLv || 0));
-        const info = getEstateInfo(lv);
-        return `Cấp ${lv} • +${Number(info.bonus || 0)}% linh khí`;
-      }
       return '';
     }
 
@@ -45471,7 +45373,7 @@ if (profileView === "admin"){
         ? ''
         : `<div class="rank-scroll-foot">✦ ${esc(cfg.label)} • Trang ${pageData.current}/${pageData.totalPages} • ${pageData.totalItems ? `${pageData.start + 1}-${pageData.end}` : '0'} / ${pageData.totalItems} ✦</div>`;
       return `
-        <section class="rank-scroll-section ${type === 'tuvi' ? 'theme-red' : (type === 'lucchien' ? 'theme-blue' : (type === 'pvp' ? 'theme-purple' : (type === 'boss' ? 'theme-orange' : (type === 'motsach' ? 'theme-book' : (type === 'trangvien' ? 'theme-estate' : (type === 'banghoi' ? 'theme-green' : 'theme-classic'))))))}" id="${esc(idPrefix)}${esc(type)}" data-rank-section="${esc(type)}">
+        <section class="rank-scroll-section ${type === 'tuvi' ? 'theme-red' : (type === 'lucchien' ? 'theme-blue' : (type === 'pvp' ? 'theme-purple' : (type === 'boss' ? 'theme-orange' : (type === 'motsach' ? 'theme-book' : (type === 'banghoi' ? 'theme-green' : 'theme-classic')))))}" id="${esc(idPrefix)}${esc(type)}" data-rank-section="${esc(type)}">
           <div class="rank-scroll-frame">
             <div class="rank-scroll-paper">
               <div class="rank-scroll-aura"></div>
@@ -45650,12 +45552,7 @@ if (profileView === "admin"){
       const nm = String(it?.name || "—");
       const ava = String(it?.avatar || "");
       let sub = "";
-
-      if (t === "trangvien"){
-        const lv = clampEstateLevel(Number(it?.estateLv || 0));
-        const info = getEstateInfo(lv);
-        sub = `🏡 ${info.name || "BXH"} • +${Number(info.bonus||0)}%`;
-      }else if (t === "motsach"){
+      if (t === "motsach"){
         sub = "📅 Hôm nay";
       }else if (t === "banghoi"){
         sub = `👥 ${fmtN(Number(it?.members||0))} thành viên`;
@@ -45703,9 +45600,7 @@ if (profileView === "admin"){
       if (!rows.length){
         listEl.innerHTML = "";
         emptyEl.classList.remove("hidden");
-        emptyEl.textContent = communityHubRankState.type === "banghoi"
-          ? "Chưa có bang hội để hiển thị bảng xếp hạng."
-          : "Chưa có dữ liệu để hiển thị bảng xếp hạng.";
+        emptyEl.textContent = "Chưa có dữ liệu để hiển thị bảng xếp hạng.";
         return;
       }
 
@@ -46000,10 +45895,12 @@ if (profileView === "admin"){
           if (document.hidden){
             __readerBackgroundMode.lastHiddenAt = Date.now();
             if (__cultActive) __cultPause();
+            if (readerState.playing && __readerTtsOwnsPlayback()) __markReaderResumeOnVisible();
             if (readerState.playing) __startReaderBackgroundMode();
             else __releaseReaderWakeLock().catch(() => {});
           }else{
             if (!__cultActive) __cultStartOrResume();
+            try{ __notifyReaderOwnerToResumeBurst("reader-tab-visible", { attempts: 6, interval: 380 }); }catch(_){ }
             if (readerState.playing){
               try{ __syncReaderMediaSession(); }catch(_){ }
               try{ __requestReaderWakeLock().catch(() => {}); }catch(_){ }
@@ -46021,19 +45918,22 @@ if (profileView === "admin"){
                   }, 220);
                 }catch(_){ }
               }
+            }else if (__readerCanResumeAfterHidden()){
+              __scheduleReaderResumeOnVisible(260);
             }else{
               __stopReaderBackgroundMode();
             }
           }
         }else if (!document.hidden){
+          try{ __notifyReaderOwnerToResumeBurst("other-tab-visible", { attempts: 7, interval: 420 }); }catch(_){ }
+          __clearReaderResumeOnVisible();
           __stopReaderBackgroundMode();
         }else{
           __releaseReaderWakeLock().catch(() => {});
         }
       }catch(_){}
-      try{ syncStoryReadingPresence(true); }catch(_){}
+      try{ syncStoryReadingPresence(true); }catch(_){ }
     });
-
 
     const PROFILE_ACTIVITY_STORAGE_PREFIX = "pf_activity_feed_v1:";
     const PROFILE_ACTIVITY_MAX_ITEMS = 160;
@@ -52098,10 +51998,14 @@ function handleAccountButtonToggle(e){
     });
     window.addEventListener("pageshow", () => {
       try{ __syncReaderWakeLock(); }catch(_){ }
+      try{ __notifyReaderOwnerToResumeBurst("pageshow", { attempts: 7, interval: 420 }); }catch(_){ }
+      try{ __scheduleReaderResumeOnVisible(180); }catch(_){ }
     });
 
     window.addEventListener("focus", () => {
       try{ __syncReaderWakeLock(); }catch(_){ }
+      try{ __notifyReaderOwnerToResumeBurst("focus", { attempts: 7, interval: 420 }); }catch(_){ }
+      try{ __scheduleReaderResumeOnVisible(180); }catch(_){ }
     });
 
     window.addEventListener("storage", (e) => {
@@ -52121,10 +52025,25 @@ function handleAccountButtonToggle(e){
             readerState.utter = null;
             readerState.playing = false;
             readerState.playerPinnedWhileListening = false;
+            try{ __clearReaderResumeOnVisible(); }catch(_){ }
             try{ __stopReaderBackgroundMode(); }catch(_){ }
             try{ clearActiveReaderLine(); }catch(_){ }
             updateRpPlayButton();
             try{ _rpShowPlayer(true); }catch(_){ }
+          }
+        }catch(_){ }
+      }
+      if (key === READER_TTS_RESUME_SIGNAL_KEY){
+        try{
+          const payload = JSON.parse(String(e?.newValue || "{}"));
+          const ownerTabId = String(payload?.ownerTabId || "");
+          const signalTs = Math.max(0, Number(payload?.ts || 0) || 0);
+          if (ownerTabId && ownerTabId === __readerTtsTabId && signalTs > Number(__readerBackgroundMode.lastResumeSignalAt || 0)){
+            __readerBackgroundMode.lastResumeSignalAt = signalTs;
+            if (__readerCanResumeAfterHidden({ allowHidden: true })){
+              __scheduleReaderResumeOnVisible(140, { allowHidden: true });
+              __scheduleReaderResumeBurst({ allowHidden: true, attempts: 8, delay: 260, interval: 520 });
+            }
           }
         }catch(_){ }
       }
@@ -54519,8 +54438,6 @@ function handleAccountButtonToggle(e){
 })();
 </script>
 
-
-
 <script>
 setInterval(()=>{
   document.querySelectorAll('.route-header-back').forEach(el=>el.remove());
@@ -54535,8 +54452,6 @@ document.addEventListener('click', function(e){
   }
 });
 </script>
-
-
 
 <style id="profile-name-visibility-fix">
   .pf-modern-avatar-name{
@@ -54686,8 +54601,6 @@ document.addEventListener('click', function(e){
   }
 
 </style>
-
-
 
 <style id="profile-top-banner-remix">
   .pf-modern-title-stack{
@@ -55075,7 +54988,6 @@ body.theme-light .story-comment-reply-input:focus{
   }
 
 </style>
-
 
 <style id="realm-text-bottom-clip-fix-v1">
 .pf-modern-name,
@@ -55941,7 +55853,6 @@ body.theme-light .pf2-nav-badge{
       text-shadow:0 1px 0 rgba(0,0,0,.42), 0 0 8px rgba(255,255,255,.08);
     }
 
-
   /* Profile header: bỏ khung trắng, để chữ nằm trực tiếp trên nền */
   .pf-modern-nameplate-core{
     background:transparent !important;
@@ -56025,7 +55936,6 @@ body.theme-light .pf2-nav-badge{
   setTimeout(queueFit, 500);
 })();
 </script>
-
 
 <script id="pf-name-autofit-script-v2">
 (function(){
