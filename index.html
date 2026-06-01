@@ -691,7 +691,36 @@ height:23%;
 border-radius:50% 50% 0 0;
 background:rgba(25,32,35,.17);
 filter:blur(.2px);
-}.cover .moon{
+}.story-cover-badge{
+position:absolute;
+top:0;
+left:0;
+z-index:6;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-width:54px;
+height:30px;
+padding:0 14px 0 12px;
+border-radius:7px 0 12px 0;
+font-size:14px;
+font-weight:900;
+line-height:1;
+letter-spacing:.01em;
+color:#fff;
+box-shadow:0 4px 10px rgba(24,35,53,.12);
+backdrop-filter:blur(4px);
+-webkit-backdrop-filter:blur(4px);
+}.story-cover-badge.is-hot{
+background:linear-gradient(135deg,#ff6b81 0%,#e43f5a 100%);
+}
+.story-cover-badge.is-full{
+background:linear-gradient(135deg,#66c97c 0%,#39a85b 100%);
+}
+.story-cover-badge.is-new{
+background:linear-gradient(135deg,#6f8cff 0%,#4e67e8 100%);
+}
+.cover .moon{
 position:absolute;
 width:48px;
 height:48px;
@@ -11469,6 +11498,55 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
 #adminPage .admin-edit-cancel-btn{display:none !important;}
 </style>
 
+<style id="tdn-reader-chapter-loading-style">
+.reader-text.is-loading{
+  min-height:clamp(320px, 48vh, 560px) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:100% !important;
+  padding:18px 0 28px !important;
+  box-sizing:border-box !important;
+}
+.reader-text.is-loading > p{display:none !important;}
+.tdn-reader-loading{
+  width:min(100%, 320px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin:0 auto;
+  text-align:center;
+}
+.tdn-reader-loading-spinner{position:relative;width:64px;height:64px;}
+.tdn-reader-loading-spinner span{
+  position:absolute;inset:0;border-radius:999px;
+  border:3px solid rgba(196,58,123,.16);
+  border-top-color:rgba(196,58,123,.92);
+  animation:tdnReaderLoadSpin 1.05s linear infinite;
+}
+.tdn-reader-loading-spinner span:nth-child(2){inset:9px;border-top-color:rgba(236,72,153,.72);animation-duration:1.3s;animation-direction:reverse;}
+.tdn-reader-loading-spinner span:nth-child(3){inset:18px;border-top-color:rgba(244,114,182,.88);animation-duration:1.6s;}
+.tdn-reader-loading-text{color:#2b2f38;font-size:clamp(20px, 4.5vw, 24px);line-height:1.2;font-weight:800;letter-spacing:.01em;}
+.tdn-reader-loading-dots{display:inline-flex;align-items:center;gap:6px;height:12px;}
+.tdn-reader-loading-dots span{width:8px;height:8px;border-radius:999px;background:linear-gradient(135deg,#f472b6 0%, #db2777 100%);animation:tdnReaderLoadPulse 1s ease-in-out infinite;}
+.tdn-reader-loading-dots span:nth-child(2){animation-delay:.15s;}
+.tdn-reader-loading-dots span:nth-child(3){animation-delay:.3s;}
+.tdn-reader-loading-lines{width:min(100%, 240px);display:flex;flex-direction:column;align-items:center;gap:10px;}
+.tdn-reader-loading-line{width:100%;height:12px;border-radius:999px;background:linear-gradient(90deg, rgba(236,72,153,.08) 0%, rgba(236,72,153,.18) 50%, rgba(236,72,153,.08) 100%);background-size:220% 100%;animation:tdnReaderLoadShimmer 1.3s linear infinite;}
+.tdn-reader-loading-line:nth-child(2){width:82%;}
+.tdn-reader-loading-line:nth-child(3){width:66%;}
+@keyframes tdnReaderLoadSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes tdnReaderLoadPulse{0%,100%{transform:translateY(0);opacity:.38;}50%{transform:translateY(-4px);opacity:1;}}
+@keyframes tdnReaderLoadShimmer{0%{background-position:200% 0;}100%{background-position:-20% 0;}}
+body.reader-dark .tdn-reader-loading-text{color:#f4f6fb;}
+body.reader-dark .tdn-reader-loading-spinner span{border-color:rgba(255,255,255,.12);border-top-color:rgba(244,114,182,.92);}
+body.reader-dark .tdn-reader-loading-spinner span:nth-child(2){border-top-color:rgba(251,113,133,.7);}
+body.reader-dark .tdn-reader-loading-spinner span:nth-child(3){border-top-color:rgba(244,114,182,.86);}
+body.reader-dark .tdn-reader-loading-line{background:linear-gradient(90deg, rgba(255,255,255,.05) 0%, rgba(244,114,182,.18) 50%, rgba(255,255,255,.05) 100%);background-size:220% 100%;}
+</style>
+
 </head>
 <body>
   <script>(function(){
@@ -12736,6 +12814,361 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
   </section>
 
   <script>const stories = [];
+(function(){
+  'use strict';
+
+  var STORY_CACHE_KEYS = ['tdn_persisted_firestore_stories_v1', 'tdn_story_flow_cache_v23'];
+  var IMAGE_TOUCH_KEY = 'tdn_cover_image_prefetch_v1';
+  var MAX_STORIES = 500;
+  var MAX_PREFETCH = 80;
+  var saveTimer = 0;
+  var HOME_LOADING_TIMEOUT = 12000;
+  var homeLoadingTimer = 0;
+
+  window.__TDN_HOME_STORIES_LOADING = true;
+
+  function isHomeStoryLoading(){
+    return window.__TDN_HOME_STORIES_LOADING !== false;
+  }
+
+  function setHomeStoryLoading(flag){
+    window.__TDN_HOME_STORIES_LOADING = !!flag;
+    if(!flag){
+      document.documentElement.classList.add('tdn-home-story-load-complete');
+      if(homeLoadingTimer){ clearTimeout(homeLoadingTimer); homeLoadingTimer = 0; }
+    }
+  }
+
+  function ensureHomeLoadingFallback(){
+    if(homeLoadingTimer) clearTimeout(homeLoadingTimer);
+    homeLoadingTimer = setTimeout(function(){
+      if(window.__TDN_HOME_STORIES_LOADING === false) return;
+      setHomeStoryLoading(false);
+      refreshHomeSoon();
+    }, HOME_LOADING_TIMEOUT);
+  }
+
+  function buildHomeLoadingMarkup(){
+    var cards = [0,1,2].map(function(index){
+      return '' +
+        '<div class="tdn-home-loading-card" style="animation-delay:' + (index * 0.12).toFixed(2) + 's">' +
+          '<div class="tdn-home-loading-cover"></div>' +
+          '<div class="tdn-home-loading-lines" aria-hidden="true">' +
+            '<span class="tdn-home-loading-line is-long"></span>' +
+            '<span class="tdn-home-loading-line is-mid"></span>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+    return '' +
+      '<div class="tdn-home-loading-shell" aria-label="Đang tải danh sách truyện" aria-busy="true">' +
+        '<div class="tdn-home-loading-grid">' + cards + '</div>' +
+      '</div>';
+  }
+
+  function trim(value){ return String(value == null ? '' : value).trim(); }
+  function num(value){ var n = Number(value); return Number.isFinite(n) ? n : 0; }
+  function now(){ return Date.now ? Date.now() : new Date().getTime(); }
+  function safeJsonParse(value, fallback){ try{ return JSON.parse(value || ''); }catch(error){ return fallback; } }
+
+  function normalizeCoverUrl(value){
+    var raw = trim(value);
+    if(!raw) return '';
+    if(raw.indexOf('data:image/') === 0) return raw;
+    if(raw.indexOf('//') === 0) raw = 'https:' + raw;
+    if(!/^[a-z][a-z0-9+.-]*:/i.test(raw) && /^[\w.-]+\.[a-z]{2,}(\/|\?|#|$)/i.test(raw)) raw = 'https://' + raw;
+    try{
+      if(typeof window.tdnNormalizeExternalImageUrl === 'function') return trim(window.tdnNormalizeExternalImageUrl(raw));
+    }catch(error){}
+    try{
+      var url = new URL(raw, window.location.href);
+      var host = String(url.hostname || '').toLowerCase().replace(/^www\./, '');
+      if(host === 'dropbox.com'){
+        url.protocol = 'https:';
+        url.hostname = 'dl.dropboxusercontent.com';
+        url.searchParams.delete('dl');
+        url.searchParams.delete('raw');
+        url.searchParams.delete('st');
+        return url.toString();
+      }
+      if(host === 'dl.dropboxusercontent.com'){
+        url.protocol = 'https:';
+        url.searchParams.delete('dl');
+        url.searchParams.delete('raw');
+        return url.toString();
+      }
+      if(host === 'drive.google.com'){
+        var fileMatch = url.pathname.match(/\/file\/d\/([^/]+)/);
+        var id = fileMatch && fileMatch[1] ? fileMatch[1] : url.searchParams.get('id');
+        if(id) return 'https://drive.google.com/uc?export=view&id=' + encodeURIComponent(id);
+      }
+      if(host === 'github.com'){
+        var parts = url.pathname.split('/').filter(Boolean);
+        var blobIndex = parts.indexOf('blob');
+        if(parts.length > 4 && blobIndex === 2) return 'https://raw.githubusercontent.com/' + parts[0] + '/' + parts[1] + '/' + parts.slice(3).join('/');
+      }
+      if(host === 'imgur.com'){
+        var imgurId = url.pathname.replace(/^\/+/, '').split('/')[0];
+        if(imgurId && imgurId !== 'gallery' && imgurId !== 'a' && imgurId.indexOf('.') === -1) return 'https://i.imgur.com/' + imgurId + '.jpg';
+      }
+      if(url.protocol === 'http:') url.protocol = 'https:';
+      return url.toString();
+    }catch(error){
+      return raw;
+    }
+  }
+
+  function normalizeChapter(chapter, index, storyId){
+    chapter = chapter && typeof chapter === 'object' ? chapter : {};
+    var number = Math.max(1, num(chapter.chapterNumber || chapter.number || chapter.order) || index + 1);
+    var chapterId = trim(chapter.chapterId || chapter.id) || ('c_' + String(number).padStart(4, '0'));
+    var title = trim(chapter.title || chapter.name) || ('Chương ' + number);
+    return Object.assign({}, chapter, {
+      storyId: storyId,
+      chapterId: chapterId,
+      id: chapterId,
+      number: number,
+      chapterNumber: number,
+      order: num(chapter.order) || number,
+      title: title,
+      name: title,
+      titleLower: trim(chapter.titleLower || title).toLowerCase(),
+      fileName: trim(chapter.fileName || chapter.sourceFileName),
+      contentMode: chapter.contentMode || 'firestore_chunks',
+      storageMode: chapter.storageMode || 'uploaded_txt_file_to_firestore_chunks',
+      chunkCount: num(chapter.chunkCount),
+      wordCount: num(chapter.wordCount),
+      byteSize: num(chapter.byteSize || chapter.size || chapter.sizeBytes),
+      updatedAt: chapter.updatedAt || '',
+      updatedAtMs: num(chapter.updatedAtMs)
+    });
+  }
+
+  function normalizeStory(story, index){
+    story = story && typeof story === 'object' ? story : {};
+    var storyId = trim(story.storyId || story.id || story.slug) || ('cached-story-' + (index + 1));
+    var title = trim(story.title || story.short) || 'Truyện chưa có tên';
+    var chapters = (Array.isArray(story.chapters) ? story.chapters : [])
+      .map(function(chapter, chapterIndex){ return normalizeChapter(chapter, chapterIndex, storyId); })
+      .filter(function(chapter){ return !chapter.deleted; })
+      .sort(function(a,b){ return (num(a.order) - num(b.order)) || (num(a.number) - num(b.number)); });
+    var categories = Array.isArray(story.categories) ? story.categories : (trim(story.genre || story.category) ? trim(story.genre || story.category).split(/[,;|/]+/).map(trim).filter(Boolean) : []);
+    var cover = normalizeCoverUrl(story.coverUrl || story.cover || story.imageUrl || story.image || story.thumbnail || story.poster);
+    var intro = trim(story.intro || story.summary || story.description || story.desc || story.about || story.gioiThieu || story.gioi_thieu || story.shortDesc || story.excerpt);
+    return Object.assign({}, story, {
+      storyId: storyId,
+      id: storyId,
+      title: title,
+      short: trim(story.short || title) || title,
+      titleLower: trim(story.titleLower || title).toLowerCase(),
+      author: trim(story.author) || 'Đang cập nhật',
+      coverUrl: cover,
+      cover: cover,
+      imageUrl: cover,
+      intro: intro,
+      summary: trim(story.summary || intro),
+      description: trim(story.description || intro),
+      desc: trim(story.desc || intro),
+      categories: categories,
+      labels: Array.isArray(story.labels) ? story.labels : categories,
+      genre: trim(story.genre || story.category || categories.join(', ')),
+      category: trim(story.category || story.genre || categories.join(', ')),
+      status: trim(story.status) || 'Đang ra',
+      chapters: chapters,
+      chapterCount: chapters.length || num(story.chapterCount || story.totalChapters),
+      totalChapters: chapters.length || num(story.totalChapters || story.chapterCount),
+      updatedAtMs: num(story.updatedAtMs || story.lastChapterUpdatedAt || story.createdAtMs),
+      createdAtMs: num(story.createdAtMs),
+      hiddenByAdmin: !!(story.hiddenByAdmin || story.adminHidden || story.hidden || story.isHidden),
+      adminHidden: !!(story.adminHidden || story.hiddenByAdmin || story.hidden || story.isHidden),
+      deleted: !!(story.deleted || story.deletedByAdmin || story.adminDeleted),
+      sharedPublic: story.sharedPublic !== false,
+      storageType: story.storageType || 'firebase_shards',
+      storyType: story.storyType || 'uploaded_txt_firestore_chunks',
+      remoteSource: story.remoteSource || 'instant_story_cache'
+    });
+  }
+
+  function compactStory(story, index){
+    var clean = normalizeStory(story, index);
+    clean.chapters = (clean.chapters || []).map(function(chapter, chapterIndex){
+      var c = normalizeChapter(chapter, chapterIndex, clean.id);
+      delete c.content;
+      delete c.text;
+      delete c.body;
+      return c;
+    });
+    delete clean.content;
+    delete clean.text;
+    delete clean.body;
+    return clean;
+  }
+
+  function readPack(key){
+    var pack = safeJsonParse(localStorage.getItem(key), null);
+    var list = Array.isArray(pack) ? pack : (pack && Array.isArray(pack.stories) ? pack.stories : []);
+    return {
+      key: key,
+      savedAt: num(pack && pack.savedAt),
+      list: list.map(normalizeStory).filter(function(story){ return story && story.id && !story.deleted && !story.deletedByAdmin && !story.adminDeleted; })
+    };
+  }
+
+  function readCache(){
+    var best = {savedAt:0, list:[]};
+    STORY_CACHE_KEYS.forEach(function(key){
+      var pack = readPack(key);
+      if(pack.list.length > best.list.length || (pack.list.length === best.list.length && pack.savedAt > best.savedAt)) best = pack;
+    });
+    return best.list;
+  }
+
+  function getRuntimeArray(){
+    try{ if(typeof stories !== 'undefined' && Array.isArray(stories)) return stories; }catch(error){}
+    if(Array.isArray(window.stories)) return window.stories;
+    if(Array.isArray(window.MOC_STORY_ADMIN_DATA)) return window.MOC_STORY_ADMIN_DATA;
+    window.stories = [];
+    window.MOC_STORY_ADMIN_DATA = window.stories;
+    return window.stories;
+  }
+
+  function refreshHomeSoon(){
+    var run = function(){
+      try{ if(typeof window.refreshHomeSections === 'function') window.refreshHomeSections(); }catch(error){}
+      try{ if(typeof window.initHeroSlider === 'function') window.initHeroSlider(); }catch(error){}
+      try{ if(window.MocTruyenAdmin && typeof window.MocTruyenAdmin.refresh === 'function') window.MocTruyenAdmin.refresh(); }catch(error){}
+      tuneVisibleCoverImages();
+    };
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ requestAnimationFrame(run); }, {once:true});
+    else requestAnimationFrame(run);
+  }
+
+  function getCoverList(list, limit){
+    var seen = Object.create(null);
+    var out = [];
+    (Array.isArray(list) ? list : []).forEach(function(story){
+      var url = normalizeCoverUrl(story && (story.coverUrl || story.cover || story.imageUrl || story.image || story.thumbnail || story.poster));
+      if(url && !seen[url]){ seen[url] = true; out.push(url); }
+    });
+    return out.slice(0, Math.max(1, limit || MAX_PREFETCH));
+  }
+
+  function readImageTouchMap(){
+    var map = safeJsonParse(localStorage.getItem(IMAGE_TOUCH_KEY), {});
+    return map && typeof map === 'object' && !Array.isArray(map) ? map : {};
+  }
+
+  function writeImageTouchMap(map){
+    try{ localStorage.setItem(IMAGE_TOUCH_KEY, JSON.stringify(map || {})); }catch(error){}
+  }
+
+  function prefetchCoverImages(list, limit){
+    var urls = getCoverList(list, limit || MAX_PREFETCH);
+    if(!urls.length) return;
+    var touchMap = readImageTouchMap();
+    urls.forEach(function(url, index){
+      try{
+        if(index < 18){
+          var link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'image';
+          link.href = url;
+          link.setAttribute('data-tdn-cover-preload', '1');
+          document.head && document.head.appendChild(link);
+          setTimeout(function(){ try{ link.remove(); }catch(error){} }, 15000);
+        }
+      }catch(error){}
+      try{
+        var img = new Image();
+        img.decoding = 'async';
+        img.loading = index < 18 ? 'eager' : 'lazy';
+        img.onload = function(){ touchMap[url] = now(); writeImageTouchMap(touchMap); };
+        img.src = url;
+      }catch(error){}
+    });
+  }
+
+  function tuneVisibleCoverImages(){
+    try{
+      var imgs = Array.prototype.slice.call(document.querySelectorAll('#homePage .hero-cover-img, #homePage .story-cover-img, #morePage .tdn-more-cover-img'));
+      imgs.slice(0, 30).forEach(function(img){
+        try{
+          img.loading = 'eager';
+          img.decoding = 'async';
+          img.setAttribute('fetchpriority', 'high');
+        }catch(error){}
+      });
+      imgs.slice(30).forEach(function(img){
+        try{ if(!img.hasAttribute('loading')) img.loading = 'lazy'; }catch(error){}
+      });
+    }catch(error){}
+  }
+
+  function showCacheNow(){
+    var cached = readCache();
+    if(!cached.length) return false;
+    var arr = getRuntimeArray();
+    if(!arr.length || window.__TDN_STORY_CACHE_FORCE_APPLY === true){
+      arr.splice(0, arr.length);
+      Array.prototype.push.apply(arr, cached);
+      window.stories = arr;
+      window.MOC_STORY_ADMIN_DATA = arr;
+    }
+    document.documentElement.classList.add('tdn-story-cache-ready');
+    window.__TDN_STORY_CACHE_VISIBLE = true;
+    window.__TDN_STORY_CACHE_VISIBLE_COUNT = cached.length;
+    refreshHomeSoon();
+    prefetchCoverImages(cached, MAX_PREFETCH);
+    return true;
+  }
+
+  function saveCacheNow(list){
+    var source = Array.isArray(list) ? list : getRuntimeArray();
+    var clean = (Array.isArray(source) ? source : [])
+      .filter(function(story){ return story && !story.deleted && !story.deletedByAdmin && !story.adminDeleted; })
+      .slice(0, MAX_STORIES)
+      .map(compactStory)
+      .filter(function(story){ return story && story.id; });
+    if(!clean.length) return false;
+    var pack = JSON.stringify({version:4, savedAt:now(), count:clean.length, stories:clean});
+    STORY_CACHE_KEYS.forEach(function(key){ try{ localStorage.setItem(key, pack); }catch(error){} });
+    window.__TDN_PERMANENT_STORY_CACHE_COUNT = clean.length;
+    prefetchCoverImages(clean, MAX_PREFETCH);
+    return true;
+  }
+
+  function scheduleSave(list){
+    if(saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ saveTimer = 0; saveCacheNow(list); }, 120);
+  }
+
+  window.tdnStoryInstantCache = {
+    keys: STORY_CACHE_KEYS.slice(),
+    read: readCache,
+    show: showCacheNow,
+    save: saveCacheNow,
+    scheduleSave: scheduleSave,
+    prefetchCovers: prefetchCoverImages,
+    normalizeCoverUrl: normalizeCoverUrl,
+    tuneImages: tuneVisibleCoverImages,
+    setLoading: setHomeStoryLoading,
+    isLoading: isHomeStoryLoading,
+    buildLoadingMarkup: buildHomeLoadingMarkup
+  };
+
+  ensureHomeLoadingFallback();
+  showCacheNow();
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ showCacheNow(); tuneVisibleCoverImages(); }, {once:true});
+  }else{
+    setTimeout(function(){ showCacheNow(); tuneVisibleCoverImages(); }, 0);
+  }
+  document.addEventListener('tdn:firebase-story-flow-refresh', function(){ scheduleSave(); setTimeout(showCacheNow, 60); });
+  document.addEventListener('mocTruyen:storySaved', function(){ scheduleSave(); });
+  window.addEventListener('pageshow', function(){ showCacheNow(); scheduleSave(); });
+  window.addEventListener('beforeunload', function(){ saveCacheNow(); });
+  setTimeout(function(){ scheduleSave(); }, 1400);
+})();
+
 
 
     // ===== Danh sách thể loại chính của web =====
@@ -13542,13 +13975,23 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
       return '<span class="reaction-emoji reaction-face--happy" aria-hidden="true"><span class="eye eye-left"></span><span class="eye eye-right"></span><span class="mouth"></span><span class="blush blush-left"></span><span class="blush blush-right"></span></span>';
     }
 
-    function makeCard(story){
+    function getStoryCoverBadge(optionBadge){
+      const key = String(optionBadge || '').trim().toLowerCase();
+      if(key === 'hot') return { text:'Hot', className:'is-hot' };
+      if(key === 'full') return { text:'Full', className:'is-full' };
+      if(key === 'moi' || key === 'new') return { text:'Mới', className:'is-new' };
+      return null;
+    }
+
+    function makeCard(story, options = {}){
       const card = document.createElement('article');
       const titleText = String(story?.title || story?.short || 'Truyện chưa có tên');
       const shortText = String(story?.short || story?.title || 'Truyện');
       const imageUrl = typeof getStoryCoverImageUrl === 'function' ? getStoryCoverImageUrl(story) : '';
       const isLongTitle = shortText.length > 28;
       const chapterCount = story.chapterCount || chapters.length;
+      const badge = getStoryCoverBadge(options.badge);
+      const badgeMarkup = badge ? `<span class="story-cover-badge ${badge.className}">${badge.text}</span>` : '';
       card.className = `story-card${isLongTitle ? ' is-long-title' : ''}`;
       card.tabIndex = 0;
       card.role = 'button';
@@ -13556,11 +13999,12 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
       // Chỉ dùng TÊN TRUYỆN để lọc/tìm kiếm, không lấy tác giả/thể loại để tránh ra sai kết quả.
       card.dataset.search = normalizeVietnameseText(`${titleText} ${shortText}`);
       const coverImage = imageUrl
-        ? `<img class="story-cover-img" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(titleText)}" loading="lazy" decoding="async" onerror="this.parentElement&&this.parentElement.classList.remove('has-image');this.remove();">`
+        ? `<img class="story-cover-img" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(titleText)}" loading="eager" decoding="async" fetchpriority="high" onerror="this.parentElement&&this.parentElement.classList.remove('has-image');this.remove();">`
         : '';
       card.innerHTML = `
         <div class="cover has-readable-title${imageUrl ? ' has-image' : ''}" style="${getCoverReadableStyle(story)}">
           ${coverImage}
+          ${badgeMarkup}
           <span class="branch" aria-hidden="true"></span>
           ${story.moon ? '<span class="moon" aria-hidden="true"></span>' : ''}
           <div class="cover-title">${escapeHtml(shortText)}</div>
@@ -13628,15 +14072,20 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
         return [];
       }
     }
-    function renderStoryTrack(container, list, limit = HOME_SECTION_LIMIT){
+    function renderStoryTrack(container, list, limit = HOME_SECTION_LIMIT, options = {}){
       if(!container) return;
       container.innerHTML = '';
       const items = (Array.isArray(list) ? list : []).filter(item => !isStoryAdminSuppressedForWeb(item)).slice(0, limit);
+      const isLoading = !!(window.tdnStoryInstantCache && typeof window.tdnStoryInstantCache.isLoading === 'function' && window.tdnStoryInstantCache.isLoading());
       if(!items.length){
-        container.innerHTML = '<div class="tdn-empty-story-list">Chưa có truyện nào</div>';
+        if(isLoading){
+          container.innerHTML = window.tdnStoryInstantCache.buildLoadingMarkup();
+        }else{
+          container.innerHTML = '<div class="tdn-empty-story-list">Chưa có truyện nào</div>';
+        }
         return;
       }
-      items.forEach(item => container.appendChild(makeCard(item)));
+      items.forEach(item => container.appendChild(makeCard(item, options)));
     }
 
     function normalizeDateValue(value){
@@ -14431,26 +14880,31 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
       return `Chương ${latestNumber}`;
     }
 
-    function renderLatestUpdateBoard(container, list, limit = HOME_SECTION_LIMIT){
+    function renderLatestUpdateBoard(container, list, limit = HOME_SECTION_LIMIT, options = {}){
       if(!container) return;
       const items = (Array.isArray(list) ? list : [])
         .filter(item => !isStoryAdminSuppressedForWeb(item))
         .slice(0, limit);
       container.innerHTML = '';
       container.classList.add('story-track', 'latest-update-board');
+      const isLoading = !!(window.tdnStoryInstantCache && typeof window.tdnStoryInstantCache.isLoading === 'function' && window.tdnStoryInstantCache.isLoading());
       if(!items.length){
-        container.innerHTML = '<div class="latest-update-empty">Chưa có truyện nào</div>';
+        if(isLoading){
+          container.innerHTML = window.tdnStoryInstantCache.buildLoadingMarkup();
+        }else{
+          container.innerHTML = '<div class="latest-update-empty">Chưa có truyện nào</div>';
+        }
         return;
       }
-      items.forEach(story => container.appendChild(makeCard(story)));
+      items.forEach(story => container.appendChild(makeCard(story, options)));
     }
 
     function refreshHomeSections(){
       renderStoryTrack(recommendedTrack, getRecommendedStories());
-      renderStoryTrack(hotTrack, getHotStories());
-      renderLatestUpdateBoard(latestTrack, getLatestUpdatedStories());
+      renderStoryTrack(hotTrack, getHotStories(), HOME_SECTION_LIMIT, {badge:'hot'});
+      renderLatestUpdateBoard(latestTrack, getLatestUpdatedStories(), HOME_SECTION_LIMIT, {badge:'new'});
       renderStoryTrack(newTrack, getNewStories());
-      renderStoryTrack(completedTrack, getCompletedStories());
+      renderStoryTrack(completedTrack, getCompletedStories(), HOME_SECTION_LIMIT, {badge:'full'});
       if(typeof filterStories === 'function' && searchInput) filterStories();
     }
 
@@ -14627,7 +15081,7 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
         return String(story?.coverUrl || story?.cover || story?.imageUrl || story?.image || story?.thumbnail || story?.poster || '').trim();
       })();
       const moreCoverImage = imageUrl
-        ? `<img class="tdn-more-cover-img" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(titleText)}" loading="lazy" decoding="async" onerror="this.parentElement&&this.parentElement.classList.remove('has-image');this.remove();">`
+        ? `<img class="tdn-more-cover-img" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(titleText)}" loading="eager" decoding="async" fetchpriority="high" onerror="this.parentElement&&this.parentElement.classList.remove('has-image');this.remove();">`
         : '';
 
       const userIcon = `<span class="tdn-more-meta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12.25a4.1 4.1 0 1 0 0-8.2 4.1 4.1 0 0 0 0 8.2Z" fill="currentColor"/><path d="M4.8 20.2c.72-3.42 3.55-5.7 7.2-5.7s6.48 2.28 7.2 5.7c.1.48-.27.9-.76.9H5.56c-.49 0-.86-.42-.76-.9Z" fill="currentColor"/></svg></span>`;
@@ -17751,8 +18205,39 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
       if(chapterLatestList) chapterLatestList.scrollTop = 0;
     }
 
+    const READER_LOADING_SENTINEL = '__TDN_READER_LOADING_CHAPTER__';
+
     function makeChapterLabel(number, story = currentStory){
       return `Chương ${number} : ${getStoryChapterTitle(story, number) || 'Không Tên'}`;
+    }
+
+    function isReaderLoadingParagraphList(paragraphs){
+      return Array.isArray(paragraphs) && paragraphs.length === 1 && String(paragraphs[0] || '') === READER_LOADING_SENTINEL;
+    }
+
+    function buildReaderLoadingMarkup(){
+      return `
+        <div class="tdn-reader-loading" aria-live="polite" aria-busy="true">
+          <div class="tdn-reader-loading-spinner" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="tdn-reader-loading-text">Đang tải nội dung chương</div>
+          <div class="tdn-reader-loading-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="tdn-reader-loading-lines" aria-hidden="true">
+            <span class="tdn-reader-loading-line"></span>
+            <span class="tdn-reader-loading-line"></span>
+            <span class="tdn-reader-loading-line"></span>
+          </div>
+        </div>`;
+    }
+
+    function renderReaderLoadingState(){
+      if(!readerText) return;
+      readerPlainRenderToken += 1;
+      readerText.classList.add('is-loading');
+      readerText.innerHTML = buildReaderLoadingMarkup();
+      chapterAudioHighlightWords = [];
+      chapterAudioLastHighlightIndex = -1;
+      chapterAudioRegionIndex = -1;
+      chapterAudioLastScrolledRegionIndex = -1;
     }
 
     function makeChapterText(story, number){
@@ -17804,7 +18289,7 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
 
       const localChapterMeta = getStoryChapterData(story, number);
       if(localChapterMeta && localChapterMeta.contentMode === 'firestore_chunks'){
-        return ['Đang tải nội dung chương'];
+        return [READER_LOADING_SENTINEL];
       }
       return ['Chưa có nội dung chương.'];
     }
@@ -18033,6 +18518,7 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
       hideReaderSelectionToolbar(true);
       closeReaderSelectionModal();
       renderReader();
+      try{ if(window.tdnWarmNextFirestoreChapters) window.tdnWarmNextFirestoreChapters(story, chapterNumber); }catch(error){}
 
       if(shouldJumpTopBeforePaint) forceReaderTop();
 
@@ -18146,15 +18632,106 @@ body.reader-dark .tdn-publish-success-close{background:rgba(255,255,255,.08) !im
       chapterAudioScrollTimer = null;
     }
 
+    let readerPlainRenderToken = 0;
+
+    function normalizeReaderParagraphList(paragraphs){
+      const output = [];
+      const sourceList = Array.isArray(paragraphs) ? paragraphs : [];
+      sourceList.forEach(item => {
+        const source = String(item ?? '').replace(/\r?\n/g, '\n').trim();
+        if(!source) return;
+        if(source.length <= 3600){
+          output.push(source);
+          return;
+        }
+        const lines = source.split(/\n+/).map(line => line.trim()).filter(Boolean);
+        if(lines.length > 1){
+          lines.forEach(line => {
+            if(line.length <= 3600){
+              output.push(line);
+            }else{
+              for(let start = 0; start < line.length; start += 3200){
+                const part = line.slice(start, start + 3200).trim();
+                if(part) output.push(part);
+              }
+            }
+          });
+          return;
+        }
+        for(let start = 0; start < source.length; start += 3200){
+          const part = source.slice(start, start + 3200).trim();
+          if(part) output.push(part);
+        }
+      });
+      return output.length ? output : [READER_LOADING_SENTINEL];
+    }
+
+    function renderPlainReaderTextFast(paragraphs){
+      const token = ++readerPlainRenderToken;
+      const list = normalizeReaderParagraphList(paragraphs);
+      if(isReaderLoadingParagraphList(list)){
+        renderReaderLoadingState();
+        return;
+      }
+      readerText.classList.remove('is-loading');
+      const firstBatchCount = Math.min(list.length, 10);
+      readerText.innerHTML = list.slice(0, firstBatchCount).map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join('');
+      chapterAudioHighlightWords = [];
+      chapterAudioLastHighlightIndex = -1;
+      chapterAudioRegionIndex = -1;
+
+      let index = firstBatchCount;
+      const appendBatch = () => {
+        if(token !== readerPlainRenderToken || !readerText || !readerText.isConnected) return;
+        const fragment = document.createDocumentFragment();
+        const end = Math.min(list.length, index + 18);
+        for(; index < end; index += 1){
+          const p = document.createElement('p');
+          p.textContent = list[index];
+          fragment.appendChild(p);
+        }
+        if(fragment.childNodes.length) readerText.appendChild(fragment);
+        if(index < list.length){
+          if('requestIdleCallback' in window){
+            requestIdleCallback(appendBatch, {timeout:160});
+          }else{
+            setTimeout(appendBatch, 16);
+          }
+        }
+      };
+
+      if(index < list.length){
+        if('requestIdleCallback' in window){
+          requestIdleCallback(appendBatch, {timeout:120});
+        }else{
+          setTimeout(appendBatch, 16);
+        }
+      }
+    }
+
     function renderReaderTextWithAudioHighlight(story, chapterNumber, label){
       const safeLabel = label || makeChapterLabel(chapterNumber);
       const paragraphs = getEditedChapterParagraphs(story, chapterNumber);
-      let bodyOffset = 0;
+      const shouldBuildAudioMarkup = shouldShowChapterAudioHighlight() || hasListeningAudioStarted();
 
-      // Hai dòng này chỉ giữ cho cấu trúc cũ, nhưng không đưa vào audio/highlight.
+      // Hai dòng này chỉ giữ cho cấu trúc cũ, nhưng không đưa vào audio/highlight khi chưa bật nghe.
       readerStoryName.textContent = story.title || '';
       readerHeading.textContent = safeLabel;
-      readerText.innerHTML = paragraphs.map(paragraph => {
+
+      if(!shouldBuildAudioMarkup){
+        renderPlainReaderTextFast(paragraphs);
+        return;
+      }
+
+      readerPlainRenderToken += 1;
+      const safeParagraphs = normalizeReaderParagraphList(paragraphs);
+      if(isReaderLoadingParagraphList(safeParagraphs)){
+        renderReaderLoadingState();
+        return;
+      }
+      readerText.classList.remove('is-loading');
+      let bodyOffset = 0;
+      readerText.innerHTML = safeParagraphs.map(paragraph => {
         const source = String(paragraph ?? '');
         const html = `<p>${buildAudioHighlightedHtml(source, bodyOffset)}</p>`;
         bodyOffset += source.length + 1;
@@ -30513,11 +31090,10 @@ line-height:1.35 !important;
 <script id="tdn-firestore-only-pre-admin-cleanup">
 (function(){
   try{
-    // Luồng truyện chuẩn dùng Firestore làm nguồn chính. Xóa cache local cũ để tránh mỗi máy thấy dữ liệu khác nhau.
+    // Luồng truyện chuẩn dùng Firestore làm nguồn chính. Chỉ xóa dữ liệu local nháp cũ, giữ cache Firebase để tải lại trang hiện truyện ngay.
     localStorage.removeItem('moc_truyen_admin_local_stories_v1');
-    localStorage.removeItem('tdn_story_flow_cache_v23');
     Object.keys(localStorage).forEach(function(key){
-      if(/^tdn_story_flow_cache_|^moc_truyen_admin_local_stories_/i.test(key)){
+      if(/^moc_truyen_admin_local_stories_/i.test(key)){
         localStorage.removeItem(key);
       }
     });
@@ -44798,7 +45374,7 @@ html body.reader-warm #homePage .footer-copyright a,
 html body.reader-warm #homePage .footer-copyright-admin-link,
 html body.reader-warm #homePage #contactFooterLink{color:rgba(94,49,72,.72) !important;}</style>
 
-<style id="tdn-firestore-story-flow-style">.tdn-empty-story-list,.latest-update-empty{width:100%;min-height:96px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(124,58,237,.24);border-radius:18px;background:rgba(124,58,237,.045);color:#6d7890;font-weight:850;text-align:center;padding:18px;box-sizing:border-box;}body.reader-dark .tdn-empty-story-list,body.reader-dark .latest-update-empty{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.12);color:#b8c2d6;}#adminStoryTxtList .tdn-firestore-chapter-preview{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;width:100%;padding:10px 12px;border:1px solid rgba(124,58,237,.14);border-radius:16px;background:rgba(255,255,255,.72);box-sizing:border-box;}#adminStoryTxtList .tdn-firestore-chapter-preview + .tdn-firestore-chapter-preview{margin-top:8px;}.tdn-firestore-chapter-badge{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:34px;border-radius:999px;background:rgba(124,58,237,.11);color:#6d28d9;font-size:13px;font-weight:950;}.tdn-firestore-chapter-main{min-width:0;display:flex;flex-direction:column;gap:6px;}.tdn-firestore-chapter-title{width:100%;box-sizing:border-box;border:1px solid rgba(24,35,53,.12);background:#fff;border-radius:12px;min-height:38px;padding:8px 10px;font:inherit;font-size:14px;font-weight:800;color:#182335;outline:none;}.tdn-firestore-chapter-title:focus{border-color:rgba(124,58,237,.5);box-shadow:0 0 0 3px rgba(124,58,237,.11);}.tdn-firestore-chapter-meta{display:flex;gap:8px;flex-wrap:wrap;color:#7a8598;font-size:12px;font-weight:750;line-height:1.35;}.tdn-firestore-save-note{font-size:13px;font-weight:800;color:#6d7890;line-height:1.45;}body.reader-dark #adminStoryTxtList .tdn-firestore-chapter-preview{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.1);}body.reader-dark .tdn-firestore-chapter-title{background:#111827;color:#eef2f8;border-color:rgba(255,255,255,.1);}</style>
+<style id="tdn-firestore-story-flow-style">.tdn-empty-story-list,.latest-update-empty{width:100%;min-height:96px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(124,58,237,.24);border-radius:18px;background:rgba(124,58,237,.045);color:#6d7890;font-weight:850;text-align:center;padding:18px;box-sizing:border-box;}.tdn-home-loading-shell{grid-column:1 / -1 !important;justify-self:center !important;align-self:center !important;width:100%;min-height:160px;display:flex;align-items:center;justify-content:center;padding:8px 0 18px;box-sizing:border-box;}.tdn-home-loading-grid{width:auto;max-width:260px;display:grid;grid-template-columns:repeat(3,58px);justify-content:center;align-items:start;gap:14px;margin:0 auto;}.tdn-home-loading-card{width:58px;display:flex;flex-direction:column;align-items:center;gap:9px;animation:tdnLoadingFloat 1.55s ease-in-out infinite;}.tdn-home-loading-cover,.tdn-home-loading-line{position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(124,58,237,.08) 0%,rgba(124,58,237,.18) 50%,rgba(124,58,237,.08) 100%);background-size:220% 100%;animation:tdnLoadingShimmer 1.25s linear infinite;}.tdn-home-loading-cover{width:58px;height:74px;border-radius:18px;border:1px solid rgba(124,58,237,.12);box-shadow:0 10px 28px rgba(124,58,237,.06);}.tdn-home-loading-lines{width:100%;display:flex;flex-direction:column;align-items:center;gap:7px;}.tdn-home-loading-line{display:block;height:9px;border-radius:999px;}.tdn-home-loading-line.is-long{width:52px;}.tdn-home-loading-line.is-mid{width:42px;}.tdn-home-loading-line.is-short{display:none;}@keyframes tdnLoadingShimmer{0%{background-position:200% 0;}100%{background-position:-20% 0;}}@keyframes tdnLoadingFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}body.reader-dark .tdn-empty-story-list,body.reader-dark .latest-update-empty{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.12);color:#b8c2d6;}body.reader-dark .tdn-home-loading-cover,body.reader-dark .tdn-home-loading-line{background:linear-gradient(90deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.06) 100%);background-size:220% 100%;}body.reader-dark .tdn-home-loading-cover{border-color:rgba(255,255,255,.1);box-shadow:0 10px 26px rgba(0,0,0,.16);}@media (max-width:640px){.tdn-home-loading-shell{min-height:150px;padding:6px 0 16px;}.tdn-home-loading-grid{grid-template-columns:repeat(3,56px);gap:14px;max-width:238px;}.tdn-home-loading-card{width:56px;}.tdn-home-loading-cover{width:56px;height:72px;border-radius:17px;}.tdn-home-loading-line.is-long{width:50px;}.tdn-home-loading-line.is-mid{width:40px;}}#adminStoryTxtList .tdn-firestore-chapter-preview{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;width:100%;padding:10px 12px;border:1px solid rgba(124,58,237,.14);border-radius:16px;background:rgba(255,255,255,.72);box-sizing:border-box;}#adminStoryTxtList .tdn-firestore-chapter-preview + .tdn-firestore-chapter-preview{margin-top:8px;}.tdn-firestore-chapter-badge{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:34px;border-radius:999px;background:rgba(124,58,237,.11);color:#6d28d9;font-size:13px;font-weight:950;}.tdn-firestore-chapter-main{min-width:0;display:flex;flex-direction:column;gap:6px;}.tdn-firestore-chapter-title{width:100%;box-sizing:border-box;border:1px solid rgba(24,35,53,.12);background:#fff;border-radius:12px;min-height:38px;padding:8px 10px;font:inherit;font-size:14px;font-weight:800;color:#182335;outline:none;}.tdn-firestore-chapter-title:focus{border-color:rgba(124,58,237,.5);box-shadow:0 0 0 3px rgba(124,58,237,.11);}.tdn-firestore-chapter-meta{display:flex;gap:8px;flex-wrap:wrap;color:#7a8598;font-size:12px;font-weight:750;line-height:1.35;}.tdn-firestore-save-note{font-size:13px;font-weight:800;color:#6d7890;line-height:1.45;}body.reader-dark #adminStoryTxtList .tdn-firestore-chapter-preview{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.1);}body.reader-dark .tdn-firestore-chapter-title{background:#111827;color:#eef2f8;border-color:rgba(255,255,255,.1);}</style>
 
 <script id="tdn-normalize-external-image-url-global">
 (function(){
@@ -45223,9 +45799,31 @@ html body.reader-warm #homePage #contactFooterLink{color:rgba(94,49,72,.72) !imp
     return window.stories;
   }
   function setRuntimeStories(list){
-    var clean = (Array.isArray(list) ? list : []).filter(function(story){ return story && !story.deleted && !story.deletedByAdmin; });
+    var clean = (Array.isArray(list) ? list : []).filter(function(story){ return story && !story.deleted && !story.deletedByAdmin && !story.adminDeleted; });
+    var arr = getRuntimeArray();
+
+    if(!clean.length){
+      var cached = [];
+      try{
+        if(window.tdnStoryInstantCache && typeof window.tdnStoryInstantCache.read === 'function') cached = window.tdnStoryInstantCache.read() || [];
+      }catch(error){ cached = []; }
+      if((arr && arr.length) || cached.length){
+        try{
+          if((!arr || !arr.length) && cached.length){
+            arr = getRuntimeArray();
+            arr.splice(0, arr.length);
+            Array.prototype.push.apply(arr, cached.map(function(story){ return normalizeStory(story, story.id || story.storyId, story.chapters); }));
+            window.stories = arr;
+            window.MOC_STORY_ADMIN_DATA = arr;
+          }
+          window.__TDN_FIRESTORE_EMPTY_KEEP_CACHE = true;
+        }catch(error){}
+        refreshAll();
+        return;
+      }
+    }
+
     try{
-      var arr = getRuntimeArray();
       arr.splice(0, arr.length);
       Array.prototype.push.apply(arr, clean);
       window.stories = arr;
@@ -45234,7 +45832,10 @@ html body.reader-warm #homePage #contactFooterLink{color:rgba(94,49,72,.72) !imp
       window.stories = clean;
       window.MOC_STORY_ADMIN_DATA = clean;
     }
-    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({savedAt:Date.now(), stories:clean.map(function(story){ var copy = Object.assign({}, story); copy.chapters = (copy.chapters || []).map(function(ch){ var c = Object.assign({}, ch); delete c.content; delete c.text; delete c.body; return c; }); return copy; })})); }catch(error){}
+    if(clean.length){
+      try{ localStorage.setItem(CACHE_KEY, JSON.stringify({savedAt:Date.now(), stories:clean.map(function(story){ var copy = Object.assign({}, story); copy.chapters = (copy.chapters || []).map(function(ch){ var c = Object.assign({}, ch); delete c.content; delete c.text; delete c.body; return c; }); return copy; })})); }catch(error){}
+      try{ if(window.tdnStoryInstantCache && typeof window.tdnStoryInstantCache.save === 'function') window.tdnStoryInstantCache.save(clean); }catch(error){}
+    }
     refreshAll();
   }
   function upsertRuntimeStory(story){
@@ -45285,6 +45886,8 @@ html body.reader-warm #homePage #contactFooterLink{color:rgba(94,49,72,.72) !imp
       if(cache.length) setRuntimeStories(cache.map(function(story){ return normalizeStory(story, story.id || story.storyId, story.chapters); }));
     }
     if(!db){
+      try{ if(window.tdnStoryInstantCache && typeof window.tdnStoryInstantCache.show === 'function') window.tdnStoryInstantCache.show(); }catch(error){}
+      if(getRuntimeArray().length) return getRuntimeArray();
       setNotice('Chưa kết nối Firestore. Kiểm tra Firebase config/rules.');
       return getRuntimeArray();
     }
@@ -45568,29 +46171,154 @@ html body.reader-warm #homePage #contactFooterLink{color:rgba(94,49,72,.72) !imp
       return false;
     }
   }
+  var CHAPTER_IDB_NAME = 'tdn_chapter_text_idb_v1';
+  var CHAPTER_IDB_STORE = 'chapters';
+  var chapterDbPromise = null;
+  var chapterFetchPromises = new Map();
+
+  function openChapterCacheDb(){
+    if(chapterDbPromise) return chapterDbPromise;
+    chapterDbPromise = new Promise(function(resolve, reject){
+      if(!('indexedDB' in window)) return reject(new Error('IndexedDB không khả dụng'));
+      var request = indexedDB.open(CHAPTER_IDB_NAME, 1);
+      request.onupgradeneeded = function(event){
+        var db = event.target.result;
+        var store = db.objectStoreNames.contains(CHAPTER_IDB_STORE)
+          ? event.target.transaction.objectStore(CHAPTER_IDB_STORE)
+          : db.createObjectStore(CHAPTER_IDB_STORE, {keyPath:'key'});
+        try{ if(!store.indexNames.contains('updatedAt')) store.createIndex('updatedAt', 'updatedAt', {unique:false}); }catch(error){}
+        try{ if(!store.indexNames.contains('storyId')) store.createIndex('storyId', 'storyId', {unique:false}); }catch(error){}
+      };
+      request.onsuccess = function(){ resolve(request.result); };
+      request.onerror = function(){ reject(request.error || new Error('Không mở được IndexedDB')); };
+    }).catch(function(error){ chapterDbPromise = null; throw error; });
+    return chapterDbPromise;
+  }
+
+  async function idbGetChapterText(key){
+    try{
+      var db = await openChapterCacheDb();
+      return await new Promise(function(resolve){
+        var tx = db.transaction(CHAPTER_IDB_STORE, 'readonly');
+        var store = tx.objectStore(CHAPTER_IDB_STORE);
+        var request = store.get(key);
+        request.onsuccess = function(){ resolve(request.result && request.result.text ? String(request.result.text) : ''); };
+        request.onerror = function(){ resolve(''); };
+      });
+    }catch(error){ return ''; }
+  }
+
+  async function idbPutChapterText(key, storyId, chapterId, content){
+    var source = text(content).trim();
+    if(!source) return false;
+    try{
+      var db = await openChapterCacheDb();
+      await new Promise(function(resolve){
+        var tx = db.transaction(CHAPTER_IDB_STORE, 'readwrite');
+        tx.objectStore(CHAPTER_IDB_STORE).put({
+          key:key,
+          storyId:storyId,
+          chapterId:chapterId,
+          text:source,
+          length:source.length,
+          updatedAt:Date.now()
+        });
+        tx.oncomplete = function(){ resolve(true); };
+        tx.onerror = function(){ resolve(false); };
+        tx.onabort = function(){ resolve(false); };
+      });
+      return true;
+    }catch(error){ return false; }
+  }
+
+  async function trimOldChapterCache(){
+    try{
+      var db = await openChapterCacheDb();
+      var tx = db.transaction(CHAPTER_IDB_STORE, 'readwrite');
+      var store = tx.objectStore(CHAPTER_IDB_STORE);
+      var countRequest = store.count();
+      countRequest.onsuccess = function(){
+        var count = Number(countRequest.result) || 0;
+        if(count <= 180) return;
+        try{
+          var index = store.index('updatedAt');
+          var cursorRequest = index.openCursor();
+          var removeCount = Math.min(50, count - 180);
+          cursorRequest.onsuccess = function(event){
+            var cursor = event.target.result;
+            if(!cursor || removeCount <= 0) return;
+            try{ store.delete(cursor.primaryKey); }catch(error){}
+            removeCount -= 1;
+            cursor.continue();
+          };
+        }catch(error){}
+      };
+    }catch(error){}
+  }
+
+  async function readCachedChapterText(key){
+    if(ramChapterCache.has(key)) return ramChapterCache.get(key) || '';
+    try{
+      var smallCached = localStorage.getItem(CHAPTER_CACHE_PREFIX + key);
+      if(smallCached){
+        ramChapterCache.set(key, smallCached);
+        return smallCached;
+      }
+    }catch(error){}
+    var idbCached = await idbGetChapterText(key);
+    if(idbCached){
+      ramChapterCache.set(key, idbCached);
+      try{ if(idbCached.length < 650000) localStorage.setItem(CHAPTER_CACHE_PREFIX + key, idbCached); }catch(error){}
+      return idbCached;
+    }
+    return '';
+  }
+
+  function saveChapterTextToFastCaches(key, storyId, chapterId, content){
+    var source = text(content).trim();
+    if(!source) return;
+    ramChapterCache.set(key, source);
+    try{ if(source.length < 650000) localStorage.setItem(CHAPTER_CACHE_PREFIX + key, source); }catch(error){}
+    idbPutChapterText(key, storyId, chapterId, source).then(trimOldChapterCache).catch(function(){});
+  }
+
   async function readChunks(storyId, chapterId){
     var db = getDb();
-    if(!db || !storyId || !chapterId) return '';
+    if(!storyId || !chapterId) return '';
     var key = storyId + '::' + chapterId;
-    if(ramChapterCache.has(key)) return ramChapterCache.get(key) || '';
-    try{ var cached = localStorage.getItem(CHAPTER_CACHE_PREFIX + key); if(cached){ ramChapterCache.set(key, cached); return cached; } }catch(error){}
-    var snap = await db.collection(CHAPTER_CHUNKS_COLLECTION).doc(storyId + '_' + chapterId).collection('chunks').get();
-    var docs = (snap && snap.docs ? snap.docs : []).map(function(doc){ var data = doc.data() || {}; return {id:doc.id, order:Number(data.order ?? data.chunkIndex ?? doc.id) || 0, text:text(data.text || data.content || '')}; });
-    docs.sort(function(a,b){ return a.order - b.order || a.id.localeCompare(b.id); });
-    var content = docs.map(function(item){ return item.text; }).filter(Boolean).join('\n\n').trim();
-    if(content){
-      ramChapterCache.set(key, content);
-      try{ if(content.length < 650000) localStorage.setItem(CHAPTER_CACHE_PREFIX + key, content); }catch(error){}
-    }
-    return content;
+    var cached = await readCachedChapterText(key);
+    if(cached) return cached;
+    if(!db) return '';
+    if(chapterFetchPromises.has(key)) return chapterFetchPromises.get(key);
+
+    var fetchPromise = (async function(){
+      var snap = await db.collection(CHAPTER_CHUNKS_COLLECTION).doc(storyId + '_' + chapterId).collection('chunks').get();
+      var docs = (snap && snap.docs ? snap.docs : []).map(function(doc){
+        var data = doc.data() || {};
+        return {id:doc.id, order:Number(data.order ?? data.chunkIndex ?? doc.id) || 0, text:text(data.text || data.content || '')};
+      });
+      docs.sort(function(a,b){ return a.order - b.order || a.id.localeCompare(b.id); });
+      var content = docs.map(function(item){ return item.text; }).filter(Boolean).join('\n\n').trim();
+      if(content) saveChapterTextToFastCaches(key, storyId, chapterId, content);
+      return content;
+    })().finally(function(){ chapterFetchPromises.delete(key); });
+
+    chapterFetchPromises.set(key, fetchPromise);
+    return fetchPromise;
   }
+
   window.tdnGetCachedFirestoreChapterText = function(story, number){
     var info = getChapterInfo(story, number);
     if(!info.storyId || !info.chapterId) return '';
     var key = info.storyId + '::' + info.chapterId;
     if(ramChapterCache.has(key)) return ramChapterCache.get(key) || '';
-    try{ return localStorage.getItem(CHAPTER_CACHE_PREFIX + key) || ''; }catch(error){ return ''; }
+    try{
+      var smallCached = localStorage.getItem(CHAPTER_CACHE_PREFIX + key) || '';
+      if(smallCached){ ramChapterCache.set(key, smallCached); return smallCached; }
+    }catch(error){}
+    return '';
   };
+
   function getChapterInfo(story, number){
     var storyId = trim(story && (story.storyId || story.id));
     var list = Array.isArray(story && story.chapters) ? story.chapters : [];
@@ -45598,11 +46326,34 @@ html body.reader-warm #homePage #contactFooterLink{color:rgba(94,49,72,.72) !imp
     var chapterId = trim(chapter && (chapter.chapterId || chapter.id)) || makeChapterId(number);
     return {storyId:storyId, chapterId:chapterId, chapter:chapter};
   }
+
   window.tdnEnsureFirestoreChapterText = async function(story, number){
     var info = getChapterInfo(story, number);
     if(!info.storyId || !info.chapterId) return '';
     if(info.chapter && trim(info.chapter.content || info.chapter.text || info.chapter.body)) return trim(info.chapter.content || info.chapter.text || info.chapter.body);
-    try{ return await readChunks(info.storyId, info.chapterId); }catch(error){ console.warn('Không tải chương từ Firestore:', error); return ''; }
+    try{
+      var content = await readChunks(info.storyId, info.chapterId);
+      if(content && info.chapter){
+        info.chapter.content = content;
+        info.chapter.text = content;
+        info.chapter.body = content;
+      }
+      return content;
+    }catch(error){ console.warn('Không tải chương từ Firestore:', error); return ''; }
+  };
+
+  window.tdnWarmNextFirestoreChapters = function(story, number){
+    try{
+      if(!story || !Array.isArray(story.chapters) || !story.chapters.length) return;
+      var numbers = story.chapters.map(function(item){ return Number(item && (item.number || item.chapterNumber || item.order)); }).filter(function(value){ return value > 0; }).sort(function(a,b){ return a - b; });
+      var index = numbers.indexOf(Number(number));
+      var targets = [Number(number)];
+      if(index >= 0 && numbers[index + 1]) targets.push(numbers[index + 1]);
+      if(index >= 0 && numbers[index + 2]) targets.push(numbers[index + 2]);
+      targets.forEach(function(target, targetIndex){
+        setTimeout(function(){ window.tdnEnsureFirestoreChapterText(story, target).catch(function(){}); }, targetIndex * 220);
+      });
+    }catch(error){}
   };
   async function deleteCollection(colRef){
     var total = 0;
@@ -47164,9 +47915,8 @@ html body:not(.reader-dark) #homePage .tdn-footer-brand{
   function clearLocalOnlyCaches(){
     try{
       localStorage.removeItem('moc_truyen_admin_local_stories_v1');
-      localStorage.removeItem(CACHE_KEY);
       Object.keys(localStorage).forEach(function(key){
-        if(/^moc_truyen_admin_local_stories_|^tdn_story_flow_cache_/i.test(key)) localStorage.removeItem(key);
+        if(/^moc_truyen_admin_local_stories_/i.test(key)) localStorage.removeItem(key);
       });
     }catch(error){}
   }
@@ -47181,15 +47931,45 @@ html body:not(.reader-dark) #homePage .tdn-footer-brand{
     return Array.isArray(raw && raw.chapters) ? raw.chapters : [];
   }
   function applyStories(list){
+    try{ if(window.tdnStoryInstantCache && typeof window.tdnStoryInstantCache.setLoading === 'function') window.tdnStoryInstantCache.setLoading(false); }catch(error){}
     var clean = (Array.isArray(list) ? list : [])
       .filter(function(story){ return story && !story.deleted && !story.deletedByAdmin && !story.adminDeleted; })
       .sort(function(a,b){ return (Number(b.updatedAtMs) || 0) - (Number(a.updatedAtMs) || 0); });
     var arr = getRuntimeArray();
+
+    if(!clean.length){
+      var cached = [];
+      try{
+        if(window.tdnStoryInstantCache && typeof window.tdnStoryInstantCache.read === 'function') cached = window.tdnStoryInstantCache.read() || [];
+      }catch(error){ cached = []; }
+      if((arr && arr.length) || cached.length){
+        try{
+          if((!arr || !arr.length) && cached.length){
+            arr = getRuntimeArray();
+            arr.splice(0, arr.length);
+            Array.prototype.push.apply(arr, cached.map(function(story){ return normalizeStory(story, story.id || story.storyId, story.chapters); }));
+            window.stories = arr;
+            window.MOC_STORY_ADMIN_DATA = arr;
+          }
+          window.__TDN_FIRESTORE_EMPTY_KEEP_CACHE = true;
+        }catch(error){}
+        try{ if(typeof window.refreshHomeSections === 'function') window.refreshHomeSections(); }catch(error){}
+        try{ if(typeof window.initHeroSlider === 'function') window.initHeroSlider(); }catch(error){}
+        try{ if(window.MocTruyenAdmin && typeof window.MocTruyenAdmin.refresh === 'function') window.MocTruyenAdmin.refresh(); }catch(error){}
+        try{ document.dispatchEvent(new CustomEvent('tdn:firebase-story-flow-refresh', {detail:{source:'realtime_keep_cache', count:(arr && arr.length) || cached.length || 0}})); }catch(error){}
+        return;
+      }
+    }
+
     arr.splice(0, arr.length);
     Array.prototype.push.apply(arr, clean);
     window.stories = arr;
     window.MOC_STORY_ADMIN_DATA = arr;
-    try{ localStorage.removeItem(CACHE_KEY); }catch(error){}
+    if(clean.length){
+      try{ localStorage.setItem(CACHE_KEY, JSON.stringify({savedAt:Date.now(), stories:clean})); }catch(error){}
+      try{ localStorage.setItem('tdn_persisted_firestore_stories_v1', JSON.stringify({version:2, savedAt:Date.now(), count:clean.length, stories:clean})); }catch(error){}
+      try{ if(window.tdnStoryInstantCache && typeof window.tdnStoryInstantCache.save === 'function') window.tdnStoryInstantCache.save(clean); }catch(error){}
+    }
     try{ if(typeof window.refreshHomeSections === 'function') window.refreshHomeSections(); }catch(error){}
     try{ if(typeof window.initHeroSlider === 'function') window.initHeroSlider(); }catch(error){}
     try{ if(window.MocTruyenAdmin && typeof window.MocTruyenAdmin.refresh === 'function') window.MocTruyenAdmin.refresh(); }catch(error){}
@@ -47269,7 +48049,7 @@ html body:not(.reader-dark) #homePage .tdn-footer-brand{
     try{
       localStorage.removeItem('moc_truyen_admin_local_stories_v1');
       Object.keys(localStorage).forEach(function(key){
-        if(/^moc_truyen_admin_local_stories_|^tdn_story_flow_cache_/i.test(key || '')) localStorage.removeItem(key);
+        if(/^moc_truyen_admin_local_stories_/i.test(key || '')) localStorage.removeItem(key);
       });
     }catch(error){}
   }
@@ -47889,6 +48669,10 @@ body.reader-dark #adminPage #adminStoryTxtList .admin-add-file-badge{
   };
 })();
 </script>
+
+
+
+
 
 </body>
 </html>
